@@ -1,3 +1,10 @@
+/*
+* jQuery widget to create themable Tree Lists
+* 
+* http://jordivila.net/code/js/jquery/ui-widgetTreeList/widgetTreeList.htm
+*
+*/
+
 (function($) {
     $.widget("jv.treeList", {
         options: { selectable: true },
