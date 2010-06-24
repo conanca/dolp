@@ -6,7 +6,6 @@ import gs.dolp.system.service.UserService;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -14,6 +13,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.json.Json;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
@@ -32,33 +32,33 @@ public class UserModule {
 
 	@At
 	@Ok("json")
-	public JqgridData<User> getGridData(HttpServletRequest req) {
+	public JqgridData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
+			@Param("sidx") String sidx, @Param("sord") String sord) {
 		int pageNumber = 1;
 		int pageSize = 10;
-		int total = 0;
 		String sortColumn = "ID";
 		String sortOrder = "ASC";
-		if (req.getParameter("page") != null) {
-			pageNumber = Integer.parseInt(req.getParameter("page"));
+		if (!Strings.isEmpty(page)) {
+			pageNumber = Integer.parseInt(page);
 		}
-		if (req.getParameter("rows") != null) {
-			pageSize = Integer.parseInt(req.getParameter("rows"));
+		if (!Strings.isEmpty(rows)) {
+			pageSize = Integer.parseInt(rows);
 		}
-		if (req.getParameter("sidx") != null) {
-			sortColumn = req.getParameter("sidx");
+		if (!Strings.isEmpty(sidx)) {
+			sortColumn = sidx;
 		}
-		if (req.getParameter("sord") != null) {
-			sortOrder = req.getParameter("sord");
+		if (!Strings.isEmpty(sord)) {
+			sortOrder = sord;
 		}
 		Pager pager = userService.dao().createPager(pageNumber, pageSize);
 		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
 		List<User> list = userService.query(cnd, pager);
 		log.debug(Json.toJson(list));
-		total = userService.count();
-		log.debug("共" + total + "条");
+		int count = userService.count();
+		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 		JqgridData<User> jq = new JqgridData<User>();
 		jq.setPage(pageNumber);
-		jq.setTotal(total);
+		jq.setTotal(totalPage);
 		jq.setRows(list);
 		return jq;
 	}
@@ -74,5 +74,12 @@ public class UserModule {
 			throw new RuntimeException("Error username or password");
 		}
 		session.setAttribute("logonUser", user);
+	}
+
+	@At
+	@Ok("redirect:/main.jsp")
+	public User add(@Param("addedUser") User user) {
+		userService.dao().insert(user);
+		return user;
 	}
 }

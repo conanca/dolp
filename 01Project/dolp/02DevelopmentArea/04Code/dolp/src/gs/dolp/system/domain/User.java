@@ -5,15 +5,12 @@ import java.sql.SQLException;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Prev;
-import org.nutz.dao.entity.annotation.SQL;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_USER")
 public class User {
 	@Column
 	@Id
-	@Prev(@SQL("SELECT ID_SYSTEM_USER.nextval from dual"))
 	private int id;
 	@Column
 	private String number;
@@ -22,7 +19,7 @@ public class User {
 	@Column
 	private String name;
 	@Column
-	private String sex;
+	private String gender;
 	@Column
 	private int age;
 	@Column
@@ -36,7 +33,7 @@ public class User {
 		user.number = rs.getString("NUMBER");
 		user.password = rs.getString("PASSWORD");
 		user.name = rs.getString("NAME");
-		user.sex = rs.getString("SEX");
+		user.gender = rs.getString("GENDER");
 		user.age = rs.getInt("AGE");
 		user.birthday = rs.getString("BIRTHDAY");
 		user.phone = rs.getString("PHONE");
@@ -75,12 +72,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getSex() {
-		return sex;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setSex(String sex) {
-		this.sex = sex;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public int getAge() {

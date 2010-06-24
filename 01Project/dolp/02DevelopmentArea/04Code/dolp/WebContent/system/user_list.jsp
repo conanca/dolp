@@ -7,12 +7,12 @@ $(function(){
 	jQuery("#list2").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
-	   	colNames:['id','number', 'name','sex','age','birthday','phone'],
+	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:55},
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
-	   		{name:'sex',index:'sex', width:80},
+	   		{name:'gender',index:'gender', width:80},
 	   		{name:'age',index:'age', width:80},		
 	   		{name:'birthday',index:'birthday', width:80},		
 	   		{name:'phone',index:'phone', width:150}		

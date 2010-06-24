@@ -28,7 +28,7 @@ $(function() {
 					用户编号：
 				</td>
 				<td>
-					<input type="text" name="num"></input>
+					<input type="text" name="num"/>
 				</td>
 			</tr>
 			<tr>
@@ -36,7 +36,7 @@ $(function() {
 					密&nbsp;&nbsp;码：
 				</td>
 				<td>
-					<input type="password" name="pwd"></input>
+					<input type="password" name="pwd"/>
 				</td>
 			</tr>
 			<tr>
