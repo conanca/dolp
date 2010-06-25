@@ -77,8 +77,7 @@ public class UserModule {
 	}
 
 	@At
-	@Ok("redirect:/main.jsp")
-	public User add(@Param("addedUser") User user) {
+	public User add(@Param("..") User user) {
 		userService.dao().insert(user);
 		return user;
 	}

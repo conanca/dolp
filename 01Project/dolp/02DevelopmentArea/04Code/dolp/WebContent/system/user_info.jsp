@@ -1,41 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
-<script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
+<script src="js/jquery.form.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 $(function() {
-	$("input:button,input:reset").button();
-});
-
-$(function() {
+	$("input:submit,input:reset").button();
 	$("#datepicker").datepicker();
+
+	var options = {
+	    beforeSubmit:showRequest,
+	    success:	showResponse,
+		url:		'system/user/add.do',
+		type:		'get',
+		clearForm:	true,
+		resetForm:	true
+	};
+	$('#form1').submit(function() {
+		$(this).ajaxSubmit(options);
+			return false;
+	});
+
 });
 
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
-function add(){
-	var form1 = document.getElementById("form1");
-	var addedUser = $.toJSON($('form').serializeObject());
-	form1.action = "system/user/add.do?addedUser=" + addedUser;
-	form1.submit();
+function showRequest(formData, jqForm, options) {
+	
 }
-
+function showResponse(responseText, statusText, xhr, $form)  {
+	alert('保存成功');
+}
 </script>
-<form action="/system/user/add.do?addedUser=" method="post" id="form1">
+<form id="form1" action='system/user/add.do'>
 <table>
 	<tr>
 		<td>
@@ -97,7 +91,7 @@ function add(){
 	</tr>
 	<tr>
 		<td colspan="2">
-			<input type="button" value="保存" onclick="add()">
+			<input type="submit" value="保存">
 			<input type="reset" value="重置">
 		</td>
 	</tr>

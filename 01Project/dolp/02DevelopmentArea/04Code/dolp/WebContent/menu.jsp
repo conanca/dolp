@@ -16,7 +16,7 @@ $(function() {
 	<ul id="treeList">
 		<li class="ui-treeList-open">父节点1
 			<ul>
-				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab1' , '页面1');$('#newtab1','#tabs').load('1.jsp');">错误页面</a></li>
+				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab1' , '页面1');$('#newtab1','#tabs').load('3.jsp');">演示页面</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab2' , '页面2');$('#newtab2','#tabs').load('2.jsp');">打开页面2</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab3' , '用户列表页面');$('#newtab3','#tabs').load('system/user_list.jsp');">用户列表页面</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab4' , '用户添加页面');$('#newtab4','#tabs').load('system/user_info.jsp');">用户添加页面</a></li>
