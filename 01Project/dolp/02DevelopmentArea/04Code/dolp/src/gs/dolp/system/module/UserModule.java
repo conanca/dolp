@@ -30,10 +30,28 @@ public class UserModule {
 	private UserService userService;
 	private static final Log log = Logs.getLog(UserModule.class);
 
+	// TODO
+	// 将该方法的内容放到service类中实现
 	@At
 	@Ok("json")
 	public JqgridData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
+			@Param("sidx") String sidx, @Param("sord") String sord, @Param("searchField") String searchField,
+			@Param("searchOper") String searchOper, @Param("searchString") String searchString) {
+
+		/*
+		 * 
+		 *  bw - begins with ( LIKE val% )
+			eq - equal ( = )
+			ne - not equal ( <> )
+			lt - little ( < )
+			le - little or equal ( <= )
+			gt - greater ( > )
+			ge - greater or equal ( >= )
+			ew - ends with (LIKE %val )
+			cn - contain (LIKE %val% )
+		 * 
+		 * */
+
 		int pageNumber = 1;
 		int pageSize = 10;
 		String sortColumn = "ID";
@@ -77,8 +95,18 @@ public class UserModule {
 	}
 
 	@At
+	@Fail("json")
 	public User add(@Param("..") User user) {
 		userService.dao().insert(user);
 		return user;
+	}
+
+	@At
+	@Fail("json")
+	public void deleteRow(@Param("id") String ids) {
+		if (!Strings.isEmpty(ids)) {
+			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
+			userService.clear(cnd);
+		}
 	}
 }

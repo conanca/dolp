@@ -26,9 +26,11 @@ $(function(){
 	   	sortname: 'name',
 	    viewrecords: true,
 	    sortorder: "desc",
-	    caption:"User List"
+	    editurl:"system/user/deleteRow.do",	//del:true
+	    multiselect: true, //checkbox
+	    caption:"用户列表"
 	});
-	jQuery("#list2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
+	jQuery("#list2").jqGrid('navGrid','#pager2',{edit:true,add:true,del:true});
 });
 </script>
 User List Page
