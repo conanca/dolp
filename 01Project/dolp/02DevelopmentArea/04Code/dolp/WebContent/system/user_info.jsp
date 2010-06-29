@@ -65,8 +65,8 @@ function showResponse(responseText, statusText, xhr, $form)  {
 			性别：
 		</td>
 		<td>
-			男:<input type="radio" name="gender" value="M"/>
-			女:<input type="radio" name="gender" value="F"/>
+			男:<input type="radio" name="gender" value="男"/>
+			女:<input type="radio" name="gender" value="女"/>
 		</td>
 		<td>
 			年龄：

@@ -35,22 +35,7 @@ public class UserModule {
 	@At
 	@Ok("json")
 	public JqgridData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord, @Param("searchField") String searchField,
-			@Param("searchOper") String searchOper, @Param("searchString") String searchString) {
-
-		/*
-		 * 
-		 *  bw - begins with ( LIKE val% )
-			eq - equal ( = )
-			ne - not equal ( <> )
-			lt - little ( < )
-			le - little or equal ( <= )
-			gt - greater ( > )
-			ge - greater or equal ( >= )
-			ew - ends with (LIKE %val )
-			cn - contain (LIKE %val% )
-		 * 
-		 * */
+			@Param("sidx") String sidx, @Param("sord") String sord) {
 
 		int pageNumber = 1;
 		int pageSize = 10;
