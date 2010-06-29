@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
+<script src="js/jquery.formFill.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 $(function() {
 	$("#datepicker").datepicker();
-
 	$("input:button,input:submit,input:reset").button();
 
 	var options = {
@@ -67,8 +67,8 @@ function showResponse(responseText, statusText, xhr, $form)  {
 			性别：
 		</td>
 		<td>
-			男:<input type="radio" name="gender" value="男"/>
-			女:<input type="radio" name="gender" value="女"/>
+			男:<input type="radio" name="gender" value="M"/>
+			女:<input type="radio" name="gender" value="F"/>
 		</td>
 		<td>
 			年龄：
@@ -77,7 +77,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 			<input type="text" name="age"/>
 		</td>
 	</tr>
-		<tr>
+	<tr>
 		<td>
 			出生日期：
 		</td>
@@ -92,7 +92,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td colspan="4" align="center">
 			<input type="submit" value="保存">
 			<input type="reset" value="重置">
 		</td>
