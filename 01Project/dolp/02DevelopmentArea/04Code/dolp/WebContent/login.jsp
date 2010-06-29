@@ -13,8 +13,6 @@
 <script type="text/javascript">
 $(function() {
 	$("#login").dialog();
-});
-$(function() {
 	$("input:submit,input:reset").button();
 });
 </script>

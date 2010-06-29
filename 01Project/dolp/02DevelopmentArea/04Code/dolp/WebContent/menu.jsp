@@ -3,18 +3,24 @@
 <script src="js/widgetTreeList.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
-	$("input:button").button();
-});
-$(function() {
+	$('#expandCollapse').click(function() {
+		if($('#expandCollapse')[0].value=='展开'){
+			$('#treeList').treeList('openNode', $('#treeList').find('li'));
+			$('#expandCollapse').val('收起');
+		}else{
+			$('#treeList').treeList('closeNode', $('#treeList').find('li'));
+			$('#expandCollapse').val('展开');
+		}
+	});
+	
 	$('#treeList').treeList();
 	$('#treeList').treeList('closeNode', $('#treeList').find('li'));
 });
 </script>
 <div>
-	<input type="button" value="Expand All"  onclick="$('#treeList').treeList('openNode', $('#treeList').find('li'));" />
-	<input type="button" value="Collapse All"  onclick="$('#treeList').treeList('closeNode', $('#treeList').find('li'));" />
+	<input id="expandCollapse" type="button" value="展开"/>
 	<ul id="treeList">
-		<li class="ui-treeList-open">父节点1
+		<li class="ui-treeList-open">菜单
 			<ul>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab1' , '页面1');$('#newtab1','#tabs').load('3.jsp');">演示页面</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab2' , '页面2');$('#newtab2','#tabs').load('2.jsp');">打开页面2</a></li>

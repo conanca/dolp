@@ -4,8 +4,9 @@
 
 <script type="text/javascript">
 $(function() {
-	$("input:submit,input:reset").button();
 	$("#datepicker").datepicker();
+
+	$("input:button,input:submit,input:reset").button();
 
 	var options = {
 	    beforeSubmit:showRequest,
@@ -19,12 +20,13 @@ $(function() {
 		$(this).ajaxSubmit(options);
 			return false;
 	});
-
 });
 
+//提交前
 function showRequest(formData, jqForm, options) {
 	
 }
+//提交后获得Respons后
 function showResponse(responseText, statusText, xhr, $form)  {
 	alert('保存成功');
 }

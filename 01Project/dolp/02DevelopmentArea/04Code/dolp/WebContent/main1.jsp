@@ -19,8 +19,6 @@
 <script type="text/javascript">
 var maintab;
 $(function() {
-	$("input:button,input:submit,input:reset").button();
-
 	var myLayout = $('body').layout({ applyDefaultStyles: true });
 	myLayout.sizePane("north", 100);
 
@@ -49,6 +47,20 @@ $(function() {
 	            $('#jQueryUICssSrc').attr('href', 'css/themes/' + ui.value + '/jquery-ui-1.8.2.custom.css');
 	        }
 	});
+	
+	$('input:button').button();
+	$('#hideMenu').click(function() {
+		myLayout.close('west');
+	});
+	$('#maximize').click(function() {
+		if($('#maximize')[0].value=='最大化主界面'){
+			$.each('north,west,east'.split(','), function(){myLayout.close(this);});
+			$('#maximize').val("恢复");
+		}else{
+			$.each('north,west,east'.split(','), function(){myLayout.toggle(this);});
+			$('#maximize').val('最大化主界面');
+		}
+	});
 });
 </script>
 </head>
@@ -63,10 +75,12 @@ $(function() {
 			</ul>
 			<div id="tabs-1" style="font-size:12px;">
 				这是默认页
+				<input id="maximize" type="button" value="最大化主界面"/>
 			</div>
 		</div>
 	</div>
 	<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
+		<input id="hideMenu" type="button" value="隐藏菜单"/>
 		<%@include file="/menu.jsp" %>
 		<div id="jQueryUICssSwitch"></div>
 	</div>

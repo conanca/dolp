@@ -4,7 +4,9 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
-	jQuery("#list2").jqGrid({
+	$("input:button,input:submit,input:reset").button();
+	
+	jQuery("#list").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
 	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
@@ -22,7 +24,7 @@ $(function(){
 	    jsonReader:{
 	   		repeatitems: false
         },
-	   	pager: '#pager2',
+	   	pager: '#pager',
 	   	sortname: 'name',
 	    viewrecords: true,
 	    sortorder: "desc",
@@ -30,10 +32,17 @@ $(function(){
 	    multiselect: true, //checkbox
 	    caption:"用户列表"
 	});
-	jQuery("#list2").jqGrid('navGrid','#pager2',{edit:true,add:true,del:true});
+	jQuery("#list").jqGrid('navGrid','#pager',{edit:true,add:true,del:true});
+
+	$("#addRow").click(function() {
+		
+	});
+	$("#editSelRow").click(function() {
+		
+	});
 });
 </script>
-User List Page
-<table id="list2"></table>
-<div id="pager2"></div>
-
+<table id="list"></table>
+<div id="pager"></div>
+<input id="addRow" type="button" value="添加"/>
+<input id="addRow" type="button" value="编辑"/>
