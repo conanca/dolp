@@ -25,6 +25,7 @@ import org.nutz.mvc.annotation.Param;
 @InjectName("userModule")
 @At("/system/user")
 @Fail("json")
+//@Filters( { @By(type = CheckSession.class, args = { "logonUser", "/login.jsp" }) })
 public class UserModule {
 
 	private UserService userService;
@@ -77,6 +78,14 @@ public class UserModule {
 			throw new RuntimeException("Error username or password");
 		}
 		session.setAttribute("logonUser", user);
+	}
+
+	@At
+	@Ok("redirect:/login.jsp")
+	@Fail("json")
+	@Filters
+	public void logout(HttpSession session) {
+		session.invalidate();
 	}
 
 	@At

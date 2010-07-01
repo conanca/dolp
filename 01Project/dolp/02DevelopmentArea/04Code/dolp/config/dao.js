@@ -3,9 +3,9 @@ var ioc = {
 		type : 'org.h2.jdbcx.JdbcConnectionPool',
 		events : { depose : 'dispose' },
 		args : [ "jdbc:h2:file:~/dolpdb/dolp", "sa", "" ] },
-	
+
 	dao : {
 		type : 'org.nutz.dao.impl.NutDao',
-		args : [{refer:'dataSource'}]		
+		args : [{refer:'dataSource'}]
 	}
 };

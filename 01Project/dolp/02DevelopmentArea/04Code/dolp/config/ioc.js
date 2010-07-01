@@ -10,7 +10,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	userModule : {
 		type : "gs.dolp.system.module.UserModule",
 		fields : {

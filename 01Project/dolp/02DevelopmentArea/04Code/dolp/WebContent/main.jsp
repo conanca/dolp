@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="/WEB-INF/tld/c.tld"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -54,7 +53,7 @@ $(function() {
 </head>
 <body>
 	<div id="UpPane" class="ui-layout-north ui-widget ui-widget-content" >
-		当前用户：${logonUser.name}
+		<%@include file="/header.jsp" %>
 	</div>
 	<div id="RightPane" class="ui-layout-center ui-helper-reset ui-widget-content" >
 		<div id="tabs">
