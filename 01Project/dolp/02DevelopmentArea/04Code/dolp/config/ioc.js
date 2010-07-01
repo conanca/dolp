@@ -1,7 +1,5 @@
 var ioc = {
-	/*
-	 * User 的服务类
-	 */
+
 	userService : {
 		type : "gs.dolp.system.service.UserService",
 		args : {
@@ -16,6 +14,24 @@ var ioc = {
 		fields : {
 			userService : {
 				refer : 'userService'
+			}
+		}
+	},
+
+	roleService : {
+		type : "gs.dolp.system.service.RoleService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	roleModule : {
+		type : "gs.dolp.system.module.RoleModule",
+		fields : {
+			roleService : {
+				refer : 'roleService'
 			}
 		}
 	}

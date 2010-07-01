@@ -2,9 +2,11 @@ package gs.dolp.system.domain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_USER")
@@ -26,7 +28,10 @@ public class User {
 	private String birthday;
 	@Column
 	private String phone;
+	@ManyMany(target = Role.class, relation = "SYSTEM_USER_ROLE", from = "USERID", to = "ROLEID")
+	private List<Role> roles;
 
+	//需定义的静态工厂方法，若不写，则采用JAVA反射机制来为你构建 POJO 对象，但是效率会降低
 	public static User getInstance(ResultSet rs) throws SQLException {
 		User user = new User();
 		user.id = rs.getInt("ID");
@@ -102,6 +107,14 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 }

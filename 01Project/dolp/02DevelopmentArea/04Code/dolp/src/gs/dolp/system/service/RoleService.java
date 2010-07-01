@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
 import gs.dolp.jqgrid.JqgridData;
-import gs.dolp.system.domain.User;
+import gs.dolp.system.domain.Role;
 
 import java.util.List;
 
@@ -15,15 +15,10 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.service.IdEntityService;
 
-public class UserService extends IdEntityService<User> {
+public class RoleService extends IdEntityService<Role> {
+	private static final Log log = Logs.getLog(RoleService.class);
 
-	private static final Log log = Logs.getLog(UserService.class);
-
-	public UserService(Dao dao) {
-		super(dao);
-	}
-
-	public JqgridData<User> getGridData(String page, String rows, String sidx, String sord) {
+	public JqgridData<Role> getGridData(String page, String rows, String sidx, String sord) {
 		int pageNumber = 1;
 		int pageSize = 10;
 		String sortColumn = "ID";
@@ -42,27 +37,22 @@ public class UserService extends IdEntityService<User> {
 		}
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
-		List<User> list = query(cnd, pager);
+		List<Role> list = query(cnd, pager);
 		log.debug(Json.toJson(list));
 		int count = count();
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		JqgridData<User> jq = new JqgridData<User>();
+		JqgridData<Role> jq = new JqgridData<Role>();
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
 		jq.setRows(list);
 		return jq;
 	}
 
-	public User userAuthenticate(String number, String password) {
-		Condition cnd = Cnd.where("NUMBER", "=", number).and("PASSWORD", "=", password);
-		User user = fetch(cnd);
-		if (null == user) {
-			throw new RuntimeException("Error username or password");
-		}
-		return user;
+	public RoleService(Dao dao) {
+		super(dao);
 	}
 
-	public void deleteUsers(String ids) {
+	public void deleteRoles(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
 			clear(cnd);
