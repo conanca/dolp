@@ -38,7 +38,8 @@ public class RoleModule {
 
 	@At
 	@Fail("json")
-	public void deleteRow(@Param("id") String ids) {
-		roleService.deleteRoles(ids);
+	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
+			@Param("description") String description) {
+		roleService.CRURole(oper, id, name, description);
 	}
 }

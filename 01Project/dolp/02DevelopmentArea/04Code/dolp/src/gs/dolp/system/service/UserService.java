@@ -9,7 +9,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
-import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -43,13 +42,13 @@ public class UserService extends IdEntityService<User> {
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
 		List<User> list = query(cnd, pager);
-		log.debug(Json.toJson(list));
 		int count = count();
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 		JqgridData<User> jq = new JqgridData<User>();
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
 		jq.setRows(list);
+		log.debug(jq.toString());
 		return jq;
 	}
 

@@ -41,7 +41,7 @@ $(function(){
 	jQuery("#list").jqGrid('navGrid','#pager',{edit:false,add:false,del:true});
 	jQuery("#list").jqGrid('hideCol',['id']);//隐藏id列
 	//初始化用户信息界面
-	$("#userInfo").dialog({width: 550, hide: 'slide' , autoOpen: false });
+	$("#userInfo").dialog({width: 580, hide: 'slide' , autoOpen: false });
 	
 	$("#addRow").click(function() {
 		$("#userInfo").dialog( "open" );
@@ -79,14 +79,19 @@ $(function(){
 			clearForm:	true,
 			resetForm:	true
 		};
-		$('#form1').submit(function() {
-			$(this).ajaxSubmit(options);
-			//关闭用户信息界面
-			$("#userInfo").dialog( "close" );
-			//刷新表格
-			$('#list').trigger("reloadGrid");
-			return false;
-		});
+	$('#form1').submit(function() {
+		$(this).ajaxSubmit(options);
+		//关闭用户信息界面
+		$("#userInfo").dialog( "close" );
+		//刷新表格
+		$('#list').trigger("reloadGrid");
+		return false;
+	});
+
+	$("#userInfocancel").click(function() {
+		$('#form1')[0].reset();
+		$("#userInfo").dialog( "close" );
+	});
 });
 
 //提交前
@@ -169,6 +174,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 			<td colspan="4" align="center">
 				<input type="submit" value="保存">
 				<input type="reset" value="重置">
+				<input id="userInfocancel" type="button" value="取消">
 			</td>
 		</tr>
 	</table>

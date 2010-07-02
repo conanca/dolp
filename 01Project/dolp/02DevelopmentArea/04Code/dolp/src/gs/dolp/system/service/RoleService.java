@@ -9,7 +9,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
-import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -38,13 +37,13 @@ public class RoleService extends IdEntityService<Role> {
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
 		List<Role> list = query(cnd, pager);
-		log.debug(Json.toJson(list));
 		int count = count();
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 		JqgridData<Role> jq = new JqgridData<Role>();
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
 		jq.setRows(list);
+		log.debug(jq.toString());
 		return jq;
 	}
 
@@ -52,10 +51,23 @@ public class RoleService extends IdEntityService<Role> {
 		super(dao);
 	}
 
-	public void deleteRoles(String ids) {
-		if (!Strings.isEmpty(ids)) {
-			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
+	public void CRURole(String oper, String id, String name, String description) {
+		if ("del".equals(oper)) {
+			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+		}
+		if ("add".equals(oper)) {
+			Role role = new Role();
+			role.setName(name);
+			role.setDescription(description);
+			dao().insert(role);
+		}
+		if ("edit".equals(oper)) {
+			Role role = new Role();
+			role.setId(Integer.parseInt(id));
+			role.setName(name);
+			role.setDescription(description);
+			dao().update(role);
 		}
 	}
 }
