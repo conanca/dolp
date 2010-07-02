@@ -2,6 +2,8 @@ package gs.dolp.jqgrid;
 
 import java.util.List;
 
+import org.nutz.json.Json;
+
 public class JqgridData<T> {
 	private int page;
 	private int total;
@@ -38,5 +40,9 @@ public class JqgridData<T> {
 
 	public void setRows(List<T> rows) {
 		this.rows = rows;
+	}
+
+	public String toString() {
+		return Json.toJson(this);
 	}
 }
