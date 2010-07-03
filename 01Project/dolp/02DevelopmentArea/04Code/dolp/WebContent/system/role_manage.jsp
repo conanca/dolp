@@ -29,8 +29,8 @@ $(function(){
 	    multiselect: true, //checkbox
 	    caption:"角色列表"
 	});
-	//显示删除按钮
-	jQuery("#rolelist").jqGrid('navGrid','#rolepager',{edit:true,add:true,del:true});
+	//不显示查询按钮
+	jQuery("#rolelist").jqGrid('navGrid','#rolepager',{edit:true,add:true,del:true,search:false});
 	jQuery("#rolelist").jqGrid('hideCol',['id']);//隐藏id列
 
 });

@@ -36,8 +36,8 @@ $(function(){
 	    multiselect: true, //checkbox
 	    caption:"用户列表"
 	});
-	//显示删除按钮
-	jQuery("#list").jqGrid('navGrid','#pager',{edit:false,add:false,del:false});
+	//不显示jqgrid自带的增删改查按钮
+	jQuery("#list").jqGrid('navGrid','#pager',{edit:false,add:false,del:false,search:false});
 	jQuery("#list").jqGrid('hideCol',['id']);//隐藏id列
 	jQuery("#list").jqGrid('navButtonAdd','#pager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
