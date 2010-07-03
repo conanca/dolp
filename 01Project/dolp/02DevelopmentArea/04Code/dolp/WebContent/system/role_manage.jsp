@@ -16,10 +16,12 @@ $(function(){
 	   	colModel:[
 	   		{name:'id',index:'id', width:55},
 	   		{name:'name',index:'name', width:100,editable:true},
-	   		{name:'description',index:'description', width:200,editable:true}
+	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
+	   	width: 500,	//固定宽度
+	   	height: "100%", //自动调整高度(无滚动条)
 	    jsonReader:{
 	   		repeatitems: false
         },
