@@ -1,8 +1,10 @@
 package gs.dolp.system.service;
 
 import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
@@ -41,9 +43,12 @@ public class UserService extends IdEntityService<User> {
 		}
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
+		// 查询
 		List<User> list = query(cnd, pager);
+		// 合计记录总数
 		int count = count();
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
+		// 封装jqGrid的json格式数据类
 		JqgridData<User> jq = new JqgridData<User>();
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
@@ -66,5 +71,24 @@ public class UserService extends IdEntityService<User> {
 			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
 			clear(cnd);
 		}
+	}
+
+	public void updateRole(String userId, String roleIds) {
+		// 取得要更新角色的用户
+		User user = fetch(Integer.parseInt(userId));
+		List<Role> roles = new ArrayList<Role>();
+		// 从数据库中获取指定id的角色
+		String[] roleIdsArr = roleIds.split(",");
+		for (String roleId : roleIdsArr) {
+			RoleService roleService = new RoleService(this.dao());
+			Role role = roleService.fetch(Integer.parseInt(roleId));
+			roles.add(role);
+		}
+		// 为该用户分配这些角色
+		user.setRoles(roles);
+		// 清空中间表中该用户原有角色
+		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
+		// 插入中间表记录
+		dao().insertRelation(user, "roles");
 	}
 }

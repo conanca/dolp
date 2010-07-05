@@ -60,4 +60,10 @@ public class UserModule {
 	public void deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
 	}
+
+	@At
+	@Fail("json")
+	public void addRole(@Param("userId") String userId, @Param("roleIds") String roleIds) {
+		userService.updateRole(userId, roleIds);
+	}
 }
