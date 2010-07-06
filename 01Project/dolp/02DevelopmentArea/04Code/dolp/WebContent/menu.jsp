@@ -25,6 +25,7 @@ $(function() {
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab1' , '演示页面1');$('#newtab1','#tabs').load('3.jsp');">演示页面</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab2' , '用户管理');$('#newtab2','#tabs').load('system/user_manage.jsp');">用户管理</a></li>
 				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab3' , '角色管理');$('#newtab3','#tabs').load('system/role_manage.jsp');">角色管理</a></li>
+				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab4' , '角色分配');$('#newtab4','#tabs').load('system/role_assign.jsp');">角色分配</a></li>
 				<li>Node b</li>
 				<li>Node c</li>
 				<li>Node d</li>
