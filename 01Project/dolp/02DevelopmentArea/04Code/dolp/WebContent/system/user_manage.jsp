@@ -6,7 +6,7 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
-	$("#datepicker").datepicker();	
+	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 	
 	jQuery("#list").jqGrid({
@@ -161,7 +161,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				出生日期：
 			</td>
 			<td>
-				<input type="text" name="birthday" id="datepicker"/>
+				<input type="text" name="birthday" class="datepicker"/>
 			</td>
 			<td>
 				电话号码：
