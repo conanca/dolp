@@ -42,4 +42,10 @@ public class RoleModule {
 			@Param("description") String description) {
 		roleService.CRURole(oper, id, name, description);
 	}
+
+	@At
+	@Fail("json")
+	public String getAllRole() {
+		return roleService.getAllRole();
+	}
 }

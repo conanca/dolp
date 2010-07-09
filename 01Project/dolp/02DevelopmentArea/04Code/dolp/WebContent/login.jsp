@@ -19,7 +19,7 @@ $(function() {
 </head>
 <body>
 <div id="login" title="请登录">
-	<form action="system/user/login.do">
+	<form action="system/user/login.do" method="post">
 		<table>
 			<tr>
 				<td>
