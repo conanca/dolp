@@ -66,4 +66,10 @@ public class UserModule {
 	public void addRole(@Param("userId") String userId, @Param("roleIds") String roleIds) {
 		userService.updateRole(userId, roleIds);
 	}
+
+	@At
+	@Ok("json")
+	public void getCurrentRoleIDs(@Param("userId") String userId) {
+		userService.getCurrentRoleIDs(userId);
+	}
 }

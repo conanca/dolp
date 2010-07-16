@@ -5,15 +5,12 @@ import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
-import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -95,13 +92,17 @@ public class UserService extends IdEntityService<User> {
 		dao().insertRelation(user, "roles");
 	}
 
-	public String getCurrentRole(String userId) {
-		User user = dao().fetchLinks(dao().fetch(User.class, "role"), "roles");
+	public int[] getCurrentRoleIDs(String userId) {
+		User user = new User();
+		user.setId(Integer.parseInt(userId));
+		user = dao().fetchLinks(dao().fetch(User.class, "role"), "roles");
 		List<Role> roles = user.getRoles();
-		Map<String, String> roleSelectedOptions = new LinkedHashMap<String, String>();
+		int[] currentRoleIDs = new int[roles.size()];
+		int i = 0;
 		for (Role r : roles) {
-			roleSelectedOptions.put(String.valueOf(r.getId()), r.getName());
+			currentRoleIDs[i] = r.getId();
+			i++;
 		}
-		return Json.toJson(roleSelectedOptions);
+		return currentRoleIDs;
 	}
 }

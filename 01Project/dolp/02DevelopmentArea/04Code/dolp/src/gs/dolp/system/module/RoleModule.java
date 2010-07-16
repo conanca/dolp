@@ -4,6 +4,8 @@ import gs.dolp.jqgrid.JqgridData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
+import java.util.Map;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
@@ -44,8 +46,8 @@ public class RoleModule {
 	}
 
 	@At
-	@Fail("json")
-	public String getAllRole() {
+	@Ok("json")
+	public Map<String, String> getAllRole() {
 		return roleService.getAllRole();
 	}
 }

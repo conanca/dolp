@@ -6,21 +6,21 @@
 <link href="css/ui.multiselect.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
+	var url = "system/role/getAllRole.do";
+	$.getJSON(url, function (data){
+		$.each(data,function(name,value) {
+			$("#roleIds")[0].options.add(new Option(value,name));
+		});
+	});
 	$.localise('ui-multiselect', {language: 'cn', path: 'js/i18n/'});
 	// choose either the full version
 	$(".multiselect").multiselect();
 	// or disable some features
 	$(".multiselect").multiselect({sortable: false, searchable: true});
-
-	var url = "system/role/getAllRole.do";
-	$.getJSON(url, function (result){
-		alert(result);
-	});
 });
 </script>
 
 <div>
 <select id="roleIds" class="multiselect" multiple="multiple" name="roleIds">
-
 </select>
 </div>

@@ -11,7 +11,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
-import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -74,12 +73,12 @@ public class RoleService extends IdEntityService<Role> {
 		}
 	}
 
-	public String getAllRole() {
+	public Map<String, String> getAllRole() {
 		List<Role> roles = query(null, null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
 			roleOptions.put(String.valueOf(r.getId()), r.getName());
 		}
-		return Json.toJson(roleOptions);
+		return roleOptions;
 	}
 }
