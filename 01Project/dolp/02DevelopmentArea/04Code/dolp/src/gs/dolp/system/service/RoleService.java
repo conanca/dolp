@@ -77,7 +77,7 @@ public class RoleService extends IdEntityService<Role> {
 		List<Role> roles = query(null, null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
-			roleOptions.put(String.valueOf(r.getId()), r.getName());
+			roleOptions.put(r.getName(), String.valueOf(r.getId()));
 		}
 		return roleOptions;
 	}

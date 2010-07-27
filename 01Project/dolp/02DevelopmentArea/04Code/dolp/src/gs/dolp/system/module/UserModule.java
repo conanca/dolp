@@ -69,7 +69,7 @@ public class UserModule {
 
 	@At
 	@Ok("json")
-	public void getCurrentRoleIDs(@Param("userId") String userId) {
-		userService.getCurrentRoleIDs(userId);
+	public int[] getCurrentRoleIDs(@Param("userId") String userId) {
+		return userService.getCurrentRoleIDs(userId);
 	}
 }

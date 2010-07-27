@@ -93,9 +93,7 @@ public class UserService extends IdEntityService<User> {
 	}
 
 	public int[] getCurrentRoleIDs(String userId) {
-		User user = new User();
-		user.setId(Integer.parseInt(userId));
-		user = dao().fetchLinks(dao().fetch(User.class, "role"), "roles");
+		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
 		List<Role> roles = user.getRoles();
 		int[] currentRoleIDs = new int[roles.size()];
 		int i = 0;
