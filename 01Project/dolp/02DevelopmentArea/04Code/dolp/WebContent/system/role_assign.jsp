@@ -3,10 +3,10 @@
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
-<script src="js/jquery.twosidedmultiselect.js" type="text/javascript"></script>
-<script src="js/jquery.tinysort.js" type="text/javascript"></script>
+<script src="js/i18n/jquery.localisation-min.js" type="text/javascript"></script>
+<script src="js/ui.multiselect.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/twosidedmultiselect.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/ui.multiselect.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){;
 	jQuery("#roleAssignUserList").jqGrid({
@@ -38,9 +38,11 @@ $(function(){;
 			var para = {"userId":id};
 			$.getJSON(url1,para,function (data){
 				$.each(data,function(index,value){
-					$("#roleIds option[value='"+value+"']").attr("selected","true");
+					$("#roleIds option[value='"+value+"']").attr("selected",true);
 				});	
 			});
+			$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
+			$("#roleIds").multiselect();
 		}
 	});
 	//不显示jqgrid自带的增删改查按钮
@@ -50,10 +52,11 @@ $(function(){;
 	var url2 = "system/role/getAllRole.do";
 	$.getJSON(url2, function (data){
 		$.each(data,function(text,value) {
-			$("#roleIds")[0].options.add(new Option(text,value));
+			$("#roleIds").append(new Option(text,value));
 		});
 	});
-	$(".multiselect").twosidedmultiselect(true);
+	//$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
+	//$(".multiselect").multiselect();
 });
 </script>
 <table id="roleAssignUserList"></table>
@@ -62,5 +65,4 @@ $(function(){;
 <div>
 	<select id="roleIds" name="roleIds[]" class="multiselect" multiple="multiple" size="6">
 	</select>
-	<br><br><br><br><br><br><br>
 </div>
