@@ -63,7 +63,7 @@ public class UserModule {
 
 	@At
 	@Fail("json")
-	public void addRole(@Param("userId") String userId, @Param("roleIds") String roleIds) {
+	public void assignRole(@Param("userId") String userId, @Param("assignedRoleIds[]") String[] roleIds) {
 		userService.updateRole(userId, roleIds);
 	}
 

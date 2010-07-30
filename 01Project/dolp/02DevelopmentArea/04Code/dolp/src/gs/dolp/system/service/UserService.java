@@ -73,21 +73,24 @@ public class UserService extends IdEntityService<User> {
 		}
 	}
 
-	public void updateRole(String userId, String roleIds) {
+	public void updateRole(String userId, String[] roleIds) {
 		// 取得要更新角色的用户
 		User user = fetch(Integer.parseInt(userId));
+		// 清空中间表中该用户原有角色
+		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
+		// 如果roleIds为Null,则直接return
+		if (roleIds == null) {
+			return;
+		}
 		List<Role> roles = new ArrayList<Role>();
 		// 从数据库中获取指定id的角色
-		String[] roleIdsArr = roleIds.split(",");
-		for (String roleId : roleIdsArr) {
+		for (String roleId : roleIds) {
 			RoleService roleService = new RoleService(this.dao());
 			Role role = roleService.fetch(Integer.parseInt(roleId));
 			roles.add(role);
 		}
 		// 为该用户分配这些角色
 		user.setRoles(roles);
-		// 清空中间表中该用户原有角色
-		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
 		// 插入中间表记录
 		dao().insertRelation(user, "roles");
 	}

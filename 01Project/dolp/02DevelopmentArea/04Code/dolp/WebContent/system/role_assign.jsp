@@ -8,7 +8,9 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/ui.multiselect.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
-$(function(){;
+$(function(){
+	$("input:submit").button();
+
 	jQuery("#roleAssignUserList").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
@@ -34,13 +36,23 @@ $(function(){;
 		viewrecords: true,
 		caption:"用户列表",
 		onSelectRow: function(id){
+			$("#assigningUserID").val(id);
+			
+			$("#roleIds option").each(function(){
+				if($(this).attr("selected") == true){
+					$(this).removeAttr("selected");
+				}
+			});
+			
 			var url1 = "system/user/getCurrentRoleIDs.do";
 			var para = {"userId":id};
 			$.getJSON(url1,para,function (data){
 				$.each(data,function(index,value){
 					$("#roleIds option[value='"+value+"']").attr("selected",true);
-				});	
+				});
 			});
+			
+			$("#roleIds").multiselect("destroy");
 			$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
 			$("#roleIds").multiselect();
 		}
@@ -55,14 +67,39 @@ $(function(){;
 			$("#roleIds").append(new Option(text,value));
 		});
 	});
+
 	//$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
-	//$(".multiselect").multiselect();
+	//$("#roleIds").multiselect();
+
+	var options = {
+		    beforeSubmit:showRequest,
+		    success:	showResponse,
+			url:		'system/user/assignRole.do',
+			type:		'get',
+			clearForm:	true,
+			resetForm:	true
+		};
+	$('#roleAssignForm').submit(function() {
+		$(this).ajaxSubmit(options);
+		return false;
+	});
 });
+
+//提交前
+function showRequest(formData, jqForm, options) {
+	
+}
+//提交后获得Respons后
+function showResponse(responseText, statusText, xhr, $form)  {
+	alert('分配成功');
+}
 </script>
 <table id="roleAssignUserList"></table>
 <div id="roleAssignUserPager"></div>
 <br>
-<div>
-	<select id="roleIds" name="roleIds[]" class="multiselect" multiple="multiple" size="6">
+<form id="roleAssignForm">
+	<input type="hidden" name="userId" id="assigningUserID">
+	<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
 	</select>
-</div>
+	<input type="submit" value="分配">
+</form>
