@@ -32,9 +32,9 @@ $(function(){
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl:"system/user/deleteRow.do",	//del:true
+	    editurl: "system/user/deleteRow.do",	//del:true
 	    multiselect: true, //checkbox
-	    caption:"用户列表"
+	    caption: "用户列表"
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#list").jqGrid('navGrid','#pager',{edit:false,add:false,del:false,search:false});
@@ -59,7 +59,7 @@ $(function(){
 		onClickButton:function(){
 			var gr = jQuery("#list").jqGrid('getGridParam','selarrrow');
 			if( gr != null ){
-				jQuery("#list").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+				jQuery("#list").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
 			}
 			else{
 				alert("请选择要删除的记录");
@@ -78,7 +78,7 @@ $(function(){
 		    beforeSubmit:showRequest,
 		    success:	showResponse,
 			url:		'system/user/save.do',
-			type:		'get',
+			type:		'post',
 			clearForm:	true,
 			resetForm:	true
 		};

@@ -30,7 +30,7 @@ public class UserModule {
 
 	@At
 	@Ok("redirect:/main.jsp")
-	@Fail("redirect:/1.jsp")
+	@Fail("redirect:/error/login_fail.jsp")
 	@Filters
 	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		session.setAttribute("logonUser", userService.userAuthenticate(number, password));

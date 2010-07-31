@@ -10,10 +10,34 @@
 <script src="js/ui-combobox.js" type="text/javascript"></script>
 <link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
 <link href="css/ui-combobox.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/layout-tabs.css" rel="stylesheet" type="text/css" media="all" />
 <style type="text/css" media="all">
-	body {font-size:80%;}
-	#jQueryUICssSwitch {width:150px;}
+html, body {
+	margin: 0;			/* Remove body margin/padding */
+	padding: 0;
+	overflow: hidden;	/* Remove scroll bars on browser window */	
+	font-size: 80%;
+}
+#jQueryUICssSwitch {width:150px;}
+
+#LeftPane {
+	/* optional, initial splitbar position */
+	overflow: auto;
+}
+/*
+ * Right-side element of the splitter.
+*/
+
+#RightPane {
+	padding: 2px;
+	overflow: auto;
+}
+
+.ui-tabs-nav li {position: relative;}
+.ui-tabs-selected a span {padding-right: 10px;}
+.ui-tabs-close {display: none;position: absolute;top: 3px;right: 0px;z-index: 800;width: 16px;height: 14px;font-size: 10px; font-style: normal;cursor: pointer;}
+.ui-tabs-selected .ui-tabs-close {display: block;}
+.ui-layout-west .ui-jqgrid tr.jqgrow td { border-bottom: 0px none;}
+
 </style>
 <script type="text/javascript">
 var maintab;

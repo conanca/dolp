@@ -1,41 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-<link href="css/widgetTreeList.css" rel="stylesheet" type="text/css" media="all" />
-<script src="js/widgetTreeList.js" type="text/javascript"></script>
+<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
+<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function() {
-	$('#expandCollapse').click(function() {
-		if($('#expandCollapse')[0].value=='展开'){
-			$('#treeList').treeList('openNode', $('#treeList').find('li'));
-			$('#expandCollapse').val('收起');
-		}else{
-			$('#treeList').treeList('closeNode', $('#treeList').find('li'));
-			$('#expandCollapse').val('展开');
+	jQuery("#west-grid").jqGrid({
+		url: "tree.xml",
+		datatype: "xml",
+		height: "auto",
+		pager: false,
+		loadui: "disable",
+		colNames: ["id","Items","url"],
+		colModel: [
+			{name: "id",width:1,hidden:true, key:true},
+			{name: "menu", width:150, resizable: false, sortable:false},
+			{name: "url",width:1,hidden:true}
+		],
+		treeGrid: true,
+		caption: "jqGrid Demos",
+		ExpandColumn: "menu",
+		autowidth: true,
+		//width: 180,
+		rowNum: 200,
+		ExpandColClick: true,
+		treeIcons: {leaf:'ui-icon-document-b'},
+		onSelectRow: function(rowid) {
+			var treedata = $("#west-grid").jqGrid('getRowData',rowid);
+			if(treedata.isLeaf=="true") {
+				//treedata.url
+				var st = "#t"+treedata.id;
+				if($(st).html() != null ) {
+					maintab.tabs('select',st);
+				} else {
+					maintab.tabs('add',st, treedata.menu);
+					$(st,"#tabs").load(treedata.url);
+				}
+			}
 		}
 	});
-	
-	$('#treeList').treeList();
-	//$('#treeList').treeList('closeNode', $('#treeList').find('li'));
 });
 </script>
-<div>
-	<input id="expandCollapse" type="button" value="收起"/>
-	<ul id="treeList">
-		<li class="ui-treeList-open">系统管理
-			<ul>
-				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab1' , '演示页面1');$('#newtab1','#tabs').load('3.jsp');">演示页面</a></li>
-				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab2' , '用户管理');$('#newtab2','#tabs').load('system/user_manage.jsp');">用户管理</a></li>
-				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab3' , '角色管理');$('#newtab3','#tabs').load('system/role_manage.jsp');">角色管理</a></li>
-				<li><a href="javascript:void(null)" onclick="maintab.tabs( 'add' , '#newtab4' , '角色分配');$('#newtab4','#tabs').load('system/role_assign.jsp');">角色分配</a></li>
-				<li>Node b</li>
-				<li>Node c</li>
-				<li>Node d</li>
-			</ul>
-		</li>
-		<li class="ui-treeList-open">酒店设置
-			<ul>
-				<li>Node a</li>
-				<li>Node b</li>
-			</ul>
-		</li>
-	</ul>
-</div>
+
+<table id="west-grid"></table>
