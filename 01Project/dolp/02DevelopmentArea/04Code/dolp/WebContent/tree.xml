@@ -44,6 +44,16 @@
 		<cell>true</cell>
 		<cell>true</cell>
 	</row>
+	<row>
+		<cell>5</cell>
+		<cell>菜单管理</cell>
+		<cell>system/menu_manage.jsp</cell>
+		<cell>1</cell>
+		<cell>8</cell>
+		<cell>9</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
 	
 	<row>
 		<cell>5</cell>

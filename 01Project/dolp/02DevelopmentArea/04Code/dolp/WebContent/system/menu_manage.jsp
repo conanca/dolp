@@ -5,14 +5,16 @@
 <script type="text/javascript">
 $(function(){
 
-	jQuery("#rolelist").jqGrid({
-	   	url:'system/role/getGridData.do',
+	jQuery("#menulist").jqGrid({
+	   	url:'system/menu/getGridData.do',
 		datatype: "json",
-	   	colNames:['id','name','description'],
+	   	colNames:['id','name','url','roleId','description'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
-	   		{name:'name',index:'name', width:100,editable:true},
-	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
+	   		{name:'name',index:'name', width:60,editable:true},
+	   		{name:'url',index:'url', width:200,editable:true},
+	   		{name:'roleId',index:'roleId', width:60,editable:true},
+	   		{name:'description',index:'description', width:150,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
@@ -21,20 +23,20 @@ $(function(){
 	    jsonReader:{
 	   		repeatitems: false
         },
-	   	pager: '#rolepager',
+	   	pager: '#menupager',
 	   	sortname: 'id',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl:"system/role/editRow.do",	//del:true
+	    editurl:"system/menu/editRow.do",	//del:true
 	    multiselect: true, //checkbox
-	    caption:"角色列表"
+	    caption:"菜单列表"
 	});
 	//不显示查询按钮
-	jQuery("#rolelist").jqGrid('navGrid','#rolepager',{edit:true,add:true,del:true,search:false});
-	jQuery("#rolelist").jqGrid('hideCol',['id']);//隐藏id列
+	jQuery("#menulist").jqGrid('navGrid','#menupager',{edit:true,add:true,del:true,search:false});
+	jQuery("#menulist").jqGrid('hideCol',['id','roleId']);//隐藏id列
 
 });
 
 </script>
-<table id="rolelist"></table>
-<div id="rolepager"></div>
+<table id="menulist"></table>
+<div id="menupager"></div>

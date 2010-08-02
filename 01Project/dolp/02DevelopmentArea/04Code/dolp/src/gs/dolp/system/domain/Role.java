@@ -17,8 +17,8 @@ public class Role {
 	private String name;
 	@Column
 	private String description;
-	@Many(target = Permission.class, field = "roleId")
-	private List<Permission> permissions;
+	@Many(target = Menu.class, field = "roleId")
+	private List<Menu> menus;
 	//	@Many(target = Privilege.class, field = "roleId")
 	//	private List<Privilege> privileges;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
@@ -48,12 +48,12 @@ public class Role {
 		this.description = description;
 	}
 
-	public List<Permission> getPermissions() {
-		return permissions;
+	public List<Menu> getPermissions() {
+		return menus;
 	}
 
-	public void setPermissions(List<Permission> permissions) {
-		this.permissions = permissions;
+	public void setPermissions(List<Menu> permissions) {
+		this.menus = permissions;
 	}
 
 	//	public List<Privilege> getPrivileges() {

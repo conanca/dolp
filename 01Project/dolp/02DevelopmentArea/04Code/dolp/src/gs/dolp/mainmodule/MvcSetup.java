@@ -1,12 +1,9 @@
 package gs.dolp.mainmodule;
 
-import gs.dolp.system.domain.User;
-
-import java.sql.Timestamp;
-
 import javax.servlet.ServletConfig;
 
 import org.nutz.dao.Dao;
+import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.tools.Tables;
 import org.nutz.ioc.Ioc;
 import org.nutz.mvc.Mvcs;
@@ -23,13 +20,9 @@ public class MvcSetup implements Setup {
 		if (!dao.exists("SYSTEM_USER")) {
 			// Create tables
 			Tables.define(dao, Tables.loadFrom("tables.dod"));
-			User admin = new User();
-			admin.setNumber("1000");
-			admin.setName("管理员");
-			admin.setPassword("123");
-			admin.setGender("男");
-			admin.setBirthday(new Timestamp(System.currentTimeMillis()).toString().substring(0, 10));
-			dao.insert(admin);
+
+			FileSqlManager fm = new FileSqlManager("initData.sql");
+			dao.execute(fm.createCombo(fm.keys()));
 		}
 	}
 

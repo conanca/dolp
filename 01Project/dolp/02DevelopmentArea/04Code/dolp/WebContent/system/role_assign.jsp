@@ -16,7 +16,7 @@ $(function(){
 		datatype: "json",
 	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:55},
+	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
 	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
@@ -26,6 +26,7 @@ $(function(){
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
+	   	autowidth: true,
 	   	height: "100%", //自动调整高度(无滚动条)
 		jsonReader:{
 	   		repeatitems: false

@@ -34,5 +34,23 @@ var ioc = {
 				refer : 'roleService'
 			}
 		}
+	},
+	
+	menuService : {
+		type : "gs.dolp.system.service.MenuService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	menuModule : {
+		type : "gs.dolp.system.module.MenuModule",
+		fields : {
+			menuService : {
+				refer : 'menuService'
+			}
+		}
 	}
 };

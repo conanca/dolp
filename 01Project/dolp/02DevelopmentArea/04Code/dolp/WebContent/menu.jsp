@@ -9,7 +9,7 @@ $(function() {
 		datatype: "xml",
 		height: "auto",
 		pager: false,
-		loadui: "disable",
+		//loadui: "disable",
 		colNames: ["id","Items","url"],
 		colModel: [
 			{name: "id",width:1,hidden:true, key:true},
@@ -17,10 +17,9 @@ $(function() {
 			{name: "url",width:1,hidden:true}
 		],
 		treeGrid: true,
-		caption: "jqGrid Demos",
+		caption: "功能菜单",
 		ExpandColumn: "menu",
 		autowidth: true,
-		//width: 180,
 		rowNum: 200,
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
