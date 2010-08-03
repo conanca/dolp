@@ -17,7 +17,12 @@ import org.nutz.log.Logs;
 import org.nutz.service.IdEntityService;
 
 public class RoleService extends IdEntityService<Role> {
+
 	private static final Log log = Logs.getLog(RoleService.class);
+
+	public RoleService(Dao dao) {
+		super(dao);
+	}
 
 	public JqgridData<Role> getGridData(String page, String rows, String sidx, String sord) {
 		int pageNumber = 1;
@@ -47,10 +52,6 @@ public class RoleService extends IdEntityService<Role> {
 		jq.setRows(list);
 		log.debug(jq.toString());
 		return jq;
-	}
-
-	public RoleService(Dao dao) {
-		super(dao);
 	}
 
 	public void CRURole(String oper, String id, String name, String description) {

@@ -7,28 +7,27 @@ $(function(){
 
 	jQuery("#menulist").jqGrid({
 	   	url:'system/menu/getGridData.do',
-		datatype: "json",
+	   	datatype: "json",
 	   	colNames:['id','name','url','roleId','description'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'name',index:'name', width:60,editable:true},
 	   		{name:'url',index:'url', width:200,editable:true},
-	   		{name:'roleId',index:'roleId', width:60,editable:true},
-	   		{name:'description',index:'description', width:150,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
+	   		{name:'description',index:'description', width:150,editable:true,edittype:"textarea"},	//设置弹出窗口中字段类型
+	   		{name:'roleId',index:'roleId', width:0,editable:true}
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
 	   	autowidth: true,
 	   	height: "100%", //自动调整高度(无滚动条)
-	    jsonReader:{
-	   		repeatitems: false
-        },
 	   	pager: '#menupager',
 	   	sortname: 'id',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl:"system/menu/editRow.do",	//del:true
-	    multiselect: true, //checkbox
+	    ExpandColumn: "name",
+	    treeGrid: true,
+	    ExpandColClick: true,
+	    //editurl:"system/menu/editRow.do",	//del:true
 	    caption:"菜单列表"
 	});
 	//不显示查询按钮

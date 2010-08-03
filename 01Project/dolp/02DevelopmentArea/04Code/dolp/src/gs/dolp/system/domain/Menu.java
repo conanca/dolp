@@ -1,14 +1,12 @@
 package gs.dolp.system.domain;
 
-import gs.dolp.jqgrid.TreeGridRowData;
-
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_MENU")
-public class Menu extends TreeGridRowData {
+public class Menu {
 	@Column
 	@Id
 	private int id;
@@ -24,6 +22,8 @@ public class Menu extends TreeGridRowData {
 	private Role role;
 	@Column
 	private int parentId;
+	@Column
+	private int level;
 
 	public int getId() {
 		return id;
@@ -79,6 +79,14 @@ public class Menu extends TreeGridRowData {
 
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }

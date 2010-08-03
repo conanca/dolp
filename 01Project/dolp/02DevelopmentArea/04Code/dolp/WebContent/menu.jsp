@@ -9,7 +9,6 @@ $(function() {
 		datatype: "xml",
 		height: "auto",
 		pager: false,
-		//loadui: "disable",
 		colNames: ["id","Items","url"],
 		colModel: [
 			{name: "id",width:1,hidden:true, key:true},
