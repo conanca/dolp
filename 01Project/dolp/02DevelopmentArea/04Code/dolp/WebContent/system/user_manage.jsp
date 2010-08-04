@@ -9,7 +9,7 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 	
-	jQuery("#list").jqGrid({
+	jQuery("#userInfoList").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
 	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
@@ -29,7 +29,7 @@ $(function(){
 	    jsonReader:{
 	   		repeatitems: false
         },
-	   	pager: '#pager',
+	   	pager: '#userInfoPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
@@ -38,29 +38,29 @@ $(function(){
 	    caption: "用户列表"
 	});
 	//不显示jqgrid自带的增删改查按钮
-	jQuery("#list").jqGrid('navGrid','#pager',{edit:false,add:false,del:false,search:false});
-	jQuery("#list").jqGrid('hideCol',['id']);//隐藏id列
-	jQuery("#list").jqGrid('navButtonAdd','#pager',{caption:"添加",buttonicon:"ui-icon-plus",
+	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
+	jQuery("#userInfoList").jqGrid('hideCol',['id']);//隐藏id列
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#userInfo").dialog( "open" );
 		}
 	});
-	jQuery("#list").jqGrid('navButtonAdd','#pager',{caption:"编辑",buttonicon:"ui-icon-pencil",
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
 		onClickButton:function(){
-			var id = jQuery("#list").jqGrid('getGridParam','selrow');
+			var id = jQuery("#userInfoList").jqGrid('getGridParam','selrow');
 			if (id) {
-				jQuery("#list").jqGrid('GridToForm',id,"#form1");
+				jQuery("#userInfoList").jqGrid('GridToForm',id,"#userInfoForm");
 				$("#userInfo").dialog( "open" );
 			} else {
 				alert("请选择要编辑的记录");
 			}
 		}
 	});
-	jQuery("#list").jqGrid('navButtonAdd','#pager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
-			var gr = jQuery("#list").jqGrid('getGridParam','selarrrow');
+			var gr = jQuery("#userInfoList").jqGrid('getGridParam','selarrrow');
 			if( gr != null ){
-				jQuery("#list").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
+				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
 			}
 			else{
 				alert("请选择要删除的记录");
@@ -70,8 +70,8 @@ $(function(){
 	
 	//初始化用户信息界面
 	$("#userInfo").dialog({width: 580, hide: 'slide' , autoOpen: false,close: function(event, ui) {
-			$("#id").attr("value",'');	//清空隐藏域的值
-			$('#form1')[0].reset();	//清空表单的值
+			$("#userInfoId").attr("value",'');	//清空隐藏域的值
+			$('#userInfoForm')[0].reset();	//清空表单的值
 		}
 	});
 	
@@ -83,12 +83,12 @@ $(function(){
 			clearForm:	true,
 			resetForm:	true
 		};
-	$('#form1').submit(function() {
+	$('#userInfoForm').submit(function() {
 		$(this).ajaxSubmit(options);
 		//关闭用户信息界面
 		$("#userInfo").dialog( "close" );
 		//刷新表格
-		$('#list').trigger("reloadGrid");
+		$('#userInfoList').trigger("reloadGrid");
 		return false;
 	});
 	//设置按钮图标——————未起作用
@@ -107,18 +107,18 @@ function showResponse(responseText, statusText, xhr, $form)  {
 	alert('保存成功');
 }
 </script>
-<table id="list"></table>
-<div id="pager"></div>
+<table id="userInfoList"></table>
+<div id="userInfoPager"></div>
 
 <div id="userInfo" title="用户信息">
-	<form id="form1">
+	<form id="userInfoForm">
 	<table>
 		<tr>
 			<td>
 				用户编号：
 			</td>
 			<td>
-				<input type="hidden" name="id" id="id">
+				<input type="hidden" name="id" id="userInfoId"/>
 				<input type="text" name="number"/>
 			</td>
 			<td>
@@ -147,8 +147,8 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				性别：
 			</td>
 			<td>
-				男:<input type="radio" name="gender" value="M"/>
-				女:<input type="radio" name="gender" value="F"/>
+				男:<input type="radio" name="gender" value="男"/>
+				女:<input type="radio" name="gender" value="女"/>
 			</td>
 			<td>
 				年龄：
@@ -173,9 +173,9 @@ function showResponse(responseText, statusText, xhr, $form)  {
 		</tr>
 		<tr>
 			<td colspan="4" align="center">
-				<input type="submit" value="保存">
-				<input type="reset" value="重置">
-				<input id="userInfocancel" type="button" value="取消">
+				<input type="submit" value="保存"/>
+				<input type="reset" value="重置"/>
+				<input id="userInfocancel" type="button" value="取消"/>
 			</td>
 		</tr>
 	</table>

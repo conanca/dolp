@@ -29,13 +29,12 @@ public class RoleModule {
 
 	@At
 	@Fail("json")
-	public Role save(@Param("..") Role role) {
+	public void save(@Param("..") Role role) {
 		if (role.getId() == 0) {
 			roleService.dao().insert(role);
 		} else {
 			roleService.dao().update(role);
 		}
-		return role;
 	}
 
 	@At

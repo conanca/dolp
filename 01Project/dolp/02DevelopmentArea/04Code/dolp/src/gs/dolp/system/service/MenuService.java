@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.JqgridData1;
 import gs.dolp.jqgrid.JqgridDataRow;
+import gs.dolp.jqgrid.JqgridStandardData;
 import gs.dolp.system.domain.Menu;
 
 import java.sql.Connection;
@@ -30,38 +30,39 @@ public class MenuService extends IdEntityService<Menu> {
 		super(dao);
 	}
 
-	public JqgridData1 getGridData(String page, String rows, String sidx, String sord, int nodeid, int n_level) {
+	public JqgridStandardData getGridData() {
 		int pageNumber = 1;
-		int pageSize = 10;
-		String sortColumn = "ID";
-		String sortOrder = "ASC";
-		if (!Strings.isEmpty(page)) {
-			pageNumber = Integer.parseInt(page);
-		}
-		if (!Strings.isEmpty(rows)) {
-			pageSize = Integer.parseInt(rows);
-		}
-		if (!Strings.isEmpty(sidx)) {
-			sortColumn = sidx;
-		}
-		if (!Strings.isEmpty(sord)) {
-			sortOrder = sord;
-		}
+		int pageSize = 1000;
 		Pager pager = dao().createPager(pageNumber, pageSize);
-		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
+		Condition cnd = Cnd.wrap("1=1");
 		List<Menu> list = query(cnd, pager);
-
-		int count = count();
-		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		JqgridData1 jq = new JqgridData1();
-		jq.setPage(pageNumber);
-		jq.setTotal(totalPage);
-		jq.setRows(list2Rows(list, nodeid, n_level));
+		JqgridStandardData jq = new JqgridStandardData();
+		jq.setPage(1);
+		jq.setTotal(1);
+		jq.setRecords(1);
+		jq.setRows(list2Rows(list));
 		log.debug(jq.toString());
 		return jq;
 	}
 
-	public List<JqgridDataRow> list2Rows(List<Menu> list, int nodeid, int n_level) {
+	//	public List<Menu> getRowList(List<Menu> list, Pager pager) {
+	//		if (list != null) {
+	//			for (Menu menu : list) {
+	//				int level = menu.getLevel() + 1;
+	//				int parentId = menu.getId();
+	//				Condition cnd = Cnd.where("LEVEL", "=", level).and("PARENTID", "=", parentId == 0 ? "null" : parentId)
+	//						.orderBy().asc("ID");
+	//				if (count(cnd) == 0) {
+	//					return list;
+	//				}
+	//				List<Menu> newList = query(cnd, pager);
+	//			}
+	//		}
+	//
+	//	}
+
+	@SuppressWarnings("unchecked")
+	public List<JqgridDataRow> list2Rows(List<Menu> list) {
 
 		List<JqgridDataRow> rows = new ArrayList<JqgridDataRow>();
 
@@ -78,25 +79,35 @@ public class MenuService extends IdEntityService<Menu> {
 		dao().execute(sql);
 		List<Integer> leafNodeIdList = sql.getList(Integer.class);
 		for (Menu menu : list) {
-			JqgridDataRow row = new JqgridDataRow();
-			row.setId(menu.getId());
-			List<String> cell = new ArrayList<String>();
-			cell.add(String.valueOf(menu.getId()));
+			List cell = new ArrayList();
+			cell.add(menu.getId());
 			cell.add(menu.getName());
 			cell.add(menu.getUrl());
 			cell.add(menu.getDescription());
-			cell.add(String.valueOf(menu.getRoleId()));
-			cell.add(String.valueOf(menu.getLevel()));
-			cell.add(String.valueOf(menu.getParentId()));
+			cell.add(menu.getLevel());
+			cell.add(menu.getLevel());
+			cell.add(menu.getParentId() == 0 ? null : menu.getParentId());
 			boolean isleaf = false;
 			if (leafNodeIdList.contains(menu.getId())) {
 				isleaf = true;
 			}
-			cell.add(String.valueOf(isleaf));
-			cell.add(String.valueOf(false));
+			cell.add(isleaf);
+			cell.add(false);
+			JqgridDataRow row = new JqgridDataRow();
+			row.setId(menu.getId());
 			row.setCell(cell);
 			rows.add(row);
 		}
 		return rows;
+	}
+
+	public void deleteMenus(String ids) {
+		if (!Strings.isEmpty(ids)) {
+			String[] idArr = ids.split(",");
+			for (String id : idArr) {
+				Menu menu = dao().fetch(Menu.class, Long.parseLong(id));
+				dao().deleteWith(menu, "childrenMenus");
+			}
+		}
 	}
 }

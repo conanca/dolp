@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.nutz.json.Json;
 
-public class JqgridData1 {
+public class JqgridStandardData {
 	private int page;
 	private int total;
 	private int records;

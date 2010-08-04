@@ -1,8 +1,10 @@
 package gs.dolp.system.domain;
 
+import java.util.List;
+
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.One;
+import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_MENU")
@@ -17,11 +19,9 @@ public class Menu {
 	@Column
 	private String description;
 	@Column
-	private int roleId;
-	@One(target = Role.class, field = "roleId")
-	private Role role;
-	@Column
 	private int parentId;
+	@Many(target = Menu.class, field = "parentId")
+	private List<Menu> childrenMenus;
 	@Column
 	private int level;
 
@@ -57,28 +57,20 @@ public class Menu {
 		this.description = description;
 	}
 
-	public int getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 	public int getParentId() {
 		return parentId;
 	}
 
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
+	}
+
+	public List<Menu> getChildrenMenu() {
+		return childrenMenus;
+	}
+
+	public void setChildrenMenu(List<Menu> childrenMenu) {
+		this.childrenMenus = childrenMenu;
 	}
 
 	public int getLevel() {

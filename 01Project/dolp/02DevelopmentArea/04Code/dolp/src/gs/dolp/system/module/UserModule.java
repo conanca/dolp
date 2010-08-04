@@ -46,13 +46,12 @@ public class UserModule {
 
 	@At
 	@Fail("json")
-	public User save(@Param("..") User user) {
+	public void save(@Param("..") User user) {
 		if (user.getId() == 0) {
 			userService.dao().insert(user);
 		} else {
 			userService.dao().update(user);
 		}
-		return user;
 	}
 
 	@At

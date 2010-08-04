@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -17,8 +16,6 @@ public class Role {
 	private String name;
 	@Column
 	private String description;
-	@Many(target = Menu.class, field = "roleId")
-	private List<Menu> menus;
 	//	@Many(target = Privilege.class, field = "roleId")
 	//	private List<Privilege> privileges;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
@@ -46,14 +43,6 @@ public class Role {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public List<Menu> getPermissions() {
-		return menus;
-	}
-
-	public void setPermissions(List<Menu> permissions) {
-		this.menus = permissions;
 	}
 
 	//	public List<Privilege> getPrivileges() {
