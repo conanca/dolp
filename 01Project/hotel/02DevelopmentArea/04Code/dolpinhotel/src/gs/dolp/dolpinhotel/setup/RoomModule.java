@@ -1,0 +1,40 @@
+package gs.dolp.dolpinhotel.setup;
+
+import gs.dolp.jqgrid.JqgridStandardData;
+
+import org.nutz.ioc.annotation.InjectName;
+import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Fail;
+import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.Param;
+
+@InjectName("roomModule")
+@At("/dolpinhotel/setup/room")
+@Fail("json")
+public class RoomModule {
+
+	private RoomService roomService;
+
+	@At
+	@Ok("json")
+	public JqgridStandardData getGridData(@Param("page") String page, @Param("rows") String rows,
+			@Param("sidx") String sidx, @Param("sord") String sord) {
+		return roomService.getGridData(page, rows, sidx, sord);
+	}
+
+	@At
+	@Fail("json")
+	public void save(@Param("..") Room room) {
+		if (room.getId() == 0) {
+			roomService.dao().insert(room);
+		} else {
+			roomService.dao().update(room);
+		}
+	}
+
+	@At
+	@Fail("json")
+	public void deleteRow(@Param("id") String ids) {
+		roomService.deleteRooms(ids);
+	}
+}

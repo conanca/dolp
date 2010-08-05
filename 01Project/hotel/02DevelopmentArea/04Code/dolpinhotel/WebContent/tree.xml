@@ -88,11 +88,21 @@
 	</row>
 	<row>
 		<cell>9</cell>
-		<cell>OOXX</cell>
-		<cell>1.jsp</cell>
+		<cell>房间类型设置</cell>
+		<cell>hotel/room_type_manage.jsp</cell>
 		<cell>1</cell>
 		<cell>52</cell>
 		<cell>53</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
+	<row>
+		<cell>10</cell>
+		<cell>房间设置</cell>
+		<cell>hotel/room_manage.jsp</cell>
+		<cell>1</cell>
+		<cell>54</cell>
+		<cell>55</cell>
 		<cell>true</cell>
 		<cell>true</cell>
 	</row>

@@ -52,5 +52,41 @@ var ioc = {
 				refer : 'menuService'
 			}
 		}
+	},
+	
+	roomTypeService : {
+		type : "gs.dolp.dolpinhotel.setup.RoomTypeService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	roomTypeModule : {
+		type : "gs.dolp.dolpinhotel.setup.RoomTypeModule",
+		fields : {
+			roomTypeService : {
+				refer : 'roomTypeService'
+			}
+		}
+	},
+	
+	roomService : {
+		type : "gs.dolp.dolpinhotel.setup.RoomService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	roomModule : {
+		type : "gs.dolp.dolpinhotel.setup.RoomModule",
+		fields : {
+			roomService : {
+				refer : 'roomService'
+			}
+		}
 	}
 };
