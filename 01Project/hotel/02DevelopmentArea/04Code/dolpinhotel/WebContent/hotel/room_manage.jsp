@@ -11,38 +11,28 @@ $(function(){
 
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes.do";
 	var allRoomTypes;
+	$.ajaxSetup({ async: false});//设为同步模式
 	$.getJSON(url3,function(response){
-		alert(response);
 		allRoomTypes = response;
 	});
-	alert(allRoomTypes);
 	
 	jQuery("#roomList").jqGrid({
 	   	url:'dolpinhotel/setup/room/getGridData.do',
 		datatype: "json",
-	   	colNames:['id','房间号', '房间类型ID','房间类型','已入住'],
+	   	colNames:['id','房间号', '房间类型','已入住'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:100},
-	   		{name:'roomTypeId',index:'roomTypeId', width:0,
-		   		formatter:function(cellvalue, options, rowObject){
-					
-			}},
-	   		{name:'roomType',index:'roomType', width:100},
-	   		{name:'isOccupancy',index:'isOccupancy', width:100,
-				formatter:function(cellvalue, options, rowObject){
-		             if(cellvalue==0){
-		              temp = "否";
-		             } else {
-		              temp = "是";
-		             }
-		             return temp;
-			}},
+	   		{name:'roomTypeId',index:'roomTypeId', width:100,formatter:'select', editoptions:{value:allRoomTypes}},
+	   		{name:'isOccupancy',index:'isOccupancy', width:100,edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
 	   	autowidth: true,
 	   	height: "100%", //自动调整高度(无滚动条)
+	   	jsonReader:{
+	   		repeatitems: false
+        },
 	   	pager: '#roomPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
@@ -53,7 +43,7 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#roomList").jqGrid('hideCol',['id','roomTypeId']);//隐藏id列,roomTypeId列
+	jQuery("#roomList").jqGrid('hideCol',['id']);//隐藏id列
 	jQuery("#roomList").jqGrid('navButtonAdd','#roomPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#roomInfo").dialog( "open" );
@@ -87,6 +77,10 @@ $(function(){
 			$("#roomId").attr("value",'');	//清空隐藏域的值
 			$('#roomForm')[0].reset();	//清空表单的值
 		}
+	});
+	
+	$.each(allRoomTypes,function(value,text) {
+		$("#roomTypeSelect").append(new Option(text,value));
 	});
 	
 	var options = {
@@ -139,7 +133,10 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				已入住：
 			</td>
 			<td>
-				<input type="text" name="isOccupancy"/>
+				<select name="isOccupancy">
+					<option value="0" selected>否</option>
+					<option value="1">是</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -147,7 +144,8 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				房间类型：
 			</td>
 			<td colspan="3">
-				<input type="text" name="roomTypeId"/>
+				<select name="roomTypeId" id="roomTypeSelect">
+				</select>
 			</td>
 		</tr>
 		<tr>

@@ -1,12 +1,8 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.JqgridDataRow;
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.JqgridData;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -24,7 +20,7 @@ public class RoomService extends IdEntityService<Room> {
 		super(dao);
 	}
 
-	public JqgridStandardData getGridData(String page, String rows, String sidx, String sord) {
+	public JqgridData<Room> getGridData(String page, String rows, String sidx, String sord) {
 		int pageNumber = 1;
 		int pageSize = 10;
 		String sortColumn = "ID";
@@ -49,35 +45,12 @@ public class RoomService extends IdEntityService<Room> {
 		int count = count();
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 		// 封装jqGrid的json格式数据类
-		JqgridStandardData jq = new JqgridStandardData();
+		JqgridData<Room> jq = new JqgridData<Room>();
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
-		jq.setRows(list2Rows(list));
+		jq.setRows(list);
 		log.debug(jq.toString());
 		return jq;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<JqgridDataRow> list2Rows(List<Room> list) {
-		List<JqgridDataRow> rows = new ArrayList<JqgridDataRow>();
-		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
-		Map<Integer, String> roomTypeMap = new HashMap<Integer, String>();
-		for (RoomType roomType : allRoomTypes) {
-			roomTypeMap.put(roomType.getId(), roomType.getName());
-		}
-		for (Room room : list) {
-			List cell = new ArrayList();
-			cell.add(room.getId());
-			cell.add(room.getNumber());
-			cell.add(room.getRoomTypeId());
-			cell.add(roomTypeMap.get(room.getRoomTypeId()));
-			cell.add(room.getIsOccupancy());
-			JqgridDataRow row = new JqgridDataRow();
-			row.setId(room.getId());
-			row.setCell(cell);
-			rows.add(row);
-		}
-		return rows;
 	}
 
 	public void deleteRooms(String ids) {

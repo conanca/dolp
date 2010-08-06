@@ -1,6 +1,6 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.JqgridData;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -17,7 +17,7 @@ public class RoomModule {
 
 	@At
 	@Ok("json")
-	public JqgridStandardData getGridData(@Param("page") String page, @Param("rows") String rows,
+	public JqgridData<Room> getGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return roomService.getGridData(page, rows, sidx, sord);
 	}
