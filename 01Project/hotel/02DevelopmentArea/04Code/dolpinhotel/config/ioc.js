@@ -88,5 +88,23 @@ var ioc = {
 				refer : 'roomService'
 			}
 		}
+	},
+	
+	availableRoomCheckService : {
+		type : "gs.dolp.dolpinhotel.management.AvailableRoomCheckService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	availableRoomCheckModule : {
+		type : "gs.dolp.dolpinhotel.management.AvailableRoomCheckModule",
+		fields : {
+			availableRoomCheckService : {
+				refer : 'availableRoomCheckService'
+			}
+		}
 	}
 };

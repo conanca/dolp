@@ -85,7 +85,7 @@ $(function() {
 				<li><a href="#tabs-1">默认页</a></li>
 			</ul>
 			<div id="tabs-1" style="font-size:12px;">
-				这是默认页
+				<%@include file="/home.jsp" %>
 			</div>
 		</div>
 	</div>

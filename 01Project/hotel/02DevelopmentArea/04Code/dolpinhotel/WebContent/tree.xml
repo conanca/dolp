@@ -106,4 +106,55 @@
 		<cell>true</cell>
 		<cell>true</cell>
 	</row>
+
+	<row>
+		<cell>11</cell>
+		<cell>经营管理</cell>
+		<cell></cell>
+		<cell>0</cell>
+		<cell>71</cell>
+		<cell>100</cell>
+		<cell>false</cell>
+		<cell>false</cell>
+	</row>
+	<row>
+		<cell>12</cell>
+		<cell>可用房确认</cell>
+		<cell>hotel/available_room_check.jsp</cell>
+		<cell>1</cell>
+		<cell>72</cell>
+		<cell>73</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
+	<row>
+		<cell>13</cell>
+		<cell>入住情况</cell>
+		<cell>hotel/room_manage.jsp</cell>
+		<cell>1</cell>
+		<cell>74</cell>
+		<cell>75</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
+	<row>
+		<cell>14</cell>
+		<cell>顾客信息登记</cell>
+		<cell>hotel/room_manage.jsp</cell>
+		<cell>1</cell>
+		<cell>76</cell>
+		<cell>77</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
+	<row>
+		<cell>15</cell>
+		<cell>账单</cell>
+		<cell>hotel/room_manage.jsp</cell>
+		<cell>1</cell>
+		<cell>78</cell>
+		<cell>79</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
 </rows>

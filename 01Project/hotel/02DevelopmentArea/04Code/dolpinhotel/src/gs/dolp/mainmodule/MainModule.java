@@ -1,5 +1,6 @@
 package gs.dolp.mainmodule;
 
+import gs.dolp.dolpinhotel.management.AvailableRoomCheckModule;
 import gs.dolp.dolpinhotel.setup.RoomModule;
 import gs.dolp.dolpinhotel.setup.RoomTypeModule;
 import gs.dolp.system.module.MenuModule;
@@ -12,7 +13,8 @@ import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.ioc.provider.JsonIocProvider;
 
-@Modules( { UserModule.class, RoleModule.class, MenuModule.class, RoomTypeModule.class, RoomModule.class })
+@Modules( { UserModule.class, RoleModule.class, MenuModule.class, RoomTypeModule.class, RoomModule.class,
+		AvailableRoomCheckModule.class })
 @IocBy(type = JsonIocProvider.class, args = { "dao.js", "ioc.js" })
 @SetupBy(MvcSetup.class)
 @Fail("json")

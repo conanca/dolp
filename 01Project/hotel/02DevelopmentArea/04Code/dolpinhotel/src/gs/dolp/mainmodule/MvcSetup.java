@@ -20,7 +20,6 @@ public class MvcSetup implements Setup {
 		if (!dao.exists("SYSTEM_USER")) {
 			// Create tables
 			Tables.define(dao, Tables.loadFrom("tables.dod"));
-
 			FileSqlManager fm = new FileSqlManager("initData.sql");
 			dao.execute(fm.createCombo(fm.keys()));
 		}

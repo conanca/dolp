@@ -11,11 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
-import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.lang.Strings;
@@ -31,11 +28,7 @@ public class MenuService extends IdEntityService<Menu> {
 	}
 
 	public JqgridStandardData getGridData() {
-		int pageNumber = 1;
-		int pageSize = 1000;
-		Pager pager = dao().createPager(pageNumber, pageSize);
-		Condition cnd = Cnd.wrap("1=1");
-		List<Menu> list = query(cnd, pager);
+		List<Menu> list = query(null, null);
 		JqgridStandardData jq = new JqgridStandardData();
 		jq.setPage(1);
 		jq.setTotal(1);
