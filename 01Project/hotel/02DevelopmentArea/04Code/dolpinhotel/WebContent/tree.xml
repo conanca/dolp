@@ -139,8 +139,8 @@
 	</row>
 	<row>
 		<cell>14</cell>
-		<cell>顾客信息登记</cell>
-		<cell>hotel/room_manage.jsp</cell>
+		<cell>入住登记</cell>
+		<cell>hotel/check_in.jsp</cell>
 		<cell>1</cell>
 		<cell>76</cell>
 		<cell>77</cell>
