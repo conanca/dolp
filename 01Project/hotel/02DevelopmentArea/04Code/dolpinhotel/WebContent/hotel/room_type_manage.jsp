@@ -107,7 +107,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 <table id="roomTypeList"></table>
 <div id="roomTypePager"></div>
 
-<div id="roomType" title="用户信息">
+<div id="roomType" title="房间类型信息">
 	<form id="roomTypeForm">
 	<table>
 		<tr>
