@@ -21,8 +21,6 @@ public class Customer {
 	@Column
 	private String address;
 	@Column
-	private int isPayer;
-	@Column
 	private int orderId;
 	@One(target = Order.class, field = "orderId")
 	public Order order;
@@ -73,14 +71,6 @@ public class Customer {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public int getIsPayer() {
-		return isPayer;
-	}
-
-	public void setIsPayer(int isPayer) {
-		this.isPayer = isPayer;
 	}
 
 	public int getOrderId() {

@@ -6,6 +6,7 @@ import java.util.List;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
+import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("DOLPINHOTEL_ORDER")
@@ -17,6 +18,8 @@ public class Order {
 	private String number;
 	@Column("CHECK_IN_DATE")
 	private Timestamp checkInDate;
+	@Column("EXPECTED_CHECK_OUT_DATE")
+	private Timestamp expectedCheckOutDate;
 	@Column("CHECK_OUT_DATE")
 	private Timestamp checkOutDate;
 	@Column("OCCUPANCY_DAYS")
@@ -27,6 +30,10 @@ public class Order {
 	private List<OrderItem> orderItems;
 	@Many(target = Customer.class, field = "orderId")
 	private List<Customer> customers;
+	@Column
+	private int payerId;
+	@One(target = Customer.class, field = "payerId")
+	public Customer payer;
 
 	public int getId() {
 		return id;
@@ -50,6 +57,14 @@ public class Order {
 
 	public void setCheckInDate(Timestamp checkInDate) {
 		this.checkInDate = checkInDate;
+	}
+
+	public Timestamp getExpectedCheckOutDate() {
+		return expectedCheckOutDate;
+	}
+
+	public void setExpectedCheckOutDate(Timestamp expectedCheckOutDate) {
+		this.expectedCheckOutDate = expectedCheckOutDate;
 	}
 
 	public Timestamp getCheckOutDate() {
@@ -90,6 +105,22 @@ public class Order {
 
 	public void setCustomers(List<Customer> customers) {
 		this.customers = customers;
+	}
+
+	public int getPayerId() {
+		return payerId;
+	}
+
+	public void setPayerId(int payerId) {
+		this.payerId = payerId;
+	}
+
+	public Customer getPayer() {
+		return payer;
+	}
+
+	public void setPayer(Customer payer) {
+		this.payer = payer;
 	}
 
 }
