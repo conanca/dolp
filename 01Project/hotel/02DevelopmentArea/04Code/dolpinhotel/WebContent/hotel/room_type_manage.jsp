@@ -6,7 +6,6 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
-	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 	
 	jQuery("#roomTypeList").jqGrid({
