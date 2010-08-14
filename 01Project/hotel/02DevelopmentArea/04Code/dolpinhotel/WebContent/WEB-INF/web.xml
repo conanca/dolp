@@ -15,7 +15,7 @@
 		<servlet-class>org.nutz.mvc.NutServlet</servlet-class>
 		<init-param>
 			<param-name>modules</param-name>
-			<param-value>gs.dolp.mainmodule.MainModule</param-value>
+			<param-value>gs.dolp.MainModule</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

@@ -1,4 +1,4 @@
-package gs.dolp.mainmodule;
+package gs.dolp;
 
 import javax.servlet.ServletConfig;
 
