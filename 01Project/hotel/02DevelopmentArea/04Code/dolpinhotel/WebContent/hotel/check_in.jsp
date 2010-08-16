@@ -8,19 +8,19 @@ var customerListData = new Array();
 
 $.fn.serializeObject = function()
 {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name]) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
 };
 
 $(function(){
@@ -31,7 +31,7 @@ $(function(){
 		datatype: "local",
 		colNames:['序号','姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
-			{name:'no',index:'id', width:20},
+			{name:'no',index:'no', width:20},
 			{name:'name',index:'name', width:60},
 			{name:'gender',index:'gender', width:50},
 			{name:'certificateType',index:'certificateType', width:60},
@@ -67,11 +67,27 @@ $(function(){
 	});
 	jQuery("#customerList").jqGrid('navButtonAdd','#customerPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
-			var gr = jQuery("#customerList").jqGrid('getGridParam','selarrrow');
-			if( gr != null ){
-				jQuery("#customerList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
-			}
-			else{
+			var fx = jQuery("#customerList").jqGrid('getGridParam','selrow')-1;
+			if (fx) {
+				for(var i=0,n=0,flag=0;i<customerListData.length;i++)
+				{
+					if(customerListData[i]!=customerListData[fx])
+					{
+						customerListData[n]=customerListData[i];
+						if(flag==1){
+							customerListData[n].no-=1;
+						}
+						n++;
+					}else{
+						flag=1;
+					}
+				}
+				customerListData.length-=1;
+				jQuery("#customerList").jqGrid('clearGridData');
+				for(var i=0;i<=customerListData.length;i++){
+					jQuery("#customerList").jqGrid('addRowData',i+1,customerListData[i]);
+				}
+			} else {
 				alert("请选择要删除的记录");
 			}
 		}
@@ -99,16 +115,13 @@ $(function(){
 			jQuery("#customerList").jqGrid('addRowData',arrLength+1,currCustomer);
 		}else{
 			customerListData[currCustomer.no-1]=currCustomer;
-			jQuery("#customerList").jqGrid('clearGridData');
-			for(var i=0;i<=customerListData.length;i++){
-				jQuery("#customerList").jqGrid('addRowData',i+1,customerListData[i]);
-			}
+			jQuery("#customerList").jqGrid('setRowData',currCustomer.no,currCustomer);
 		}
 		$("#customerNo").attr("value",'');	//清空隐藏域的值
 		$('#customerForm')[0].reset();	//清空表单的值
 		//关闭用户信息界面
 		$("#customerDiv").dialog( "close" );
-	    return false;
+		return false;
 	});
 	
 });
