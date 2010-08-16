@@ -21,9 +21,9 @@ public class Customer {
 	@Column
 	private String address;
 	@Column
-	private int orderId;
-	@One(target = Order.class, field = "orderId")
-	public Order order;
+	private int roomOccupancyId;
+	@One(target = RoomOccupancy.class, field = "roomOccupancyId")
+	private RoomOccupancy roomOccupancy;
 
 	public int getId() {
 		return id;
@@ -73,20 +73,20 @@ public class Customer {
 		this.address = address;
 	}
 
-	public int getOrderId() {
-		return orderId;
+	public int getRoomOccupancyId() {
+		return roomOccupancyId;
 	}
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setRoomOccupancyId(int roomOccupancyId) {
+		this.roomOccupancyId = roomOccupancyId;
 	}
 
-	public Order getOrder() {
-		return order;
+	public RoomOccupancy getRoomOccupancy() {
+		return roomOccupancy;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setRoomOccupancy(RoomOccupancy roomOccupancy) {
+		this.roomOccupancy = roomOccupancy;
 	}
 
 }
