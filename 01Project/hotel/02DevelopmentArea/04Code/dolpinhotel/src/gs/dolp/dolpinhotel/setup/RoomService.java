@@ -66,7 +66,6 @@ public class RoomService extends IdEntityService<Room> {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
 		Condition cnd = Cnd.where("ISOCCUPANCY", "=", 0).and("ROOMTYPEID", "=", roomTypeId);
 		List<Room> rooms = this.query(cnd, null);
-		roomOptions.put("请选择", "0");
 		for (Room room : rooms) {
 			roomOptions.put(room.getNumber(), String.valueOf(room.getId()));
 		}
