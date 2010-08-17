@@ -3,9 +3,11 @@ package gs.dolp.dolpinhotel.management;
 import gs.dolp.dolpinhotel.setup.Room;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -20,6 +22,8 @@ public class RoomOccupancy {
 	private Room room;
 	@Column("ENTER_DATE")
 	private Timestamp enterDate;
+	@Column("EXPECTED_CHECK_OUT_DATE")
+	private Timestamp expectedCheckOutDate;
 	@Column("LEAVE_DATE")
 	private Timestamp leaveDate;
 	@Column("OCCUPANCY_DAYS")
@@ -32,6 +36,8 @@ public class RoomOccupancy {
 	private int billId;
 	@One(target = Bill.class, field = "billId")
 	private Bill bill;
+	@Many(target = Customer.class, field = "roomOccupancyId")
+	private List<Customer> customer;
 
 	public int getId() {
 		return id;
@@ -63,6 +69,14 @@ public class RoomOccupancy {
 
 	public void setEnterDate(Timestamp enterDate) {
 		this.enterDate = enterDate;
+	}
+
+	public Timestamp getExpectedCheckOutDate() {
+		return expectedCheckOutDate;
+	}
+
+	public void setExpectedCheckOutDate(Timestamp expectedCheckOutDate) {
+		this.expectedCheckOutDate = expectedCheckOutDate;
 	}
 
 	public Timestamp getLeaveDate() {
@@ -111,6 +125,14 @@ public class RoomOccupancy {
 
 	public void setBill(Bill bill) {
 		this.bill = bill;
+	}
+
+	public List<Customer> getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(List<Customer> customer) {
+		this.customer = customer;
 	}
 
 }

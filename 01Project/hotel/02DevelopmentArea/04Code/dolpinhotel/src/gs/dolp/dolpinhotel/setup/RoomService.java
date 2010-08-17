@@ -2,7 +2,9 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.jqgrid.JqgridData;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -60,4 +62,15 @@ public class RoomService extends IdEntityService<Room> {
 		}
 	}
 
+	public Map<String, String> getAllAvailableRoomForSelectOption(int roomTypeId) {
+		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
+		Condition cnd = Cnd.where("ISOCCUPANCY", "=", 0).and("ROOMTYPEID", "=", roomTypeId);
+		List<Room> rooms = this.query(cnd, null);
+		roomOptions.put("请选择", "0");
+		for (Room room : rooms) {
+			roomOptions.put(room.getNumber(), String.valueOf(room.getId()));
+		}
+		log.debug(roomOptions);
+		return roomOptions;
+	}
 }

@@ -2,6 +2,8 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.jqgrid.JqgridData;
 
+import java.util.Map;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
@@ -36,5 +38,11 @@ public class RoomModule {
 	@Fail("json")
 	public void deleteRow(@Param("id") String ids) {
 		roomService.deleteRooms(ids);
+	}
+
+	@At
+	@Ok("json")
+	public Map<String, String> getAllAvailableRoomForSelectOption(@Param("myid") int roomTypeId) {
+		return roomService.getAllAvailableRoomForSelectOption(roomTypeId);
 	}
 }
