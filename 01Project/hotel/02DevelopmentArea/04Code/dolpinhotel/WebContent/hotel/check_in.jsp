@@ -3,11 +3,13 @@
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.selectsubcategory.js" type="text/javascript"></script>
+<script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 
 var customerListData = new Array();
 
+//将form封装成对象
 $.fn.serializeObject = function()
 {
 	var o = {};
@@ -136,28 +138,24 @@ $(function(){
 		subcategoryid: 'roomSelector'
 	});
 
-	var options = {
-		    beforeSubmit:showRequest,
-		    success:	showResponse,
-			url:		'#',
-			type:		'post',
-			clearForm:	true,
-			resetForm:	true
-		};
-	$('#roomOccupancyForm').submit(function() {
-		$(this).ajaxSubmit(options);
-		return false;
+	$("#roomcheckin").click(function() {
+		var url='dolpinhotel/management/roomoccupancy/saveRoomOccupancy.do';
+		var enterDate=$('input:text[name=enterDate]').val();
+		var expectedCheckOutDate=$('input:text[name=expectedCheckOutDate]').val();
+		var roomId=$('select[name=roomId]').val();
+		var customers =$.toJSON(customerListData);
+		$.post(url, { customers: customers, enterDate: enterDate, expectedCheckOutDate: expectedCheckOutDate, roomId: roomId },
+			function(data) {
+			  alert('登记成功');
+			  $('#roomOccupancyForm')[0].reset();	//清空表单的值
+			  jQuery("#customerList").jqGrid('clearGridData');	//清空grid的值
+			  $('#roomSelector').find('option').remove().end();	//移除房间号选择框的所有option
+			  $("#roomSelector").append(new Option("请先选择房间类型","0"));
+			  customerListData = new Array();	//初始化customerListData
+			}
+		);
 	});
 });
-
-//提交前
-function showRequest(formData, jqForm, options) {
-	
-}
-//提交后获得Respons后
-function showResponse(responseText, statusText, xhr, $form)  {
-	alert('保存成功');
-}
 </script>
 <div id="roomOccupancyDiv" title="房间登记情况">
 	<form id="roomOccupancyForm">
@@ -190,7 +188,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				</td>
 				<td>
 					<select name="roomId" id="roomSelector">
-						<option value="0">请选择</option>
+						<option value="0">请先选择房间类型</option>
 					</select>
 				</td>
 			</tr>
@@ -199,7 +197,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 		<table id="customerList"></table>
 		<div id="customerPager"></div>
 		<div>
-			<input type="submit" value="保存"/>
+			<input type="button" value="登记" id="roomcheckin"/>
 			<input type="reset" value="重置"/>
 		</div>
 	</form>

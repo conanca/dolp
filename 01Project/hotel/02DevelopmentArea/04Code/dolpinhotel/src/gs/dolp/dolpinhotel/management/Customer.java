@@ -13,6 +13,8 @@ public class Customer {
 	@Column
 	private String name;
 	@Column
+	private int no;
+	@Column
 	private String gender;
 	@Column("CERTIFICATE_TYPE")
 	private String certificateType;
@@ -39,6 +41,14 @@ public class Customer {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
 	}
 
 	public String getGender() {
