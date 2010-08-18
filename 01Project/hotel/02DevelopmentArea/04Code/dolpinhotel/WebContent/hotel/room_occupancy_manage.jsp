@@ -20,9 +20,9 @@ $(function(){
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
-	   		{name:'enterDate',index:'enterDate', width:100},
-	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate', width:100},//不可调整宽度
-	   		{name:'leaveDate',index:'leaveDate', width:100},
+	   		{name:'enterDate',index:'enterDate', width:100, editable:true, formatter:fmtDate },
+	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:100, editable:true, formatter:fmtDate},
+	   		{name:'leaveDate',index:'leaveDate', width:100, editable:true, formatter:fmtDate},
 	   		{name:'occupancyDays',index:'occupancyDays', width:80},
 	   		{name:'amount',index:'amount', width:100},
 	   		{name:'status',index:'status', width:80,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
@@ -67,7 +67,7 @@ $(function(){
 	   		{name:'id',index:'id', width:0},
 	   		{name:'no',index:'no', width:20},
 	   		{name:'name',index:'name', width:80},
-	   		{name:'gender',index:'gender', width:50,resizable:false},//不可调整宽度
+	   		{name:'gender',index:'gender', width:50},
 	   		{name:'certificateType',index:'certificateType', width:60},		
 	   		{name:'credentialNumber',index:'credentialNumber', width:150},		
 	   		{name:'address',index:'address', width:300},
@@ -91,6 +91,14 @@ $(function(){
 	jQuery("#customerSubList").jqGrid('navGrid','#customerSubPager',{edit:false,add:false,del:false,search:false});
 	jQuery("#customerSubList").jqGrid('hideCol',['id','roomOccupancyId']);//隐藏id列
 });
+
+function fmtDate(value){
+	if(value){
+		return value.substr(0,10);
+	}else{
+		return '';
+	}
+}
 </script>
 
 <table id="roomOccupancyList"></table>
