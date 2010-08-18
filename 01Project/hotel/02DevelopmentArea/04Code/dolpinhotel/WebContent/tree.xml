@@ -130,7 +130,7 @@
 	<row>
 		<cell>13</cell>
 		<cell>入住情况</cell>
-		<cell>hotel/room_manage.jsp</cell>
+		<cell>hotel/room_occupancy_manage.jsp</cell>
 		<cell>1</cell>
 		<cell>74</cell>
 		<cell>75</cell>

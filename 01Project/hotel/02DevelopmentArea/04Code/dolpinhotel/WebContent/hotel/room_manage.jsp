@@ -23,7 +23,7 @@ $(function(){
 	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:100},
 	   		{name:'roomTypeId',index:'roomTypeId', width:100,formatter:'select', editoptions:{value:allRoomTypes}},
-	   		{name:'isOccupancy',index:'isOccupancy', width:100,edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
+	   		{name:'isOccupancy',index:'isOccupancy', width:100,formatter:'select', editoptions:{value:"0:否;1:是"}},
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],

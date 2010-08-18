@@ -72,4 +72,14 @@ public class RoomService extends IdEntityService<Room> {
 		log.debug(roomOptions);
 		return roomOptions;
 	}
+
+	public Map<String, String> getAllRoomForSelectOption() {
+		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
+		List<Room> rooms = this.query(null, null);
+		for (Room room : rooms) {
+			roomOptions.put(String.valueOf(room.getId()), room.getNumber());
+		}
+		log.debug(roomOptions);
+		return roomOptions;
+	}
 }

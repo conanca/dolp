@@ -124,5 +124,23 @@ var ioc = {
 				refer : 'roomOccupancyService'
 			}
 		}
+	},
+	
+	customerService : {
+		type : "gs.dolp.dolpinhotel.management.CustomerService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	customerModule : {
+		type : "gs.dolp.dolpinhotel.management.CustomerModule",
+		fields : {
+			customerService : {
+				refer : 'customerService'
+			}
+		}
 	}
 };

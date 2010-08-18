@@ -45,4 +45,11 @@ public class RoomModule {
 	public Map<String, String> getAllAvailableRoomForSelectOption(@Param("myid") int roomTypeId) {
 		return roomService.getAllAvailableRoomForSelectOption(roomTypeId);
 	}
+
+	@At
+	@Ok("json")
+	public Map<String, String> getAllRoomForSelectOption() {
+		return roomService.getAllRoomForSelectOption();
+	}
+
 }

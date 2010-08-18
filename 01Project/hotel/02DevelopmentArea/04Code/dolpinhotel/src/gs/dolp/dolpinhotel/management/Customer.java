@@ -11,9 +11,9 @@ public class Customer {
 	@Id
 	private int id;
 	@Column
-	private String name;
-	@Column
 	private int no;
+	@Column
+	private String name;
 	@Column
 	private String gender;
 	@Column("CERTIFICATE_TYPE")
@@ -35,20 +35,20 @@ public class Customer {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public int getNo() {
 		return no;
 	}
 
 	public void setNo(int no) {
 		this.no = no;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getGender() {
