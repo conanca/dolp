@@ -1,5 +1,6 @@
 package gs.dolp.system.service;
 
+import gs.dolp.jqgrid.IdEntityForjqGridService;
 import gs.dolp.jqgrid.JqgridData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -10,13 +11,11 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.dao.pager.Pager;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.service.IdEntityService;
 
-public class UserService extends IdEntityService<User> {
+public class UserService extends IdEntityForjqGridService<User> {
 
 	private static final Log log = Logs.getLog(UserService.class);
 
@@ -25,35 +24,8 @@ public class UserService extends IdEntityService<User> {
 	}
 
 	public JqgridData<User> getGridData(String page, String rows, String sidx, String sord) {
-		int pageNumber = 1;
-		int pageSize = 10;
-		String sortColumn = "ID";
-		String sortOrder = "ASC";
-		if (!Strings.isEmpty(page)) {
-			pageNumber = Integer.parseInt(page);
-		}
-		if (!Strings.isEmpty(rows)) {
-			pageSize = Integer.parseInt(rows);
-		}
-		if (!Strings.isEmpty(sidx)) {
-			sortColumn = sidx;
-		}
-		if (!Strings.isEmpty(sord)) {
-			sortOrder = sord;
-		}
-		Pager pager = dao().createPager(pageNumber, pageSize);
-		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
-		// 查询
-		List<User> list = query(cnd, pager);
-		// 合计记录总数
-		int count = count();
-		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		// 封装jqGrid的json格式数据类
-		JqgridData<User> jq = new JqgridData<User>();
-		jq.setPage(pageNumber);
-		jq.setTotal(totalPage);
-		jq.setRows(list);
-		log.debug(jq.toString());
+		JqgridData<User> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+		log.debug(jq);
 		return jq;
 	}
 

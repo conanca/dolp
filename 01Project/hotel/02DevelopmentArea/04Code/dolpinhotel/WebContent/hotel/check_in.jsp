@@ -246,7 +246,7 @@ $(function(){
 					籍贯地址
 				</td>
 				<td colspan="3">
-					<input type="text" name="address"/>
+					<input type="text" name="address" size="60"/>
 				</td>
 			</tr>
 			<tr>

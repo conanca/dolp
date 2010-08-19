@@ -1,6 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.dolpinhotel.setup.Room;
+import gs.dolp.jqgrid.IdEntityForjqGridService;
 import gs.dolp.jqgrid.JqgridData;
 
 import java.sql.Timestamp;
@@ -9,17 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.dao.pager.Pager;
-import org.nutz.lang.Strings;
+import org.nutz.dao.Expression;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.service.IdEntityService;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoomOccupancyService extends IdEntityService<RoomOccupancy> {
+public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy> {
 	private static final Log log = Logs.getLog(RoomOccupancyService.class);
 
 	public RoomOccupancyService(Dao dao) {
@@ -61,36 +59,48 @@ public class RoomOccupancyService extends IdEntityService<RoomOccupancy> {
 		}
 	}
 
-	public JqgridData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord) {
-		int pageNumber = 1;
-		int pageSize = 10;
-		String sortColumn = "ID";
-		String sortOrder = "ASC";
-		if (!Strings.isEmpty(page)) {
-			pageNumber = Integer.parseInt(page);
+	public JqgridData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord, String number,
+			String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom, String expectedCheckOutDateTo,
+			String leaveDateFrom, String leaveDateTo, String occupancyDays, String status) {
+		Cnd cnd = Cnd.where("1", "=", 1);
+		if (null != number && !"".equals(number)) {
+			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
+			StringBuffer roomIds = new StringBuffer("(");
+			for (Room room : rooms) {
+				roomIds.append(room.getId());
+				roomIds.append(",");
+			}
+			String roomIdsStr = roomIds.substring(0, roomIds.length() - 1);
+			roomIdsStr = roomIdsStr + ")";
+			Expression e = (Expression) Cnd.wrap("ROOMID IN" + roomIdsStr);
+			cnd = cnd.and(e);
 		}
-		if (!Strings.isEmpty(rows)) {
-			pageSize = Integer.parseInt(rows);
+		if (null != enterDateFrom && !"".equals(enterDateFrom)) {
+			cnd = cnd.and("ENTERDATE", ">=", enterDateFrom);
 		}
-		if (!Strings.isEmpty(sidx)) {
-			sortColumn = sidx;
+		if (null != enterDateTo && !"".equals(enterDateTo)) {
+			cnd = cnd.and("ENTERDATE", "<=", enterDateTo);
 		}
-		if (!Strings.isEmpty(sord)) {
-			sortOrder = sord;
+		if (null != expectedCheckOutDateFrom && !"".equals(expectedCheckOutDateFrom)) {
+			cnd = cnd.and("EXPECTEDCHECKOUTDATE", ">=", expectedCheckOutDateFrom);
 		}
-		Pager pager = dao().createPager(pageNumber, pageSize);
-		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
-		// 查询
-		List<RoomOccupancy> list = query(cnd, pager);
-		// 合计记录总数
-		int count = count();
-		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		// 封装jqGrid的json格式数据类
-		JqgridData<RoomOccupancy> jq = new JqgridData<RoomOccupancy>();
-		jq.setPage(pageNumber);
-		jq.setTotal(totalPage);
-		jq.setRows(list);
-		log.debug(jq.toString());
+		if (null != expectedCheckOutDateTo && !"".equals(expectedCheckOutDateTo)) {
+			cnd = cnd.and("EXPECTEDCHECKOUTDATE", "<=", expectedCheckOutDateTo);
+		}
+		if (null != leaveDateFrom && !"".equals(leaveDateFrom)) {
+			cnd = cnd.and("LEAVEDATE", ">=", leaveDateFrom);
+		}
+		if (null != leaveDateTo && !"".equals(leaveDateTo)) {
+			cnd = cnd.and("LEAVEDATE", "<=", leaveDateTo);
+		}
+		if (null != occupancyDays && !"".equals(occupancyDays)) {
+			cnd = cnd.and("NUMBER", "=", occupancyDays);
+		}
+		if (null != status && !"-1".equals(status)) {
+			cnd = cnd.and("ISOCCUPANCY", "=", status);
+		}
+		JqgridData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		log.debug(jq);
 		return jq;
 	}
 }

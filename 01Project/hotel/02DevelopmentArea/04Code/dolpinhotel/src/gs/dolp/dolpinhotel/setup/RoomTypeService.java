@@ -1,5 +1,6 @@
 package gs.dolp.dolpinhotel.setup;
 
+import gs.dolp.jqgrid.IdEntityForjqGridService;
 import gs.dolp.jqgrid.JqgridData;
 
 import java.util.HashMap;
@@ -9,13 +10,10 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.dao.pager.Pager;
-import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.service.IdEntityService;
 
-public class RoomTypeService extends IdEntityService<RoomType> {
+public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
 	private static final Log log = Logs.getLog(RoomTypeService.class);
 
 	public RoomTypeService(Dao dao) {
@@ -23,42 +21,30 @@ public class RoomTypeService extends IdEntityService<RoomType> {
 	}
 
 	public JqgridData<RoomType> getGridData(String page, String rows, String sidx, String sord) {
-		int pageNumber = 1;
-		int pageSize = 10;
-		String sortColumn = "ID";
-		String sortOrder = "ASC";
-		if (!Strings.isEmpty(page)) {
-			pageNumber = Integer.parseInt(page);
-		}
-		if (!Strings.isEmpty(rows)) {
-			pageSize = Integer.parseInt(rows);
-		}
-		if (!Strings.isEmpty(sidx)) {
-			sortColumn = sidx;
-		}
-		if (!Strings.isEmpty(sord)) {
-			sortOrder = sord;
-		}
-		Pager pager = dao().createPager(pageNumber, pageSize);
-		Condition cnd = Cnd.wrap("1=1 ORDER BY " + sortColumn + " " + sortOrder);
-		// 查询
-		List<RoomType> list = query(cnd, pager);
-		// 合计记录总数
-		int count = count();
-		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		// 封装jqGrid的json格式数据类
-		JqgridData<RoomType> jq = new JqgridData<RoomType>();
-		jq.setPage(pageNumber);
-		jq.setTotal(totalPage);
-		jq.setRows(list);
-		log.debug(jq.toString());
+		JqgridData<RoomType> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+		log.debug(jq);
 		return jq;
 	}
 
-	public void deleteRoomTypes(String ids) {
-		if (!Strings.isEmpty(ids)) {
-			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
+	public void CUDRoomType(String oper, String id, String name, String price, String description) {
+		if ("del".equals(oper)) {
+			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+		}
+		if ("add".equals(oper)) {
+			RoomType roomType = new RoomType();
+			roomType.setName(name);
+			roomType.setPrice(Double.parseDouble(price));
+			roomType.setDescription(description);
+			dao().insert(roomType);
+		}
+		if ("edit".equals(oper)) {
+			RoomType roomType = new RoomType();
+			roomType.setId(Integer.parseInt(id));
+			roomType.setName(name);
+			roomType.setPrice(Double.parseDouble(price));
+			roomType.setDescription(description);
+			dao().update(roomType);
 		}
 	}
 

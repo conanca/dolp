@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
@@ -99,7 +100,100 @@ function fmtDate(value){
 		return '';
 	}
 }
+
+var timeoutHnd;
+var flAuto = false;
+function doSearch(ev)
+{
+	if(!flAuto){
+		return; // var elem = ev.target||ev.srcElement;
+	}
+	if(timeoutHnd){
+		clearTimeout(timeoutHnd);
+	}
+	timeoutHnd = setTimeout(gridReload,500);
+}
+function gridReload(){
+	var number = jQuery("#room_occupancy_manage_number").val();
+	var enterDateFrom = jQuery("#room_occupancy_manage_enterDateFrom").val();
+	var enterDateTo = jQuery("#room_occupancy_manage_enterDateTo").val();
+	var expectedCheckOutDateFrom = jQuery("#room_occupancy_manage_expectedCheckOutDateFrom").val();
+	var expectedCheckOutDateTo = jQuery("#room_occupancy_manage_expectedCheckOutDateTo").val();
+	var leaveDateFrom = jQuery("#room_occupancy_manage_leaveDateFrom").val();
+	var leaveDateTo = jQuery("#room_occupancy_manage_leaveDateTo").val();
+	var occupancyDays = jQuery("#room_occupancy_manage_occupancyDays").val();
+	var status = jQuery("#room_occupancy_manage_status").val();
+	var url = "dolpinhotel/management/roomoccupancy/getGridData.do?number="+number+"&enterDateFrom="+enterDateFrom+"&enterDateTo="+enterDateTo
+	+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
+	+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
+	jQuery("#roomOccupancyList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
+}
+function enableAutosubmit(state){
+	flAuto = state;
+	jQuery("#room_occupancy_manage_search_btn").attr("disabled",state);
+}
 </script>
+
+<fieldset>
+<legend>房间查询</legend>
+<table>
+	<tr>
+		<td>
+			房间号：
+		</td>
+		<td>
+			<input type="text" id="room_occupancy_manage_number" onkeydown="doSearch(arguments[0]||event)" onkeydown="doSearch(arguments[0]||event)"/>
+		</td>
+		<td>
+			入住日期：
+		</td>
+		<td>
+			<input type="text" id="room_occupancy_manage_enterDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			-
+			<input type="text" id="room_occupancy_manage_enterDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+		</td>
+		<td>
+			预离日期：
+		</td>
+		<td>
+			<input type="text" id="room_occupancy_manage_expectedCheckOutDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			-
+			<input type="text" id="room_occupancy_manage_expectedCheckOutDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			离开日期：
+		</td>
+		<td>
+			<input type="text" id="room_occupancy_manage_leaveDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			-
+			<input type="text" id="room_occupancy_manage_leaveDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+		</td>
+		<td>
+			入住天数：
+		</td>
+		<td>
+			<input type="text" id="room_occupancy_manage_occupancyDays" onkeydown="doSearch(arguments[0]||event)"/>
+		</td>
+		<td>
+			状态：
+		</td>
+		<td>
+			<select id="room_occupancy_manage_status" onchange="doSearch(arguments[0]||event)">
+				<option value="-1"></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="6" align="right">
+			<input type="button" id="room_occupancy_manage_search_btn" value="查询" onclick="gridReload()"/>
+			自动查询:
+			<input type="checkbox" id="room_occupancy_manage_autosearch" onclick="enableAutosubmit(this.checked)">
+		</td>
+	</tr>
+</table>
+</fieldset>
 
 <table id="roomOccupancyList"></table>
 <div id="roomOccupancyPager"></div>

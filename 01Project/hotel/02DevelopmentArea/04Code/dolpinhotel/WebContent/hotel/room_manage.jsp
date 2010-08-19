@@ -8,11 +8,15 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 
+	// 查询出所有的房间类型
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes.do";
 	var allRoomTypes;
 	$.ajaxSetup({ async: false});//设为同步模式
 	$.getJSON(url3,function(response){
 		allRoomTypes = response;
+	});
+	$.each(allRoomTypes,function(value,text) {
+		$("#room_manage_roomTypeId").append(new Option(text,value));
 	});
 	
 	jQuery("#roomList").jqGrid({
@@ -21,9 +25,9 @@ $(function(){
 	   	colNames:['id','房间号', '房间类型','已入住'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
-	   		{name:'number',index:'number', width:100},
-	   		{name:'roomTypeId',index:'roomTypeId', width:100,formatter:'select', editoptions:{value:allRoomTypes}},
-	   		{name:'isOccupancy',index:'isOccupancy', width:100,formatter:'select', editoptions:{value:"0:否;1:是"}},
+	   		{name:'number',index:'number', width:100, editable:true},
+	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes}},
+	   		{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
@@ -36,69 +40,14 @@ $(function(){
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl: "dolpinhotel/setup/room/deleteRow.do",	//del:true
+	    editurl: "dolpinhotel/setup/room/editRow.do",	//del:true
 	    multiselect: true, //checkbox
 	    caption: "房间列表"
 	});
-	//不显示jqgrid自带的增删改查按钮
-	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:false,add:false,del:false,search:false});
+	//不显示jqgrid自带的查询按钮
+	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:true,add:true,del:true,search:false});
 	jQuery("#roomList").jqGrid('hideCol',['id']);//隐藏id列
-	jQuery("#roomList").jqGrid('navButtonAdd','#roomPager',{caption:"添加",buttonicon:"ui-icon-plus",
-		onClickButton:function(){
-			$("#roomInfo").dialog( "open" );
-		}
-	});
-	jQuery("#roomList").jqGrid('navButtonAdd','#roomPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
-		onClickButton:function(){
-			var id = jQuery("#roomList").jqGrid('getGridParam','selrow');
-			if (id) {
-				jQuery("#roomList").jqGrid('GridToForm',id,"#roomForm");
-				$("#roomInfo").dialog( "open" );
-			} else {
-				alert("请选择要编辑的记录");
-			}
-		}
-	});
-	jQuery("#roomList").jqGrid('navButtonAdd','#roomPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
-		onClickButton:function(){
-			var gr = jQuery("#roomList").jqGrid('getGridParam','selarrrow');
-			if( gr != null ){
-				jQuery("#roomList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
-			}
-			else{
-				alert("请选择要删除的记录");
-			}
-		}
-	});
 	
-	//初始化用户信息界面
-	$("#roomInfo").dialog({width: 580, hide: 'slide' , autoOpen: false,close: function(event, ui) {
-			$("#roomId").attr("value",'');	//清空隐藏域的值
-			$('#roomForm')[0].reset();	//清空表单的值
-		}
-	});
-	
-	$.each(allRoomTypes,function(value,text) {
-		$("#roomTypeSelect").append(new Option(text,value));
-		$("#room_manage_roomTypeId").append(new Option(text,value));
-	});
-	
-	var options = {
-		    beforeSubmit:showRequest,
-		    success:	showResponse,
-			url:		'dolpinhotel/setup/room/save.do',
-			type:		'post',
-			clearForm:	true,
-			resetForm:	true
-		};
-	$('#roomForm').submit(function() {
-		$(this).ajaxSubmit(options);
-		//关闭用户信息界面
-		$("#roomInfo").dialog( "close" );
-		//刷新表格
-		$('#roomList').trigger("reloadGrid");
-		return false;
-	});
 	//设置按钮图标——————未起作用
 	$("#roomcancel").button( "option", "icons", {primary:'ui-icon-cancel',secondary:'ui-icon-cancel'} );
 	$("#roomcancel").click(function() {
@@ -106,15 +55,6 @@ $(function(){
 	});
 
 });
-
-//提交前
-function showRequest(formData, jqForm, options) {
-	
-}
-//提交后获得Respons后
-function showResponse(responseText, statusText, xhr, $form)  {
-	alert('保存成功');
-}
 
 var timeoutHnd;
 var flAuto = false;
@@ -140,6 +80,8 @@ function enableAutosubmit(state){
 }
 </script>
 
+<fieldset>
+<legend>房间查询</legend>
 <table>
 	<tr>
 		<td>
@@ -175,47 +117,7 @@ function enableAutosubmit(state){
 		</td>
 	</tr>
 </table>
+</fieldset>
 
 <table id="roomList"></table>
 <div id="roomPager"></div>
-
-<div id="roomInfo" title="房间信息">
-	<form id="roomForm">
-	<table>
-		<tr>
-			<td>
-				房间号：
-			</td>
-			<td>
-				<input type="hidden" name="id" id="roomId"/>
-				<input type="text" name="number"/>
-			</td>
-			<td>
-				已入住：
-			</td>
-			<td>
-				<select name="isOccupancy">
-					<option value="0" selected>否</option>
-					<option value="1">是</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				房间类型：
-			</td>
-			<td colspan="3">
-				<select name="roomTypeId" id="roomTypeSelect">
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4" align="center">
-				<input type="submit" value="保存"/>
-				<input type="reset" value="重置"/>
-				<input id="roomcancel" type="button" value="取消"/>
-			</td>
-		</tr>
-	</table>
-	</form>
-</div>

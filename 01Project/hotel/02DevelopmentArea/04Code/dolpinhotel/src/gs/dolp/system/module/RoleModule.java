@@ -30,20 +30,9 @@ public class RoleModule {
 	@At
 	@Ok("void")
 	@Fail("json")
-	public void save(@Param("..") Role role) {
-		if (role.getId() == 0) {
-			roleService.dao().insert(role);
-		} else {
-			roleService.dao().update(role);
-		}
-	}
-
-	@At
-	@Ok("void")
-	@Fail("json")
 	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
 			@Param("description") String description) {
-		roleService.CRURole(oper, id, name, description);
+		roleService.CUDRole(oper, id, name, description);
 	}
 
 	@At

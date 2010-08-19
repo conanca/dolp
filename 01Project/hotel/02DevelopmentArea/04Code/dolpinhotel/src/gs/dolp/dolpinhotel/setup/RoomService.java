@@ -10,7 +10,6 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -25,23 +24,38 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 			String isOccupancy, String roomTypeId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (null != number && !"".equals(number)) {
-			cnd = cnd.and("number", "LIKE", "%" + number + "%");
+			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
 		}
 		if (null != isOccupancy && !"-1".equals(isOccupancy)) {
-			cnd = cnd.and("isOccupancy", "=", isOccupancy);
+			cnd = cnd.and("ISOCCUPANCY", "=", isOccupancy);
 		}
 		if (null != roomTypeId && !"-1".equals(roomTypeId)) {
-			cnd = cnd.and("roomTypeId", "=", roomTypeId);
+			cnd = cnd.and("ROOMTYPEID", "=", roomTypeId);
 		}
 		JqgridData<Room> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}
 
-	public void deleteRooms(String ids) {
-		if (!Strings.isEmpty(ids)) {
-			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
+	public void CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
+		if ("del".equals(oper)) {
+			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+		}
+		if ("add".equals(oper)) {
+			Room room = new Room();
+			room.setNumber(number);
+			room.setRoomTypeId(Integer.parseInt(roomTypeId));
+			room.setIsOccupancy(Integer.parseInt(isOccupancy));
+			dao().insert(room);
+		}
+		if ("edit".equals(oper)) {
+			Room room = new Room();
+			room.setId(Integer.parseInt(id));
+			room.setNumber(number);
+			room.setRoomTypeId(Integer.parseInt(roomTypeId));
+			room.setIsOccupancy(Integer.parseInt(isOccupancy));
+			dao().update(room);
 		}
 	}
 

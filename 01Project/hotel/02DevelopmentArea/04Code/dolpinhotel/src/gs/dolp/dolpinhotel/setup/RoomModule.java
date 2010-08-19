@@ -27,18 +27,9 @@ public class RoomModule {
 
 	@At
 	@Fail("json")
-	public void save(@Param("..") Room room) {
-		if (room.getId() == 0) {
-			roomService.dao().insert(room);
-		} else {
-			roomService.dao().update(room);
-		}
-	}
-
-	@At
-	@Fail("json")
-	public void deleteRow(@Param("id") String ids) {
-		roomService.deleteRooms(ids);
+	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
+			@Param("roomTypeId") String roomTypeId, @Param("isOccupancy") String isOccupancy) {
+		roomService.CUDRoom(oper, id, number, roomTypeId, isOccupancy);
 	}
 
 	@At
