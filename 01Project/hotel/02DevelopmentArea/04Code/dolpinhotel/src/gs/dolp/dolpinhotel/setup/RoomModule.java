@@ -19,9 +19,10 @@ public class RoomModule {
 
 	@At
 	@Ok("json")
-	public JqgridData<Room> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
-		return roomService.getGridData(page, rows, sidx, sord);
+	public JqgridData<Room> getJqgridData(@Param("page") String page, @Param("rows") String rows,
+			@Param("sidx") String sidx, @Param("sord") String sord, @Param("number") String number,
+			@Param("isOccupancy") String isOccupancy, @Param("roomTypeId") String roomTypeId) {
+		return roomService.getJqgridData(page, rows, sidx, sord, number, isOccupancy, roomTypeId);
 	}
 
 	@At
