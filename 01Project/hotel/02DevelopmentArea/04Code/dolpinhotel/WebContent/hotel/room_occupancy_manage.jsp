@@ -7,6 +7,8 @@
 $(function(){
 	$(".datepicker").datepicker();
 
+	var checkOutIdArr;
+
 	//获取所有已入住房间的房间号-房间Id键值对
 	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption.do";
 	var allRooms;
@@ -41,7 +43,7 @@ $(function(){
 	   	sortname: 'id',
 		sortorder: "desc",
 		viewrecords: true,
-		multiselect: false, //checkbox
+		multiselect: true, //checkbox
 		caption: "房间入住情况列表",
 		onSelectRow: function(ids) {
 			 if(ids == null) {
@@ -58,8 +60,42 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#roomOccupancyList").jqGrid('navGrid','#roomOccupancyPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#roomOccupancyList").jqGrid('hideCol',['id','billId']);//隐藏id列
+	jQuery("#roomOccupancyList").jqGrid('hideCol',['id','billId']);//隐藏id,billId列
+	jQuery("#roomOccupancyList").jqGrid('navButtonAdd','#roomOccupancyPager',{caption:"结帐离开",buttonicon:"ui-icon-cart",position:"last",
+		onClickButton:function(){
+			checkOutIdArr = jQuery("#roomOccupancyList").jqGrid('getGridParam','selarrrow');
+			if( checkOutIdArr ){
+				$("#room_occupancy_manage_checkOutDiv").dialog( "open" );
+			}
+			else{
+				alert("请选择要结帐的房间");
+			}
+		}
+	});
 
+	//初始化结帐日期界面
+	$("#room_occupancy_manage_checkOutDiv").dialog({width: 300, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+			$("#room_occupancy_manage_checkOutId").attr("value",'');	//清空隐藏域的值
+			$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
+		}
+	});
+	
+	$("#room_occupancy_manage_checkOutBtn").click(function() {
+		var leaveDate = $("#room_occupancy_manage_checkOutLeaveDate").val();
+		$.post("dolpinhotel/management/roomoccupancy/checkOut.do", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate},
+			function(data) {
+				alert('结帐成功');
+				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
+				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
+			}
+		);
+		
+	});
+	
+	$("#room_occupancy_manage_checkOutCancelBtn").click(function() {
+		$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
+		$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
+	});
 
 	jQuery("#customerSubList").jqGrid({
 	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId.do',
@@ -91,7 +127,7 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#customerSubList").jqGrid('navGrid','#customerSubPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#customerSubList").jqGrid('hideCol',['id','roomOccupancyId']);//隐藏id列
+	jQuery("#customerSubList").jqGrid('hideCol',['id','roomOccupancyId']);//隐藏id,roomOccupancyId列
 });
 
 function fmtDate(value){
@@ -205,3 +241,11 @@ function enableAutosubmit(state){
 <br/>
 <table id="customerSubList"></table>
 <div id="customerSubPager"></div>
+
+<div id="room_occupancy_manage_checkOutDiv">
+	离开日期:
+	<input type="text" id="room_occupancy_manage_checkOutLeaveDate" class="datepicker"/>
+	<br/>
+	<input type="button" id="room_occupancy_manage_checkOutBtn" value="确定"/>
+	<input type="button" id="room_occupancy_manage_checkOutCancelBtn" value="取消"/>
+</div>

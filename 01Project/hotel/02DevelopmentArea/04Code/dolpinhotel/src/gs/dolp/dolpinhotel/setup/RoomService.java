@@ -10,6 +10,7 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -23,7 +24,7 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 	public JqgridData<Room> getJqgridData(String page, String rows, String sidx, String sord, String number,
 			String isOccupancy, String roomTypeId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		if (null != number && !"".equals(number)) {
+		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
 		}
 		if (null != isOccupancy && !"-1".equals(isOccupancy)) {

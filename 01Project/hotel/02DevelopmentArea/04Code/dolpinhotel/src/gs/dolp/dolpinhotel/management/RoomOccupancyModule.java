@@ -4,6 +4,8 @@ import gs.dolp.jqgrid.JqgridData;
 
 import java.text.ParseException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
@@ -34,5 +36,11 @@ public class RoomOccupancyModule {
 			@Param("occupancyDays") String occupancyDays, @Param("status") String status) {
 		return roomOccupancyService.getGridData(page, rows, sidx, sord, number, enterDateFrom, enterDateTo,
 				expectedCheckOutDateFrom, expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status);
+	}
+
+	@At
+	public void checkOut(@Param("checkOutIdArr[]") int[] ids, @Param("leaveDate") String leaveDate,
+			HttpServletRequest req) throws ParseException {
+		roomOccupancyService.checkOut(ids, leaveDate);
 	}
 }
