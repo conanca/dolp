@@ -65,39 +65,36 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (null != number && !"".equals(number)) {
 			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
-			StringBuffer roomIds = new StringBuffer("(");
-			for (Room room : rooms) {
-				roomIds.append(room.getId());
-				roomIds.append(",");
+			int[] roomIds = new int[rooms.size()];
+			for (int i = 0; i < rooms.size(); i++) {
+				roomIds[i] = rooms.get(i).getId();
 			}
-			String roomIdsStr = roomIds.substring(0, roomIds.length() - 1);
-			roomIdsStr = roomIdsStr + ")";
-			Expression e = (Expression) Cnd.wrap("ROOMID IN" + roomIdsStr);
+			Expression e = Cnd.where("ROOMID", "IN", roomIds);
 			cnd = cnd.and(e);
 		}
 		if (null != enterDateFrom && !"".equals(enterDateFrom)) {
-			cnd = cnd.and("ENTERDATE", ">=", enterDateFrom);
+			cnd = cnd.and("ENTER_DATE", ">=", enterDateFrom);
 		}
 		if (null != enterDateTo && !"".equals(enterDateTo)) {
-			cnd = cnd.and("ENTERDATE", "<=", enterDateTo);
+			cnd = cnd.and("ENTER_DATE", "<=", enterDateTo);
 		}
 		if (null != expectedCheckOutDateFrom && !"".equals(expectedCheckOutDateFrom)) {
-			cnd = cnd.and("EXPECTEDCHECKOUTDATE", ">=", expectedCheckOutDateFrom);
+			cnd = cnd.and("EXPECTED_CHECK_OUT_DATE", ">=", expectedCheckOutDateFrom);
 		}
 		if (null != expectedCheckOutDateTo && !"".equals(expectedCheckOutDateTo)) {
-			cnd = cnd.and("EXPECTEDCHECKOUTDATE", "<=", expectedCheckOutDateTo);
+			cnd = cnd.and("EXPECTED_CHECK_OUT_DATE", "<=", expectedCheckOutDateTo);
 		}
 		if (null != leaveDateFrom && !"".equals(leaveDateFrom)) {
-			cnd = cnd.and("LEAVEDATE", ">=", leaveDateFrom);
+			cnd = cnd.and("LEAVE_DATE", ">=", leaveDateFrom);
 		}
 		if (null != leaveDateTo && !"".equals(leaveDateTo)) {
-			cnd = cnd.and("LEAVEDATE", "<=", leaveDateTo);
+			cnd = cnd.and("LEAVE_DATE", "<=", leaveDateTo);
 		}
 		if (null != occupancyDays && !"".equals(occupancyDays)) {
-			cnd = cnd.and("NUMBER", "=", occupancyDays);
+			cnd = cnd.and("OCCUPANCY_DAYS", "=", occupancyDays);
 		}
 		if (null != status && !"-1".equals(status)) {
-			cnd = cnd.and("ISOCCUPANCY", "=", status);
+			cnd = cnd.and("STATUS", "=", status);
 		}
 		JqgridData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);

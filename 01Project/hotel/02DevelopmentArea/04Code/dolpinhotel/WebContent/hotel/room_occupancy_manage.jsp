@@ -5,6 +5,7 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
+	$(".datepicker").datepicker();
 
 	//获取所有已入住房间的房间号-房间Id键值对
 	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption.do";
@@ -148,28 +149,32 @@ function enableAutosubmit(state){
 			入住日期：
 		</td>
 		<td>
-			<input type="text" id="room_occupancy_manage_enterDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="room_occupancy_manage_enterDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 			-
-			<input type="text" id="room_occupancy_manage_enterDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
-		</td>
-		<td>
-			预离日期：
-		</td>
-		<td>
-			<input type="text" id="room_occupancy_manage_expectedCheckOutDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
-			-
-			<input type="text" id="room_occupancy_manage_expectedCheckOutDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="room_occupancy_manage_enterDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
 	</tr>
 	<tr>
 		<td>
+			状态：
+		</td>
+		<td>
+			<select id="room_occupancy_manage_status" onchange="doSearch(arguments[0]||event)">
+				<option value="-1" selected></option>
+				<option value="0">入住中</option>
+				<option value="1">已离开</option>
+			</select>
+		</td>
+		<td>
 			离开日期：
 		</td>
 		<td>
-			<input type="text" id="room_occupancy_manage_leaveDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="room_occupancy_manage_leaveDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 			-
-			<input type="text" id="room_occupancy_manage_leaveDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="room_occupancy_manage_leaveDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
+	</tr>
+	<tr>
 		<td>
 			入住天数：
 		</td>
@@ -177,16 +182,16 @@ function enableAutosubmit(state){
 			<input type="text" id="room_occupancy_manage_occupancyDays" onkeydown="doSearch(arguments[0]||event)"/>
 		</td>
 		<td>
-			状态：
+			预离日期：
 		</td>
 		<td>
-			<select id="room_occupancy_manage_status" onchange="doSearch(arguments[0]||event)">
-				<option value="-1"></option>
-			</select>
+			<input type="text" id="room_occupancy_manage_expectedCheckOutDateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
+			-
+			<input type="text" id="room_occupancy_manage_expectedCheckOutDateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="6" align="right">
+		<td colspan="4" align="right">
 			<input type="button" id="room_occupancy_manage_search_btn" value="查询" onclick="gridReload()"/>
 			自动查询:
 			<input type="checkbox" id="room_occupancy_manage_autosearch" onclick="enableAutosubmit(this.checked)">

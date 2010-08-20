@@ -1,6 +1,5 @@
 package gs.dolp.jqgrid;
 
-
 import java.util.List;
 
 import org.nutz.dao.Cnd;
@@ -20,19 +19,6 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		// 设置排序字段及正序逆序
 		String sortColumn = "ID";
 		String sortOrder = "asc";
-		if (null == cnd) {
-			if ("asc".equals(sortOrder)) {
-				cnd = Cnd.orderBy().asc(sortColumn);
-			} else {
-				cnd = Cnd.orderBy().desc(sortColumn);
-			}
-		} else {
-			if ("asc".equals(sortOrder)) {
-				cnd = ((Cnd) cnd).asc(sortColumn);
-			} else {
-				cnd = ((Cnd) cnd).desc(sortColumn);
-			}
-		}
 		int pageNumber = 1;
 		int pageSize = 10;
 		if (!Strings.isEmpty(page)) {
@@ -46,6 +32,19 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		}
 		if (!Strings.isEmpty(sord)) {
 			sortOrder = sord;
+		}
+		if (null == cnd) {
+			if ("asc".equals(sortOrder)) {
+				cnd = Cnd.orderBy().asc(sortColumn);
+			} else {
+				cnd = Cnd.orderBy().desc(sortColumn);
+			}
+		} else {
+			if ("asc".equals(sortOrder)) {
+				cnd = ((Cnd) cnd).asc(sortColumn);
+			} else {
+				cnd = ((Cnd) cnd).desc(sortColumn);
+			}
 		}
 		Pager pager = dao().createPager(pageNumber, pageSize);
 		// 查询
