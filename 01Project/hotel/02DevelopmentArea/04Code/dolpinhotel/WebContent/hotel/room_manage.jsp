@@ -2,7 +2,6 @@
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
-<script src="js/jquery.form.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
@@ -47,13 +46,6 @@ $(function(){
 	//不显示jqgrid自带的查询按钮
 	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:true,add:true,del:true,search:false});
 	jQuery("#roomList").jqGrid('hideCol',['id']);//隐藏id列
-	
-	//设置按钮图标——————未起作用
-	$("#roomcancel").button( "option", "icons", {primary:'ui-icon-cancel',secondary:'ui-icon-cancel'} );
-	$("#roomcancel").click(function() {
-		$("#roomInfo").dialog( "close" );
-	});
-
 });
 
 var timeoutHnd;

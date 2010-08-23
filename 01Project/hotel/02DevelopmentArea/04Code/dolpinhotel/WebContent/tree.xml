@@ -149,8 +149,8 @@
 	</row>
 	<row>
 		<cell>15</cell>
-		<cell>账单</cell>
-		<cell>hotel/room_manage.jsp</cell>
+		<cell>账单管理</cell>
+		<cell>hotel/bill_manage.jsp</cell>
 		<cell>1</cell>
 		<cell>78</cell>
 		<cell>79</cell>

@@ -26,6 +26,14 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		super(dao);
 	}
 
+	/**
+	 * 房间入住登记——涉及到保存房间入住表，顾客信息表等操作
+	 * @param enterDate
+	 * @param expectedCheckOutDate
+	 * @param roomId
+	 * @param customers
+	 * @throws ParseException
+	 */
 	public void saveRoomOccupancy(String enterDate, String expectedCheckOutDate, final int roomId,
 			final Customer[] customers) throws ParseException {
 
@@ -63,7 +71,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 
 	public JqgridData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord, String number,
 			String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom, String expectedCheckOutDateTo,
-			String leaveDateFrom, String leaveDateTo, String occupancyDays, String status) {
+			String leaveDateFrom, String leaveDateTo, String occupancyDays, String status, int billId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
 			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
@@ -98,11 +106,20 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		if (!Strings.isBlank(status)) {
 			cnd = cnd.and("STATUS", "=", status);
 		}
+		if (billId != 0) {
+			cnd = cnd.and("BILLID", "=", billId);
+		}
 		JqgridData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}
 
+	/**
+	 * 结帐——涉及新建账单，更新房间入住的离开时间、入住天数和消费金额，更新房间状态 等操作
+	 * @param ids
+	 * @param leaveDate
+	 * @throws ParseException
+	 */
 	public void checkOut(final int[] ids, String leaveDate) throws ParseException {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

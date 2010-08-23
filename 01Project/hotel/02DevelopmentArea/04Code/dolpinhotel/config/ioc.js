@@ -142,5 +142,23 @@ var ioc = {
 				refer : 'customerService'
 			}
 		}
+	},
+	
+	billService : {
+		type : "gs.dolp.dolpinhotel.management.BillService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	billModule : {
+		type : "gs.dolp.dolpinhotel.management.BillModule",
+		fields : {
+			billService : {
+				refer : 'billService'
+			}
+		}
 	}
 };

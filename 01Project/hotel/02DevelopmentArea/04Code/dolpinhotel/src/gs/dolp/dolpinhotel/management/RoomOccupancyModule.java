@@ -33,9 +33,10 @@ public class RoomOccupancyModule {
 			@Param("expectedCheckOutDateFrom") String expectedCheckOutDateFrom,
 			@Param("expectedCheckOutDateTo") String expectedCheckOutDateTo,
 			@Param("leaveDateFrom") String leaveDateFrom, @Param("leaveDateTo") String leaveDateTo,
-			@Param("occupancyDays") String occupancyDays, @Param("status") String status) {
+			@Param("occupancyDays") String occupancyDays, @Param("status") String status, @Param("billId") int billId) {
 		return roomOccupancyService.getGridData(page, rows, sidx, sord, number, enterDateFrom, enterDateTo,
-				expectedCheckOutDateFrom, expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status);
+				expectedCheckOutDateFrom, expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status,
+				billId);
 	}
 
 	@At
