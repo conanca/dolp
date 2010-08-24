@@ -158,6 +158,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 					roomOccupancy.setAmount(amount);
 					roomOccupancy.setBillId(billId);
 					dao().update(roomOccupancy);
+					dao().update(room);
 				}
 				bill.setAmount(billAmount);
 				dao().update(bill);

@@ -7,9 +7,12 @@
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
 <script src="js/jquery.layout.min-1.2.0.js" type="text/javascript"></script>
-<script src="js/ui-combobox.js" type="text/javascript"></script>
+<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
+<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+<script src="js/jquery.form.js" type="text/javascript"></script>
+<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
-<link href="css/ui-combobox.css" rel="stylesheet" type="text/css" media="all" />
 <style type="text/css" media="all">
 html, body {
 	margin: 0;			/* Remove body margin/padding */
@@ -61,16 +64,8 @@ $(function() {
         }
     });
 	
-	$('#jQueryUICssSwitch').combobox({
-	    list: [
-	            { value: "flick", text: "flick" },
-	            { value: "smoothness", text: "smoothness" },
-	            { value: "ui-lightness", text: "ui-lightness", selected: true },
-	            { value: "le-frog", text: "le-frog"}
-	            ]
-	        , changed: function(e, ui) {
-	            $('#jQueryUICssSrc').attr('href', 'css/themes/' + ui.value + '/jquery-ui-1.8.2.custom.css');
-	        }
+	$('#jQueryUICssSwitch').change(function() {
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.2.custom.css');
 	});
 });
 </script>
@@ -90,8 +85,13 @@ $(function() {
 		</div>
 	</div>
 	<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
+		<select id="jQueryUICssSwitch">
+			<option value="flick">flick</option>
+			<option value="smoothness">smoothness</option>
+			<option value="ui-lightness" selected>ui-lightness</option>
+			<option value="le-frog">le-frog</option>
+		</select>
 		<%@include file="/menu.jsp" %>
-		<div id="jQueryUICssSwitch"></div>
 	</div>
 </body>
 </html>

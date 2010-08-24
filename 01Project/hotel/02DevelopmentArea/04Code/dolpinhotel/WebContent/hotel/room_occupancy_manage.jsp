@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
-<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
 	$(".datepicker").datepicker();
+	$("input:button,input:submit,input:reset").button();
 
 	var checkOutIdArr;
+	var selStatus=0;
 
 	//获取所有已入住房间的房间号-房间Id键值对
 	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption.do";
@@ -55,6 +53,7 @@ $(function(){
 			} else {
 				$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId.do?roomOccId="+ids,page:1});
 				$("#customerSubList").trigger('reloadGrid');
+				selStatus = $("#roomOccupancyList").jqGrid('getCell',ids,'status');
 			}
 		}
 	});
@@ -65,7 +64,11 @@ $(function(){
 		onClickButton:function(){
 			checkOutIdArr = jQuery("#roomOccupancyList").jqGrid('getGridParam','selarrrow');
 			if( checkOutIdArr ){
-				$("#room_occupancy_manage_checkOutDiv").dialog( "open" );
+				if(selStatus=='1'){
+					alert("该记录已结帐");
+				}else{
+					$("#room_occupancy_manage_checkOutDiv").dialog( "open" );
+				}
 			}
 			else{
 				alert("请选择要结帐的房间");
@@ -87,9 +90,9 @@ $(function(){
 				alert('结帐成功');
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
+				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
 			}
 		);
-		
 	});
 	
 	$("#room_occupancy_manage_checkOutCancelBtn").click(function() {

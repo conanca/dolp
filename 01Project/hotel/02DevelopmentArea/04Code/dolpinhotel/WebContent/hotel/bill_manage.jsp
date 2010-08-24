@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
-<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
+<script src="js/jquery.PrintArea.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
 	$(".datepicker").datepicker();
@@ -38,24 +35,39 @@ $(function(){
 	    sortorder: "asc",
 	    viewrecords: true,
 	    editurl: "dolpinhotel/management/bill/editRow.do",	//del:true
-	    multiselect: true, //checkbox
+	    multiselect: false, //checkbox
 	    caption: "账单列表",
 		onSelectRow: function(ids) {
-			 if(ids == null) {
+			if(ids == null) {
 				ids=0;
 				if($("#billSubList").jqGrid('getGridParam','records') >0 ) {
 					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData.do?billId="+ids,page:1});
-					$("#billSubList").trigger('reloadGrid'); 
+					$("#billSubList").trigger('reloadGrid');
 				}
 			} else {
 				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData.do?billId="+ids,page:1});
 				$("#billSubList").trigger('reloadGrid');
 			}
+			var no = $("#billList").jqGrid('getCell',ids,'number');
+			var amount = $("#billList").jqGrid('getCell',ids,'amount');
+			var date = $("#billList").jqGrid('getCell',ids,'date');
+			$("#bill_manage_print_number").val(no);
+			$("#bill_manage_print_amount").val(amount);
+			$("#bill_manage_print_date").val(date);
 		}
 	});
 	//不显示jqgrid自带的查询按钮
 	jQuery("#billList").jqGrid('navGrid','#billPager',{edit:true,add:false,del:true,search:false});
 	jQuery("#billList").jqGrid('hideCol',['id']);//隐藏id列
+	jQuery("#billList").jqGrid('navButtonAdd','#billPager',{caption:"打印",buttonicon:"ui-icon-print",
+		onClickButton:function(){
+			$("#billInfoPrint1").show();
+			$("#billInfoPrint2").show();
+			$("#billPrintDiv").printArea();
+			$("#billInfoPrint1").hide();
+			$("#billInfoPrint2").hide();
+		}
+	});
 
 
 	jQuery("#billSubList").jqGrid({
@@ -84,12 +96,16 @@ $(function(){
 	   	sortname: 'id',
 		sortorder: "desc",
 		viewrecords: true,
-		multiselect: true, //checkbox
+		multiselect: false, //checkbox
 		caption: "房间入住情况列表"
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#billSubList").jqGrid('navGrid','#billSubPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#billSubList").jqGrid('hideCol',['id','billId']);//隐藏id,billId列
+	jQuery("#billSubList").jqGrid('hideCol',['id','billId','status']);//隐藏id,billId,状态列
+
+	// 隐藏打印DIV
+	$("#billInfoPrint1").hide();
+	$("#billInfoPrint2").hide();
 });
 
 function fmtDate(value){
@@ -166,5 +182,40 @@ function enableAutosubmit(state){
 <table id="billList"></table>
 <div id="billPager"></div>
 <br/>
-<table id="billSubList"></table>
+<div id="billPrintDiv">
+		<table id="billInfoPrint1">
+			<tr>
+				<td colspan="2">
+					XX宾馆消费账单
+				</td>
+			</tr>
+			<tr>
+				<td>
+					账单号：
+					<input type="text" id="bill_manage_print_number"/>
+				</td>
+				<td>
+					总金额：
+					<input type="text" id="bill_manage_print_amount">
+				</td>
+			</tr>
+		</table>
+	
+	<table id="billSubList"></table>
+	
+		<table id="billInfoPrint2">
+			<tr>
+				<td>
+					收银员：
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+					日期：
+					<input type="text" id="bill_manage_print_date"/>
+				</td>
+			</tr>
+		</table>
+	
+</div>
+
 <div id="billSubPager"></div>

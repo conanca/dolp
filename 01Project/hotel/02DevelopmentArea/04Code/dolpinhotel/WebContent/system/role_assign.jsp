@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/jquery.form.js" type="text/javascript"></script>
 <script src="js/i18n/jquery.localisation-min.js" type="text/javascript"></script>
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
-<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/ui.multiselect.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){

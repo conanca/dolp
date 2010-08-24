@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.selectsubcategory.js" type="text/javascript"></script>
 <script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
-<link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 
 var customerListData = new Array();
@@ -143,6 +139,7 @@ $(function(){
 		var enterDate=$('input:text[name=enterDate]').val();
 		var expectedCheckOutDate=$('input:text[name=expectedCheckOutDate]').val();
 		var roomId=$('select[name=roomId]').val();
+		// 通过jquery.json-2.2.min.js插件实现将customers数组对象转换成json格式
 		var customers =$.toJSON(customerListData);
 		$.post(url, { customers: customers, enterDate: enterDate, expectedCheckOutDate: expectedCheckOutDate, roomId: roomId },
 			function(data) {
