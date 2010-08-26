@@ -12,7 +12,7 @@
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
-<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
+<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css" media="all">
 html, body {
 	margin: 0;			/* Remove body margin/padding */
@@ -65,7 +65,7 @@ $(function() {
     });
 	
 	$('#jQueryUICssSwitch').change(function() {
-		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.2.custom.css');
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
 	});
 });
 </script>
@@ -86,10 +86,30 @@ $(function() {
 	</div>
 	<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
 		<select id="jQueryUICssSwitch">
+			<option value="black-tie">black-tie</option>
+			<option value="blitzer">blitzer</option>
+			<option value="cupertino">cupertino</option>
+			<option value="dark-hive">dark-hive</option>
+			<option value="dot-luv">dot-luv</option>
+			<option value="eggplant">eggplant</option>
+			<option value="excite-bike">excite-bike</option>
 			<option value="flick">flick</option>
-			<option value="smoothness">smoothness</option>
-			<option value="ui-lightness" selected>ui-lightness</option>
+			<option value="hot-sneaks">hot-sneaks</option>
+			<option value="humanity">humanity</option>
 			<option value="le-frog">le-frog</option>
+			<option value="mint-choc">mint-choc</option>
+			<option value="overcast">overcast</option>
+			<option value="pepper-grinder">pepper-grinder</option>
+			<option value="redmond">redmond</option>
+			<option value="smoothness">smoothness</option>
+			<option value="south-street">south-street</option>
+			<option value="start">start</option>
+			<option value="sunny">sunny</option>
+			<option value="swanky-purse">swanky-purse</option>
+			<option value="trontastic">trontastic</option>
+			<option value="ui-darkness">ui-darkness</option>
+			<option value="ui-lightness" selected>ui-lightness</option>
+			<option value="vader">vader</option>
 		</select>
 		<%@include file="/menu.jsp" %>
 	</div>

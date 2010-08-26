@@ -161,7 +161,7 @@ function enableAutosubmit(state){
 	</tr>
 	<tr>
 		<td>
-			入住日期：
+			日期：
 		</td>
 		<td colspan="3">
 			<input type="text" id="bill_manage_dateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>

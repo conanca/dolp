@@ -67,7 +67,7 @@ $(function(){
 	jQuery("#customerList").jqGrid('navButtonAdd','#customerPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
 			var fx = jQuery("#customerList").jqGrid('getGridParam','selrow')-1;
-			if (fx) {
+			if (fx >= 0) {
 				for(var i=0,n=0,flag=0;i<customerListData.length;i++)
 				{
 					if(customerListData[i]!=customerListData[fx])

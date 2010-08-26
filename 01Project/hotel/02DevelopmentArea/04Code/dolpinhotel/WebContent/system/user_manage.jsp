@@ -54,7 +54,7 @@ $(function(){
 	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
 			var gr = jQuery("#userInfoList").jqGrid('getGridParam','selarrrow');
-			if( gr != null ){
+			if( gr != null && gr != ''){
 				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
 			}
 			else{
