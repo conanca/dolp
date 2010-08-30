@@ -27,10 +27,10 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
 		}
-		if (null != isOccupancy && !"-1".equals(isOccupancy)) {
+		if (!Strings.isBlank(isOccupancy) && !"-1".equals(isOccupancy)) {
 			cnd = cnd.and("ISOCCUPANCY", "=", isOccupancy);
 		}
-		if (null != roomTypeId && !"-1".equals(roomTypeId)) {
+		if (!Strings.isBlank(roomTypeId) && !"-1".equals(roomTypeId)) {
 			cnd = cnd.and("ROOMTYPEID", "=", roomTypeId);
 		}
 		JqgridData<Room> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);

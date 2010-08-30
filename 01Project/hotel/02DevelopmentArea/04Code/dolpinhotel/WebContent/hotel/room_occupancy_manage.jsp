@@ -16,7 +16,7 @@ $(function(){
 	});
 	
 	jQuery("#roomOccupancyList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData.do',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData.do?status=0',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
@@ -199,8 +199,8 @@ function enableAutosubmit(state){
 		</td>
 		<td>
 			<select id="room_occupancy_manage_status" onchange="doSearch(arguments[0]||event)">
-				<option value="-1" selected></option>
-				<option value="0">入住中</option>
+				<option value="-1"></option>
+				<option value="0" selected>入住中</option>
 				<option value="1">已离开</option>
 			</select>
 		</td>

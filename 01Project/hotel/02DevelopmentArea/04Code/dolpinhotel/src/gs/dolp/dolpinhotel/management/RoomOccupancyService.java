@@ -103,7 +103,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		if (!Strings.isBlank(occupancyDays)) {
 			cnd = cnd.and("OCCUPANCY_DAYS", "=", occupancyDays);
 		}
-		if (!Strings.isBlank(status)) {
+		if (!Strings.isBlank(status) && !"-1".equals(status)) {
 			cnd = cnd.and("STATUS", "=", status);
 		}
 		if (billId != 0) {
