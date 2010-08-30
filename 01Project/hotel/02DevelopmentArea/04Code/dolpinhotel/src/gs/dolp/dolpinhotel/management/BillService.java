@@ -6,7 +6,6 @@ import gs.dolp.jqgrid.JqgridData;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -47,8 +46,6 @@ public class BillService extends IdEntityForjqGridService<Bill> {
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
-			List<Bill> bills = this.query(cnd, null);
-
 		}
 		if ("edit".equals(oper)) {
 			Bill bill = new Bill();
