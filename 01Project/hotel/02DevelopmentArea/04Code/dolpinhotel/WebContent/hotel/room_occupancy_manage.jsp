@@ -91,6 +91,13 @@ $(function(){
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
 				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
+				var st = "#t15";
+				if($(st).html() != null ) {
+					maintab.tabs('select',st);
+				} else {
+					maintab.tabs('add',st, "账单管理");
+					$(st,"#tabs").load("hotel/bill_manage.jsp");
+				}
 			}
 		);
 	});
@@ -106,10 +113,10 @@ $(function(){
 	   	colNames:['id','序号', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
-	   		{name:'no',index:'no', width:20},
+	   		{name:'no',index:'no', width:60},
 	   		{name:'name',index:'name', width:80},
 	   		{name:'gender',index:'gender', width:50},
-	   		{name:'certificateType',index:'certificateType', width:60},		
+	   		{name:'certificateType',index:'certificateType', width:100},		
 	   		{name:'credentialNumber',index:'credentialNumber', width:150},		
 	   		{name:'address',index:'address', width:300},
 	   		{name:'roomOccupancyId',index:'roomOccupancyId', width:0}
