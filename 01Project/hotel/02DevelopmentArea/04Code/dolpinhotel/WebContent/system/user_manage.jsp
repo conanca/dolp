@@ -7,7 +7,7 @@ $(function(){
 	jQuery("#userInfoList").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
-	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
+	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:90},
@@ -64,7 +64,7 @@ $(function(){
 	});
 	
 	//初始化用户信息界面
-	$("#userInfo").dialog({width: 580, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+	$("#userInfo").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
 			$("#userInfoId").attr("value",'');	//清空隐藏域的值
 			$('#userInfoForm')[0].reset();	//清空表单的值
 		}

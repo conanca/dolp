@@ -10,7 +10,7 @@ $(function(){
 	jQuery("#roleAssignUserList").jqGrid({
 	   	url:'system/user/getGridData.do',
 		datatype: "json",
-	   	colNames:['id','number', 'name','gender','age','birthday','phone'],
+	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:90},

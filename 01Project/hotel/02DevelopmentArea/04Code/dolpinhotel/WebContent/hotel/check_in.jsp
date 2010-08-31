@@ -31,7 +31,7 @@ $(function(){
 		datatype: "local",
 		colNames:['序号','姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
-			{name:'no',index:'no', width:20},
+			{name:'no',index:'no', width:60},
 			{name:'name',index:'name', width:60},
 			{name:'gender',index:'gender', width:50},
 			{name:'certificateType',index:'certificateType', width:60},
@@ -93,7 +93,7 @@ $(function(){
 	});
 	
 	//初始化用户信息界面
-	$("#customerDiv").dialog({width: 580, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+	$("#customerDiv").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
 			$("#customerDivId").attr("value",'');	//清空隐藏域的值
 			$('#customerForm')[0].reset();	//清空表单的值
 		}
