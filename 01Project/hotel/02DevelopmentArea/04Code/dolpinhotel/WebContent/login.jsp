@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login page</title>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script src="js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
-<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css" media="all">
 	body {font-size:80%;}
 </style>
