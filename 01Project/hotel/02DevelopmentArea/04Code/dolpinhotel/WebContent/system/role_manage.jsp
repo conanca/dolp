@@ -3,7 +3,7 @@
 $(function(){
 
 	jQuery("#rolelist").jqGrid({
-	   	url:'system/role/getGridData.do',
+	   	url:'system/role/getGridData',
 		datatype: "json",
 	   	colNames:['id','描述','名称'],
 	   	colModel:[
@@ -22,7 +22,7 @@ $(function(){
 	   	sortname: 'id',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl:"system/role/editRow.do",	//del:true
+	    editurl:"system/role/editRow",	//del:true
 	    multiselect: true, //checkbox
 	    caption:"角色列表"
 	});

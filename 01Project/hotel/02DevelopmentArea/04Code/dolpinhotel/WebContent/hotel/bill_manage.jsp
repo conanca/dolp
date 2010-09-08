@@ -6,7 +6,7 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	//获取所有已入住房间的房间号-房间Id键值对
-	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption.do";
+	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption";
 	var allRooms;
 	$.ajaxSetup({ async: false});//设为同步模式
 	$.getJSON(url3,function(response){
@@ -14,7 +14,7 @@ $(function(){
 	});
 	
 	jQuery("#billList").jqGrid({
-	   	url:'dolpinhotel/management/bill/getGridData.do',
+	   	url:'dolpinhotel/management/bill/getGridData',
 		datatype: "json",
 	   	colNames:['id','账单号', '金额','日期'],
 	   	colModel:[
@@ -34,18 +34,18 @@ $(function(){
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl: "dolpinhotel/management/bill/editRow.do",	//del:true
+	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
 	    multiselect: false, //checkbox
 	    caption: "账单列表",
 		onSelectRow: function(ids) {
 			if(ids == null) {
 				ids=0;
 				if($("#billSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData.do?billId="+ids,page:1});
+					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
 					$("#billSubList").trigger('reloadGrid');
 				}
 			} else {
-				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData.do?billId="+ids,page:1});
+				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
 				$("#billSubList").trigger('reloadGrid');
 			}
 			var no = $("#billList").jqGrid('getCell',ids,'number');
@@ -71,7 +71,7 @@ $(function(){
 
 
 	jQuery("#billSubList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData.do?billId=-1',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=-1',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
@@ -133,7 +133,7 @@ function gridReload(){
 	var amount = jQuery("#bill_manage_amount").val();
 	var dateFrom = jQuery("#bill_manage_dateFrom").val();
 	var dateTo = jQuery("#bill_manage_dateTo").val();
-	var url = "dolpinhotel/management/bill/getGridData.do?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
+	var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
 	jQuery("#billList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
 }
 function enableAutosubmit(state){

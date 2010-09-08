@@ -3,7 +3,7 @@
 $(function(){
 
 	jQuery("#menuList").jqGrid({
-	   	url:'system/menu/getGridData.do',
+	   	url:'system/menu/getGridData',
 	   	datatype: "json",
 	   	colNames:['id','name','url','description','level'],
 	   	colModel:[
@@ -77,7 +77,7 @@ $(function(){
 	var options = {
 		    beforeSubmit:showRequest,
 		    success:	showResponse,
-			url:		'system/menu/save.do',
+			url:		'system/menu/save',
 			type:		'post',
 			clearForm:	true,
 			resetForm:	true

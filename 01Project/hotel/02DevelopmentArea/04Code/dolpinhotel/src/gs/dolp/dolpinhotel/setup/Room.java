@@ -1,6 +1,5 @@
 package gs.dolp.dolpinhotel.setup;
 
-
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.One;
@@ -8,7 +7,6 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("DOLPINHOTEL_ROOM")
 public class Room {
-	@Column
 	@Id
 	private int id;
 	@Column

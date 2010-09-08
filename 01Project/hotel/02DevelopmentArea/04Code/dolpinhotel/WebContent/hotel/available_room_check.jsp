@@ -2,7 +2,7 @@
 <script type="text/javascript">
 $(function(){
 	jQuery("#availableRoomCheckList").jqGrid({
-	   	url:'dolpinhotel/management/availableroomcheck/getGridData.do',
+	   	url:'dolpinhotel/management/availableroomcheck/getGridData',
 		datatype: "json",
 	   	colNames:['房间类型','可用房数量'],
 	   	colModel:[

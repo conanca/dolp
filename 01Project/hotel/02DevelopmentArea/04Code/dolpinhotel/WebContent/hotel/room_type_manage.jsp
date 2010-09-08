@@ -4,7 +4,7 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	jQuery("#roomTypeList").jqGrid({
-	   	url:'dolpinhotel/setup/roomtype/getGridData.do',
+	   	url:'dolpinhotel/setup/roomtype/getGridData',
 		datatype: "json",
 	   	colNames:['id','房间类型', '价格','描述'],
 	   	colModel:[
@@ -24,7 +24,7 @@ $(function(){
 	   	sortname: 'price',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl: "dolpinhotel/setup/roomtype/editRow.do",	//del:true
+	    editurl: "dolpinhotel/setup/roomtype/editRow",	//del:true
 	    multiselect: true, //checkbox
 	    caption: "房间类型列表"
 	});

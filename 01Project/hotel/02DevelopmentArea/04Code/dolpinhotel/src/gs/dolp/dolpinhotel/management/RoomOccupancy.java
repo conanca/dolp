@@ -13,7 +13,6 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("DOLPINHOTEL_ROOM_OCCUPANCY")
 public class RoomOccupancy {
-	@Column
 	@Id
 	private int id;
 	@Column

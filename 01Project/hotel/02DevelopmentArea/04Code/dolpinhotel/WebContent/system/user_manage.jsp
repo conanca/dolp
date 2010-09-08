@@ -5,7 +5,7 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	jQuery("#userInfoList").jqGrid({
-	   	url:'system/user/getGridData.do',
+	   	url:'system/user/getGridData',
 		datatype: "json",
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
@@ -13,9 +13,9 @@ $(function(){
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
 	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
-	   		{name:'age',index:'age', width:80},		
-	   		{name:'birthday',index:'birthday', width:80},		
-	   		{name:'phone',index:'phone', width:150}		
+	   		{name:'age',index:'age', width:80},
+	   		{name:'birthday',index:'birthday', width:80},
+	   		{name:'phone',index:'phone', width:150}
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
@@ -28,7 +28,7 @@ $(function(){
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl: "system/user/deleteRow.do",	//del:true
+	    editurl: "system/user/deleteRow",	//del:true
 	    multiselect: true, //checkbox
 	    caption: "用户列表"
 	});
@@ -73,7 +73,7 @@ $(function(){
 	var options = {
 		    beforeSubmit:showRequest,
 		    success:	showResponse,
-			url:		'system/user/save.do',
+			url:		'system/user/save',
 			type:		'post',
 			clearForm:	true,
 			resetForm:	true

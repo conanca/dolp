@@ -8,7 +8,7 @@ $(function(){
 	$("input:submit").button();
 
 	jQuery("#roleAssignUserList").jqGrid({
-	   	url:'system/user/getGridData.do',
+	   	url:'system/user/getGridData',
 		datatype: "json",
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
@@ -16,9 +16,9 @@ $(function(){
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
 	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
-	   		{name:'age',index:'age', width:80},		
-	   		{name:'birthday',index:'birthday', width:80},		
-	   		{name:'phone',index:'phone', width:150}		
+	   		{name:'age',index:'age', width:80},
+	   		{name:'birthday',index:'birthday', width:80},
+	   		{name:'phone',index:'phone', width:150}
 	   	],
 	   	rowNum:10,
 	   	rowList:[10,20,30],
@@ -41,7 +41,7 @@ $(function(){
 				}
 			});
 			
-			var url1 = "system/user/getCurrentRoleIDs.do";
+			var url1 = "system/user/getCurrentRoleIDs";
 			var para = {"userId":id};
 			$.getJSON(url1,para,function (data){
 				$.each(data,function(index,value){
@@ -58,7 +58,7 @@ $(function(){
 	jQuery("#roleAssignUserList").jqGrid('navGrid','#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
 	jQuery("#roleAssignUserList").jqGrid('hideCol',['id']);//隐藏id列
 	
-	var url2 = "system/role/getAllRole.do";
+	var url2 = "system/role/getAllRole";
 	$.getJSON(url2, function (data){
 		$.each(data,function(text,value) {
 			$("#roleIds").append(new Option(text,value));
@@ -71,7 +71,7 @@ $(function(){
 	var options = {
 		    beforeSubmit:showRequest,
 		    success:	showResponse,
-			url:		'system/user/assignRole.do',
+			url:		'system/user/assignRole',
 			type:		'get',
 			clearForm:	true,
 			resetForm:	true

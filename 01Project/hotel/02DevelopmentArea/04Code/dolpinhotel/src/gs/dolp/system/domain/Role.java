@@ -9,7 +9,6 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_ROLE")
 public class Role {
-	@Column
 	@Id
 	private int id;
 	@Column

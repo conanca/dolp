@@ -4,7 +4,7 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 
 	// 查询出所有的房间类型
-	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes.do";
+	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
 	var allRoomTypes;
 	$.ajaxSetup({ async: false});//设为同步模式
 	$.getJSON(url3,function(response){
@@ -15,7 +15,7 @@ $(function(){
 	});
 	
 	jQuery("#roomList").jqGrid({
-	   	url:'dolpinhotel/setup/room/getJqgridData.do',
+	   	url:'dolpinhotel/setup/room/getJqgridData',
 		datatype: "json",
 	   	colNames:['id','房间号', '房间类型','已入住'],
 	   	colModel:[
@@ -35,7 +35,7 @@ $(function(){
 	   	sortname: 'number',
 	    sortorder: "asc",
 	    viewrecords: true,
-	    editurl: "dolpinhotel/setup/room/editRow.do",	//del:true
+	    editurl: "dolpinhotel/setup/room/editRow",	//del:true
 	    multiselect: true, //checkbox
 	    caption: "房间列表"
 	});
@@ -60,7 +60,7 @@ function gridReload(){
 	var number = jQuery("#room_manage_number").val();
 	var isOccupancy = jQuery("#room_manage_isOccupancy").val();
 	var roomTypeId = jQuery("#room_manage_roomTypeId").val();
-	jQuery("#roomList").jqGrid('setGridParam',{url:"dolpinhotel/setup/room/getJqgridData.do?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId,page:1}).trigger("reloadGrid");
+	jQuery("#roomList").jqGrid('setGridParam',{url:"dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId,page:1}).trigger("reloadGrid");
 }
 function enableAutosubmit(state){
 	flAuto = state;

@@ -8,7 +8,7 @@ $(function(){
 	var selStatus=0;
 
 	//获取所有已入住房间的房间号-房间Id键值对
-	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption.do";
+	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption";
 	var allRooms;
 	$.ajaxSetup({ async: false});//设为同步模式
 	$.getJSON(url3,function(response){
@@ -16,7 +16,7 @@ $(function(){
 	});
 	
 	jQuery("#roomOccupancyList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData.do?status=0',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=0',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
@@ -47,11 +47,11 @@ $(function(){
 			 if(ids == null) {
 				ids=0;
 				if($("#customerSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId.do?roomOccId="+ids,page:1});
+					$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId?roomOccId="+ids,page:1});
 					$("#customerSubList").trigger('reloadGrid'); 
 				}
 			} else {
-				$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId.do?roomOccId="+ids,page:1});
+				$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId?roomOccId="+ids,page:1});
 				$("#customerSubList").trigger('reloadGrid');
 				selStatus = $("#roomOccupancyList").jqGrid('getCell',ids,'status');
 			}
@@ -85,7 +85,7 @@ $(function(){
 	
 	$("#room_occupancy_manage_checkOutBtn").click(function() {
 		var leaveDate = $("#room_occupancy_manage_checkOutLeaveDate").val();
-		$.post("dolpinhotel/management/roomoccupancy/checkOut.do", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate},
+		$.post("dolpinhotel/management/roomoccupancy/checkOut", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate},
 			function(data) {
 				alert('结帐成功');
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
@@ -108,7 +108,7 @@ $(function(){
 	});
 
 	jQuery("#customerSubList").jqGrid({
-	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId.do',
+	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
 		datatype: "json",
 	   	colNames:['id','序号', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
 	   	colModel:[
@@ -170,7 +170,7 @@ function gridReload(){
 	var leaveDateTo = jQuery("#room_occupancy_manage_leaveDateTo").val();
 	var occupancyDays = jQuery("#room_occupancy_manage_occupancyDays").val();
 	var status = jQuery("#room_occupancy_manage_status").val();
-	var url = "dolpinhotel/management/roomoccupancy/getGridData.do?number="+number+"&enterDateFrom="+enterDateFrom+"&enterDateTo="+enterDateTo
+	var url = "dolpinhotel/management/roomoccupancy/getGridData?number="+number+"&enterDateFrom="+enterDateFrom+"&enterDateTo="+enterDateTo
 	+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
 	+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
 	jQuery("#roomOccupancyList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");

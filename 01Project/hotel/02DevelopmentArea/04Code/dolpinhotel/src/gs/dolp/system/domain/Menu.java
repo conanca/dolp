@@ -9,7 +9,6 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_MENU")
 public class Menu {
-	@Column
 	@Id
 	private int id;
 	@Column

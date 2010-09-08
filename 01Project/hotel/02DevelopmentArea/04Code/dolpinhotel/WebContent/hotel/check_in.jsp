@@ -123,19 +123,19 @@ $(function(){
 		return false;
 	});
 
-	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes.do";
+	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
 	$.getJSON(url3,function(allRoomTypes){
 		$.each(allRoomTypes,function(value,text) {
 			$("#roomTypeSelector").append(new Option(text,value));
 		});
 	});
 	$("#roomTypeSelector").selectSubcategory({
-		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption.do',
+		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
 		subcategoryid: 'roomSelector'
 	});
 
 	$("#roomcheckin").click(function() {
-		var url='dolpinhotel/management/roomoccupancy/saveRoomOccupancy.do';
+		var url='dolpinhotel/management/roomoccupancy/saveRoomOccupancy';
 		var enterDate=$('input:text[name=enterDate]').val();
 		var expectedCheckOutDate=$('input:text[name=expectedCheckOutDate]').val();
 		var roomId=$('select[name=roomId]').val();

@@ -7,7 +7,6 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("DOLPINHOTEL_CUSTOMER")
 public class Customer {
-	@Column
 	@Id
 	private int id;
 	@Column
