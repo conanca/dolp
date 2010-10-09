@@ -160,5 +160,35 @@ var ioc = {
 				refer : 'billService'
 			}
 		}
+	},
+	
+	sysEnumService : {
+		type : "gs.dolp.system.service.SysEnumService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	sysEnumItemService : {
+		type : "gs.dolp.system.service.SysEnumItemService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	sysEnumModule : {
+		type : "gs.dolp.system.module.SysEnumModule",
+		fields : {
+			sysEnumService : {
+				refer : 'sysEnumService'
+			},
+			sysEnumItemService : {
+				refer : 'sysEnumItemService'
+			}
+		}
 	}
 };

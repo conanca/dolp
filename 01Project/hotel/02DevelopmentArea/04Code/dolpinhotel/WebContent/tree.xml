@@ -54,6 +54,16 @@
 		<cell>true</cell>
 		<cell>true</cell>
 	</row>
+	<row>
+		<cell>6</cell>
+		<cell>枚举管理</cell>
+		<cell>system/sysenum_mange.jsp</cell>
+		<cell>1</cell>
+		<cell>10</cell>
+		<cell>11</cell>
+		<cell>true</cell>
+		<cell>true</cell>
+	</row>
 	
 	<row>
 		<cell>6</cell>
