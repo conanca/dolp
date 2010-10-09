@@ -230,7 +230,7 @@ $(function(){
 						<option value="军官证">军官证</option>
 						<option value="护照">护照</option>
 					</select>
-						</td>
+				</td>
 				<td>
 					证件号码：
 				</td>

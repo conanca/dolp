@@ -6,7 +6,7 @@
 <title>Login page</title>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
-<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
+<link id="jQueryUICssSrc" href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css" media="all">
 	body {font-size:80%;}
 </style>

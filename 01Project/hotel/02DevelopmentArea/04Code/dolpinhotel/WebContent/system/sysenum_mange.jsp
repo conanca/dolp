@@ -6,7 +6,7 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	jQuery("#sysenumList").jqGrid({
-	   	url:'system/sysEnum/getSysEnum',
+	   	url:'system/sysEnum/getSysEnumGridData',
 		datatype: "json",
 	   	colNames:['id','名称', '描述'],
 	   	colModel:[
@@ -32,12 +32,12 @@ $(function(){
 			if(ids == null) {
 				ids=0;
 				if($("#sysenumSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#sysenumSubList").jqGrid('setGridParam',{url:"system/sysEnum/getSysEnumItem?sysEnumId="+ids,page:1});
+					$("#sysenumSubList").jqGrid('setGridParam',{url:"system/sysEnum/getSysEnumItemGridData/"+ids,page:1});
 					$("#sysenumSubList").trigger('reloadGrid');
 				}
 			} else {
-				$("#sysenumSubList").jqGrid('setGridParam',{editurl:"system/sysEnum/editSysEnumItem?sysEnumID="+ids});
-				$("#sysenumSubList").jqGrid('setGridParam',{url:"system/sysEnum/getSysEnumItem?sysEnumId="+ids,page:1});
+				$("#sysenumSubList").jqGrid('setGridParam',{editurl:"system/sysEnum/editSysEnumItem/"+ids});
+				$("#sysenumSubList").jqGrid('setGridParam',{url:"system/sysEnum/getSysEnumItemGridData/"+ids,page:1});
 				$("#sysenumSubList").trigger('reloadGrid');
 			}
 		}
@@ -47,7 +47,7 @@ $(function(){
 	jQuery("#sysenumList").jqGrid('hideCol',['id']);//隐藏id列
 	
 	jQuery("#sysenumSubList").jqGrid({
-	   	url:'system/sysEnum/getSysEnumItem',
+	   	url:'system/sysEnum/getSysEnumItemGridData',
 		datatype: "json",
 	   	colNames:['id','文本', '值','sysEnumId'],
 	   	colModel:[

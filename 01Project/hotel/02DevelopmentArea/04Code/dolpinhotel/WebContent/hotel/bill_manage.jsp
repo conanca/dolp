@@ -41,11 +41,11 @@ $(function(){
 			if(ids == null) {
 				ids=0;
 				if($("#billSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
+					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData/"+ids,page:1});
 					$("#billSubList").trigger('reloadGrid');
 				}
 			} else {
-				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
+				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData/"+ids,page:1});
 				$("#billSubList").trigger('reloadGrid');
 			}
 			var no = $("#billList").jqGrid('getCell',ids,'number');
@@ -71,7 +71,7 @@ $(function(){
 
 
 	jQuery("#billSubList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=-1',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[

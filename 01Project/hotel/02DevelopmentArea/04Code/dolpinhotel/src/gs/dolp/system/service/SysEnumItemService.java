@@ -2,7 +2,12 @@ package gs.dolp.system.service;
 
 import gs.dolp.jqgrid.IdEntityForjqGridService;
 import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -17,8 +22,8 @@ public class SysEnumItemService extends IdEntityForjqGridService<SysEnumItem> {
 		super(dao);
 	}
 
-	public JqgridData<SysEnumItem> getGridData(String page, String rows, String sidx, String sord, int SysEnumId) {
-		Cnd cnd = Cnd.where("SYSENUMID", "=", SysEnumId);
+	public JqgridData<SysEnumItem> getGridData(String page, String rows, String sidx, String sord, int sysEnumId) {
+		Cnd cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
 		JqgridData<SysEnumItem> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
@@ -41,7 +46,18 @@ public class SysEnumItemService extends IdEntityForjqGridService<SysEnumItem> {
 			item.setId(Integer.parseInt(id));
 			item.setText(text);
 			item.setValue(value);
+			item.setSysEnumId(sysEnumId);
 			dao().update(item);
 		}
+	}
+
+	public Map<String, String> getSysEnumItem(String sysEnumName) {
+		SysEnum sysEnum = dao().fetch(SysEnum.class, Cnd.where("NAME", "=", sysEnumName));
+		List<SysEnumItem> items = dao().query(SysEnumItem.class, Cnd.where("SYSENUMID", "=", sysEnum.getId()), null);
+		Map<String, String> options = new LinkedHashMap<String, String>();
+		for (SysEnumItem item : items) {
+			options.put(item.getText(), item.getValue());
+		}
+		return options;
 	}
 }

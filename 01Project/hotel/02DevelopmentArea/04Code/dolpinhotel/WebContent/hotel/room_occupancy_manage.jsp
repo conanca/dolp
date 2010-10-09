@@ -47,11 +47,11 @@ $(function(){
 			 if(ids == null) {
 				ids=0;
 				if($("#customerSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId?roomOccId="+ids,page:1});
+					$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+ids,page:1});
 					$("#customerSubList").trigger('reloadGrid'); 
 				}
 			} else {
-				$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId?roomOccId="+ids,page:1});
+				$("#customerSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+ids,page:1});
 				$("#customerSubList").trigger('reloadGrid');
 				selStatus = $("#roomOccupancyList").jqGrid('getCell',ids,'status');
 			}

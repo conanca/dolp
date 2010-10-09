@@ -6,6 +6,8 @@ import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
 import gs.dolp.system.service.SysEnumService;
 
+import java.util.Map;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
@@ -22,16 +24,17 @@ public class SysEnumModule {
 
 	@At
 	@Ok("json")
-	public JqgridData<SysEnum> getSysEnum(@Param("page") String page, @Param("rows") String rows,
+	public JqgridData<SysEnum> getSysEnumGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return sysEnumService.getGridData(page, rows, sidx, sord);
 	}
 
-	@At
+	// 使用REST风格的路径参数。对于所有 Nutz.Mvc 提供的内置适配器，路径参数是最优先的，所以把int sysEnumId放在第一个参数
+	@At("/getSysEnumItemGridData/*")
 	@Ok("json")
-	public JqgridData<SysEnumItem> getSysEnumItem(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord, @Param("sysEnumId") int SysEnumId) {
-		return sysEnumItemService.getGridData(page, rows, sidx, sord, SysEnumId);
+	public JqgridData<SysEnumItem> getSysEnumItemGridData(int sysEnumId, @Param("page") String page,
+			@Param("rows") String rows, @Param("sidx") String sidx, @Param("sord") String sord) {
+		return sysEnumItemService.getGridData(page, rows, sidx, sord, sysEnumId);
 	}
 
 	@At
@@ -42,11 +45,17 @@ public class SysEnumModule {
 		sysEnumService.CUDSysEnum(oper, id, name, description);
 	}
 
-	@At
+	@At("/editSysEnumItem/*")
 	@Ok("void")
 	@Fail("json")
-	public void editSysEnumItem(@Param("oper") String oper, @Param("id") String id, @Param("text") String text,
-			@Param("value") String value, @Param("sysEnumID") int sysEnumID) {
+	public void editSysEnumItem(int sysEnumID, @Param("oper") String oper, @Param("id") String id,
+			@Param("text") String text, @Param("value") String value) {
 		sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
+	}
+
+	@At("/getSysEnumOption/*")
+	@Ok("json")
+	public Map<String, String> getSysEnumOption(String sysEnumName) {
+		return sysEnumItemService.getSysEnumItem(sysEnumName);
 	}
 }

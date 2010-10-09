@@ -15,9 +15,9 @@ public class CustomerModule {
 
 	private CustomerService customerService;
 
-	@At
+	@At("/getGridDataByRoomOccId/*")
 	@Ok("json")
-	public JqgridData<Customer> getGridDataByRoomOccId(@Param("roomOccId") int roomOccId, @Param("page") String page,
+	public JqgridData<Customer> getGridDataByRoomOccId(int roomOccId, @Param("page") String page,
 			@Param("rows") String rows, @Param("sidx") String sidx, @Param("sord") String sord) {
 		return customerService.getGridDataByRoomOccId(roomOccId, page, rows, sidx, sord);
 	}

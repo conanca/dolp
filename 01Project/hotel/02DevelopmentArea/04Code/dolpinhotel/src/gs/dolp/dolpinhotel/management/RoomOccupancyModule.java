@@ -25,15 +25,15 @@ public class RoomOccupancyModule {
 		roomOccupancyService.saveRoomOccupancy(enterDate, expectedCheckOutDate, roomId, customers);
 	}
 
-	@At
+	@At("/getGridData/*")
 	@Ok("json")
-	public JqgridData<RoomOccupancy> getGridData(@Param("page") String page, @Param("rows") String rows,
+	public JqgridData<RoomOccupancy> getGridData(int billId, @Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord, @Param("number") String number,
 			@Param("enterDateFrom") String enterDateFrom, @Param("enterDateTo") String enterDateTo,
 			@Param("expectedCheckOutDateFrom") String expectedCheckOutDateFrom,
 			@Param("expectedCheckOutDateTo") String expectedCheckOutDateTo,
 			@Param("leaveDateFrom") String leaveDateFrom, @Param("leaveDateTo") String leaveDateTo,
-			@Param("occupancyDays") String occupancyDays, @Param("status") String status, @Param("billId") int billId) {
+			@Param("occupancyDays") String occupancyDays, @Param("status") String status) {
 		return roomOccupancyService.getGridData(page, rows, sidx, sord, number, enterDateFrom, enterDateTo,
 				expectedCheckOutDateFrom, expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status,
 				billId);

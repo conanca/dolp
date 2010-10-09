@@ -12,7 +12,7 @@
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
-<link id="jQueryUICssSrc" href="css/themes/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
+<link id="jQueryUICssSrc" href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css" media="all">
 html, body {
 	margin: 0;			/* Remove body margin/padding */
@@ -93,7 +93,7 @@ $(function() {
 			<option value="dot-luv">dot-luv</option>
 			<option value="eggplant">eggplant</option>
 			<option value="excite-bike">excite-bike</option>
-			<option value="flick">flick</option>
+			<option value="flick" selected>flick</option>
 			<option value="hot-sneaks">hot-sneaks</option>
 			<option value="humanity">humanity</option>
 			<option value="le-frog">le-frog</option>
@@ -108,7 +108,7 @@ $(function() {
 			<option value="swanky-purse">swanky-purse</option>
 			<option value="trontastic">trontastic</option>
 			<option value="ui-darkness">ui-darkness</option>
-			<option value="ui-lightness" selected>ui-lightness</option>
+			<option value="ui-lightness">ui-lightness</option>
 			<option value="vader">vader</option>
 		</select>
 		<%@include file="/menu.jsp" %>
