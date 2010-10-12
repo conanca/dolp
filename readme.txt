@@ -1,5 +1,5 @@
 对以下js和css文件做过修改
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 jquery.ui.datepicker-zh-CN.js 修改如下
 /* Chinese initialisation for the jQuery UI date picker plugin. */
 /* Written by Cloudream (cloudream@gmail.com). */
@@ -28,21 +28,29 @@ jQuery(function($){
 		yearSuffix: '年'};
 	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 });
-
-
-
-jquery.formFill.js 124行
-
-styleElementName: 'none',	// object | none
-
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 jquery-ui-1.8.2.custom.css 439行
 
 .ui-datepicker select.ui-datepicker-month-year {width: 60%;}
 .ui-datepicker select.ui-datepicker-month, 
-.ui-datepicker select.ui-datepicker-year { width: 30%;}
-
+.ui-datepicker select.ui-datepicker-year { width: 40%;}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 jquery.meio.mask.js 144行
 
 'date-us'			: { mask : '19/39/9999' },
 'date-cn'			: { mask : '9999-19-39' },
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery.selectsubcategory.js
+			$.ajax({
+				   type: "GET",
+				   url: o.url,
+				   data: datatosend,
+				   dataType: "json",
+				   success:function(data){
+					   $('#'+o.subcategoryid).find('option').remove().end();
+					   $.each(data,function(text,value){
+							var newopt=new Option(text,value);					
+							$('#'+o.subcategoryid).append(newopt);
+							});
+					}				   
+			});
