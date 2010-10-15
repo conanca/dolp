@@ -50,7 +50,7 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		// 查询
 		List<T> list = query(cnd, pager);
 		// 合计记录总数
-		int count = count();
+		int count = count(cnd);
 		// 计算页数
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 		// 封装jqGrid的json格式数据类
