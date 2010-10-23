@@ -80,13 +80,12 @@ $.fn.selectSubcategory = function(o) {
 				   success:function(data){
 					   $('#'+o.subcategoryid).find('option').remove().end();
 					   $.each(data,function(text,value){
-							var newopt=new Option(text,value);					
+							var newopt=new Option(text,value);
 							$('#'+o.subcategoryid).append(newopt);
 							});
-					}				   
+					}
 			});
 		});
-		
     });
 };
 })(jQuery);
