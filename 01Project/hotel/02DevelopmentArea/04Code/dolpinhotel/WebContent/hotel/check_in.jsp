@@ -91,6 +91,8 @@ $(function(){
 			}
 		}
 	});
+
+	$("#certificateType").addSysEmnuItem("certificateType");
 	
 	//初始化用户信息界面
 	$("#customerDiv").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
@@ -225,10 +227,7 @@ $(function(){
 					证件类型：
 				</td>
 				<td>
-					<select name="certificateType">
-						<option value="身份证">身份证</option>
-						<option value="军官证">军官证</option>
-						<option value="护照">护照</option>
+					<select name="certificateType" id="certificateType">
 					</select>
 				</td>
 				<td>

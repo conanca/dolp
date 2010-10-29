@@ -69,6 +69,39 @@ $(function(){
 			$('#userInfoForm')[0].reset();	//清空表单的值
 		}
 	});
+
+	// 验证
+	$("#userInfoForm").validate({
+		rules: {
+			number: {
+				required: true,
+				number: true,
+				minlength: 4,
+				maxlength: 4
+			},
+			name: {
+				required: true,
+				maxlength: 10
+			},
+			password: {
+				required: true,
+				minlength: 5
+			},
+			password_again: {
+				required: true,
+				minlength: 5,
+				equalTo: "#password"
+			},
+			gender: "required",
+			age: {
+				digits: true,
+				maxlength: 3
+			},
+			birthday: {
+				date: true
+			}
+		}
+	});
 	
 	var options = {
 		    beforeSubmit:showRequest,
@@ -79,11 +112,16 @@ $(function(){
 			resetForm:	true
 		};
 	$('#userInfoForm').submit(function() {
-		$(this).ajaxSubmit(options);
-		//关闭用户信息界面
-		$("#userInfo").dialog( "close" );
-		//刷新表格
-		$('#userInfoList').trigger("reloadGrid");
+		if($("#userInfoForm").valid()){
+			$(this).ajaxSubmit(options);
+			//关闭用户信息界面
+			$("#userInfo").dialog( "close" );
+			//刷新表格
+			$('#userInfoList').trigger("reloadGrid");
+		}else{
+			alert("未通过验证");
+		}
+
 		return false;
 	});
 	//设置按钮图标——————未起作用
@@ -106,7 +144,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 <div id="userInfoPager"></div>
 
 <div id="userInfo" title="用户信息">
-	<form id="userInfoForm">
+	<form id="userInfoForm" action="">
 	<table>
 		<tr>
 			<td>
@@ -134,7 +172,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				再次输入密码：
 			</td>
 			<td>
-				<input type="password"/>
+				<input type="password" name="password_again"/>
 			</td>
 		</tr>
 			<tr>

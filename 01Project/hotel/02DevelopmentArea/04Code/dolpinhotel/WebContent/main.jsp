@@ -11,6 +11,9 @@
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="js/i18n/messages_cn.js" type="text/javascript"></script>
+<script src="js/jquery.addSysEmnuItem.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="all" />
 <link id="jQueryUICssSrc" href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css" media="all">

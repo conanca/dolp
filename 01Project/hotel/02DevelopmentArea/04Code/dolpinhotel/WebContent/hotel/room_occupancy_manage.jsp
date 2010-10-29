@@ -16,7 +16,7 @@ $(function(){
 	});
 	
 	jQuery("#roomOccupancyList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=0',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData/0',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[

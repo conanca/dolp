@@ -58,6 +58,7 @@ public class SysEnumItemService extends IdEntityForjqGridService<SysEnumItem> {
 		for (SysEnumItem item : items) {
 			options.put(item.getText(), item.getValue());
 		}
+		log.debug(options);
 		return options;
 	}
 }
