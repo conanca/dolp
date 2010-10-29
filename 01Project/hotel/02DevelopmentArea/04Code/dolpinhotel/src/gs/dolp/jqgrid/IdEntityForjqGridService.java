@@ -75,6 +75,7 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		jq.setPage(pageNumber);
 		jq.setTotal(totalPage);
 		jq.setRows(list);
+		jq.setRecords(count);
 		return jq;
 	}
 }
