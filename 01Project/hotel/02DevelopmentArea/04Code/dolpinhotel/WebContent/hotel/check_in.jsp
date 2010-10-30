@@ -1,27 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="js/jquery.selectsubcategory.js" type="text/javascript"></script>
 <script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
+<script src="js/jquery.serializeObject.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 var customerListData = new Array();
-
-//将form封装成对象
-$.fn.serializeObject = function()
-{
-	var o = {};
-	var a = this.serializeArray();
-	$.each(a, function() {
-		if (o[this.name]) {
-			if (!o[this.name].push) {
-				o[this.name] = [o[this.name]];
-			}
-			o[this.name].push(this.value || '');
-		} else {
-			o[this.name] = this.value || '';
-		}
-	});
-	return o;
-};
 
 $(function(){
 	$(".datepicker").datepicker();
