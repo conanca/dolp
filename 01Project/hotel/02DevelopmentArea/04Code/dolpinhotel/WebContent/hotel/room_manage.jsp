@@ -5,10 +5,11 @@ $(function(){
 
 	// 查询出所有的房间类型
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	var allRoomTypes = getItem(url3);
+	var allRoomTypes = $.getItem(url3);
 	
 	$("#room_manage_roomTypeId").addItems(allRoomTypes);
-	swapJsonKV(allRoomTypes);
+	//swapJsonKV(allRoomTypes);
+	var allRoomTypes1 = $.swapJSON(allRoomTypes); 
 	
 	jQuery("#roomList").jqGrid({
 	   	url:'dolpinhotel/setup/room/getJqgridData',
@@ -17,7 +18,7 @@ $(function(){
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'number',index:'number', width:100, editable:true},
-	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes}},
+	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
 	   		{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
 	   	],
 	   	rowNum:10,

@@ -10,9 +10,9 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
-	var certificateTypes = getSysEmnuItem("certificateType");
+	var certificateTypes = $.getSysEmnuItem("certificateType");
 	$("#certificateType").addItems(certificateTypes);
-	swapJsonKV(certificateTypes);
+	var certificateTypes1 = $.swapJSON(certificateTypes);
 
 	jQuery("#customerList").jqGrid({
 		datatype: "local",
@@ -21,7 +21,7 @@ $(function(){
 			{name:'no',index:'no', width:60},
 			{name:'name',index:'name', width:60},
 			{name:'gender',index:'gender', width:50},
-			{name:'certificateType',index:'certificateType', width:60, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},
+			{name:'certificateType',index:'certificateType', width:60, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes1}},
 			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300}
 		],
@@ -111,7 +111,7 @@ $(function(){
 	});
 
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	$("#roomTypeSelector").addItems(getItem(url3));
+	$("#roomTypeSelector").addItems($.getItem(url3));
 	$("#roomTypeSelector").selectSubcategory({
 		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
 		subcategoryid: 'roomSelector'
