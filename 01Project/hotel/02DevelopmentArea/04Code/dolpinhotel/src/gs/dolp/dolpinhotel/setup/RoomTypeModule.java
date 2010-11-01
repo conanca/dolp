@@ -33,7 +33,7 @@ public class RoomTypeModule {
 
 	@At
 	@Ok("json")
-	public Map<Integer, String> getAllRoomTypes() {
+	public Map<String, Integer> getAllRoomTypes() {
 		return roomTypeService.getAllRoomTypes();
 	}
 

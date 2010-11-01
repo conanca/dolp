@@ -10,6 +10,10 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
+	var certificateTypes = getSysEmnuItem("certificateType");
+	$("#certificateType").addItems(certificateTypes);
+	swapJsonKV(certificateTypes);
+
 	jQuery("#customerList").jqGrid({
 		datatype: "local",
 		colNames:['序号','姓名','性别','证件类型','证件号码','籍贯地址'],
@@ -17,7 +21,7 @@ $(function(){
 			{name:'no',index:'no', width:60},
 			{name:'name',index:'name', width:60},
 			{name:'gender',index:'gender', width:50},
-			{name:'certificateType',index:'certificateType', width:60},
+			{name:'certificateType',index:'certificateType', width:60, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},
 			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300}
 		],
@@ -75,8 +79,6 @@ $(function(){
 		}
 	});
 
-	$("#certificateType").addSysEmnuItem("certificateType");
-	
 	//初始化用户信息界面
 	$("#customerDiv").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
 			$("#customerDivId").attr("value",'');	//清空隐藏域的值
@@ -109,11 +111,7 @@ $(function(){
 	});
 
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	$.getJSON(url3,function(allRoomTypes){
-		$.each(allRoomTypes,function(value,text) {
-			$("#roomTypeSelector").append(new Option(text,value));
-		});
-	});
+	$("#roomTypeSelector").addItems(getItem(url3));
 	$("#roomTypeSelector").selectSubcategory({
 		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
 		subcategoryid: 'roomSelector'

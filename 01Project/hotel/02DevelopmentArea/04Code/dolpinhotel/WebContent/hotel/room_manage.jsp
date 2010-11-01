@@ -5,14 +5,10 @@ $(function(){
 
 	// 查询出所有的房间类型
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	var allRoomTypes;
-	$.ajaxSetup({ async: false});//设为同步模式
-	$.getJSON(url3,function(response){
-		allRoomTypes = response;
-	});
-	$.each(allRoomTypes,function(value,text) {
-		$("#room_manage_roomTypeId").append(new Option(text,value));
-	});
+	var allRoomTypes = getItem(url3);
+	
+	$("#room_manage_roomTypeId").addItems(allRoomTypes);
+	swapJsonKV(allRoomTypes);
 	
 	jQuery("#roomList").jqGrid({
 	   	url:'dolpinhotel/setup/room/getJqgridData',

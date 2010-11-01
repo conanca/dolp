@@ -48,11 +48,11 @@ public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
 		}
 	}
 
-	public Map<Integer, String> getAllRoomTypes() {
+	public Map<String, Integer> getAllRoomTypes() {
 		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
-		Map<Integer, String> roomTypeMap = new HashMap<Integer, String>();
+		Map<String, Integer> roomTypeMap = new HashMap<String, Integer>();
 		for (RoomType roomType : allRoomTypes) {
-			roomTypeMap.put(roomType.getId(), roomType.getName());
+			roomTypeMap.put(roomType.getName(), roomType.getId());
 		}
 		log.debug(roomTypeMap);
 		return roomTypeMap;
