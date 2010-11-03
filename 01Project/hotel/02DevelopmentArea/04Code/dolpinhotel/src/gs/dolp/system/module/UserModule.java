@@ -66,9 +66,9 @@ public class UserModule {
 		userService.updateRole(userId, roleIds);
 	}
 
-	@At
+	@At("/getCurrentRoleIDs/*")
 	@Ok("json")
-	public int[] getCurrentRoleIDs(@Param("userId") String userId) {
+	public int[] getCurrentRoleIDs(String userId) {
 		return userService.getCurrentRoleIDs(userId);
 	}
 }

@@ -40,33 +40,25 @@ $(function(){
 					$(this).removeAttr("selected");
 				}
 			});
-			
-			var url1 = "system/user/getCurrentRoleIDs";
-			var para = {"userId":id};
-			$.getJSON(url1,para,function (data){
-				$.each(data,function(index,value){
-					$("#roleIds option[value='"+value+"']").attr("selected",true);
-				});
+
+			var currentRole = $.getItem("system/user/getCurrentRoleIDs/"+id);
+			$.each(currentRole,function(index,value){
+				$("#roleIds option[value='"+value+"']").attr("selected",true);
 			});
 			
 			$("#roleIds").multiselect("destroy");
-			$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
 			$("#roleIds").multiselect();
 		}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#roleAssignUserList").jqGrid('navGrid','#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
 	jQuery("#roleAssignUserList").jqGrid('hideCol',['id']);//隐藏id列
-	
-	var url2 = "system/role/getAllRole";
-	$.getJSON(url2, function (data){
-		$.each(data,function(text,value) {
-			$("#roleIds").append(new Option(text,value));
-		});
-	});
 
-	//$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
-	//$("#roleIds").multiselect();
+	
+	$("#roleIds").addItems($.getItem("system/role/getAllRole"));
+	$("#roleIds").multiselect("destroy");
+	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
+	$("#roleIds").multiselect();
 
 	var options = {
 		    beforeSubmit:showRequest,
