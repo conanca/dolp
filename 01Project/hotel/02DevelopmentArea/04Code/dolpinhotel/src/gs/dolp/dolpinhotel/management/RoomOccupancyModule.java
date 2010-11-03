@@ -8,13 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Fail;
-import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 @InjectName("roomOccupancyModule")
 @At("/dolpinhotel/management/roomoccupancy")
-@Fail("json")
 public class RoomOccupancyModule {
 	private RoomOccupancyService roomOccupancyService;
 
@@ -26,10 +23,10 @@ public class RoomOccupancyModule {
 	}
 
 	@At("/getGridData/*")
-	@Ok("json")
-	public JqgridAdvancedData<RoomOccupancy> getGridData(int billId, @Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord, @Param("number") String number,
-			@Param("enterDateFrom") String enterDateFrom, @Param("enterDateTo") String enterDateTo,
+	public JqgridAdvancedData<RoomOccupancy> getGridData(int billId, @Param("page") String page,
+			@Param("rows") String rows, @Param("sidx") String sidx, @Param("sord") String sord,
+			@Param("number") String number, @Param("enterDateFrom") String enterDateFrom,
+			@Param("enterDateTo") String enterDateTo,
 			@Param("expectedCheckOutDateFrom") String expectedCheckOutDateFrom,
 			@Param("expectedCheckOutDateTo") String expectedCheckOutDateTo,
 			@Param("leaveDateFrom") String leaveDateFrom, @Param("leaveDateTo") String leaveDateTo,

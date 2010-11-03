@@ -15,14 +15,12 @@ import org.nutz.mvc.annotation.Param;
 
 @InjectName("userModule")
 @At("/system/user")
-@Fail("json")
 //@Filters( { @By(type = CheckSession.class, args = { "logonUser", "/login.jsp" }) })
 public class UserModule {
 
 	private UserService userService;
 
 	@At
-	@Ok("json")
 	public JqgridAdvancedData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return userService.getGridData(page, rows, sidx, sord);
@@ -38,14 +36,12 @@ public class UserModule {
 
 	@At
 	@Ok("redirect:/login.jsp")
-	@Fail("json")
 	@Filters
 	public void logout(HttpSession session) {
 		session.invalidate();
 	}
 
 	@At
-	@Fail("json")
 	public void save(@Param("..") User user) {
 		if (user.getId() == 0) {
 			userService.dao().insert(user);
@@ -55,19 +51,16 @@ public class UserModule {
 	}
 
 	@At
-	@Fail("json")
 	public void deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
 	}
 
 	@At
-	@Fail("json")
 	public void assignRole(@Param("userId") String userId, @Param("assignedRoleIds[]") String[] roleIds) {
 		userService.updateRole(userId, roleIds);
 	}
 
 	@At("/getCurrentRoleIDs/*")
-	@Ok("json")
 	public int[] getCurrentRoleIDs(String userId) {
 		return userService.getCurrentRoleIDs(userId);
 	}
