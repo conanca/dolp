@@ -90,7 +90,7 @@ $(function(){
 			password_again: {
 				required: true,
 				minlength: 5,
-				equalTo: "#password"
+				equalTo: "#password1"
 			},
 			gender: "required",
 			age: {
@@ -166,7 +166,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				登录密码：
 			</td>
 			<td>
-				<input type="password" name="password"/>
+				<input type="password" name="password" id="password1"/>
 			</td>
 			<td>
 				再次输入密码：
