@@ -77,7 +77,7 @@ $(function(){
 	});
 
 	//初始化结帐日期界面
-	$("#room_occupancy_manage_checkOutDiv").dialog({width: 300, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+	$("#room_occupancy_manage_checkOutDiv").dialog({width: 300, hide: 'slide' , modal: true , autoOpen: false,close: function(event, ui) {
 			$("#room_occupancy_manage_checkOutId").attr("value",'');	//清空隐藏域的值
 			$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 		}
@@ -252,10 +252,20 @@ function enableAutosubmit(state){
 <table id="customerSubList"></table>
 <div id="customerSubPager"></div>
 
-<div id="room_occupancy_manage_checkOutDiv">
-	离开日期:
-	<input type="text" id="room_occupancy_manage_checkOutLeaveDate" class="datepicker"/>
-	<br/>
-	<input type="button" id="room_occupancy_manage_checkOutBtn" value="确定"/>
-	<input type="button" id="room_occupancy_manage_checkOutCancelBtn" value="取消"/>
+<div id="room_occupancy_manage_checkOutDiv"  title="请选择离开日期">
+	<table>
+		<tr>
+			<td>
+				离开日期:
+				<input type="text" id="room_occupancy_manage_checkOutLeaveDate" class="datepicker"/>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<input type="button" id="room_occupancy_manage_checkOutBtn" value="确定"/>
+				<input type="button" id="room_occupancy_manage_checkOutCancelBtn" value="取消"/>
+			</td>
+		</tr>
+	</table>
+
 </div>

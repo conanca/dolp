@@ -80,7 +80,7 @@ $(function(){
 	});
 
 	//初始化用户信息界面
-	$("#customerDiv").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+	$("#customerDiv").dialog({width: 500, hide: 'slide' , modal: true , autoOpen: false,close: function(event, ui) {
 			$("#customerDivId").attr("value",'');	//清空隐藏域的值
 			$('#customerForm')[0].reset();	//清空表单的值
 		}

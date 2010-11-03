@@ -64,7 +64,7 @@ $(function(){
 	});
 	
 	//初始化用户信息界面
-	$("#userInfo").dialog({width: 500, hide: 'slide' , autoOpen: false,close: function(event, ui) {
+	$("#userInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			$("#userInfoId").attr("value",'');	//清空隐藏域的值
 			$('#userInfoForm')[0].reset();	//清空表单的值
 		}
