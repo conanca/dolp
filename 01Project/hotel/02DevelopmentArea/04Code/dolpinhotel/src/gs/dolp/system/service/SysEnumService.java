@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 import gs.dolp.system.domain.SysEnum;
 
 import org.nutz.dao.Cnd;
@@ -17,8 +17,8 @@ public class SysEnumService extends IdEntityForjqGridService<SysEnum> {
 		super(dao);
 	}
 
-	public JqgridData<SysEnum> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridData<SysEnum> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public JqgridAdvancedData<SysEnum> getGridData(String page, String rows, String sidx, String sord) {
+		JqgridAdvancedData<SysEnum> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}

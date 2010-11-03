@@ -1,6 +1,6 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardData;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.service.MenuService;
 

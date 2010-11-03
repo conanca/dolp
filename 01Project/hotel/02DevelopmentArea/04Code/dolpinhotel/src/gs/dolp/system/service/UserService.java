@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
@@ -23,8 +23,8 @@ public class UserService extends IdEntityForjqGridService<User> {
 		super(dao);
 	}
 
-	public JqgridData<User> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridData<User> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public JqgridAdvancedData<User> getGridData(String page, String rows, String sidx, String sord) {
+		JqgridAdvancedData<User> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}

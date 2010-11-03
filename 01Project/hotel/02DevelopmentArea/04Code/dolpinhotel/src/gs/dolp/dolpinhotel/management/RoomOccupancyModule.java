@@ -1,6 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
 
 import java.text.ParseException;
 
@@ -27,7 +27,7 @@ public class RoomOccupancyModule {
 
 	@At("/getGridData/*")
 	@Ok("json")
-	public JqgridData<RoomOccupancy> getGridData(int billId, @Param("page") String page, @Param("rows") String rows,
+	public JqgridAdvancedData<RoomOccupancy> getGridData(int billId, @Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord, @Param("number") String number,
 			@Param("enterDateFrom") String enterDateFrom, @Param("enterDateTo") String enterDateTo,
 			@Param("expectedCheckOutDateFrom") String expectedCheckOutDateFrom,

@@ -1,7 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -22,7 +22,7 @@ public class BillService extends IdEntityForjqGridService<Bill> {
 		super(dao);
 	}
 
-	public JqgridData<Bill> getGridData(String page, String rows, String sidx, String sord, String number,
+	public JqgridAdvancedData<Bill> getGridData(String page, String rows, String sidx, String sord, String number,
 			String amount, String dateFrom, String dateTo) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
@@ -37,7 +37,7 @@ public class BillService extends IdEntityForjqGridService<Bill> {
 		if (!Strings.isBlank(dateTo)) {
 			cnd = cnd.and("DATE", "<=", dateTo);
 		}
-		JqgridData<Bill> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		JqgridAdvancedData<Bill> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}

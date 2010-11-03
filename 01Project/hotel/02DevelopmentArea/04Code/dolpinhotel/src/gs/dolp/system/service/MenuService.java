@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.JqgridDataRow;
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardDataRow;
 import gs.dolp.system.domain.Menu;
 
 import java.sql.Connection;
@@ -55,9 +55,9 @@ public class MenuService extends IdEntityService<Menu> {
 	//	}
 
 	@SuppressWarnings("unchecked")
-	public List<JqgridDataRow> list2Rows(List<Menu> list) {
+	public List<JqgridStandardDataRow> list2Rows(List<Menu> list) {
 
-		List<JqgridDataRow> rows = new ArrayList<JqgridDataRow>();
+		List<JqgridStandardDataRow> rows = new ArrayList<JqgridStandardDataRow>();
 
 		Sql sql = Sqls
 				.create("SELECT t1.ID FROM SYSTEM_MENU AS t1 LEFT JOIN SYSTEM_MENU as t2 ON t1.ID = t2.PARENTID WHERE t2.ID IS NULL");
@@ -86,7 +86,7 @@ public class MenuService extends IdEntityService<Menu> {
 			}
 			cell.add(isleaf);
 			cell.add(false);
-			JqgridDataRow row = new JqgridDataRow();
+			JqgridStandardDataRow row = new JqgridStandardDataRow();
 			row.setId(menu.getId());
 			row.setCell(cell);
 			rows.add(row);

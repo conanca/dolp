@@ -1,7 +1,7 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +20,8 @@ public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
 		super(dao);
 	}
 
-	public JqgridData<RoomType> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridData<RoomType> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public JqgridAdvancedData<RoomType> getGridData(String page, String rows, String sidx, String sord) {
+		JqgridAdvancedData<RoomType> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}

@@ -1,7 +1,7 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 import gs.dolp.system.domain.Role;
 
 import java.util.LinkedHashMap;
@@ -22,8 +22,8 @@ public class RoleService extends IdEntityForjqGridService<Role> {
 		super(dao);
 	}
 
-	public JqgridData<Role> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridData<Role> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public JqgridAdvancedData<Role> getGridData(String page, String rows, String sidx, String sord) {
+		JqgridAdvancedData<Role> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}

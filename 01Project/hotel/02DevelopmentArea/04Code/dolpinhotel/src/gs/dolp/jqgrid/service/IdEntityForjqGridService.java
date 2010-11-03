@@ -1,4 +1,6 @@
-package gs.dolp.jqgrid;
+package gs.dolp.jqgrid.service;
+
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.nutz.service.IdEntityService;
  * @author Administrator
  * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为JqgridData格式。
  * 使用时可以继承该类。
+ * 注：实体的主键是数值型的。
  * @param <T>
  */
 public class IdEntityForjqGridService<T> extends IdEntityService<T> {
@@ -27,15 +30,18 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 	 * @param rows
 	 * @param sidx
 	 * @param sord
-	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为JqgridData格式。
+	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为JqgridAdvancedData格式。
 	 * @return
 	 */
-	public JqgridData<T> getjqridDataByCnd(Condition cnd, String page, String rows, String sidx, String sord) {
-		// 设置开始页数和每页记录数
-		int pageNumber = 1;
+	public JqgridAdvancedData<T> getjqridDataByCnd(Condition cnd, String page, String rows, String sidx, String sord) {
+		// 设置开始页数
+		int pageNumber;
 		if (!Strings.isEmpty(page)) {
 			pageNumber = Integer.parseInt(page);
+		} else {
+			pageNumber = 1;
 		}
+		// 设置每页记录数
 		int pageSize = 10;
 		if (!Strings.isEmpty(rows)) {
 			pageSize = Integer.parseInt(rows);
@@ -71,11 +77,11 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		// 查询
 		List<T> list = query(cnd, pager);
 		// 开始封装jqGrid的json格式数据类
-		JqgridData<T> jq = new JqgridData<T>();
-		jq.setPage(pageNumber);
+		JqgridAdvancedData<T> jq = new JqgridAdvancedData<T>();
 		jq.setTotal(totalPage);
-		jq.setRows(list);
+		jq.setPage(pageNumber);
 		jq.setRecords(count);
+		jq.setRows(list);
 		return jq;
 	}
 }

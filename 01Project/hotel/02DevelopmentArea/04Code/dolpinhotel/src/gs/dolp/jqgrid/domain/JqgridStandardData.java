@@ -1,14 +1,19 @@
-package gs.dolp.jqgrid;
+package gs.dolp.jqgrid.domain;
 
 import java.util.List;
 
 import org.nutz.json.Json;
 
-public class JqgridData<T> {
+/**
+ * @author Administrator
+ * jqGrid所需的标准格式的数据
+ *
+ */
+public class JqgridStandardData {
 	private int page;
 	private int total;
 	private int records;
-	private List<T> rows;
+	private List<JqgridStandardDataRow> rows;
 
 	public int getPage() {
 		return page;
@@ -34,11 +39,11 @@ public class JqgridData<T> {
 		this.records = records;
 	}
 
-	public List<T> getRows() {
+	public List<JqgridStandardDataRow> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<T> rows) {
+	public void setRows(List<JqgridStandardDataRow> rows) {
 		this.rows = rows;
 	}
 

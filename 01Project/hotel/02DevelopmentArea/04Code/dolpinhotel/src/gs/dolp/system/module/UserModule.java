@@ -1,6 +1,6 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
@@ -23,7 +23,7 @@ public class UserModule {
 
 	@At
 	@Ok("json")
-	public JqgridData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
+	public JqgridAdvancedData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return userService.getGridData(page, rows, sidx, sord);
 	}

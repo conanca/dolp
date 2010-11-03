@@ -1,7 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.JqgridDataRow;
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardDataRow;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -36,18 +36,18 @@ public class AvailableRoomCheckService extends Service {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<JqgridDataRow> getRows() throws SQLException {
+	public List<JqgridStandardDataRow> getRows() throws SQLException {
 		Sql sql = Sqls
 				.create("SELECT (SELECT NAME FROM DOLPINHOTEL_ROOMTYPE WHERE ID = ROOMTYPEID) AS ROOMTYPENAME,COUNT(ROOMTYPEID) AS AVAILABLEROOMCOUNT FROM DOLPINHOTEL_ROOM WHERE ISOCCUPANCY = 0 GROUP BY ROOMTYPEID");
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				List<JqgridDataRow> rows = new ArrayList<JqgridDataRow>();
+				List<JqgridStandardDataRow> rows = new ArrayList<JqgridStandardDataRow>();
 				int i = 1;
 				while (rs.next()) {
 					List cell = new ArrayList();
 					cell.add(rs.getString("ROOMTYPENAME"));
 					cell.add(rs.getInt("AVAILABLEROOMCOUNT"));
-					JqgridDataRow row = new JqgridDataRow();
+					JqgridStandardDataRow row = new JqgridStandardDataRow();
 					row.setId(i);
 					row.setCell(cell);
 					rows.add(row);
@@ -57,6 +57,6 @@ public class AvailableRoomCheckService extends Service {
 			}
 		});
 		dao().execute(sql);
-		return (List<JqgridDataRow>) sql.getResult();
+		return (List<JqgridStandardDataRow>) sql.getResult();
 	}
 }

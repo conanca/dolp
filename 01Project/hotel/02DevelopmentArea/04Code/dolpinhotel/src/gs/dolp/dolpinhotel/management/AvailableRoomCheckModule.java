@@ -1,6 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.JqgridStandardData;
+import gs.dolp.jqgrid.domain.JqgridStandardData;
 
 import java.sql.SQLException;
 

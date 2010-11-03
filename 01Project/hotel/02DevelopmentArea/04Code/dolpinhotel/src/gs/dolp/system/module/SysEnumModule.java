@@ -1,6 +1,6 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
 import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
@@ -24,7 +24,7 @@ public class SysEnumModule {
 
 	@At
 	@Ok("json")
-	public JqgridData<SysEnum> getSysEnumGridData(@Param("page") String page, @Param("rows") String rows,
+	public JqgridAdvancedData<SysEnum> getSysEnumGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return sysEnumService.getGridData(page, rows, sidx, sord);
 	}
@@ -32,7 +32,7 @@ public class SysEnumModule {
 	// 使用REST风格的路径参数。对于所有 Nutz.Mvc 提供的内置适配器，路径参数是最优先的，所以把int sysEnumId放在第一个参数
 	@At("/getSysEnumItemGridData/*")
 	@Ok("json")
-	public JqgridData<SysEnumItem> getSysEnumItemGridData(int sysEnumId, @Param("page") String page,
+	public JqgridAdvancedData<SysEnumItem> getSysEnumItemGridData(int sysEnumId, @Param("page") String page,
 			@Param("rows") String rows, @Param("sidx") String sidx, @Param("sord") String sord) {
 		return sysEnumItemService.getGridData(page, rows, sidx, sord, sysEnumId);
 	}

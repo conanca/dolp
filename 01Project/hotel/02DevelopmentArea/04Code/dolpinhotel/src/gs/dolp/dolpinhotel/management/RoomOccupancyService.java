@@ -2,8 +2,8 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.dolpinhotel.setup.Room;
 import gs.dolp.dolpinhotel.setup.RoomType;
-import gs.dolp.jqgrid.IdEntityForjqGridService;
-import gs.dolp.jqgrid.JqgridData;
+import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -69,7 +69,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		}
 	}
 
-	public JqgridData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord, String number,
+	public JqgridAdvancedData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord, String number,
 			String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom, String expectedCheckOutDateTo,
 			String leaveDateFrom, String leaveDateTo, String occupancyDays, String status, int billId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
@@ -109,7 +109,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		if (billId != 0) {
 			cnd = cnd.and("BILLID", "=", billId);
 		}
-		JqgridData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		JqgridAdvancedData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
 		log.debug(jq);
 		return jq;
 	}
