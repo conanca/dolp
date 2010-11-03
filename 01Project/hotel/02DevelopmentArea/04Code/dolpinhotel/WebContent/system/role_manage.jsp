@@ -5,7 +5,7 @@ $(function(){
 	jQuery("#rolelist").jqGrid({
 	   	url:'system/role/getGridData',
 		datatype: "json",
-	   	colNames:['id','描述','名称'],
+	   	colNames:['id','名称','描述'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
 	   		{name:'name',index:'name', width:100,editable:true},
