@@ -1,8 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="/WEB-INF/tld/c.tld"%>
 <script type="text/javascript">
 $(function() {
+
+	var url = 'system/user/getCurrentUserName';
+	$.ajaxSetup({ async: false});
+	$.getJSON(url,function(userName){
+		$('#CurrentUserName').text(userName);
+	});
+	
 	$('#jQueryUICssSwitch').change(function() {
 		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
 	});
@@ -10,7 +16,7 @@ $(function() {
 </script>
 <h1><b>AAAA</b></h1>
 <div align="right">
-	当前用户：${logonUser.name}
+	当前用户：<label id="CurrentUserName"></label>
 	<a href="system/user/logout">用户登出</a>
 	<select id="jQueryUICssSwitch">
 		<option value="black-tie">black-tie</option>

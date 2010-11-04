@@ -1,5 +1,9 @@
 var ioc = {
 
+	log : {
+		type : 'org.nutz.aop.interceptor.LoggingMethodInterceptor'
+	},
+
 	userService : {
 		type : "gs.dolp.system.service.UserService",
 		args : {
@@ -35,7 +39,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	menuService : {
 		type : "gs.dolp.system.service.MenuService",
 		args : {
@@ -53,7 +57,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	roomTypeService : {
 		type : "gs.dolp.dolpinhotel.setup.RoomTypeService",
 		args : {
@@ -71,7 +75,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	roomService : {
 		type : "gs.dolp.dolpinhotel.setup.RoomService",
 		args : {
@@ -89,7 +93,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	availableRoomCheckService : {
 		type : "gs.dolp.dolpinhotel.management.AvailableRoomCheckService",
 		args : {
@@ -107,7 +111,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	roomOccupancyService : {
 		type : "gs.dolp.dolpinhotel.management.RoomOccupancyService",
 		args : {
@@ -125,7 +129,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	customerService : {
 		type : "gs.dolp.dolpinhotel.management.CustomerService",
 		args : {
@@ -143,7 +147,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	billService : {
 		type : "gs.dolp.dolpinhotel.management.BillService",
 		args : {
@@ -161,7 +165,7 @@ var ioc = {
 			}
 		}
 	},
-	
+
 	sysEnumService : {
 		type : "gs.dolp.system.service.SysEnumService",
 		args : {

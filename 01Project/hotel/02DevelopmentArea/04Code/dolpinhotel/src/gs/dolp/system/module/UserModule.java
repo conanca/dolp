@@ -42,6 +42,12 @@ public class UserModule {
 	}
 
 	@At
+	public String getCurrentUserName(HttpSession session) {
+		User cUser = (User) session.getAttribute("logonUser");
+		return cUser.getName();
+	}
+
+	@At
 	public void save(@Param("..") User user) {
 		if (user.getId() == 0) {
 			userService.dao().insert(user);
