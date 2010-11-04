@@ -53,6 +53,10 @@ $(function() {
 	var myLayout = $('body').layout({ applyDefaultStyles: true });
 	myLayout.sizePane("north", 100);
 
+	$("#UpPane").load("header.jsp");
+	$("#LeftPane").load("menu.jsp");
+	$("#tabs-home").load("home.jsp");
+
 	maintab =jQuery('#tabs','#RightPane').tabs({
         add: function(e, ui) {
             // append close thingy
@@ -66,55 +70,22 @@ $(function() {
             maintab.tabs('select', '#' + ui.panel.id);
         }
     });
-	
-	$('#jQueryUICssSwitch').change(function() {
-		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
-	});
 });
 </script>
 </head>
 <body>
 	<div id="UpPane" class="ui-layout-north ui-widget ui-widget-content" >
-		<%@include file="/header.jsp" %>
 	</div>
 	<div id="RightPane" class="ui-layout-center ui-helper-reset ui-widget-content" >
 		<div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">默认页</a></li>
+				<li><a href="#tabs-home">默认页</a></li>
 			</ul>
-			<div id="tabs-1" style="font-size:12px;">
-				<%@include file="/home.jsp" %>
+			<div id="tabs-home" style="font-size:12px;">
 			</div>
 		</div>
 	</div>
 	<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
-		<select id="jQueryUICssSwitch">
-			<option value="black-tie">black-tie</option>
-			<option value="blitzer">blitzer</option>
-			<option value="cupertino">cupertino</option>
-			<option value="dark-hive">dark-hive</option>
-			<option value="dot-luv">dot-luv</option>
-			<option value="eggplant">eggplant</option>
-			<option value="excite-bike">excite-bike</option>
-			<option value="flick" selected>flick</option>
-			<option value="hot-sneaks">hot-sneaks</option>
-			<option value="humanity">humanity</option>
-			<option value="le-frog">le-frog</option>
-			<option value="mint-choc">mint-choc</option>
-			<option value="overcast">overcast</option>
-			<option value="pepper-grinder">pepper-grinder</option>
-			<option value="redmond">redmond</option>
-			<option value="smoothness">smoothness</option>
-			<option value="south-street">south-street</option>
-			<option value="start">start</option>
-			<option value="sunny">sunny</option>
-			<option value="swanky-purse">swanky-purse</option>
-			<option value="trontastic">trontastic</option>
-			<option value="ui-darkness">ui-darkness</option>
-			<option value="ui-lightness">ui-lightness</option>
-			<option value="vader">vader</option>
-		</select>
-		<%@include file="/menu.jsp" %>
 	</div>
 </body>
 </html>
