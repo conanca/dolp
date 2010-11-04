@@ -10,18 +10,16 @@ import java.text.SimpleDateFormat;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
 public class BillService extends IdEntityForjqGridService<Bill> {
-
-	private static final Log log = Logs.getLog(BillService.class);
 
 	public BillService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridAdvancedData<Bill> getGridData(String page, String rows, String sidx, String sord, String number,
 			String amount, String dateFrom, String dateTo) {
 		Cnd cnd = Cnd.where("1", "=", 1);
@@ -38,10 +36,10 @@ public class BillService extends IdEntityForjqGridService<Bill> {
 			cnd = cnd.and("DATE", "<=", dateTo);
 		}
 		JqgridAdvancedData<Bill> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
+	@Aop(value = "log")
 	public void UDBill(String oper, String id, String number, String amount, String date) throws ParseException {
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");

@@ -10,17 +10,16 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
 public class RoomService extends IdEntityForjqGridService<Room> {
-	private static final Log log = Logs.getLog(RoomService.class);
 
 	public RoomService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridAdvancedData<Room> getJqgridData(String page, String rows, String sidx, String sord, String number,
 			String isOccupancy, String roomTypeId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
@@ -34,10 +33,10 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 			cnd = cnd.and("ROOMTYPEID", "=", roomTypeId);
 		}
 		JqgridAdvancedData<Room> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
+	@Aop(value = "log")
 	public void CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
@@ -60,6 +59,7 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 		}
 	}
 
+	@Aop(value = "log")
 	public Map<String, String> getAllAvailableRoomForSelectOption(int roomTypeId) {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
 		Condition cnd = Cnd.where("ISOCCUPANCY", "=", 0).and("ROOMTYPEID", "=", roomTypeId);
@@ -67,17 +67,16 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 		for (Room room : rooms) {
 			roomOptions.put(room.getNumber(), String.valueOf(room.getId()));
 		}
-		log.debug(roomOptions);
 		return roomOptions;
 	}
 
+	@Aop(value = "log")
 	public Map<String, String> getAllRoomForSelectOption() {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
 		List<Room> rooms = this.query(null, null);
 		for (Room room : rooms) {
 			roomOptions.put(String.valueOf(room.getId()), room.getNumber());
 		}
-		log.debug(roomOptions);
 		return roomOptions;
 	}
 }

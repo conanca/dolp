@@ -11,23 +11,21 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
+import org.nutz.ioc.aop.Aop;
 
 public class RoleService extends IdEntityForjqGridService<Role> {
-
-	private static final Log log = Logs.getLog(RoleService.class);
 
 	public RoleService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridAdvancedData<Role> getGridData(String page, String rows, String sidx, String sord) {
 		JqgridAdvancedData<Role> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
+	@Aop(value = "log")
 	public void CUDRole(String oper, String id, String name, String description) {
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
@@ -48,6 +46,7 @@ public class RoleService extends IdEntityForjqGridService<Role> {
 		}
 	}
 
+	@Aop(value = "log")
 	public Map<String, String> getAllRole() {
 		List<Role> roles = query(null, null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();

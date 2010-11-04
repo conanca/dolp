@@ -11,24 +11,22 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
 public class UserService extends IdEntityForjqGridService<User> {
-
-	private static final Log log = Logs.getLog(UserService.class);
 
 	public UserService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridAdvancedData<User> getGridData(String page, String rows, String sidx, String sord) {
 		JqgridAdvancedData<User> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
+	@Aop(value = "log")
 	public User userAuthenticate(String number, String password) {
 		Condition cnd = Cnd.where("NUMBER", "=", number).and("PASSWORD", "=", password);
 		User user = fetch(cnd);
@@ -38,6 +36,7 @@ public class UserService extends IdEntityForjqGridService<User> {
 		return user;
 	}
 
+	@Aop(value = "log")
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
@@ -45,6 +44,7 @@ public class UserService extends IdEntityForjqGridService<User> {
 		}
 	}
 
+	@Aop(value = "log")
 	public void updateRole(String userId, String[] roleIds) {
 		// 取得要更新角色的用户
 		User user = fetch(Integer.parseInt(userId));
@@ -67,6 +67,7 @@ public class UserService extends IdEntityForjqGridService<User> {
 		dao().insertRelation(user, "roles");
 	}
 
+	@Aop(value = "log")
 	public int[] getCurrentRoleIDs(String userId) {
 		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
 		List<Role> roles = user.getRoles();

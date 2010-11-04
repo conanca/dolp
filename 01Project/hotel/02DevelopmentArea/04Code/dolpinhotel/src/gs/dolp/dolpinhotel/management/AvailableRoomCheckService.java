@@ -13,29 +13,27 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.service.Service;
 
 public class AvailableRoomCheckService extends Service {
-
-	private static final Log log = Logs.getLog(AvailableRoomCheckService.class);
 
 	public AvailableRoomCheckService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridStandardData AvailableRoomCount() throws SQLException {
 		JqgridStandardData jq = new JqgridStandardData();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(1);
 		jq.setRows(getRows());
-		log.debug(jq.toString());
 		return jq;
 	}
 
 	@SuppressWarnings("unchecked")
+	@Aop(value = "log")
 	public List<JqgridStandardDataRow> getRows() throws SQLException {
 		Sql sql = Sqls
 				.create("SELECT (SELECT NAME FROM DOLPINHOTEL_ROOMTYPE WHERE ID = ROOMTYPEID) AS ROOMTYPENAME,COUNT(ROOMTYPEID) AS AVAILABLEROOMCOUNT FROM DOLPINHOTEL_ROOM WHERE ISOCCUPANCY = 0 GROUP BY ROOMTYPEID");

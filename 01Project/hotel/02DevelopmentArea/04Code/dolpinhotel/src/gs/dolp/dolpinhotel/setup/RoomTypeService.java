@@ -10,19 +10,17 @@ import java.util.Map;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
+import org.nutz.ioc.aop.Aop;
 
 public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
-	private static final Log log = Logs.getLog(RoomTypeService.class);
 
 	public RoomTypeService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridAdvancedData<RoomType> getGridData(String page, String rows, String sidx, String sord) {
 		JqgridAdvancedData<RoomType> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
@@ -48,13 +46,13 @@ public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
 		}
 	}
 
+	@Aop(value = "log")
 	public Map<String, Integer> getAllRoomTypes() {
 		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
 		Map<String, Integer> roomTypeMap = new HashMap<String, Integer>();
 		for (RoomType roomType : allRoomTypes) {
 			roomTypeMap.put(roomType.getName(), roomType.getId());
 		}
-		log.debug(roomTypeMap);
 		return roomTypeMap;
 	}
 

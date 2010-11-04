@@ -13,14 +13,12 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Expression;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy> {
-	private static final Log log = Logs.getLog(RoomOccupancyService.class);
 
 	public RoomOccupancyService(Dao dao) {
 		super(dao);
@@ -34,6 +32,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 	 * @param customers
 	 * @throws ParseException
 	 */
+	@Aop(value = "log")
 	public void saveRoomOccupancy(String enterDate, String expectedCheckOutDate, final int roomId,
 			final Customer[] customers) throws ParseException {
 
@@ -69,9 +68,11 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		}
 	}
 
-	public JqgridAdvancedData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord, String number,
-			String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom, String expectedCheckOutDateTo,
-			String leaveDateFrom, String leaveDateTo, String occupancyDays, String status, int billId) {
+	@Aop(value = "log")
+	public JqgridAdvancedData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord,
+			String number, String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom,
+			String expectedCheckOutDateTo, String leaveDateFrom, String leaveDateTo, String occupancyDays,
+			String status, int billId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
 			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
@@ -110,7 +111,6 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 			cnd = cnd.and("BILLID", "=", billId);
 		}
 		JqgridAdvancedData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
-		log.debug(jq);
 		return jq;
 	}
 
@@ -120,6 +120,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 	 * @param leaveDate
 	 * @throws ParseException
 	 */
+	@Aop(value = "log")
 	public void checkOut(final int[] ids, String leaveDate) throws ParseException {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

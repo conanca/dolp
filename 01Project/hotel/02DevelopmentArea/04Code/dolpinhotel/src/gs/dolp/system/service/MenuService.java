@@ -15,18 +15,17 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 import org.nutz.service.IdEntityService;
 
 public class MenuService extends IdEntityService<Menu> {
-	private static final Log log = Logs.getLog(MenuService.class);
 
 	public MenuService(Dao dao) {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public JqgridStandardData getGridData() {
 		List<Menu> list = query(null, null);
 		JqgridStandardData jq = new JqgridStandardData();
@@ -34,7 +33,6 @@ public class MenuService extends IdEntityService<Menu> {
 		jq.setTotal(1);
 		jq.setRecords(1);
 		jq.setRows(list2Rows(list));
-		log.debug(jq.toString());
 		return jq;
 	}
 
@@ -55,6 +53,7 @@ public class MenuService extends IdEntityService<Menu> {
 	//	}
 
 	@SuppressWarnings("unchecked")
+	@Aop(value = "log")
 	public List<JqgridStandardDataRow> list2Rows(List<Menu> list) {
 
 		List<JqgridStandardDataRow> rows = new ArrayList<JqgridStandardDataRow>();
@@ -94,6 +93,7 @@ public class MenuService extends IdEntityService<Menu> {
 		return rows;
 	}
 
+	@Aop(value = "log")
 	public void deleteMenus(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			String[] idArr = ids.split(",");
