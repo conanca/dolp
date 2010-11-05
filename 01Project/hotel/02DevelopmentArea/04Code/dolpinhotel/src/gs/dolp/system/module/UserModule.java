@@ -28,7 +28,7 @@ public class UserModule {
 
 	@At
 	@Ok("redirect:/main.jsp")
-	@Fail("redirect:/error/login_fail.jsp")
+	@Fail("redirect:/login.jsp")
 	@Filters
 	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		session.setAttribute("logonUser", userService.userAuthenticate(number, password));
@@ -36,7 +36,6 @@ public class UserModule {
 
 	@At
 	@Ok("redirect:/login.jsp")
-	@Filters
 	public void logout(HttpSession session) {
 		session.invalidate();
 	}
@@ -44,7 +43,11 @@ public class UserModule {
 	@At
 	public String getCurrentUserName(HttpSession session) {
 		User cUser = (User) session.getAttribute("logonUser");
-		return cUser.getName();
+		if (cUser != null) {
+			return cUser.getName();
+		} else {
+			throw new RuntimeException("Please Logon!");
+		}
 	}
 
 	@At

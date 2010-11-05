@@ -66,7 +66,7 @@
 	</row>
 	
 	<row>
-		<cell>6</cell>
+		<cell>7</cell>
 		<cell>演示页面</cell>
 		<cell></cell>
 		<cell>0</cell>
@@ -76,7 +76,7 @@
 		<cell>false</cell>
 	</row>
 	<row>
-		<cell>7</cell>
+		<cell>8</cell>
 		<cell>格式化文本框</cell>
 		<cell>demo1.jsp</cell>
 		<cell>1</cell>
@@ -87,7 +87,7 @@
 	</row>
 	
 	<row>
-		<cell>8</cell>
+		<cell>9</cell>
 		<cell>酒店设置</cell>
 		<cell></cell>
 		<cell>0</cell>
@@ -97,7 +97,7 @@
 		<cell>false</cell>
 	</row>
 	<row>
-		<cell>9</cell>
+		<cell>10</cell>
 		<cell>房间类型设置</cell>
 		<cell>hotel/room_type_manage.jsp</cell>
 		<cell>1</cell>
@@ -107,7 +107,7 @@
 		<cell>true</cell>
 	</row>
 	<row>
-		<cell>10</cell>
+		<cell>11</cell>
 		<cell>房间设置</cell>
 		<cell>hotel/room_manage.jsp</cell>
 		<cell>1</cell>
@@ -118,7 +118,7 @@
 	</row>
 
 	<row>
-		<cell>11</cell>
+		<cell>12</cell>
 		<cell>经营管理</cell>
 		<cell></cell>
 		<cell>0</cell>
@@ -128,7 +128,7 @@
 		<cell>false</cell>
 	</row>
 	<row>
-		<cell>12</cell>
+		<cell>13</cell>
 		<cell>可用房确认</cell>
 		<cell>hotel/available_room_check.jsp</cell>
 		<cell>1</cell>
@@ -138,7 +138,7 @@
 		<cell>true</cell>
 	</row>
 	<row>
-		<cell>13</cell>
+		<cell>14</cell>
 		<cell>入住情况</cell>
 		<cell>hotel/room_occupancy_manage.jsp</cell>
 		<cell>1</cell>
@@ -148,7 +148,7 @@
 		<cell>true</cell>
 	</row>
 	<row>
-		<cell>14</cell>
+		<cell>15</cell>
 		<cell>入住登记</cell>
 		<cell>hotel/check_in.jsp</cell>
 		<cell>1</cell>
@@ -158,7 +158,7 @@
 		<cell>true</cell>
 	</row>
 	<row>
-		<cell>15</cell>
+		<cell>16</cell>
 		<cell>账单管理</cell>
 		<cell>hotel/bill_manage.jsp</cell>
 		<cell>1</cell>

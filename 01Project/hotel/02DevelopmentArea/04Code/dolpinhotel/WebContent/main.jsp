@@ -57,6 +57,7 @@ $(function() {
 	$("#LeftPane").load("menu.jsp");
 	$("#tabs-home").load("home.jsp");
 
+	//在menu.jsp中触发maintab的add事件时，需要激活这个新增的tab
 	maintab =jQuery('#tabs','#RightPane').tabs({
         add: function(e, ui) {
             // append close thingy
