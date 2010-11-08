@@ -14,6 +14,7 @@ public class JqgridStandardData {
 	private int total;
 	private int records;
 	private List<JqgridStandardDataRow> rows;
+	private UserData userdata;
 
 	public int getPage() {
 		return page;
@@ -45,6 +46,14 @@ public class JqgridStandardData {
 
 	public void setRows(List<JqgridStandardDataRow> rows) {
 		this.rows = rows;
+	}
+
+	public UserData getUserdata() {
+		return userdata;
+	}
+
+	public void setUserdata(UserData userdata) {
+		this.userdata = userdata;
 	}
 
 	public String toString() {

@@ -15,6 +15,7 @@ public class JqgridAdvancedData<T> {
 	private int total;
 	private int records;
 	private List<T> rows;
+	private UserData userdata;
 
 	public int getPage() {
 		return page;
@@ -46,6 +47,14 @@ public class JqgridAdvancedData<T> {
 
 	public void setRows(List<T> rows) {
 		this.rows = rows;
+	}
+
+	public UserData getUserdata() {
+		return userdata;
+	}
+
+	public void setUserdata(UserData userdata) {
+		this.userdata = userdata;
 	}
 
 	public String toString() {
