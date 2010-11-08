@@ -1,11 +1,22 @@
 var ioc = {
+
 	dataSource : {
-		type : 'org.h2.jdbcx.JdbcConnectionPool',
-		events : { depose : 'dispose' },
-		args : [ "jdbc:h2:file:~/test", "sa", "" ] },
+		type : "com.jolbox.bonecp.BoneCPDataSource",
+		events : {
+			depose : 'close'
+		},
+		fields : {
+			driverClass : 'org.h2.Driver',
+			jdbcUrl : 'jdbc:h2:tcp://localhost/~/test',
+			username : 'sa',
+			password : ''
+		}
+	},
 
 	dao : {
 		type : 'org.nutz.dao.impl.NutDao',
-		args : [{refer:'dataSource'}]
+		args : [ {
+			refer : 'dataSource'
+		} ]
 	}
 };
