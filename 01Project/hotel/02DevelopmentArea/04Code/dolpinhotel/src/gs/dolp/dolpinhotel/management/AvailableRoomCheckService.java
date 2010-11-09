@@ -2,6 +2,7 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.jqgrid.domain.JqgridStandardData;
 import gs.dolp.jqgrid.domain.JqgridStandardDataRow;
+import gs.dolp.jqgrid.domain.SystemMessage;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,6 +30,7 @@ public class AvailableRoomCheckService extends Service {
 		jq.setTotal(1);
 		jq.setRecords(1);
 		jq.setRows(getRows());
+		jq.setUserdata(new SystemMessage("查询成功!", null, null));
 		return jq;
 	}
 

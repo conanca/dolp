@@ -30,7 +30,10 @@ $(function(){
 	    viewrecords: true,
 	    editurl: "system/user/deleteRow",	//del:true
 	    multiselect: true, //checkbox
-	    caption: "用户列表"
+	    caption: "用户列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#userInfoList").getGridParam("userData"));
+    	}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
@@ -119,7 +122,7 @@ $(function(){
 			//刷新表格
 			$('#userInfoList').trigger("reloadGrid");
 		}else{
-			alert("未通过验证");
+			$.addMessageStr(null,null,"未通过验证");
 		}
 
 		return false;
@@ -137,7 +140,7 @@ function showRequest(formData, jqForm, options) {
 }
 //提交后获得Respons后
 function showResponse(responseText, statusText, xhr, $form)  {
-	alert('保存成功');
+	$.addMessageStr(responseText);
 }
 </script>
 <table id="userInfoList"></table>

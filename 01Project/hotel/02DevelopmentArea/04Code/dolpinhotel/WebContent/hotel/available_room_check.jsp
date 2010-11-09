@@ -17,7 +17,10 @@ $(function(){
 	   	sortname: 'count',
 		sortorder: "desc",
 		viewrecords: true,
-		caption:"可用房列表"
+		caption:"可用房列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#availableRoomCheckList").getGridParam("userData"));
+		}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#availableRoomCheckList").jqGrid('navGrid','#availableRoomCheckPager',{edit:false,add:false,del:false,search:false});

@@ -1,6 +1,7 @@
 package gs.dolp.jqgrid.service;
 
 import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.domain.SystemMessage;
 
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		jq.setPage(pageNumber);
 		jq.setRecords(count);
 		jq.setRows(list);
+		jq.setUserdata(new SystemMessage("查询成功!", null, null));
 		return jq;
 	}
 }
