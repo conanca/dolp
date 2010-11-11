@@ -4,73 +4,8 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
-	//设置Grid
-	jQuery("#userInfoList").jqGrid({
-	   	url:'system/user/getGridData',
-		datatype: "json",
-	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0},
-	   		{name:'number',index:'number', width:90},
-	   		{name:'name',index:'name', width:100},
-	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
-	   		{name:'age',index:'age', width:80},
-	   		{name:'birthday',index:'birthday', width:80},
-	   		{name:'phone',index:'phone', width:150}
-	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	    jsonReader:{
-	   		repeatitems: false
-        },
-	   	pager: '#userInfoPager',
-	   	sortname: 'number',
-	    sortorder: "asc",
-	    viewrecords: true,
-	    editurl: "system/user/deleteRow",	//del:true
-	    multiselect: true, //checkbox
-	    caption: "用户列表",
-	    loadComplete: function(){
-    	    var userData = jQuery("#userInfoList").getUserData();
-			$.addMessage(userData);
-    	}
-	});
-	//不显示jqgrid自带的增删改查按钮
-	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
-	//隐藏id列
-	jQuery("#userInfoList").jqGrid('hideCol',['id']);
-	//添加自定义按钮——添加、编辑和删除
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
-		onClickButton:function(){
-			$("#userInfo").dialog( "open" );
-		}
-	});
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
-		onClickButton:function(){
-			var id = jQuery("#userInfoList").jqGrid('getGridParam','selrow');
-			if (id) {
-				jQuery("#userInfoList").jqGrid('GridToForm',id,"#userInfoForm");
-				$("#userInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择要编辑的记录",null);
-			}
-		}
-	});
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
-		onClickButton:function(){
-			var gr = jQuery("#userInfoList").jqGrid('getGridParam','selarrrow');
-			if( gr != null && gr != ''){
-				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
-			}
-			else{
-				$.addMessageStr(null,"请选择要删除的记录",null);
-			}
-		}
-	});
-
 	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
 	$("#user_manage_gender").addItems(genders);
 
 	//初始化用户信息界面
@@ -138,6 +73,72 @@ $(function(){
 	//点击取消时关闭对话框
 	$("#userInfocancel").click(function() {
 		$("#userInfo").dialog( "close" );
+	});
+
+	//设置Grid
+	jQuery("#userInfoList").jqGrid({
+	   	url:'system/user/getGridData',
+		datatype: "json",
+	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0},
+	   		{name:'number',index:'number', width:90},
+	   		{name:'name',index:'name', width:100},
+	   		{name:'gender',index:'gender', width:80,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
+	   		{name:'age',index:'age', width:80, editable:true},
+	   		{name:'birthday',index:'birthday', width:80},
+	   		{name:'phone',index:'phone', width:150}
+	   	],
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	   	pager: '#userInfoPager',
+	   	sortname: 'number',
+	    sortorder: "asc",
+	    viewrecords: true,
+	    editurl: "system/user/deleteRow",	//del:true
+	    multiselect: true, //checkbox
+	    caption: "用户列表",
+	    loadComplete: function(){
+    	    var userData = jQuery("#userInfoList").getUserData();
+			$.addMessage(userData);
+    	}
+	});
+	//不显示jqgrid自带的增删改查按钮
+	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
+	//隐藏id列
+	jQuery("#userInfoList").jqGrid('hideCol',['id']);
+	//添加自定义按钮——添加、编辑和删除
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
+		onClickButton:function(){
+			$("#userInfo").dialog( "open" );
+		}
+	});
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
+		onClickButton:function(){
+			var id = jQuery("#userInfoList").jqGrid('getGridParam','selrow');
+			if (id) {
+				jQuery("#userInfoList").jqGrid('GridToForm',id,"#userInfoForm");
+				$("#userInfo").dialog( "open" );
+			} else {
+				$.addMessageStr(null,"请选择要编辑的记录",null);
+			}
+		}
+	});
+	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
+		onClickButton:function(){
+			var gr = jQuery("#userInfoList").jqGrid('getGridParam','selarrrow');
+			if( gr != null && gr != ''){
+				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
+			}
+			else{
+				$.addMessageStr(null,"请选择要删除的记录",null);
+			}
+		}
 	});
 });
 
