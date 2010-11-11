@@ -9,7 +9,7 @@ import org.nutz.json.Json;
  * jqGrid所需的标准格式的数据
  *
  */
-public class JqgridStandardData {
+public class JqgridStandardData implements ResponseData {
 	private int page;
 	private int total;
 	private int records;

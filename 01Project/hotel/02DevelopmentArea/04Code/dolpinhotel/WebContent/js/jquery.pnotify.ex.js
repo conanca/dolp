@@ -1,32 +1,38 @@
 //jquery.pnotify.min.js的自定义扩展
 $.extend({
 	addMessage : function(userData) {
-		var infoMessage = userData.infoMessage;
-		var warnMessage = userData.warnMessage;
-		var errorMessage = userData.errorMessage;
+		var infoMessages = userData.infoMessages;
+		var warnMessages = userData.warnMessages;
+		var errorMessages = userData.errorMessages;
 		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
 		var opts = {
 				pnotify_addclass: "stack-bottomright",
 				pnotify_stack: stack_bottomright
 		};
 		
-		if (infoMessage) {
+		if (infoMessages) {
 			opts.pnotify_title = "消息";
-			opts.pnotify_text = infoMessage;
-			$.pnotify(opts);
+			$.each(infoMessages, function(k,infoMessage) {
+				opts.pnotify_text = infoMessage;
+				$.pnotify(opts);
+	        });
 		}
-		if (warnMessage) {
+		if (warnMessages) {
 			opts.pnotify_title = "警告";
-			opts.pnotify_text = warnMessage;
 			opts.pnotify_type = "error";
-			pnotify_error_icon: 'ui-icon-notice';
-			$.pnotify(opts);
+			opts.pnotify_error_icon = 'ui-icon-notice';
+			$.each(warnMessages, function(k,warnMessage) {
+				opts.pnotify_text = warnMessage;
+				$.pnotify(opts);
+	        });
 		}
-		if (errorMessage) {
+		if (errorMessages) {
 			opts.pnotify_title = "错误";
-			opts.pnotify_text = errorMessage;
 			opts.pnotify_type = "error";
-			$.pnotify(opts);
+			$.each(errorMessages, function(k,errorMessage) {
+				opts.pnotify_text = errorMessage;
+				$.pnotify(opts);
+	        });
 		}
 	},
 	addMessageStr : function(infoMessage,warnMessage,errorMessage) {

@@ -1,6 +1,6 @@
 package gs.dolp.nutzx;
 
-import gs.dolp.jqgrid.domain.JqgridStandardData;
+import gs.dolp.jqgrid.domain.ResponseSysMsgData;
 import gs.dolp.jqgrid.domain.SystemMessage;
 
 import java.io.IOException;
@@ -30,9 +30,9 @@ public class MyJsonView implements View {
 		Object jsonWritedStr = obj;
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			Throwable exception = (Throwable) obj;
-			JqgridStandardData jq = new JqgridStandardData();
-			jq.setUserdata(new SystemMessage(null, null, exception.getMessage()));
-			jsonWritedStr = jq;
+			ResponseSysMsgData reData = new ResponseSysMsgData();
+			reData.setUserdata(new SystemMessage(null, null, exception.getMessage()));
+			jsonWritedStr = reData;
 		}
 		Mvcs.write(resp, null == jsonWritedStr ? data : jsonWritedStr, format);
 	}

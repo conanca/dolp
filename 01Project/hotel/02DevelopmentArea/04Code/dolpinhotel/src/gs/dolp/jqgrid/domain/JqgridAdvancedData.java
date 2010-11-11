@@ -10,7 +10,7 @@ import org.nutz.json.Json;
  *	rows中为自定义的实体数据
  * @param <T>
  */
-public class JqgridAdvancedData<T> {
+public class JqgridAdvancedData<T> implements ResponseData {
 	private int page;
 	private int total;
 	private int records;

@@ -3,7 +3,8 @@
 $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
-	
+
+	//设置Grid
 	jQuery("#userInfoList").jqGrid({
 	   	url:'system/user/getGridData',
 		datatype: "json",
@@ -32,12 +33,15 @@ $(function(){
 	    multiselect: true, //checkbox
 	    caption: "用户列表",
 	    loadComplete: function(){
-			$.addMessage(jQuery("#userInfoList").getGridParam("userData"));
+    	    var userData = jQuery("#userInfoList").getUserData();
+			$.addMessage(userData);
     	}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#userInfoList").jqGrid('hideCol',['id']);//隐藏id列
+	//隐藏id列
+	jQuery("#userInfoList").jqGrid('hideCol',['id']);
+	//添加自定义按钮——添加、编辑和删除
 	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#userInfo").dialog( "open" );
@@ -50,7 +54,7 @@ $(function(){
 				jQuery("#userInfoList").jqGrid('GridToForm',id,"#userInfoForm");
 				$("#userInfo").dialog( "open" );
 			} else {
-				alert("请选择要编辑的记录");
+				$.addMessageStr(null,"请选择要编辑的记录",null);
 			}
 		}
 	});
@@ -61,11 +65,14 @@ $(function(){
 				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
 			}
 			else{
-				alert("请选择要删除的记录");
+				$.addMessageStr(null,"请选择要删除的记录",null);
 			}
 		}
 	});
-	
+
+	var genders = $.getSysEmnuItem("gender");
+	$("#user_manage_gender").addItems(genders);
+
 	//初始化用户信息界面
 	$("#userInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			$("#userInfoId").attr("value",'');	//清空隐藏域的值
@@ -105,9 +112,10 @@ $(function(){
 			}
 		}
 	});
-	
+
+	//点击保存时提交
 	var options = {
-		    beforeSubmit:showRequest,
+			beforeSubmit:showRequest,
 		    success:	showResponse,
 			url:		'system/user/save',
 			type:		'post',
@@ -122,13 +130,12 @@ $(function(){
 			//刷新表格
 			$('#userInfoList').trigger("reloadGrid");
 		}else{
-			$.addMessageStr(null,null,"未通过验证");
+			$.addMessageStr(null,"未通过验证",null);
 		}
-
 		return false;
 	});
-	//设置按钮图标——————未起作用
-	$("#userInfocancel").button( "option", "icons", {primary:'ui-icon-cancel',secondary:'ui-icon-cancel'} );
+
+	//点击取消时关闭对话框
 	$("#userInfocancel").click(function() {
 		$("#userInfo").dialog( "close" );
 	});
@@ -136,11 +143,14 @@ $(function(){
 
 //提交前
 function showRequest(formData, jqForm, options) {
-	
+	;
 }
-//提交后获得Respons后
+
+//提交获得Respons后显示系统消息
 function showResponse(responseText, statusText, xhr, $form)  {
-	$.addMessageStr(responseText);
+	var reData = eval("(" + responseText + ")");
+	var sysMsg = reData.userdata;
+	$.addMessage(sysMsg);
 }
 </script>
 <table id="userInfoList"></table>
@@ -183,8 +193,9 @@ function showResponse(responseText, statusText, xhr, $form)  {
 				性别：
 			</td>
 			<td>
-				男:<input type="radio" name="gender" value="男"/>
-				女:<input type="radio" name="gender" value="女"/>
+				<select name="gender" id="user_manage_gender">
+					<option value="">请选择</option>
+				</select>
 			</td>
 			<td>
 				年龄：

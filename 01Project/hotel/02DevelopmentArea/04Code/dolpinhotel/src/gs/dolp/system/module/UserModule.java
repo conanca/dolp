@@ -1,6 +1,7 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.jqgrid.domain.ResponseData;
+import gs.dolp.jqgrid.domain.ResponseSysMsgData;
 import gs.dolp.jqgrid.domain.SystemMessage;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
@@ -23,8 +24,8 @@ public class UserModule {
 
 	@At
 	@Fail("jsonx")
-	public JqgridAdvancedData<User> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
+	public ResponseData getGridData(@Param("page") String page, @Param("rows") String rows, @Param("sidx") String sidx,
+			@Param("sord") String sord) {
 		return userService.getGridData(page, rows, sidx, sord);
 	}
 
@@ -53,13 +54,16 @@ public class UserModule {
 	}
 
 	@At
-	public SystemMessage save(@Param("..") User user) {
+	public ResponseData save(@Param("..") User user) {
 		if (user.getId() == 0) {
 			userService.dao().insert(user);
 		} else {
 			userService.dao().update(user);
 		}
-		return new SystemMessage("保存成功!", null, null);
+		ResponseSysMsgData reData = new ResponseSysMsgData();
+		reData.setUserdata(new SystemMessage("保存成功!", null, null));
+		System.out.println(reData);
+		return reData;
 	}
 
 	@At
