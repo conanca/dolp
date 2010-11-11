@@ -7,9 +7,11 @@ var ioc = {
 		},
 		fields : {
 			driverClass : 'org.h2.Driver',
-			jdbcUrl : 'jdbc:h2:tcp://localhost/~/test',
+			jdbcUrl : 'jdbc:h2:~/test;CACHE_SIZE=131072;AUTO_RECONNECT=TRUE',
 			username : 'sa',
-			password : ''
+			password : '',
+			minConnectionsPerPartition : 5 ,
+			maxConnectionsPerPartition : 20
 		}
 	},
 
