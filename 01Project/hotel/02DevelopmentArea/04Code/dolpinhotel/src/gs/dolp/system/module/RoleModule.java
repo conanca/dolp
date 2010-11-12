@@ -1,6 +1,7 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
@@ -18,9 +19,8 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public JqgridAdvancedData<Role> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
-		return roleService.getGridData(page, rows, sidx, sord);
+	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq) {
+		return roleService.getGridData(jqReq);
 	}
 
 	@At

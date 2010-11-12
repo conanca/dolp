@@ -16,7 +16,7 @@ $(function(){
 	});
 	
 	jQuery("#roomOccupancyList").jqGrid({
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData/0',
+	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
 		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
@@ -91,7 +91,7 @@ $(function(){
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
 				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
-				var st = "#t15";
+				var st = "#t16";
 				if($(st).html() != null ) {
 					maintab.tabs('select',st);
 				} else {

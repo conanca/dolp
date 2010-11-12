@@ -1,4 +1,4 @@
-package gs.dolp.nutzx;
+package gs.dolp.common.view;
 
 import org.nutz.ioc.Ioc;
 import org.nutz.json.Json;

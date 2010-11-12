@@ -1,8 +1,8 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.domain.JqgridStandardData;
-import gs.dolp.jqgrid.domain.JqgridStandardDataRow;
-import gs.dolp.jqgrid.domain.SystemMessage;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,8 +24,8 @@ public class AvailableRoomCheckService extends Service {
 	}
 
 	@Aop(value = "log")
-	public JqgridStandardData AvailableRoomCount() throws SQLException {
-		JqgridStandardData jq = new JqgridStandardData();
+	public StandardJqgridResData AvailableRoomCount() throws SQLException {
+		StandardJqgridResData jq = new StandardJqgridResData();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(1);
@@ -36,18 +36,18 @@ public class AvailableRoomCheckService extends Service {
 
 	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
-	public List<JqgridStandardDataRow> getRows() throws SQLException {
+	public List<StandardJqgridResDataRow> getRows() throws SQLException {
 		Sql sql = Sqls
 				.create("SELECT (SELECT NAME FROM DOLPINHOTEL_ROOMTYPE WHERE ID = ROOMTYPEID) AS ROOMTYPENAME,COUNT(ROOMTYPEID) AS AVAILABLEROOMCOUNT FROM DOLPINHOTEL_ROOM WHERE ISOCCUPANCY = 0 GROUP BY ROOMTYPEID");
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				List<JqgridStandardDataRow> rows = new ArrayList<JqgridStandardDataRow>();
+				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
 				int i = 1;
 				while (rs.next()) {
 					List cell = new ArrayList();
 					cell.add(rs.getString("ROOMTYPENAME"));
 					cell.add(rs.getInt("AVAILABLEROOMCOUNT"));
-					JqgridStandardDataRow row = new JqgridStandardDataRow();
+					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
 					row.setId(i);
 					row.setCell(cell);
 					rows.add(row);
@@ -57,6 +57,6 @@ public class AvailableRoomCheckService extends Service {
 			}
 		});
 		dao().execute(sql);
-		return (List<JqgridStandardDataRow>) sql.getResult();
+		return (List<StandardJqgridResDataRow>) sql.getResult();
 	}
 }

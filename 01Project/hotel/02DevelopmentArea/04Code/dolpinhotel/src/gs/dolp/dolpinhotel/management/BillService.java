@@ -1,7 +1,8 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -13,15 +14,15 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 
-public class BillService extends IdEntityForjqGridService<Bill> {
+public class BillService extends AdvJqgridIdEntityService<Bill> {
 
 	public BillService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<Bill> getGridData(String page, String rows, String sidx, String sord, String number,
-			String amount, String dateFrom, String dateTo) {
+	public AdvancedJqgridResData<Bill> getGridData(JqgridReqData jqRe, String number, String amount, String dateFrom,
+			String dateTo) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
@@ -35,7 +36,7 @@ public class BillService extends IdEntityForjqGridService<Bill> {
 		if (!Strings.isBlank(dateTo)) {
 			cnd = cnd.and("DATE", "<=", dateTo);
 		}
-		JqgridAdvancedData<Bill> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		AdvancedJqgridResData<Bill> jq = getAdvancedJqgridRespData(cnd, jqRe);
 		return jq;
 	}
 

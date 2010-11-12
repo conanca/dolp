@@ -1,16 +1,16 @@
-package gs.dolp.jqgrid.domain;
+package gs.dolp.common.jqgrid.domain;
 
 import org.nutz.json.Json;
 
 public class ResponseSysMsgData implements ResponseData {
 
-	private UserData userdata;
+	private ResUserData userdata;
 
-	public UserData getUserdata() {
+	public ResUserData getUserdata() {
 		return userdata;
 	}
 
-	public void setUserdata(UserData userdata) {
+	public void setUserdata(ResUserData userdata) {
 		this.userdata = userdata;
 	}
 

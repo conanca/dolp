@@ -1,8 +1,9 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.domain.ResponseData;
-import gs.dolp.jqgrid.domain.ResponseSysMsgData;
-import gs.dolp.jqgrid.domain.SystemMessage;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
@@ -24,9 +25,8 @@ public class UserModule {
 
 	@At
 	@Fail("jsonx")
-	public ResponseData getGridData(@Param("page") String page, @Param("rows") String rows, @Param("sidx") String sidx,
-			@Param("sord") String sord) {
-		return userService.getGridData(page, rows, sidx, sord);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
+		return userService.getGridData(jqReq);
 	}
 
 	@At

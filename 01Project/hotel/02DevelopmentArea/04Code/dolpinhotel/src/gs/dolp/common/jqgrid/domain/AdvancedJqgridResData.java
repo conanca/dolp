@@ -1,4 +1,4 @@
-package gs.dolp.jqgrid.domain;
+package gs.dolp.common.jqgrid.domain;
 
 import java.util.List;
 
@@ -6,15 +6,16 @@ import org.nutz.json.Json;
 
 /**
  * @author Administrator
- * jqGrid所需的标准格式的数据
- *
+ *	jqGrid所需的扩展格式的数据，需设置jsonReader:{ repeatitems: false }
+ *	rows中为自定义的实体数据
+ * @param <T>
  */
-public class JqgridStandardData implements ResponseData {
+public class AdvancedJqgridResData<T> implements ResponseData {
 	private int page;
 	private int total;
 	private int records;
-	private List<JqgridStandardDataRow> rows;
-	private UserData userdata;
+	private List<T> rows;
+	private ResUserData userdata;
 
 	public int getPage() {
 		return page;
@@ -40,19 +41,19 @@ public class JqgridStandardData implements ResponseData {
 		this.records = records;
 	}
 
-	public List<JqgridStandardDataRow> getRows() {
+	public List<T> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<JqgridStandardDataRow> rows) {
+	public void setRows(List<T> rows) {
 		this.rows = rows;
 	}
 
-	public UserData getUserdata() {
+	public ResUserData getUserdata() {
 		return userdata;
 	}
 
-	public void setUserdata(UserData userdata) {
+	public void setUserdata(ResUserData userdata) {
 		this.userdata = userdata;
 	}
 

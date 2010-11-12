@@ -1,7 +1,8 @@
-package gs.dolp.jqgrid.service;
+package gs.dolp.common.jqgrid.service;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.domain.SystemMessage;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ import org.nutz.service.IdEntityService;
 
 /**
  * @author Administrator
- * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为JqgridData格式。
+ * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
  * 使用时可以继承该类。
  * 注：实体的主键是数值型的。
  * @param <T>
  */
-public class IdEntityForjqGridService<T> extends IdEntityService<T> {
+public class AdvJqgridIdEntityService<T> extends IdEntityService<T> {
 
-	public IdEntityForjqGridService(Dao dao) {
+	public AdvJqgridIdEntityService(Dao dao) {
 		super(dao);
 	}
 
@@ -31,35 +32,26 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 	 * @param rows
 	 * @param sidx
 	 * @param sord
-	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为JqgridAdvancedData格式。
+	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
 	 * @return
 	 */
-	public JqgridAdvancedData<T> getjqridDataByCnd(Condition cnd, String page, String rows, String sidx, String sord) {
+	public AdvancedJqgridResData<T> getAdvancedJqgridRespData(Condition cnd, JqgridReqData jqReq) {
 		// 设置开始页数
-		int pageNumber;
-		if (!Strings.isEmpty(page)) {
-			pageNumber = Integer.parseInt(page);
-		} else {
-			pageNumber = 1;
-		}
+		int page = jqReq.getPage();
+		int pageNumber = page == 0 ? 1 : page;
 		// 设置每页记录数
-		int pageSize = 10;
-		if (!Strings.isEmpty(rows)) {
-			pageSize = Integer.parseInt(rows);
-		}
+		int rows = jqReq.getRows();
+		int pageSize = rows == 0 ? 10 : rows;
+		// 设置排序字段
+		String sidx = jqReq.getSidx();
+		String sortColumn = Strings.isEmpty(sidx) ? "ID" : sidx;
+		// 设置正序逆序
+		String sord = jqReq.getSord();
+		String sortOrder = Strings.isEmpty(sord) ? "asc" : sord;
 		// 合计记录总数
 		int count = count(cnd);
 		// 计算页数
 		int totalPage = count / pageSize + (count % pageSize == 0 ? 0 : 1);
-		// 设置排序字段及正序逆序
-		String sortColumn = "ID";
-		if (!Strings.isEmpty(sidx)) {
-			sortColumn = sidx;
-		}
-		String sortOrder = "asc";
-		if (!Strings.isEmpty(sord)) {
-			sortOrder = sord;
-		}
 		if (null == cnd) {
 			if ("asc".equals(sortOrder)) {
 				cnd = Cnd.orderBy().asc(sortColumn);
@@ -78,7 +70,7 @@ public class IdEntityForjqGridService<T> extends IdEntityService<T> {
 		// 查询
 		List<T> list = query(cnd, pager);
 		// 开始封装jqGrid的json格式数据类
-		JqgridAdvancedData<T> jq = new JqgridAdvancedData<T>();
+		AdvancedJqgridResData<T> jq = new AdvancedJqgridResData<T>();
 		jq.setTotal(totalPage);
 		jq.setPage(pageNumber);
 		jq.setRecords(count);

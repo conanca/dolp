@@ -1,6 +1,6 @@
 package gs.dolp.system.module;
 
-import gs.dolp.jqgrid.domain.JqgridStandardData;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.service.MenuService;
 
@@ -15,7 +15,7 @@ public class MenuModule {
 	private MenuService menuService;
 
 	@At
-	public JqgridStandardData getGridData(@Param("page") String page, @Param("rows") String rows,
+	public StandardJqgridResData getGridData(@Param("page") String page, @Param("rows") String rows,
 			@Param("sidx") String sidx, @Param("sord") String sord) {
 		return menuService.getGridData();
 	}

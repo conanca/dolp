@@ -1,6 +1,7 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
 import java.util.Map;
 
@@ -15,9 +16,8 @@ public class RoomTypeModule {
 	private RoomTypeService roomTypeService;
 
 	@At
-	public JqgridAdvancedData<RoomType> getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
-		return roomTypeService.getGridData(page, rows, sidx, sord);
+	public AdvancedJqgridResData<RoomType> getGridData(@Param("..") JqgridReqData jqReq) {
+		return roomTypeService.getGridData(jqReq);
 	}
 
 	@At

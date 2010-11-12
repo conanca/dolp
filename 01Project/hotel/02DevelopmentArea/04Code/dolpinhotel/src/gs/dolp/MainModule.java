@@ -1,6 +1,6 @@
 package gs.dolp;
 
-import gs.dolp.nutzx.MyJsonViewMaker;
+import gs.dolp.common.view.MyJsonViewMaker;
 
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;

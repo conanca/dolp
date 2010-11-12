@@ -1,4 +1,4 @@
-package gs.dolp.jqgrid.domain;
+package gs.dolp.common.jqgrid.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 
-public class SystemMessage implements UserData {
+public class SystemMessage implements ResUserData {
 	private List<String> infoMessages;
 	private List<String> warnMessages;
 	private List<String> errorMessages;

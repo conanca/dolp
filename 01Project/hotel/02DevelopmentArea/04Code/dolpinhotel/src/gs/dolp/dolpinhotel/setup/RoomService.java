@@ -1,7 +1,8 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,15 +14,15 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 
-public class RoomService extends IdEntityForjqGridService<Room> {
+public class RoomService extends AdvJqgridIdEntityService<Room> {
 
 	public RoomService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<Room> getJqgridData(String page, String rows, String sidx, String sord, String number,
-			String isOccupancy, String roomTypeId) {
+	public AdvancedJqgridResData<Room> getJqgridData(JqgridReqData jqRe, String number, String isOccupancy,
+			String roomTypeId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
@@ -32,7 +33,7 @@ public class RoomService extends IdEntityForjqGridService<Room> {
 		if (!Strings.isBlank(roomTypeId) && !"-1".equals(roomTypeId)) {
 			cnd = cnd.and("ROOMTYPEID", "=", roomTypeId);
 		}
-		JqgridAdvancedData<Room> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		AdvancedJqgridResData<Room> jq = getAdvancedJqgridRespData(cnd, jqRe);
 		return jq;
 	}
 

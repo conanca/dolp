@@ -1,6 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.domain.JqgridStandardData;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 
 import java.sql.SQLException;
 
@@ -14,7 +14,7 @@ public class AvailableRoomCheckModule {
 	AvailableRoomCheckService availableRoomCheckService;
 
 	@At
-	public JqgridStandardData getGridData() throws SQLException {
+	public StandardJqgridResData getGridData() throws SQLException {
 		return availableRoomCheckService.AvailableRoomCount();
 	}
 }

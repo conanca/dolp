@@ -1,7 +1,8 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +13,15 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class RoomTypeService extends IdEntityForjqGridService<RoomType> {
+public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 
 	public RoomTypeService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<RoomType> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridAdvancedData<RoomType> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public AdvancedJqgridResData<RoomType> getGridData(JqgridReqData jqRe) {
+		AdvancedJqgridResData<RoomType> jq = getAdvancedJqgridRespData(null, jqRe);
 		return jq;
 	}
 

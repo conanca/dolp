@@ -1,7 +1,8 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
@@ -14,15 +15,15 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 
-public class UserService extends IdEntityForjqGridService<User> {
+public class UserService extends AdvJqgridIdEntityService<User> {
 
 	public UserService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<User> getGridData(String page, String rows, String sidx, String sord) {
-		JqgridAdvancedData<User> jq = getjqridDataByCnd(null, page, rows, sidx, sord);
+	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq) {
+		AdvancedJqgridResData<User> jq = getAdvancedJqgridRespData(null, jqReq);
 		return jq;
 	}
 

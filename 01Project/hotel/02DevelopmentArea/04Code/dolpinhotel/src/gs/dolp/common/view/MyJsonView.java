@@ -1,7 +1,7 @@
-package gs.dolp.nutzx;
+package gs.dolp.common.view;
 
-import gs.dolp.jqgrid.domain.ResponseSysMsgData;
-import gs.dolp.jqgrid.domain.SystemMessage;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 
 import java.io.IOException;
 

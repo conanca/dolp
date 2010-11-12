@@ -1,4 +1,4 @@
-package gs.dolp.jqgrid.domain;
+package gs.dolp.common.jqgrid.domain;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * @author Administrator
  * jqGrid所需的标准格式的数据的Row数据
  */
-public class JqgridStandardDataRow {
+public class StandardJqgridResDataRow {
 	private int id;
 	private List<String> cell;
 

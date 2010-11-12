@@ -1,9 +1,10 @@
 package gs.dolp.dolpinhotel.management;
 
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.dolpinhotel.setup.Room;
 import gs.dolp.dolpinhotel.setup.RoomType;
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -18,7 +19,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy> {
+public class RoomOccupancyService extends AdvJqgridIdEntityService<RoomOccupancy> {
 
 	public RoomOccupancyService(Dao dao) {
 		super(dao);
@@ -69,10 +70,9 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<RoomOccupancy> getGridData(String page, String rows, String sidx, String sord,
-			String number, String enterDateFrom, String enterDateTo, String expectedCheckOutDateFrom,
-			String expectedCheckOutDateTo, String leaveDateFrom, String leaveDateTo, String occupancyDays,
-			String status, int billId) {
+	public AdvancedJqgridResData<RoomOccupancy> getGridData(JqgridReqData jqReq, String number, String enterDateFrom,
+			String enterDateTo, String expectedCheckOutDateFrom, String expectedCheckOutDateTo, String leaveDateFrom,
+			String leaveDateTo, String occupancyDays, String status, int billId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
 			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
@@ -110,7 +110,7 @@ public class RoomOccupancyService extends IdEntityForjqGridService<RoomOccupancy
 		if (billId != 0) {
 			cnd = cnd.and("BILLID", "=", billId);
 		}
-		JqgridAdvancedData<RoomOccupancy> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		AdvancedJqgridResData<RoomOccupancy> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 

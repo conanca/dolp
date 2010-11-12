@@ -1,6 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
 import java.text.ParseException;
 
@@ -22,18 +23,16 @@ public class RoomOccupancyModule {
 		roomOccupancyService.saveRoomOccupancy(enterDate, expectedCheckOutDate, roomId, customers);
 	}
 
-	@At("/getGridData/*")
-	public JqgridAdvancedData<RoomOccupancy> getGridData(int billId, @Param("page") String page,
-			@Param("rows") String rows, @Param("sidx") String sidx, @Param("sord") String sord,
-			@Param("number") String number, @Param("enterDateFrom") String enterDateFrom,
+	@At
+	public AdvancedJqgridResData<RoomOccupancy> getGridData(@Param("..") JqgridReqData jqReq,
+			@Param("billId") int billId, @Param("number") String number, @Param("enterDateFrom") String enterDateFrom,
 			@Param("enterDateTo") String enterDateTo,
 			@Param("expectedCheckOutDateFrom") String expectedCheckOutDateFrom,
 			@Param("expectedCheckOutDateTo") String expectedCheckOutDateTo,
 			@Param("leaveDateFrom") String leaveDateFrom, @Param("leaveDateTo") String leaveDateTo,
 			@Param("occupancyDays") String occupancyDays, @Param("status") String status) {
-		return roomOccupancyService.getGridData(page, rows, sidx, sord, number, enterDateFrom, enterDateTo,
-				expectedCheckOutDateFrom, expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status,
-				billId);
+		return roomOccupancyService.getGridData(jqReq, number, enterDateFrom, enterDateTo, expectedCheckOutDateFrom,
+				expectedCheckOutDateTo, leaveDateFrom, leaveDateTo, occupancyDays, status, billId);
 	}
 
 	@At

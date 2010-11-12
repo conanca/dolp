@@ -1,7 +1,8 @@
 package gs.dolp.system.service;
 
-import gs.dolp.jqgrid.domain.JqgridAdvancedData;
-import gs.dolp.jqgrid.service.IdEntityForjqGridService;
+import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
 
@@ -14,16 +15,16 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class SysEnumItemService extends IdEntityForjqGridService<SysEnumItem> {
+public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
 
 	public SysEnumItemService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public JqgridAdvancedData<SysEnumItem> getGridData(String page, String rows, String sidx, String sord, int sysEnumId) {
+	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, int sysEnumId) {
 		Cnd cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
-		JqgridAdvancedData<SysEnumItem> jq = getjqridDataByCnd(cnd, page, rows, sidx, sord);
+		AdvancedJqgridResData<SysEnumItem> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
