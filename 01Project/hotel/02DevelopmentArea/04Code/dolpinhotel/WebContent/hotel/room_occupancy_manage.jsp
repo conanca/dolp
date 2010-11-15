@@ -43,6 +43,9 @@ $(function(){
 		viewrecords: true,
 		multiselect: true, //checkbox
 		caption: "房间入住情况列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#roomOccupancyList").getGridParam("userData"));
+		},
 		onSelectRow: function(ids) {
 			 if(ids == null) {
 				ids=0;
@@ -133,7 +136,10 @@ $(function(){
 		sortorder: "asc",
 		viewrecords: true,
 		multiselect: false, //checkbox
-		caption: "所选房间顾客列表"
+		caption: "所选房间顾客列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#customerSubList").getGridParam("userData"));
+		}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#customerSubList").jqGrid('navGrid','#customerSubPager',{edit:false,add:false,del:false,search:false});

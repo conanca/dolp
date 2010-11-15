@@ -24,7 +24,11 @@ $(function(){
 	    viewrecords: true,
 	    editurl:"system/role/editRow",	//del:true
 	    multiselect: true, //checkbox
-	    caption:"角色列表"
+	    caption:"角色列表",
+	    loadComplete: function(){
+    	    var userData = jQuery("#rolelist").getUserData();
+			$.addMessage(userData);
+    	}
 	});
 	//不显示查询按钮
 	jQuery("#rolelist").jqGrid('navGrid','#rolepager',{edit:true,add:true,del:true,search:false});

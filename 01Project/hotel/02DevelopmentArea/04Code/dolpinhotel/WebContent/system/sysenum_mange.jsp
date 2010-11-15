@@ -28,6 +28,10 @@ $(function(){
 	    editurl: "system/sysEnum/editSysEnum",
 	    multiselect: false, //checkbox
 	    caption: "系统枚举列表",
+	    loadComplete: function(){
+    	    var userData = jQuery("#sysenumList").getUserData();
+			$.addMessage(userData);
+    	},
 		onSelectRow: function(ids) {
 			if(ids == null) {
 				ids=0;
@@ -69,7 +73,11 @@ $(function(){
 		viewrecords: true,
 		editurl: "system/sysEnum/editSysEnumItem",
 		multiselect: false, //checkbox
-		caption: "枚举项列表"
+		caption: "枚举项列表",
+	    loadComplete: function(){
+    	    var userData = jQuery("#sysenumSubList").getUserData();
+			$.addMessage(userData);
+    	}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#sysenumSubList").jqGrid('navGrid','#sysenumSubPager',{edit:true,add:true,del:true,search:false});

@@ -4,6 +4,7 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
+	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
 	var genders1 = $.swapJSON(genders); 
 	$("#user_manage_gender").addItems(genders);

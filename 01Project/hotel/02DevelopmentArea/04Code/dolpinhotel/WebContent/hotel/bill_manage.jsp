@@ -37,6 +37,9 @@ $(function(){
 	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
 	    multiselect: false, //checkbox
 	    caption: "账单列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#billList").getGridParam("userData"));
+		},
 		onSelectRow: function(ids) {
 			if(ids == null) {
 				ids=0;

@@ -51,8 +51,6 @@ html, body {
 <script type="text/javascript">
 var maintab;
 $(function() {
-	$("input:button,input:submit,input:reset").button();
-
 	var myLayout = $('body').layout({ applyDefaultStyles: true });
 	myLayout.sizePane("north", 100);
 

@@ -32,6 +32,10 @@ $(function(){
 		sortorder: "asc",
 		viewrecords: true,
 		caption:"用户列表",
+	    loadComplete: function(){
+    	    var userData = jQuery("#roleAssignUserList").getUserData();
+			$.addMessage(userData);
+    	},
 		onSelectRow: function(id){
 			$("#assigningUserID").val(id);
 			

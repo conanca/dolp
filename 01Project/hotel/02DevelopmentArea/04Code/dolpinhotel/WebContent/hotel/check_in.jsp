@@ -20,7 +20,7 @@ $(function(){
 		colModel:[
 			{name:'no',index:'no', width:60},
 			{name:'name',index:'name', width:60},
-			{name:'gender',index:'gender', width:50},
+			{name:'gender',index:'gender', width:50, edittype:'select', formatter:'select', editoptions:{value:genders1}},
 			{name:'certificateType',index:'certificateType', width:60, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes1}},
 			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300}
@@ -79,6 +79,11 @@ $(function(){
 		}
 	});
 
+	//初始化性别下拉列表框
+	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
+	$("#customer_manage_gender").addItems(genders);
+
 	//初始化用户信息界面
 	$("#customerDiv").dialog({width: 500, hide: 'slide' , modal: true , autoOpen: false,close: function(event, ui) {
 			$("#customerDivId").attr("value",'');	//清空隐藏域的值
@@ -86,13 +91,36 @@ $(function(){
 		}
 	});
 	
-	//设置按钮图标——————未起作用
-	$("#customerDivCancel").button( "option", "icons", {primary:'ui-icon-cancel',secondary:'ui-icon-cancel'} );
 	$("#customerDivCancel").click(function() {
 		$("#customerDiv").dialog( "close" );
 	});
 
+	// 验证
+	$("#customerForm").validate({
+		rules: {
+			name: {
+				required: true,
+				maxlength: 10
+			},
+			credentialNumber: {
+				required: true,
+				maxlength: 20
+			},
+			enterDate: {
+				required: true,
+				date: true
+			},
+			expectedCheckOutDate: {
+				date: true
+			}
+		}
+	});
+
 	$("#customerDivAdd").click(function() {
+		if(!$("#customerForm").valid()){
+			$.addMessageStr(null,"未通过验证",null);
+			return false;
+		}
 		var arrLength = customerListData.length;
 		var currCustomer = $('#customerForm').serializeObject();
 		if(currCustomer.no==null||currCustomer.no==''){
@@ -117,7 +145,30 @@ $(function(){
 		subcategoryid: 'roomSelector'
 	});
 
+	// 验证
+	$("#roomOccupancyForm").validate({
+		rules: {
+			roomType: {
+				required: true
+			},
+			roomId: {
+				required: true
+			},
+			enterDate: {
+				required: true,
+				date: true
+			},
+			expectedCheckOutDate: {
+				date: true
+			}
+		}
+	});
+	
 	$("#roomcheckin").click(function() {
+		if(!$("#roomOccupancyForm").valid()){
+			$.addMessageStr(null,"未通过验证",null);
+			return false;
+		}
 		var url='dolpinhotel/management/roomoccupancy/saveRoomOccupancy';
 		var enterDate=$('input:text[name=enterDate]').val();
 		var expectedCheckOutDate=$('input:text[name=expectedCheckOutDate]').val();
@@ -126,7 +177,7 @@ $(function(){
 		var customers =$.toJSON(customerListData);
 		$.post(url, { customers: customers, enterDate: enterDate, expectedCheckOutDate: expectedCheckOutDate, roomId: roomId },
 			function(data) {
-			  alert('登记成功');
+			  $.addMessageStr("登记成功",null,null);
 			  $('#roomOccupancyForm')[0].reset();	//清空表单的值
 			  jQuery("#customerList").jqGrid('clearGridData');	//清空grid的值
 			  $('#roomSelector').find('option').remove().end();	//移除房间号选择框的所有option
@@ -160,7 +211,7 @@ $(function(){
 				</td>
 				<td>
 					<select name="roomType" id="roomTypeSelector">
-						<option value="0">请选择</option>
+						<option value="">请选择</option>
 					</select>
 				</td>
 				<td>
@@ -168,7 +219,7 @@ $(function(){
 				</td>
 				<td>
 					<select name="roomId" id="roomSelector">
-						<option value="0">请先选择房间类型</option>
+						<option value="">请先选择房间类型</option>
 					</select>
 				</td>
 			</tr>
@@ -182,7 +233,6 @@ $(function(){
 		</div>
 	</form>
 </div>
-
 
 <div id="customerDiv" title="顾客信息">
 	<form id="customerForm" action="" method="post">
@@ -199,8 +249,9 @@ $(function(){
 					性别：
 				</td>
 				<td>
-					男:<input type="radio" name="gender" value="男"/>
-					女:<input type="radio" name="gender" value="女"/>
+					<select name="gender" id="customer_manage_gender">
+						<option value="">请选择</option>
+					</select>
 				</td>
 			</tr>
 			<tr>

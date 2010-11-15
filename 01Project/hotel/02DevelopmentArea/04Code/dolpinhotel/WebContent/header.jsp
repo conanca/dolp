@@ -16,8 +16,9 @@ $(function() {
 </script>
 <h1><b>AAAA</b></h1>
 <div align="right">
-	当前用户：<label id="CurrentUserName"></label>
-	<a href="system/user/logout">用户登出</a>
+	欢迎：<label id="CurrentUserName"></label>&nbsp;|&nbsp;
+	<a href="system/user/logout">登出</a>&nbsp;|&nbsp;
+	换肤：
 	<select id="jQueryUICssSwitch">
 		<option value="black-tie">black-tie</option>
 		<option value="blitzer">blitzer</option>

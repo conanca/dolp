@@ -34,7 +34,10 @@ $(function(){
 	    viewrecords: true,
 	    editurl: "dolpinhotel/setup/room/editRow",	//del:true
 	    multiselect: true, //checkbox
-	    caption: "房间列表"
+	    caption: "房间列表",
+	    loadComplete: function(){
+			$.addMessage(jQuery("#roomList").getGridParam("userData"));
+		}
 	});
 	//不显示jqgrid自带的查询按钮
 	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:true,add:true,del:true,search:false});

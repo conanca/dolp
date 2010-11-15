@@ -12,7 +12,7 @@
 </style>
 <script type="text/javascript">
 $(function() {
-	$("#login").dialog();
+	$("#login").dialog({draggable: false});
 	$("input:submit,input:reset").button();
 });
 </script>
@@ -41,6 +41,7 @@ $(function() {
 				<td colspan="2">
 					<center>
 						<input type="submit" value="登录">
+						&nbsp;&nbsp;&nbsp;&nbsp;
 						<input type="reset" value="重置">
 					</center>
 				</td>
