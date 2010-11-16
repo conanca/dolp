@@ -7,8 +7,12 @@ $(function() {
 	$.ajaxSetup({ async: false});
 	$.getJSON(url,function(userName){
 		$('#CurrentUserName').text(userName);
+		var sysMsg = userName.userdata;
+		if(sysMsg){
+			$.addMessage(sysMsg);
+		}
 	});
-	
+
 	$('#jQueryUICssSwitch').change(function() {
 		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
 	});

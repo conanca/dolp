@@ -34,7 +34,8 @@ public class UserModule {
 	@Fail("redirect:/login.jsp")
 	@Filters
 	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
-		session.setAttribute("logonUser", userService.userAuthenticate(number, password));
+		User logonUser = userService.userAuthenticate(number, password);
+		session.setAttribute("logonUser", logonUser);
 	}
 
 	@At
