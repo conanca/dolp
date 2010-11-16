@@ -11,6 +11,7 @@ $.extend({
 		var errorMessages = userData.errorMessages;
 		if (infoMessages) {
 			opts.pnotify_title = "消息";
+			opts.pnotify_type = "notice";
 			$.each(infoMessages, function(k,infoMessage) {
 				opts.pnotify_text = infoMessage;
 				$.pnotify(opts);
@@ -37,6 +38,7 @@ $.extend({
 	addMessageStr : function(infoMessage,warnMessage,errorMessage) {
 		if (infoMessage) {
 			opts.pnotify_title = "消息";
+			opts.pnotify_type = "notice";
 			opts.pnotify_text = infoMessage;
 			$.pnotify(opts);
 		}
