@@ -10,6 +10,11 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
+	//初始化性别下拉列表框
+	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
+	$("#customer_manage_gender").addItems(genders);
+	//初始化证件类型下拉列表框
 	var certificateTypes = $.getSysEmnuItem("certificateType");
 	$("#certificateType").addItems(certificateTypes);
 	var certificateTypes1 = $.swapJSON(certificateTypes);
@@ -78,11 +83,6 @@ $(function(){
 			}
 		}
 	});
-
-	//初始化性别下拉列表框
-	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders); 
-	$("#customer_manage_gender").addItems(genders);
 
 	//初始化用户信息界面
 	$("#customerDiv").dialog({width: 500, hide: 'slide' , modal: true , autoOpen: false,close: function(event, ui) {
