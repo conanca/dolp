@@ -1,15 +1,14 @@
 //jquery.pnotify.min.js的自定义扩展
+var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+var opts = {
+	pnotify_addclass: "stack-bottomright",
+	pnotify_stack: stack_bottomright
+};
 $.extend({
 	addMessage : function(userData) {
 		var infoMessages = userData.infoMessages;
 		var warnMessages = userData.warnMessages;
 		var errorMessages = userData.errorMessages;
-		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-		var opts = {
-				pnotify_addclass: "stack-bottomright",
-				pnotify_stack: stack_bottomright
-		};
-		
 		if (infoMessages) {
 			opts.pnotify_title = "消息";
 			$.each(infoMessages, function(k,infoMessage) {
@@ -36,12 +35,6 @@ $.extend({
 		}
 	},
 	addMessageStr : function(infoMessage,warnMessage,errorMessage) {
-		var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-		var opts = {
-				pnotify_addclass: "stack-bottomright",
-				pnotify_stack: stack_bottomright
-		};
-		
 		if (infoMessage) {
 			opts.pnotify_title = "消息";
 			opts.pnotify_text = infoMessage;
