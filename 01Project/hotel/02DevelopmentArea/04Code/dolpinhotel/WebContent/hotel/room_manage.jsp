@@ -83,7 +83,7 @@ function enableAutosubmit(state){
 		</td>
 		<td>
 			<select name="isOccupancy" id="room_manage_isOccupancy" onchange="doSearch(arguments[0]||event)">
-				<option value="-1" selected></option>
+				<option value="-1" selected="selected"></option>
 				<option value="0">否</option>
 				<option value="1">是</option>
 			</select>
@@ -93,7 +93,7 @@ function enableAutosubmit(state){
 		</td>
 		<td>
 			<select name="roomTypeId" id="room_manage_roomTypeId" onchange="doSearch(arguments[0]||event)">
-				<option value="-1" selected></option>
+				<option value="-1" selected="selected"></option>
 			</select>
 		</td>
 	</tr>
@@ -101,7 +101,7 @@ function enableAutosubmit(state){
 		<td colspan="6" align="right">
 			<input type="button" id="room_manage_search_btn" value="查询" onclick="gridReload()"/>
 			自动查询:
-			<input type="checkbox" id="room_manage_autosearch" onclick="enableAutosubmit(this.checked)">
+			<input type="checkbox" id="room_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
 		</td>
 	</tr>
 </table>

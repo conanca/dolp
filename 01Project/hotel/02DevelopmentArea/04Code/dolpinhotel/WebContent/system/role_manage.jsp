@@ -35,7 +35,7 @@ $(function(){
 	jQuery("#rolelist").jqGrid('hideCol',['id']);//隐藏id列
 
 });
-
 </script>
+
 <table id="rolelist"></table>
 <div id="rolepager"></div>

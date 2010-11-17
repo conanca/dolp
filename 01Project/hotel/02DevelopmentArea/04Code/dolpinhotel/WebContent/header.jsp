@@ -31,7 +31,7 @@ $(function() {
 		<option value="dot-luv">dot-luv</option>
 		<option value="eggplant">eggplant</option>
 		<option value="excite-bike">excite-bike</option>
-		<option value="flick" selected>flick</option>
+		<option value="flick" selected="selected">flick</option>
 		<option value="hot-sneaks">hot-sneaks</option>
 		<option value="humanity">humanity</option>
 		<option value="le-frog">le-frog</option>

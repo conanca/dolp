@@ -35,5 +35,4 @@ $(function() {
 	});
 });
 </script>
-
 <table id="west-grid"></table>

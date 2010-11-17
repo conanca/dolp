@@ -90,10 +90,11 @@ $(function(){
 		var leaveDate = $("#room_occupancy_manage_checkOutLeaveDate").val();
 		$.post("dolpinhotel/management/roomoccupancy/checkOut", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate},
 			function(data) {
-				alert('结帐成功');
+				$.addMessageStr("结帐成功",null,null);
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
 				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
+				// 自动打开或激活账单管理页面
 				var st = "#t16";
 				if($(st).html() != null ) {
 					maintab.tabs('select',st);
@@ -195,7 +196,7 @@ function enableAutosubmit(state){
 			房间号：
 		</td>
 		<td>
-			<input type="text" id="room_occupancy_manage_number" onkeydown="doSearch(arguments[0]||event)" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="room_occupancy_manage_number" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
 		<td>
 			入住日期：
@@ -213,7 +214,7 @@ function enableAutosubmit(state){
 		<td>
 			<select id="room_occupancy_manage_status" onchange="doSearch(arguments[0]||event)">
 				<option value="-1"></option>
-				<option value="0" selected>入住中</option>
+				<option value="0" selected="selected">入住中</option>
 				<option value="1">已离开</option>
 			</select>
 		</td>
@@ -246,7 +247,7 @@ function enableAutosubmit(state){
 		<td colspan="4" align="right">
 			<input type="button" id="room_occupancy_manage_search_btn" value="查询" onclick="gridReload()"/>
 			自动查询:
-			<input type="checkbox" id="room_occupancy_manage_autosearch" onclick="enableAutosubmit(this.checked)">
+			<input type="checkbox" id="room_occupancy_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
 		</td>
 	</tr>
 </table>
@@ -273,5 +274,4 @@ function enableAutosubmit(state){
 			</td>
 		</tr>
 	</table>
-
 </div>

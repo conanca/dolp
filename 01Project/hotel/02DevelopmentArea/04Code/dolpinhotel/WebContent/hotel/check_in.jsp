@@ -189,7 +189,7 @@ $(function(){
 });
 </script>
 <div id="roomOccupancyDiv" title="房间登记情况">
-	<form id="roomOccupancyForm">
+	<form id="roomOccupancyForm" action="#">
 		<table>
 			<tr>
 				<td>
@@ -235,7 +235,7 @@ $(function(){
 </div>
 
 <div id="customerDiv" title="顾客信息">
-	<form id="customerForm" action="" method="post">
+	<form id="customerForm" action="#" method="post">
 		<table>
 			<tr>
 				<td>
@@ -260,6 +260,7 @@ $(function(){
 				</td>
 				<td>
 					<select name="certificateType" id="certificateType">
+						<option value="">请选择</option>
 					</select>
 				</td>
 				<td>

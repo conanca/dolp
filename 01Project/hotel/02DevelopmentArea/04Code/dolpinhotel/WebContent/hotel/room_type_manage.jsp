@@ -35,7 +35,7 @@ $(function(){
 	jQuery("#roomTypeList").jqGrid('navGrid','#roomTypePager',{edit:true,add:true,del:true,search:false});
 	jQuery("#roomTypeList").jqGrid('hideCol',['id']);//隐藏id列
 });
-
 </script>
+
 <table id="roomTypeList"></table>
 <div id="roomTypePager"></div>

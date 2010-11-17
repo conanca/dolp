@@ -51,7 +51,6 @@ $(function(){
 
 	//点击保存时提交
 	var options = {
-			beforeSubmit:showRequest,
 		    success:	showResponse,
 			url:		'system/user/save',
 			type:		'post',
@@ -143,14 +142,9 @@ $(function(){
 	});
 });
 
-//提交前
-function showRequest(formData, jqForm, options) {
-	;
-}
-
 //提交获得Respons后显示系统消息
 function showResponse(responseText, statusText, xhr, $form)  {
-	var reData = eval("(" + responseText + ")");
+	var reData = jQuery.parseJSON(responseText);
 	var sysMsg = reData.userdata;
 	$.addMessage(sysMsg);
 }
@@ -159,7 +153,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 <div id="userInfoPager"></div>
 
 <div id="userInfo" title="用户信息">
-	<form id="userInfoForm" action="">
+	<form id="userInfoForm" action="#">
 	<table>
 		<tr>
 			<td>

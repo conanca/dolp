@@ -108,7 +108,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 <table id="menuList"></table>
 <div id="menuPager"></div>
 <div id="menuInfo">
-	<form id="menuInfoForm">
+	<form action="#" id="menuInfoForm">
 		<table>
 			<tr>
 				<td>
@@ -134,7 +134,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 					菜单描述：
 				</td>
 				<td>
-					<textarea name="description"></textarea>
+					<textarea name="description" rows="3" cols="20"></textarea>
 				</td>
 			</tr>
 			<tr>

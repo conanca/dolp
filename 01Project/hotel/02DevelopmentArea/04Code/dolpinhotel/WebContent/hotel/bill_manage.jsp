@@ -153,13 +153,13 @@ function enableAutosubmit(state){
 			账单号：
 		</td>
 		<td>
-			<input type="text" id="bill_manage_number" onkeydown="doSearch(arguments[0]||event)" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_number" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
 		<td>
 			金额：
 		</td>
 		<td>
-			<input type="text" id="bill_manage_amount" onkeydown="doSearch(arguments[0]||event)" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_amount" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
 		</td>
 	</tr>
 	<tr>
@@ -176,7 +176,7 @@ function enableAutosubmit(state){
 		<td colspan="4" align="right">
 			<input type="button" id="bill_manage_search_btn" value="查询" onclick="gridReload()"/>
 			自动查询:
-			<input type="checkbox" id="bill_manage_autosearch" onclick="enableAutosubmit(this.checked)">
+			<input type="checkbox" id="bill_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
 		</td>
 	</tr>
 </table>
@@ -199,7 +199,7 @@ function enableAutosubmit(state){
 				</td>
 				<td>
 					总金额：
-					<input type="text" id="bill_manage_print_amount">
+					<input type="text" id="bill_manage_print_amount"/>
 				</td>
 			</tr>
 		</table>

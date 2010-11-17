@@ -84,6 +84,7 @@ $(function(){
 	jQuery("#sysenumSubList").jqGrid('hideCol',['id','sysEnumId']);//隐藏id
 });
 </script>
+
 <table id="sysenumList"></table>
 <div id="sysenumPager"></div>
 <table id="sysenumSubList"></table>

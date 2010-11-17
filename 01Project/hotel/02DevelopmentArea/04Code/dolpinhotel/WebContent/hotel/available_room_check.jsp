@@ -26,5 +26,6 @@ $(function(){
 	jQuery("#availableRoomCheckList").jqGrid('navGrid','#availableRoomCheckPager',{edit:false,add:false,del:false,search:false});
 });
 </script>
+
 <table id="availableRoomCheckList"></table>
 <div id="availableRoomCheckPager"></div>

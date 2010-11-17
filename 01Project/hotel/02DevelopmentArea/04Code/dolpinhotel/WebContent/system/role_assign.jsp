@@ -89,10 +89,10 @@ function showResponse(responseText, statusText, xhr, $form)  {
 </script>
 <table id="roleAssignUserList"></table>
 <div id="roleAssignUserPager"></div>
-<br>
-<form id="roleAssignForm">
-	<input type="hidden" name="userId" id="assigningUserID">
+<br/>
+<form id="roleAssignForm" action="#">
+	<input type="hidden" name="userId" id="assigningUserID"/>
 	<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
 	</select>
-	<input type="submit" value="分配">
+	<input type="submit" value="分配"/>
 </form>
