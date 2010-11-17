@@ -109,6 +109,16 @@ $(function(){
 	// 隐藏打印DIV
 	$("#billInfoPrint1").hide();
 	$("#billInfoPrint2").hide();
+
+	//查询按钮点击事件
+	$("#bill_manage_search_btn").click(function () { 
+		var number = jQuery("#bill_manage_number").val();
+		var amount = jQuery("#bill_manage_amount").val();
+		var dateFrom = jQuery("#bill_manage_dateFrom").val();
+		var dateTo = jQuery("#bill_manage_dateTo").val();
+		var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
+		jQuery("#billList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
+    });
 });
 
 function fmtDate(value){
@@ -117,31 +127,6 @@ function fmtDate(value){
 	}else{
 		return '';
 	}
-}
-
-var timeoutHnd;
-var flAuto = false;
-function doSearch(ev)
-{
-	if(!flAuto){
-		return; // var elem = ev.target||ev.srcElement;
-	}
-	if(timeoutHnd){
-		clearTimeout(timeoutHnd);
-	}
-	timeoutHnd = setTimeout(gridReload,500);
-}
-function gridReload(){
-	var number = jQuery("#bill_manage_number").val();
-	var amount = jQuery("#bill_manage_amount").val();
-	var dateFrom = jQuery("#bill_manage_dateFrom").val();
-	var dateTo = jQuery("#bill_manage_dateTo").val();
-	var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
-	jQuery("#billList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
-}
-function enableAutosubmit(state){
-	flAuto = state;
-	jQuery("#bill_manage_search_btn").attr("disabled",state);
 }
 </script>
 
@@ -153,13 +138,13 @@ function enableAutosubmit(state){
 			账单号：
 		</td>
 		<td>
-			<input type="text" id="bill_manage_number" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_number"/>
 		</td>
 		<td>
 			金额：
 		</td>
 		<td>
-			<input type="text" id="bill_manage_amount" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_amount"/>
 		</td>
 	</tr>
 	<tr>
@@ -167,16 +152,14 @@ function enableAutosubmit(state){
 			日期：
 		</td>
 		<td colspan="3">
-			<input type="text" id="bill_manage_dateFrom" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_dateFrom" class="datepicker"/>
 			-
-			<input type="text" id="bill_manage_dateTo" class="datepicker" onkeydown="doSearch(arguments[0]||event)" onblur="doSearch(arguments[0]||event)"/>
+			<input type="text" id="bill_manage_dateTo" class="datepicker"/>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="4" align="right">
-			<input type="button" id="bill_manage_search_btn" value="查询" onclick="gridReload()"/>
-			自动查询:
-			<input type="checkbox" id="bill_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
+			<input type="button" id="bill_manage_search_btn" value="查询"/>
 		</td>
 	</tr>
 </table>

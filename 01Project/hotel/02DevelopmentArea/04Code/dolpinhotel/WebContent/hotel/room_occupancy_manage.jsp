@@ -145,6 +145,23 @@ $(function(){
 	//不显示jqgrid自带的增删改查按钮
 	jQuery("#customerSubList").jqGrid('navGrid','#customerSubPager',{edit:false,add:false,del:false,search:false});
 	jQuery("#customerSubList").jqGrid('hideCol',['id','roomOccupancyId']);//隐藏id,roomOccupancyId列
+
+	//查询按钮点击事件
+	$("#room_occupancy_manage_search_btn").click(function () { 
+		var number = jQuery("#room_occupancy_manage_number").val();
+		var enterDateFrom = jQuery("#room_occupancy_manage_enterDateFrom").val();
+		var enterDateTo = jQuery("#room_occupancy_manage_enterDateTo").val();
+		var expectedCheckOutDateFrom = jQuery("#room_occupancy_manage_expectedCheckOutDateFrom").val();
+		var expectedCheckOutDateTo = jQuery("#room_occupancy_manage_expectedCheckOutDateTo").val();
+		var leaveDateFrom = jQuery("#room_occupancy_manage_leaveDateFrom").val();
+		var leaveDateTo = jQuery("#room_occupancy_manage_leaveDateTo").val();
+		var occupancyDays = jQuery("#room_occupancy_manage_occupancyDays").val();
+		var status = jQuery("#room_occupancy_manage_status").val();
+		var url = "dolpinhotel/management/roomoccupancy/getGridData?number="+number+"&enterDateFrom="+enterDateFrom+"&enterDateTo="+enterDateTo
+		+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
+		+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
+		jQuery("#roomOccupancyList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
+    });
 });
 
 function fmtDate(value){
@@ -153,38 +170,6 @@ function fmtDate(value){
 	}else{
 		return '';
 	}
-}
-
-var timeoutHnd;
-var flAuto = false;
-function doSearch(ev)
-{
-	if(!flAuto){
-		return; // var elem = ev.target||ev.srcElement;
-	}
-	if(timeoutHnd){
-		clearTimeout(timeoutHnd);
-	}
-	timeoutHnd = setTimeout(gridReload,500);
-}
-function gridReload(){
-	var number = jQuery("#room_occupancy_manage_number").val();
-	var enterDateFrom = jQuery("#room_occupancy_manage_enterDateFrom").val();
-	var enterDateTo = jQuery("#room_occupancy_manage_enterDateTo").val();
-	var expectedCheckOutDateFrom = jQuery("#room_occupancy_manage_expectedCheckOutDateFrom").val();
-	var expectedCheckOutDateTo = jQuery("#room_occupancy_manage_expectedCheckOutDateTo").val();
-	var leaveDateFrom = jQuery("#room_occupancy_manage_leaveDateFrom").val();
-	var leaveDateTo = jQuery("#room_occupancy_manage_leaveDateTo").val();
-	var occupancyDays = jQuery("#room_occupancy_manage_occupancyDays").val();
-	var status = jQuery("#room_occupancy_manage_status").val();
-	var url = "dolpinhotel/management/roomoccupancy/getGridData?number="+number+"&enterDateFrom="+enterDateFrom+"&enterDateTo="+enterDateTo
-	+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
-	+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
-	jQuery("#roomOccupancyList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
-}
-function enableAutosubmit(state){
-	flAuto = state;
-	jQuery("#room_occupancy_manage_search_btn").attr("disabled",state);
 }
 </script>
 
@@ -245,9 +230,7 @@ function enableAutosubmit(state){
 	</tr>
 	<tr>
 		<td colspan="4" align="right">
-			<input type="button" id="room_occupancy_manage_search_btn" value="查询" onclick="gridReload()"/>
-			自动查询:
-			<input type="checkbox" id="room_occupancy_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
+			<input type="button" id="room_occupancy_manage_search_btn" value="查询"/>
 		</td>
 	</tr>
 </table>

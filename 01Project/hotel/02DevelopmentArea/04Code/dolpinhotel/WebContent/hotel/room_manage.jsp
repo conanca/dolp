@@ -42,30 +42,16 @@ $(function(){
 	//不显示jqgrid自带的查询按钮
 	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:true,add:true,del:true,search:false});
 	jQuery("#roomList").jqGrid('hideCol',['id']);//隐藏id列
-});
 
-var timeoutHnd;
-var flAuto = false;
-function doSearch(ev)
-{
-	if(!flAuto){
-		return; // var elem = ev.target||ev.srcElement;
-	}
-	if(timeoutHnd){
-		clearTimeout(timeoutHnd);
-	}
-	timeoutHnd = setTimeout(gridReload,500);
-}
-function gridReload(){
-	var number = jQuery("#room_manage_number").val();
-	var isOccupancy = jQuery("#room_manage_isOccupancy").val();
-	var roomTypeId = jQuery("#room_manage_roomTypeId").val();
-	jQuery("#roomList").jqGrid('setGridParam',{url:"dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId,page:1}).trigger("reloadGrid");
-}
-function enableAutosubmit(state){
-	flAuto = state;
-	jQuery("#room_manage_search_btn").attr("disabled",state);
-}
+	//查询按钮点击事件
+	$("#room_manage_search_btn").click(function () { 
+		var number = jQuery("#room_manage_number").val();
+		var isOccupancy = jQuery("#room_manage_isOccupancy").val();
+		var roomTypeId = jQuery("#room_manage_roomTypeId").val();
+		url = "dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId;
+		jQuery("#roomList").jqGrid('setGridParam',{url:url, page:1}).trigger("reloadGrid");
+    });
+});
 </script>
 
 <fieldset>
@@ -76,13 +62,13 @@ function enableAutosubmit(state){
 			房间号：
 		</td>
 		<td>
-			<input type="text" name="number" id="room_manage_number" onkeydown="doSearch(arguments[0]||event)"/>
+			<input type="text" name="number" id="room_manage_number"/>
 		</td>
 		<td>
 			已入住：
 		</td>
 		<td>
-			<select name="isOccupancy" id="room_manage_isOccupancy" onchange="doSearch(arguments[0]||event)">
+			<select name="isOccupancy" id="room_manage_isOccupancy">
 				<option value="-1" selected="selected"></option>
 				<option value="0">否</option>
 				<option value="1">是</option>
@@ -92,16 +78,14 @@ function enableAutosubmit(state){
 			房间类型：
 		</td>
 		<td>
-			<select name="roomTypeId" id="room_manage_roomTypeId" onchange="doSearch(arguments[0]||event)">
+			<select name="roomTypeId" id="room_manage_roomTypeId">
 				<option value="-1" selected="selected"></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="6" align="right">
-			<input type="button" id="room_manage_search_btn" value="查询" onclick="gridReload()"/>
-			自动查询:
-			<input type="checkbox" id="room_manage_autosearch" onclick="enableAutosubmit(this.checked)"/>
+			<input type="button" id="room_manage_search_btn" value="查询" onclick="setUrl();gridReload()"/>
 		</td>
 	</tr>
 </table>
