@@ -25,8 +25,9 @@ public class UserModule {
 
 	@At
 	@Fail("jsonx")
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
-		return userService.getGridData(jqReq);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
+			@Param("name") String name) {
+		return userService.getGridData(jqReq, number, name);
 	}
 
 	@At
@@ -63,13 +64,15 @@ public class UserModule {
 		}
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		reData.setUserdata(new SystemMessage("保存成功!", null, null));
-		System.out.println(reData);
 		return reData;
 	}
 
 	@At
-	public void deleteRow(@Param("id") String ids) {
+	public ResponseData deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
+		ResponseSysMsgData reData = new ResponseSysMsgData();
+		reData.setUserdata(new SystemMessage("删除成功!", null, null));
+		return reData;
 	}
 
 	@At

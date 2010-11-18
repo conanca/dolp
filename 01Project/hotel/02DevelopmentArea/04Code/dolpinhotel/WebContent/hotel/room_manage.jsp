@@ -85,7 +85,7 @@ $(function(){
 	</tr>
 	<tr>
 		<td colspan="6" align="right">
-			<input type="button" id="room_manage_search_btn" value="查询" onclick="setUrl();gridReload()"/>
+			<input type="button" id="room_manage_search_btn" value="查询"/>
 		</td>
 	</tr>
 </table>

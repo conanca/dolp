@@ -109,7 +109,7 @@ $(function(){
     	}
 	});
 	//不显示jqgrid自带的增删改查按钮
-	jQuery("#userInfoList").jqGrid('navGrid','#userInfoPager',{edit:false,add:false,del:false,search:false});
+	$("#userInfoList").navGrid('#userInfoPager',{edit:false,add:false,del:false,search:false});
 	//隐藏id列
 	jQuery("#userInfoList").jqGrid('hideCol',['id']);
 	//添加自定义按钮——添加、编辑和删除
@@ -140,6 +140,13 @@ $(function(){
 			}
 		}
 	});
+	//查询按钮点击事件
+	$("#userInfo_search_btn").click(function () { 
+		var number = jQuery("#userInfo_search_number").val();
+		var name = jQuery("#userInfo_search_name").val();
+		url = "system/user/getGridData?number="+number+"&name="+name;
+		jQuery("#userInfoList").jqGrid('setGridParam',{url:url, page:1}).trigger("reloadGrid");
+    });
 });
 
 //提交获得Respons后显示系统消息
@@ -149,6 +156,32 @@ function showResponse(responseText, statusText, xhr, $form)  {
 	$.addMessage(sysMsg);
 }
 </script>
+
+<fieldset>
+<legend>用户查询</legend>
+<table>
+	<tr>
+		<td>
+			用户编号：
+		</td>
+		<td>
+			<input type="text" name="number" id="userInfo_search_number"/>
+		</td>
+		<td>
+			用户姓名：
+		</td>
+		<td>
+			<input type="text" name="name" id="userInfo_search_name"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="right">
+			<input type="button" id="userInfo_search_btn" value="查询"/>
+		</td>
+	</tr>
+</table>
+</fieldset>
+
 <table id="userInfoList"></table>
 <div id="userInfoPager"></div>
 

@@ -25,7 +25,7 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 			String roomTypeId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
-			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
+			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
 		if (!Strings.isBlank(isOccupancy) && !"-1".equals(isOccupancy)) {
 			cnd = cnd.and("ISOCCUPANCY", "=", isOccupancy);

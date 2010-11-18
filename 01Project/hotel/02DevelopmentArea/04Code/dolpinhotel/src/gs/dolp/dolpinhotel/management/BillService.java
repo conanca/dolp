@@ -25,10 +25,10 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 			String dateTo) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
-			cnd = cnd.and("NUMBER", "LIKE", "%" + number + "%");
+			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
 		if (!Strings.isBlank(amount)) {
-			cnd = cnd.and("AMOUNT", "=", amount);
+			cnd = cnd.and("AMOUNT", "=", Strings.trim(amount));
 		}
 		if (!Strings.isBlank(dateFrom)) {
 			cnd = cnd.and("DATE", ">=", dateFrom);
