@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="js/jquery.selectsubcategory.js" type="text/javascript"></script>
 <script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
-<script src="js/jquery.serializeObject.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 var customerListData = new Array();
@@ -138,6 +137,7 @@ $(function(){
 		return false;
 	});
 
+	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
 	$("#roomTypeSelector").addItems($.getItem(url3));
 	$("#roomTypeSelector").selectSubcategory({

@@ -76,9 +76,19 @@ $(function(){
 	});
 
 	//设置Grid
-	jQuery("#userInfoList").jqGrid({
+	$("#userInfoList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%",
+	    datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+        caption: "用户列表",
 	   	url:'system/user/getGridData',
-		datatype: "json",
+	   	editurl: "system/user/deleteRow",
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
@@ -89,51 +99,45 @@ $(function(){
 	   		{name:'birthday',index:'birthday', width:80},
 	   		{name:'phone',index:'phone', width:150}
 	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	    jsonReader:{
-	   		repeatitems: false
-        },
 	   	pager: '#userInfoPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
-	    viewrecords: true,
-	    editurl: "system/user/deleteRow",	//del:true
-	    multiselect: true, //checkbox
-	    caption: "用户列表",
+	    multiselect: true,
 	    loadComplete: function(){
-    	    var userData = jQuery("#userInfoList").getUserData();
+    	    var userData = $("#userInfoList").getUserData();
 			$.addMessage(userData);
     	}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#userInfoList").navGrid('#userInfoPager',{edit:false,add:false,del:false,search:false});
 	//隐藏id列
-	jQuery("#userInfoList").jqGrid('hideCol',['id']);
+	$("#userInfoList").hideCol(['id']);
 	//添加自定义按钮——添加、编辑和删除
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
+	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#userInfo").dialog( "open" );
 		}
 	});
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
+	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
 		onClickButton:function(){
-			var id = jQuery("#userInfoList").jqGrid('getGridParam','selrow');
+			var id = $("#userInfoList").getGridParam('selrow');
 			if (id) {
-				jQuery("#userInfoList").jqGrid('GridToForm',id,"#userInfoForm");
+				$("#userInfoList").GridToForm(id,"#userInfoForm");
 				$("#userInfo").dialog( "open" );
 			} else {
 				$.addMessageStr(null,"请选择要编辑的记录",null);
 			}
 		}
 	});
-	jQuery("#userInfoList").jqGrid('navButtonAdd','#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
+	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
-			var gr = jQuery("#userInfoList").jqGrid('getGridParam','selarrrow');
+			var gr = $("#userInfoList").getGridParam('selarrrow');
 			if( gr != null && gr != ''){
-				jQuery("#userInfoList").jqGrid('delGridRow',gr,{reloadAfterSubmit:true});
+				$("#userInfoList").delGridRow(gr,{reloadAfterSubmit:true,
+	                afterSubmit: function(xhr, postdata) {
+	                    $.addMessage($.parseJSON(xhr.responseText).userdata);
+	                    return [true];
+                }});
 			}
 			else{
 				$.addMessageStr(null,"请选择要删除的记录",null);
@@ -142,19 +146,12 @@ $(function(){
 	});
 	//查询按钮点击事件
 	$("#userInfo_search_btn").click(function () { 
-		var number = jQuery("#userInfo_search_number").val();
-		var name = jQuery("#userInfo_search_name").val();
+		var number = $("#userInfo_search_number").val();
+		var name = $("#userInfo_search_name").val();
 		url = "system/user/getGridData?number="+number+"&name="+name;
-		jQuery("#userInfoList").jqGrid('setGridParam',{url:url, page:1}).trigger("reloadGrid");
+		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
     });
 });
-
-//提交获得Respons后显示系统消息
-function showResponse(responseText, statusText, xhr, $form)  {
-	var reData = jQuery.parseJSON(responseText);
-	var sysMsg = reData.userdata;
-	$.addMessage(sysMsg);
-}
 </script>
 
 <fieldset>

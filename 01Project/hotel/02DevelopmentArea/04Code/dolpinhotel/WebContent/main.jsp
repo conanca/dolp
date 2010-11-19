@@ -11,12 +11,11 @@
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/i18n/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+<script src="js/i18n/messages_cn.js" type="text/javascript"></script>
 <script src="js/jquery.form.js" type="text/javascript"></script>
 <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="js/i18n/messages_cn.js" type="text/javascript"></script>
-<script src="js/jquery.EmnuItem.js" type="text/javascript"></script>
 <script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
-<script src="js/jquery.pnotify.ex.js" type="text/javascript"></script>
+<script src="js/system.common.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
 <link href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>

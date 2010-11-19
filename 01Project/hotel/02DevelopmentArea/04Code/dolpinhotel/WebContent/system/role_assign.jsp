@@ -7,9 +7,17 @@
 $(function(){
 	$("input:submit").button();
 
-	jQuery("#roleAssignUserList").jqGrid({
+	$("#roleAssignUserList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+	   	viewrecords: true,
+	   	datatype: "json",
+		jsonReader:{
+	   		repeatitems: false
+		},
 	   	url:'system/user/getGridData',
-		datatype: "json",
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
@@ -20,20 +28,12 @@ $(function(){
 	   		{name:'birthday',index:'birthday', width:80},
 	   		{name:'phone',index:'phone', width:150}
 	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-		jsonReader:{
-	   		repeatitems: false
-		},
 	   	pager: '#roleAssignUserPager',
 	   	sortname: 'number',
 		sortorder: "asc",
-		viewrecords: true,
 		caption:"用户列表",
 	    loadComplete: function(){
-    	    var userData = jQuery("#roleAssignUserList").getUserData();
+    	    var userData = $("#roleAssignUserList").getUserData();
 			$.addMessage(userData);
     	},
 		onSelectRow: function(id){
@@ -55,8 +55,8 @@ $(function(){
 		}
 	});
 	//不显示jqgrid自带的增删改查按钮
-	jQuery("#roleAssignUserList").jqGrid('navGrid','#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#roleAssignUserList").jqGrid('hideCol',['id']);//隐藏id列
+	$("#roleAssignUserList").navGrid('#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
+	$("#roleAssignUserList").hideCol(['id']);//隐藏id列
 
 	
 	$("#roleIds").addItems($.getItem("system/role/getAllRole"));
@@ -65,7 +65,6 @@ $(function(){
 	$("#roleIds").multiselect();
 
 	var options = {
-		    beforeSubmit:showRequest,
 		    success:	showResponse,
 			url:		'system/user/assignRole',
 			type:		'get',
@@ -78,14 +77,6 @@ $(function(){
 	});
 });
 
-//提交前
-function showRequest(formData, jqForm, options) {
-	
-}
-//提交后获得Respons后
-function showResponse(responseText, statusText, xhr, $form)  {
-	alert('分配成功');
-}
 </script>
 <table id="roleAssignUserList"></table>
 <div id="roleAssignUserPager"></div>
