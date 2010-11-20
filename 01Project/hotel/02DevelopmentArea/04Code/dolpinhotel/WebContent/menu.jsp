@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <script type="text/javascript">
 $(function() {
-	jQuery("#west-grid").jqGrid({
+	$("#west-grid").jqGrid({
 		url: "tree.xml",
 		datatype: "xml",
 		height: "auto",
@@ -20,7 +20,7 @@ $(function() {
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		onSelectRow: function(rowid) {
-			var treedata = $("#west-grid").jqGrid('getRowData',rowid);
+			var treedata = $("#west-grid").getRowData(rowid);
 			if(treedata.isLeaf=="true") {
 				//treedata.url
 				var st = "#t"+treedata.id;

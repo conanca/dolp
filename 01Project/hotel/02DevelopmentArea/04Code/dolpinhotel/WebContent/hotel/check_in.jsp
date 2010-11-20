@@ -18,8 +18,13 @@ $(function(){
 	$("#certificateType").addItems(certificateTypes);
 	var certificateTypes1 = $.swapJSON(certificateTypes);
 
-	jQuery("#customerList").jqGrid({
+	$("#customerList").jqGrid({
+		rowNum:10,
+		rowList:[10,20,30],
+		autowidth: true,
+		height: "100%", //自动调整高度(无滚动条)
 		datatype: "local",
+		caption:"顾客信息列表",
 		colNames:['序号','姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
 			{name:'no',index:'no', width:60},
@@ -29,35 +34,30 @@ $(function(){
 			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300}
 		],
-		rowNum:10,
-		rowList:[10,20,30],
-		autowidth: true,
-		height: "100%", //自动调整高度(无滚动条)
-		pager: '#customerPager',
-		caption:"顾客信息列表"
+		pager: '#customerPager'
 	});
 	//不显示查询按钮
-	jQuery("#customerList").jqGrid('navGrid','#customerPager',{edit:false,add:false,del:false,search:false});
+	$("#customerList").navGrid('#customerPager',{edit:false,add:false,del:false,search:false});
 	
-	jQuery("#customerList").jqGrid('navButtonAdd','#customerPager',{caption:"添加",buttonicon:"ui-icon-plus",
+	$("#customerList").navButtonAdd('#customerPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#customerDiv").dialog( "open" );
 		}
 	});
-	jQuery("#customerList").jqGrid('navButtonAdd','#customerPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
+	$("#customerList").navButtonAdd('#customerPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
 		onClickButton:function(){
-			var id = jQuery("#customerList").jqGrid('getGridParam','selrow');
+			var id = $("#customerList").getGridParam('selrow');
 			if (id) {
-				jQuery("#customerList").jqGrid('GridToForm',id,"#customerForm");
+				$("#customerList").GridToForm(id,"#customerForm");
 				$("#customerDiv").dialog( "open" );
 			} else {
-				alert("请选择要编辑的记录");
+				$.addMessageStr(null,"请选择要编辑的记录",null);
 			}
 		}
 	});
-	jQuery("#customerList").jqGrid('navButtonAdd','#customerPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
+	$("#customerList").navButtonAdd('#customerPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
-			var fx = jQuery("#customerList").jqGrid('getGridParam','selrow')-1;
+			var fx = $("#customerList").getGridParam('selrow')-1;
 			if (fx >= 0) {
 				for(var i=0,n=0,flag=0;i<customerListData.length;i++)
 				{
@@ -73,12 +73,12 @@ $(function(){
 					}
 				}
 				customerListData.length-=1;
-				jQuery("#customerList").jqGrid('clearGridData');
+				$("#customerList").clearGridData();
 				for(var i=0;i<=customerListData.length;i++){
-					jQuery("#customerList").jqGrid('addRowData',i+1,customerListData[i]);
+					$("#customerList").addRowData(i+1,customerListData[i]);
 				}
 			} else {
-				alert("请选择要删除的记录");
+				$.addMessageStr(null,"请选择要删除的记录",null);
 			}
 		}
 	});
@@ -125,10 +125,10 @@ $(function(){
 		if(currCustomer.no==null||currCustomer.no==''){
 			currCustomer.no=arrLength+1;
 			customerListData[arrLength]=currCustomer;
-			jQuery("#customerList").jqGrid('addRowData',arrLength+1,currCustomer);
+			$("#customerList").addRowData(arrLength+1,currCustomer);
 		}else{
 			customerListData[currCustomer.no-1]=currCustomer;
-			jQuery("#customerList").jqGrid('setRowData',currCustomer.no,currCustomer);
+			$("#customerList").setRowData(currCustomer.no,currCustomer);
 		}
 		$("#customerNo").attr("value",'');	//清空隐藏域的值
 		$('#customerForm')[0].reset();	//清空表单的值
@@ -179,9 +179,9 @@ $(function(){
 			function(data) {
 			  $.addMessageStr("登记成功",null,null);
 			  $('#roomOccupancyForm')[0].reset();	//清空表单的值
-			  jQuery("#customerList").jqGrid('clearGridData');	//清空grid的值
+			  $("#customerList").clearGridData();	//清空grid的值
 			  $('#roomSelector').find('option').remove().end();	//移除房间号选择框的所有option
-			  $("#roomSelector").append(new Option("请先选择房间类型","0"));
+			  $("#roomSelector").append(new Option("请先选择房间类型",""));
 			  customerListData = new Array();	//初始化customerListData
 			}
 		);

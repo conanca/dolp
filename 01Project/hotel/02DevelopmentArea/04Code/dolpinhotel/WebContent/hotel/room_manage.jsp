@@ -11,8 +11,18 @@ $(function(){
 	//swapJsonKV(allRoomTypes);
 	var allRoomTypes1 = $.swapJSON(allRoomTypes); 
 	
-	jQuery("#roomList").jqGrid({
+	$("#roomList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+	   	jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    caption: "房间列表",
 	   	url:'dolpinhotel/setup/room/getJqgridData',
+	    editurl: "dolpinhotel/setup/room/editRow",	//del:true
 		datatype: "json",
 	   	colNames:['id','房间号', '房间类型','已入住'],
 	   	colModel:[
@@ -21,35 +31,25 @@ $(function(){
 	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
 	   		{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
 	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	   	jsonReader:{
-	   		repeatitems: false
-        },
 	   	pager: '#roomPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
-	    viewrecords: true,
-	    editurl: "dolpinhotel/setup/room/editRow",	//del:true
 	    multiselect: true, //checkbox
-	    caption: "房间列表",
 	    loadComplete: function(){
-			$.addMessage(jQuery("#roomList").getGridParam("userData"));
+			$.addMessage($("#roomList").getGridParam("userData"));
 		}
 	});
 	//不显示jqgrid自带的查询按钮
-	jQuery("#roomList").jqGrid('navGrid','#roomPager',{edit:true,add:true,del:true,search:false});
-	jQuery("#roomList").jqGrid('hideCol',['id']);//隐藏id列
+	$("#roomList").navGrid('#roomPager',{edit:true,add:true,del:true,search:false});
+	$("#roomList").hideCol(['id']);//隐藏id列
 
 	//查询按钮点击事件
 	$("#room_manage_search_btn").click(function () { 
-		var number = jQuery("#room_manage_number").val();
-		var isOccupancy = jQuery("#room_manage_isOccupancy").val();
-		var roomTypeId = jQuery("#room_manage_roomTypeId").val();
+		var number = $("#room_manage_number").val();
+		var isOccupancy = $("#room_manage_isOccupancy").val();
+		var roomTypeId = $("#room_manage_roomTypeId").val();
 		url = "dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId;
-		jQuery("#roomList").jqGrid('setGridParam',{url:url, page:1}).trigger("reloadGrid");
+		$("#roomList").setGridParam({url:url, page:1}).trigger("reloadGrid");
     });
 });
 </script>

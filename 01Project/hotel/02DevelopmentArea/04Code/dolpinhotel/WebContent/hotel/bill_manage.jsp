@@ -13,9 +13,19 @@ $(function(){
 		allRooms = response;
 	});
 	
-	jQuery("#billList").jqGrid({
-	   	url:'dolpinhotel/management/bill/getGridData',
+	$("#billList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
 		datatype: "json",
+	   	jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    caption: "账单列表",
+	   	url:'dolpinhotel/management/bill/getGridData',
+	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
 	   	colNames:['id','账单号', '金额','日期'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
@@ -23,46 +33,36 @@ $(function(){
 	   		{name:'amount',index:'amount', width:100, editable:true},
 	   		{name:'date',index:'date', width:100, editable:true, sorttype:'date', formatter:fmtDate},
 	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	   	jsonReader:{
-	   		repeatitems: false
-        },
 	   	pager: '#billPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
-	    viewrecords: true,
-	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
 	    multiselect: false, //checkbox
-	    caption: "账单列表",
 	    loadComplete: function(){
-			$.addMessage(jQuery("#billList").getGridParam("userData"));
+			$.addMessage($("#billList").getGridParam("userData"));
 		},
 		onSelectRow: function(ids) {
 			if(ids == null) {
 				ids=0;
-				if($("#billSubList").jqGrid('getGridParam','records') >0 ) {
-					$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
+				if($("#billSubList").getGridParam('records') >0 ) {
+					$("#billSubList").setGridParam({url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
 					$("#billSubList").trigger('reloadGrid');
 				}
 			} else {
-				$("#billSubList").jqGrid('setGridParam',{url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
+				$("#billSubList").setGridParam({url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+ids,page:1});
 				$("#billSubList").trigger('reloadGrid');
 			}
-			var no = $("#billList").jqGrid('getCell',ids,'number');
-			var amount = $("#billList").jqGrid('getCell',ids,'amount');
-			var date = $("#billList").jqGrid('getCell',ids,'date');
+			var no = $("#billList").getCell(ids,'number');
+			var amount = $("#billList").getCell(ids,'amount');
+			var date = $("#billList").getCell(ids,'date');
 			$("#bill_manage_print_number").val(no);
 			$("#bill_manage_print_amount").val(amount);
 			$("#bill_manage_print_date").val(date);
 		}
 	});
 	//不显示jqgrid自带的查询按钮
-	jQuery("#billList").jqGrid('navGrid','#billPager',{edit:true,add:false,del:true,search:false});
-	jQuery("#billList").jqGrid('hideCol',['id']);//隐藏id列
-	jQuery("#billList").jqGrid('navButtonAdd','#billPager',{caption:"打印",buttonicon:"ui-icon-print",
+	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false});
+	$("#billList").hideCol(['id']);//隐藏id列
+	$("#billList").navButtonAdd('#billPager',{caption:"打印",buttonicon:"ui-icon-print",
 		onClickButton:function(){
 			$("#billInfoPrint1").show();
 			$("#billInfoPrint2").show();
@@ -72,10 +72,18 @@ $(function(){
 		}
 	});
 
-
-	jQuery("#billSubList").jqGrid({
+	$("#billSubList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+	   	datatype: "json",
+		jsonReader:{
+	   		repeatitems: false
+		},
+		viewrecords: true,
+		caption: "房间入住情况列表",
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=3',
-		datatype: "json",
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0},
@@ -88,23 +96,14 @@ $(function(){
 	   		{name:'status',index:'status', width:80,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
 	   		{name:'billId',index:'billId', width:0}
 	   	],
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-		jsonReader:{
-	   		repeatitems: false
-		},
 	   	pager: '#billSubPager',
 	   	sortname: 'id',
 		sortorder: "desc",
-		viewrecords: true,
-		multiselect: false, //checkbox
-		caption: "房间入住情况列表"
+		multiselect: false //checkbox
 	});
 	//不显示jqgrid自带的增删改查按钮
-	jQuery("#billSubList").jqGrid('navGrid','#billSubPager',{edit:false,add:false,del:false,search:false});
-	jQuery("#billSubList").jqGrid('hideCol',['id','billId','status']);//隐藏id,billId,状态列
+	$("#billSubList").navGrid('#billSubPager',{edit:false,add:false,del:false,search:false});
+	$("#billSubList").hideCol(['id','billId','status']);//隐藏id,billId,状态列
 
 	// 隐藏打印DIV
 	$("#billInfoPrint1").hide();
@@ -112,12 +111,12 @@ $(function(){
 
 	//查询按钮点击事件
 	$("#bill_manage_search_btn").click(function () { 
-		var number = jQuery("#bill_manage_number").val();
-		var amount = jQuery("#bill_manage_amount").val();
-		var dateFrom = jQuery("#bill_manage_dateFrom").val();
-		var dateTo = jQuery("#bill_manage_dateTo").val();
+		var number = $("#bill_manage_number").val();
+		var amount = $("#bill_manage_amount").val();
+		var dateFrom = $("#bill_manage_dateFrom").val();
+		var dateTo = $("#bill_manage_dateTo").val();
 		var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
-		jQuery("#billList").jqGrid('setGridParam',{url:url,page:1}).trigger("reloadGrid");
+		$("#billList").setGridParam({url:url,page:1}).trigger("reloadGrid");
     });
 });
 
