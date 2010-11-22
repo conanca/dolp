@@ -2,6 +2,8 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
@@ -29,10 +31,12 @@ public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
 	}
 
 	@Aop(value = "log")
-	public void CUDSysEnumItem(String oper, String id, String text, String value, int sysEnumId) {
+	public ResponseSysMsgData CUDSysEnumItem(String oper, String id, String text, String value, int sysEnumId) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -40,6 +44,7 @@ public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().insert(item);
+			reData.setUserdata(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -48,7 +53,9 @@ public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().update(item);
+			reData.setUserdata(new SystemMessage("修改成功!", null, null));
 		}
+		return reData;
 	}
 
 	@Aop(value = "log")

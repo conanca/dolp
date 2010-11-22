@@ -2,6 +2,8 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.sql.Timestamp;
@@ -41,10 +43,13 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 	}
 
 	@Aop(value = "log")
-	public void UDBill(String oper, String id, String number, String amount, String date) throws ParseException {
+	public ResponseSysMsgData UDBill(String oper, String id, String number, String amount, String date)
+			throws ParseException {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Bill bill = new Bill();
@@ -55,7 +60,9 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 			Timestamp dateTime = new Timestamp(dateFormat.parse(date).getTime());
 			bill.setDate(dateTime);
 			dao().update(bill);
+			reData.setUserdata(new SystemMessage("修改成功!", null, null));
 		}
+		return reData;
 	}
 
 }

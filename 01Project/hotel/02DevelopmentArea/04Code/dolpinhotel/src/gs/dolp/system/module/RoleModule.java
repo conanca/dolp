@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
@@ -24,9 +25,9 @@ public class RoleModule {
 	}
 
 	@At
-	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
+	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
 			@Param("description") String description) {
-		roleService.CUDRole(oper, id, name, description);
+		return roleService.CUDRole(oper, id, name, description);
 	}
 
 	@At

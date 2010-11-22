@@ -40,7 +40,30 @@ $(function(){
 		}
 	});
 	//不显示jqgrid自带的查询按钮
-	$("#roomList").navGrid('#roomPager',{edit:true,add:true,del:true,search:false});
+	$("#roomList").navGrid('#roomPager',{edit:true,add:true,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 	$("#roomList").hideCol(['id']);//隐藏id列
 
 	//查询按钮点击事件

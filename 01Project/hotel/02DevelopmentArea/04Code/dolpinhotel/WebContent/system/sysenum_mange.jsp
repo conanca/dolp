@@ -47,7 +47,30 @@ $(function(){
 		}
 	});
 	//不显示jqgrid自带的查询按钮
-	$("#sysenumList").navGrid('#sysenumPager',{edit:true,add:true,del:true,search:false});
+	$("#sysenumList").navGrid('#sysenumPager',{edit:true,add:true,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 	$("#sysenumList").hideCol(['id']);//隐藏id列
 	
 	$("#sysenumSubList").jqGrid({
@@ -80,7 +103,30 @@ $(function(){
     	}
 	});
 	//不显示jqgrid自带的增删改查按钮
-	$("#sysenumSubList").navGrid('#sysenumSubPager',{edit:true,add:true,del:true,search:false});
+	$("#sysenumSubList").navGrid('#sysenumSubPager',{edit:true,add:true,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 	$("#sysenumSubList").hideCol(['id','sysEnumId']);//隐藏id
 });
 </script>

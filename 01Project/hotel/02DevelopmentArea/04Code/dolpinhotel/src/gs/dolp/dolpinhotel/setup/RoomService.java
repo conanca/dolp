@@ -2,6 +2,8 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.util.LinkedHashMap;
@@ -38,10 +40,12 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 	}
 
 	@Aop(value = "log")
-	public void CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
+	public ResponseSysMsgData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			Room room = new Room();
@@ -49,6 +53,7 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().insert(room);
+			reData.setUserdata(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Room room = new Room();
@@ -57,7 +62,9 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().update(room);
+			reData.setUserdata(new SystemMessage("修改成功!", null, null));
 		}
+		return reData;
 	}
 
 	@Aop(value = "log")

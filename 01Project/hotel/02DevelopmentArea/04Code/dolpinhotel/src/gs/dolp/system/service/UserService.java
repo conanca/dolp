@@ -2,6 +2,8 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -39,7 +41,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		Condition cnd = Cnd.where("NUMBER", "=", number).and("PASSWORD", "=", password);
 		User user = fetch(cnd);
 		if (null == user) {
-			throw new RuntimeException("Error username or password");
+			throw new RuntimeException("用户名或密码错误!");
 		}
 		return user;
 	}
@@ -53,14 +55,16 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
-	public void updateRole(String userId, String[] roleIds) {
+	public ResponseSysMsgData updateRole(String userId, String[] roleIds) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		// 取得要更新角色的用户
 		User user = fetch(Integer.parseInt(userId));
 		// 清空中间表中该用户原有角色
 		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
 		// 如果roleIds为Null,则直接return
 		if (roleIds == null) {
-			return;
+			reData.setUserdata(new SystemMessage(null, "未分配任何角色!", null));
+			return reData;
 		}
 		List<Role> roles = new ArrayList<Role>();
 		// 从数据库中获取指定id的角色
@@ -73,6 +77,8 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		user.setRoles(roles);
 		// 插入中间表记录
 		dao().insertRelation(user, "roles");
+		reData.setUserdata(new SystemMessage("分配成功!", null, null));
+		return reData;
 	}
 
 	@Aop(value = "log")

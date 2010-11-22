@@ -2,6 +2,7 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseData;
 
 import java.text.ParseException;
 
@@ -21,8 +22,8 @@ public class BillModule {
 	}
 
 	@At
-	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
+	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
 			@Param("amount") String amount, @Param("date") String date) throws ParseException {
-		billService.UDBill(oper, id, number, amount, date);
+		return billService.UDBill(oper, id, number, amount, date);
 	}
 }

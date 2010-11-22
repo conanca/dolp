@@ -2,6 +2,8 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.util.HashMap;
@@ -25,10 +27,12 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 		return jq;
 	}
 
-	public void CUDRoomType(String oper, String id, String name, String price, String description) {
+	public ResponseSysMsgData CUDRoomType(String oper, String id, String name, String price, String description) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
 			clear(cnd);
+			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			RoomType roomType = new RoomType();
@@ -36,6 +40,7 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 			roomType.setPrice(Double.parseDouble(price));
 			roomType.setDescription(description);
 			dao().insert(roomType);
+			reData.setUserdata(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			RoomType roomType = new RoomType();
@@ -44,7 +49,9 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 			roomType.setPrice(Double.parseDouble(price));
 			roomType.setDescription(description);
 			dao().update(roomType);
+			reData.setUserdata(new SystemMessage("修改成功!", null, null));
 		}
+		return reData;
 	}
 
 	@Aop(value = "log")

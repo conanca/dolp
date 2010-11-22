@@ -32,7 +32,30 @@ $(function(){
 		}
 	});
 	//不显示jqgrid自带的增删改查按钮
-	$("#roomTypeList").navGrid('#roomTypePager',{edit:true,add:true,del:true,search:false});
+	$("#roomTypeList").navGrid('#roomTypePager',{edit:true,add:true,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 	$("#roomTypeList").hideCol(['id']);//隐藏id列
 });
 </script>

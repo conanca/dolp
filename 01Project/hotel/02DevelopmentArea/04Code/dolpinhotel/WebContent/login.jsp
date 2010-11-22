@@ -7,7 +7,11 @@
 <title>Login page</title>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+<script src="js/jquery.form.js" type="text/javascript"></script>
+<script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
+<script src="js/system.common.js" type="text/javascript"></script>
 <link id="jQueryUICssSrc" href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
 <style type="text/css" media="all">
 	body { font-size: 80%; }
 </style>
@@ -15,12 +19,32 @@
 $(function() {
 	$("#login").dialog( { draggable: false } );
 	$("input:submit,input:reset").button();
+
+	var options = {
+		    success:	response,
+			url:		'system/user/login',
+			type:		'post',
+			clearForm:	true,
+			resetForm:	true
+		};
+	$('#logonForm').submit(function() {
+		$(this).ajaxSubmit(options);
+		return false;
+	});
 });
+
+function response(responseText, statusText, xhr, $form)  {
+	if('null'!=responseText){
+		$.addMessage($.parseJSON(responseText).userdata);
+	}else{
+		window.location.href="main.jsp";
+	}
+}
 </script>
 </head>
 <body>
 <div id="login" title="请登录">
-	<form action="system/user/login" method="post">
+	<form id="logonForm" action="#">
 		<table>
 			<tr>
 				<td>

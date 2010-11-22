@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseData;
 import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
@@ -32,15 +33,15 @@ public class SysEnumModule {
 	}
 
 	@At
-	public void editSysEnum(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
+	public ResponseData editSysEnum(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
 			@Param("description") String description) {
-		sysEnumService.CUDSysEnum(oper, id, name, description);
+		return sysEnumService.CUDSysEnum(oper, id, name, description);
 	}
 
 	@At("/editSysEnumItem/*")
-	public void editSysEnumItem(int sysEnumID, @Param("oper") String oper, @Param("id") String id,
+	public ResponseData editSysEnumItem(int sysEnumID, @Param("oper") String oper, @Param("id") String id,
 			@Param("text") String text, @Param("value") String value) {
-		sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
+		return sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
 	}
 
 	@At("/getSysEnumOption/*")

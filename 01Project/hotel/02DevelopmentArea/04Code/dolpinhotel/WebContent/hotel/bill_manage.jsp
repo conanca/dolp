@@ -60,7 +60,24 @@ $(function(){
 		}
 	});
 	//不显示jqgrid自带的查询按钮
-	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false});
+	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 	$("#billList").hideCol(['id']);//隐藏id列
 	$("#billList").navButtonAdd('#billPager',{caption:"打印",buttonicon:"ui-icon-print",
 		onClickButton:function(){

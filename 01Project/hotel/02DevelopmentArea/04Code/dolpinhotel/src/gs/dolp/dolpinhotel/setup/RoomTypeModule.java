@@ -2,6 +2,7 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.ResponseData;
 
 import java.util.Map;
 
@@ -21,9 +22,9 @@ public class RoomTypeModule {
 	}
 
 	@At
-	public void editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
+	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
 			@Param("price") String price, @Param("description") String description) {
-		roomTypeService.CUDRoomType(oper, id, name, price, description);
+		return roomTypeService.CUDRoomType(oper, id, name, price, description);
 	}
 
 	@At

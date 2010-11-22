@@ -11,8 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Fail;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
@@ -24,16 +22,12 @@ public class UserModule {
 	private UserService userService;
 
 	@At
-	@Fail("jsonx")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
 			@Param("name") String name) {
 		return userService.getGridData(jqReq, number, name);
 	}
 
 	@At
-	@Ok("redirect:/main.jsp")
-	@Fail("redirect:/login.jsp")
-	@Filters
 	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		User logonUser = userService.userAuthenticate(number, password);
 		session.setAttribute("logonUser", logonUser);
@@ -51,7 +45,7 @@ public class UserModule {
 		if (cUser != null) {
 			return cUser.getName();
 		} else {
-			throw new RuntimeException("Please Logon!");
+			throw new RuntimeException("请先登录!");
 		}
 	}
 
@@ -76,8 +70,8 @@ public class UserModule {
 	}
 
 	@At
-	public void assignRole(@Param("userId") String userId, @Param("assignedRoleIds[]") String[] roleIds) {
-		userService.updateRole(userId, roleIds);
+	public ResponseData assignRole(@Param("userId") String userId, @Param("assignedRoleIds[]") String[] roleIds) {
+		return userService.updateRole(userId, roleIds);
 	}
 
 	@At("/getCurrentRoleIDs/*")
