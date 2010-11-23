@@ -11,12 +11,12 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 @InjectName("userModule")
 @At("/system/user")
-//@Filters( { @By(type = CheckSession.class, args = { "logonUser", "/login.jsp" }) })
 public class UserModule {
 
 	private UserService userService;
@@ -28,6 +28,7 @@ public class UserModule {
 	}
 
 	@At
+	@Filters
 	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		User logonUser = userService.userAuthenticate(number, password);
 		session.setAttribute("logonUser", logonUser);
@@ -45,7 +46,7 @@ public class UserModule {
 		if (cUser != null) {
 			return cUser.getName();
 		} else {
-			throw new RuntimeException("请先登录!");
+			return null;
 		}
 	}
 

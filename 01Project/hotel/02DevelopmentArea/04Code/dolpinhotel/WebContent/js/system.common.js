@@ -111,16 +111,19 @@ $.extend({
 	//为该下拉列表框添加指定的Items作为option，此处的Items为JSON格式的map数据
 	$.fn.addItems = function(Items) {
 		var selectorid=this.selector;
-		$.each(Items,function(text,value) {
-			$(selectorid).append(new Option(text,value));
+		   $.each(Items,function(text,value){
+				var newopt='<option value="'+value+'">'+text+'</option>';					
+				$(selectorid).append(newopt);
 		});
 	};
 	//为该下拉列表框添加指定系统枚举值作为option
 	$.fn.addSysEmnuItems = function(SysEnumName) {
 		var selectorid=this.selector;
 		var SysEnumItems = $.getSysEmnuItem(SysEnumName);
-		$.each(SysEnumItems,function(text,value) {
-			$(selectorid).append(new Option(text,value));
+		$(selectorid).find('option').remove().end();
+		   $.each(SysEnumItems,function(text,value){
+				var newopt='<option value="'+value+'">'+text+'</option>';					
+				$(selectorid).append(newopt);
 		});
 	};
 })(jQuery);

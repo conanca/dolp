@@ -80,9 +80,9 @@ $.fn.selectSubcategory = function(o) {
 				   success:function(data){
 					   $('#'+o.subcategoryid).find('option').remove().end();
 					   $.each(data,function(text,value){
-							var newopt=new Option(text,value);
+							var newopt='<option value="'+value+'">'+text+'</option>';					
 							$('#'+o.subcategoryid).append(newopt);
-							});
+					   });
 					}
 			});
 		});

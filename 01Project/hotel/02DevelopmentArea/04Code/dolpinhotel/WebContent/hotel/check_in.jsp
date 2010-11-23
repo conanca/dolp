@@ -27,10 +27,10 @@ $(function(){
 		caption:"顾客信息列表",
 		colNames:['序号','姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
-			{name:'no',index:'no', width:60},
-			{name:'name',index:'name', width:60},
-			{name:'gender',index:'gender', width:50, edittype:'select', formatter:'select', editoptions:{value:genders1}},
-			{name:'certificateType',index:'certificateType', width:60, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes1}},
+			{name:'no',index:'no', width:80},
+			{name:'name',index:'name', width:80},
+			{name:'gender',index:'gender', width:80, edittype:'select', formatter:'select', editoptions:{value:genders1}},
+			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes1}},
 			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300}
 		],

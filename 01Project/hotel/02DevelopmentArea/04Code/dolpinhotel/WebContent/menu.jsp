@@ -6,14 +6,14 @@ $(function() {
 		datatype: "xml",
 		height: "auto",
 		pager: false,
-		colNames: ["id","Items","url"],
+		colNames: ["id","功能菜单","url"],
 		colModel: [
 			{name: "id",width:1,hidden:true, key:true},
 			{name: "menu", width:150, resizable: false, sortable:false},
 			{name: "url",width:1,hidden:true}
 		],
 		treeGrid: true,
-		caption: "功能菜单",
+		caption: "",
 		ExpandColumn: "menu",
 		autowidth: true,
 		rowNum: 200,

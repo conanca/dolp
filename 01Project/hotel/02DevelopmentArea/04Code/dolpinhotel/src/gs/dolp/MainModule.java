@@ -17,6 +17,7 @@ import org.nutz.mvc.ioc.provider.JsonIocProvider;
 @SetupBy(MvcSetup.class)
 @Ok("json")
 @Fail("jsonx")
+//@Filters({ @By(type = CheckLogon.class) })
 @Views(MyJsonViewMaker.class)
 public class MainModule {
 
