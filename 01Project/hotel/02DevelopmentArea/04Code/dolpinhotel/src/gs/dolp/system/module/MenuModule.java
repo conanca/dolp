@@ -4,6 +4,8 @@ import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.service.MenuService;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -15,9 +17,9 @@ public class MenuModule {
 	private MenuService menuService;
 
 	@At
-	public StandardJqgridResData getGridData(@Param("page") String page, @Param("rows") String rows,
-			@Param("sidx") String sidx, @Param("sord") String sord) {
-		return menuService.getGridData();
+	public StandardJqgridResData getGridData(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
+			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpServletRequest req) {
+		return menuService.getGridData(nodeId, nLeft, nRight, nLevel);
 	}
 
 	@At
@@ -27,10 +29,5 @@ public class MenuModule {
 		} else {
 			menuService.dao().update(menu);
 		}
-	}
-
-	@At
-	public void deleteRow(@Param("id") String ids) {
-		menuService.deleteMenus(ids);
 	}
 }

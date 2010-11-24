@@ -47,3 +47,21 @@ INSERT INTO SYSTEM_SYSENUMITEM(ID,TEXT,VALUE,SYSENUMID ) VALUES
 (3,'军官证','03',1),
 (4,'男','01',2),
 (5,'女','02',2);
+
+INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
+(1,'系统管理',NULL,NULL,1,20),
+(2,'用户管理','system/user_manage.jsp',NULL,2,3),
+(3,'角色管理','system/role_manage.jsp',NULL,4,5),
+(4,'角色分配','system/role_assign.jsp',NULL,6,7),
+(5,'菜单管理','system/menu_manage.jsp',NULL,8,9),
+(6,'枚举管理','system/sysenum_mange.jsp',NULL,10,11),
+(7,'演示页面',NULL,NULL,21,40),
+(8,'格式化文本框','demo1.jsp',NULL,22,23),
+(9,'酒店设置',NULL,NULL,51,70),
+(10,'房间类型设置','hotel/room_type_manage.jsp',NULL,52,53),
+(11,'房间设置','hotel/room_manage.jsp',NULL,54,55),
+(12,'经营管理',NULL,NULL,71,100),
+(13,'可用房确认','hotel/available_room_check.jsp',NULL,72,73),
+(14,'入住情况','hotel/room_occupancy_manage.jsp',NULL,74,75),
+(15,'入住登记','hotel/check_in.jsp',NULL,76,77),
+(16,'账单管理','hotel/bill_manage.jsp',NULL,78,79);
