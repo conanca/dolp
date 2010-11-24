@@ -20,6 +20,11 @@ $(function() {
 	$("#login").dialog( { draggable: false } );
 	$("input:submit,input:reset").button();
 
+	opts.pnotify_title = "消息";
+	opts.pnotify_type = "notice";
+	opts.pnotify_text = "请使用Firefox浏览器访问本系统(登录账户1000/123)";
+	$.pnotify(opts);
+
 	var options = {
 		    success:	response,
 			url:		'system/user/login',
