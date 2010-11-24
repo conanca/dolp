@@ -20,7 +20,7 @@ $(function(){
 	    editurl: "system/sysEnum/editSysEnum",
 	   	colNames:['id','名称', '描述'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'name',index:'name', width:100, editable:true},
 	   		{name:'description',index:'description', width:300, editable:true, edittype:"textarea"}
 	   	],
@@ -71,7 +71,6 @@ $(function(){
 		},
 		{},{}
 	);
-	$("#sysenumList").hideCol(['id']);//隐藏id列
 	
 	$("#sysenumSubList").jqGrid({
 		rowNum:10,
@@ -88,10 +87,10 @@ $(function(){
 		datatype: "json",
 	   	colNames:['id','文本', '值','sysEnumId'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'text',index:'text', width:100, editable:true},
 	   		{name:'value',index:'value', width:100, editable:true},
-	   		{name:'sysEnumId',index:'sysEnumId', width:0}
+	   		{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true}
 	   	],
 	   	pager: '#sysenumSubPager',
 	   	sortname: 'id',
@@ -127,7 +126,6 @@ $(function(){
 		},
 		{},{}
 	);
-	$("#sysenumSubList").hideCol(['id','sysEnumId']);//隐藏id
 });
 </script>
 

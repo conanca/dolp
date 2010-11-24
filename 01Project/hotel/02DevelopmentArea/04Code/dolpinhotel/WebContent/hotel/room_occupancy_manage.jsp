@@ -29,7 +29,7 @@ $(function(){
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
 	   		{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
 	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
@@ -37,7 +37,7 @@ $(function(){
 	   		{name:'occupancyDays',index:'occupancyDays', width:120},
 	   		{name:'amount',index:'amount', width:100},
 	   		{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
-	   		{name:'billId',index:'billId', width:0}
+	   		{name:'billId',index:'billId', width:0,hidden:true}
 	   	],
 	   	pager: '#roomOccupancyPager',
 	   	sortname: 'id',
@@ -62,7 +62,6 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#roomOccupancyList").navGrid('#roomOccupancyPager',{edit:false,add:false,del:false,search:false});
-	$("#roomOccupancyList").hideCol(['id','billId']);//隐藏id,billId列
 	$("#roomOccupancyList").navButtonAdd('#roomOccupancyPager',{caption:"结帐离开",buttonicon:"ui-icon-cart",position:"last",
 		onClickButton:function(){
 			checkOutIdArr = $("#roomOccupancyList").getGridParam('selarrrow');
@@ -125,14 +124,14 @@ $(function(){
 	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
 	   	colNames:['id','序号', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'no',index:'no', width:80},
 	   		{name:'name',index:'name', width:80},
 	   		{name:'gender',index:'gender', width:80},
 	   		{name:'certificateType',index:'certificateType', width:120},		
 	   		{name:'credentialNumber',index:'credentialNumber', width:150},		
 	   		{name:'address',index:'address', width:300},
-	   		{name:'roomOccupancyId',index:'roomOccupancyId', width:0}
+	   		{name:'roomOccupancyId',index:'roomOccupancyId', width:0,hidden:true}
 	   	],
 	   	pager: '#customerSubPager',
 	   	sortname: 'no',
@@ -144,7 +143,6 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#customerSubList").navGrid('#customerSubPager',{edit:false,add:false,del:false,search:false});
-	$("#customerSubList").hideCol(['id','roomOccupancyId']);//隐藏id,roomOccupancyId列
 
 	//查询按钮点击事件
 	$("#room_occupancy_manage_search_btn").click(function () { 

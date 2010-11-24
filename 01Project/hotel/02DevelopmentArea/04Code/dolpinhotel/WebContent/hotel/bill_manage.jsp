@@ -28,7 +28,7 @@ $(function(){
 	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
 	   	colNames:['id','账单号', '金额','日期'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:100, editable:true},
 	   		{name:'amount',index:'amount', width:100, editable:true},
 	   		{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate},
@@ -78,7 +78,6 @@ $(function(){
 		},
 		{},{}
 	);
-	$("#billList").hideCol(['id']);//隐藏id列
 	$("#billList").navButtonAdd('#billPager',{caption:"打印",buttonicon:"ui-icon-print",
 		onClickButton:function(){
 			$("#billInfoPrint1").show();
@@ -103,24 +102,27 @@ $(function(){
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=3',
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
 	   		{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
 	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
 	   		{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
 	   		{name:'occupancyDays',index:'occupancyDays', width:120},
 	   		{name:'amount',index:'amount', width:100},
-	   		{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
-	   		{name:'billId',index:'billId', width:0}
+	   		{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"},hidden:true},
+	   		{name:'billId',index:'billId', width:0,hidden:true}
 	   	],
 	   	pager: '#billSubPager',
 	   	sortname: 'id',
 		sortorder: "desc",
-		multiselect: false //checkbox
+		multiselect: false, //checkbox
+	    loadComplete: function(){
+    	    var userData = $("#billSubList").getUserData();
+			$.addMessage(userData);
+    	}
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#billSubList").navGrid('#billSubPager',{edit:false,add:false,del:false,search:false});
-	$("#billSubList").hideCol(['id','billId','status']);//隐藏id,billId,状态列
 
 	// 隐藏打印DIV
 	$("#billInfoPrint1").hide();

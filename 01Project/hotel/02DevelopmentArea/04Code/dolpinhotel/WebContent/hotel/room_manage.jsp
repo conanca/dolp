@@ -26,7 +26,7 @@ $(function(){
 		datatype: "json",
 	   	colNames:['id','房间号', '房间类型','已入住'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:100, editable:true},
 	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
 	   		{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
@@ -64,7 +64,6 @@ $(function(){
 		},
 		{},{}
 	);
-	$("#roomList").hideCol(['id']);//隐藏id列
 
 	//查询按钮点击事件
 	$("#room_manage_search_btn").click(function () { 

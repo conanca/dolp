@@ -91,7 +91,7 @@ $(function(){
 	   	editurl: "system/user/deleteRow",
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
 	   		{name:'gender',index:'gender', width:80,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
@@ -110,8 +110,6 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#userInfoList").navGrid('#userInfoPager',{edit:false,add:false,del:false,search:false});
-	//隐藏id列
-	$("#userInfoList").hideCol(['id']);
 	//添加自定义按钮——添加、编辑和删除
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){

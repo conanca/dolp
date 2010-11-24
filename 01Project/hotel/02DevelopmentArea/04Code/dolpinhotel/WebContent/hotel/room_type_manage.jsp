@@ -18,7 +18,7 @@ $(function(){
 	    editurl: "dolpinhotel/setup/roomtype/editRow",	//del:true
 	   	colNames:['id','房间类型', '价格','描述'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'name',index:'name', width:100, editable:true},
 	   		{name:'price',index:'price', width:100, editable:true},
 	   		{name:'description',index:'description', width:300, editable:true, edittype:'textarea'}
@@ -56,7 +56,6 @@ $(function(){
 		},
 		{},{}
 	);
-	$("#roomTypeList").hideCol(['id']);//隐藏id列
 });
 </script>
 

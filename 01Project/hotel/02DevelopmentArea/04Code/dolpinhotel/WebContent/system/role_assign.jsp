@@ -20,7 +20,7 @@ $(function(){
 	   	url:'system/user/getGridData',
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
-	   		{name:'id',index:'id', width:0},
+	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
 	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
@@ -56,8 +56,6 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#roleAssignUserList").navGrid('#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
-	$("#roleAssignUserList").hideCol(['id']);//隐藏id列
-
 	
 	$("#roleIds").addItems($.getItem("system/role/getAllRole"));
 	$("#roleIds").multiselect("destroy");
