@@ -7,6 +7,7 @@
 <title>Dolp Main Page</title>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+<script src="js/jquery.cookie.js" type="text/javascript"></script>
 <script src="js/jquery.layout.min-1.2.0.js" type="text/javascript"></script>
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>

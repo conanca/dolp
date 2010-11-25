@@ -3,6 +3,25 @@
 <script type="text/javascript">
 $(function() {
 
+	var theme = $.cookie('theme');
+	if(theme){
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + theme + '/jquery-ui-1.8.4.custom.css');
+		$("#jQueryUICssSwitch option:selected").each(function() {
+			$(this).attr("selected", false);
+		});
+		$("#jQueryUICssSwitch").val(theme);
+	}
+	$('#jQueryUICssSwitch').change(function() {
+		if($.cookie('theme')){
+			$.cookie('theme', $('#jQueryUICssSwitch').val());
+		}else{
+			var date = new Date();
+			date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
+			$.cookie('theme', $('#jQueryUICssSwitch').val(), { expires: date, path: '/'});
+		}
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
+	});
+	
 	var url = 'system/user/getCurrentUserName';
 	$.ajaxSetup({ async: false});
 	$.getJSON(url,function(userName){
@@ -11,10 +30,6 @@ $(function() {
 		if(sysMsg){
 			$.addMessage(sysMsg);
 		}
-	});
-
-	$('#jQueryUICssSwitch').change(function() {
-		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
 	});
 });
 </script>
