@@ -3,7 +3,7 @@
 $(function() {
 	$("#west-grid").jqGrid({
 		height: "auto",
-		autowidth: true,
+		//autowidth: true, 为适应IE6而注掉此句
 		treeGrid: true,
 		treeGridModel: 'nested',
 		pager: false,
@@ -17,7 +17,7 @@ $(function() {
 		colNames: ["id","功能菜单","url","description"],
 		colModel: [
 			{name: "id",width:0,hidden:true,key:true},
-			{name: "menu", width:150, resizable: false, sortable:false},
+			{name: "menu", width:180, resizable: false, sortable:false},
 			{name: "url",width:0,hidden:true},
 			{name: "description",width:0,hidden:true}
 		],

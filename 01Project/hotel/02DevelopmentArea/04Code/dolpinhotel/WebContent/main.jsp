@@ -20,6 +20,7 @@
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
 <link href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
+<link href="css/ui.multiselect.css" rel="stylesheet" type="text/css"/>
 <style type="text/css" media="all">
 html, body {
 	margin: 0;			/* Remove body margin/padding */

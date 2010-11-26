@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <script src="js/i18n/jquery.localisation-min.js" type="text/javascript"></script>
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
-<link href="css/ui.multiselect.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript">
 $(function(){
 	$("input:submit").button();
