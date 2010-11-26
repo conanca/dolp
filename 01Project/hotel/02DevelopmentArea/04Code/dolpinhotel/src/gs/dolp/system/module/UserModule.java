@@ -41,13 +41,17 @@ public class UserModule {
 	}
 
 	@At
-	public String getCurrentUserName(HttpSession session) {
+	@Filters
+	public ResponseData getCurrentUserName(HttpSession session) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser != null) {
-			return cUser.getName();
+			reData.setReturnData(cUser.getName());
+			reData.setUserdata(new SystemMessage("登录成功!", null, null));
 		} else {
-			return null;
+			reData.setUserdata(new SystemMessage(null, "请先登录系统", null));
 		}
+		return reData;
 	}
 
 	@At

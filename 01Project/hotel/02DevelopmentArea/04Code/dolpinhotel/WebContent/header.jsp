@@ -24,9 +24,9 @@ $(function() {
 	
 	var url = 'system/user/getCurrentUserName';
 	$.ajaxSetup({ async: false});
-	$.getJSON(url,function(userName){
-		$('#CurrentUserName').text(userName);
-		var sysMsg = userName.userdata;
+	$.getJSON(url,function(respData){
+		$('#CurrentUserName').text(respData.returnData);
+		var sysMsg = respData.userdata;
 		if(sysMsg){
 			$.addMessage(sysMsg);
 		}
