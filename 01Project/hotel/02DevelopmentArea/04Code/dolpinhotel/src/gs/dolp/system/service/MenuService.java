@@ -45,10 +45,10 @@ public class MenuService extends Service {
 		final int nLevel1 = nLevel;
 
 		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-				+ "(COUNT(PARENT.NAME) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
+				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
 				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
 				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT " + addWhere
-				+ " GROUP BY NODE.NAME ORDER BY NODE.LFT");
+				+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
 
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -79,67 +79,4 @@ public class MenuService extends Service {
 		dao().execute(sql);
 		return (List<StandardJqgridResDataRow>) sql.getResult();
 	}
-	//	public List<Menu> getRowList(List<Menu> list, Pager pager) {
-	//		if (list != null) {
-	//			for (Menu menu : list) {
-	//				int level = menu.getLevel() + 1;
-	//				int parentId = menu.getId();
-	//				Condition cnd = Cnd.where("LEVEL", "=", level).and("PARENTID", "=", parentId == 0 ? "null" : parentId)
-	//						.orderBy().asc("ID");
-	//				if (count(cnd) == 0) {
-	//					return list;
-	//				}
-	//				List<Menu> newList = query(cnd, pager);
-	//			}
-	//		}
-	//
-	//	}
-
-	//	@Aop(value = "log")
-	//	public List<StandardJqgridResDataRow> list2Rows(List<Menu> list) {
-	//
-	//		List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
-	//
-	//		Sql sql = Sqls
-	//				.create("SELECT t1.ID FROM SYSTEM_MENU AS t1 LEFT JOIN SYSTEM_MENU as t2 ON t1.ID = t2.PARENTID WHERE t2.ID IS NULL");
-	//		sql.setCallback(new SqlCallback() {
-	//			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-	//				List<Integer> list = new LinkedList<Integer>();
-	//				while (rs.next())
-	//					list.add(rs.getInt("ID"));
-	//				return list;
-	//			}
-	//		});
-	//		dao().execute(sql);
-	//		List<Integer> leafNodeIdList = sql.getList(Integer.class);
-	//		for (Menu menu : list) {
-	//			List cell = new ArrayList();
-	//			cell.add(menu.getId());
-	//			cell.add(menu.getName());
-	//			cell.add(menu.getUrl());
-	//			cell.add(menu.getDescription());
-	//			boolean isleaf = false;
-	//			if (leafNodeIdList.contains(menu.getId())) {
-	//				isleaf = true;
-	//			}
-	//			cell.add(isleaf);
-	//			cell.add(false);
-	//			StandardJqgridResDataRow row = new StandardJqgridResDataRow();
-	//			row.setId(menu.getId());
-	//			row.setCell(cell);
-	//			rows.add(row);
-	//		}
-	//		return rows;
-	//	}
-	//
-	//	@Aop(value = "log")
-	//	public void deleteMenus(String ids) {
-	//		if (!Strings.isEmpty(ids)) {
-	//			String[] idArr = ids.split(",");
-	//			for (String id : idArr) {
-	//				Menu menu = dao().fetch(Menu.class, Long.parseLong(id));
-	//				dao().deleteWith(menu, "childrenMenus");
-	//			}
-	//		}
-	//	}
 }

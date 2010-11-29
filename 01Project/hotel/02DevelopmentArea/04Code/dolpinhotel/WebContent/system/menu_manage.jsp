@@ -3,7 +3,7 @@
 $(function(){
 
 	jQuery("#menuList").jqGrid({
-	   	url:'system/menu/getGridData',
+	   	//url:'system/menu/getGridData',
 	   	datatype: "json",
 	   	colNames:['id','name','url','description','level'],
 	   	colModel:[
@@ -105,6 +105,7 @@ function showResponse(responseText, statusText, xhr, $form)  {
 	alert('保存成功');
 }
 </script>
+<h2>该页废弃！</h2>
 <table id="menuList"></table>
 <div id="menuPager"></div>
 <div id="menuInfo">
