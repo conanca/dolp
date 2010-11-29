@@ -46,14 +46,14 @@ $(function() {
 		<option value="dot-luv">dot-luv</option>
 		<option value="eggplant">eggplant</option>
 		<option value="excite-bike">excite-bike</option>
-		<option value="flick" selected="selected">flick</option>
+		<option value="flick">flick</option>
 		<option value="hot-sneaks">hot-sneaks</option>
 		<option value="humanity">humanity</option>
 		<option value="le-frog">le-frog</option>
 		<option value="mint-choc">mint-choc</option>
 		<option value="overcast">overcast</option>
 		<option value="pepper-grinder">pepper-grinder</option>
-		<option value="redmond">redmond</option>
+		<option value="redmond" selected="selected">redmond</option>
 		<option value="smoothness">smoothness</option>
 		<option value="south-street">south-street</option>
 		<option value="start">start</option>

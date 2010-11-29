@@ -10,10 +10,12 @@
 <script src="js/jquery.form.js" type="text/javascript"></script>
 <script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <script src="js/system.common.js" type="text/javascript"></script>
-<link id="jQueryUICssSrc" href="css/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
+<link href="css/themes/redmond/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
 <style type="text/css" media="all">
-	body { font-size: 80%; }
+table{
+	font-size: 80%;
+}
 </style>
 <script type="text/javascript">
 $(function() {
@@ -22,7 +24,7 @@ $(function() {
 
 	opts.pnotify_title = "消息";
 	opts.pnotify_type = "notice";
-	opts.pnotify_text = "请使用Firefox浏览器访问本系统(登录账户1000/123)";
+	opts.pnotify_text = "登录账号：1000/123";
 	$.pnotify(opts);
 
 	var options = {

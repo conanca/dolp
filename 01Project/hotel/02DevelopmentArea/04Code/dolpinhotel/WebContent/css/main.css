@@ -7,6 +7,10 @@ html, body {
 	font-size: 80%;
 }
 
+table{
+	font-size: 95%;
+}
+
 #LeftPane {
 	/* optional, initial splitbar position */
 	overflow: auto;
