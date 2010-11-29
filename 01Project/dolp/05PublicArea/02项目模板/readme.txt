@@ -40,17 +40,26 @@ jquery.meio.mask.js 144行
 'date-us'			: { mask : '19/39/9999' },
 'date-cn'			: { mask : '9999-19-39' },
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-jquery.selectsubcategory.js
-			$.ajax({
-				   type: "GET",
-				   url: o.url,
-				   data: datatosend,
-				   dataType: "json",
+
+jquery.selectsubcategory.js 82-84行
 				   success:function(data){
 					   $('#'+o.subcategoryid).find('option').remove().end();
 					   $.each(data,function(text,value){
-							var newopt=new Option(text,value);					
+							var newopt='<option value="'+value+'">'+text+'</option>';					
 							$('#'+o.subcategoryid).append(newopt);
-							});
-					}				   
-			});
+					   });
+					}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+jquery.pnotify.default.css增加：
+/*----------------------------------*/
+
+/* Custom styled notice CSS */
+
+/* This one is done through code, to show how it is done. Look down
+			   at the stack_bottomright variable in the JavaScript below. */
+.ui-pnotify.stack-bottomright {
+	/* These are just CSS default values to reset the pnotify CSS. */
+	right: auto;
+	top: auto;
+}
