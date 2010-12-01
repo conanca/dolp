@@ -9,8 +9,12 @@ var opts = {
 	pnotify_addclass: "stack-bottomright",
 	pnotify_stack: stack_bottomright
 };
+
 $.extend({
 	addMessage : function(userData) {
+		if(!userData){
+			return;
+		}
 		var infoMessages = userData.infoMessages;
 		var warnMessages = userData.warnMessages;
 		var errorMessages = userData.errorMessages;
@@ -66,16 +70,23 @@ $.extend({
 		var Items = {};
 		$.ajaxSetup({ async: false});//设为同步模式
 		$.getJSON(url,function(response){
+			if(response.userdata){
+				$.addMessage(response.userdata);
+				return;
+			}
 			Items = response;
 		});
 		return Items;
 	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
-		var url = 'system/sysEnum/getSysEnumOption/'+SysEnumName;
+		var url = 'system/sysEnum/getSysEnumItems/'+SysEnumName;
 		var Items = {};
-		$.ajaxSetup({ async: false});//设为同步模式
 		$.getJSON(url,function(response){
+			if(response.userdata){
+				$.addMessage(response.userdata);
+				return;
+			}
 			Items = response;
 		});
 		return Items;
@@ -88,6 +99,19 @@ $.extend({
         });
         return o;
     }
+});
+
+$.extend({
+	myGetJSON : function(url, data){
+		var returnData;
+		$.getJSON(url,data,function(response){
+			returnData = response.returnData;
+			if(response.userdata){
+				$.addMessage(response.userdata);
+			}
+		});
+		return returnData;
+	}
 });
 
 (function($) {

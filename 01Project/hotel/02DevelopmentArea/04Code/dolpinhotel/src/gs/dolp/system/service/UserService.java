@@ -8,12 +8,18 @@ import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 
@@ -47,6 +53,42 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
+	public String getNewUserNumber() {
+		String newUserNumber = "";
+		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				String maxNumber = null;
+				while (rs.next()) {
+					maxNumber = rs.getString("MAXNUMBER");
+				}
+				return maxNumber;
+			}
+		});
+		dao().execute(sql);
+		newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4, '0');
+		return newUserNumber;
+	}
+
+	@Aop(value = "log")
+	public boolean userNumberIsDuplicate(String userNumber) {
+		int count = this.count(Cnd.where("NUMBER", "=", userNumber));
+		if (count > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Aop(value = "log")
+	public void save(User user) {
+		if (user.getId() == 0) {
+			dao().insert(user);
+		} else {
+			dao().update(user);
+		}
+	}
+
+	@Aop(value = "log")
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
@@ -61,8 +103,8 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		User user = fetch(Integer.parseInt(userId));
 		// 清空中间表中该用户原有角色
 		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
-		// 如果roleIds为Null,则直接return
-		if (roleIds == null) {
+		// 如果新分配的角色 roleIds为Null,则直接return
+		if (roleIds == null || roleIds.length == 0) {
 			reData.setUserdata(new SystemMessage(null, "未分配任何角色!", null));
 			return reData;
 		}

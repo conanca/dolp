@@ -25,6 +25,9 @@
 <script type="text/javascript">
 var maintab;
 $(function() {
+	//设为同步方式
+	$.ajaxSetup({ async: false});
+	
 	var myLayout = $("body").layout( { applyDefaultStyles: true } );
 	myLayout.sizePane("north", 100);
 

@@ -16,6 +16,17 @@ $(function(){
 		}
 	});
 
+	jQuery.validator.addMethod("numberIsDuplicate", function(value) {
+		var url = "system/user/userNumberIsDuplicate/"+value;
+		var userNumberIsDuplicate = $.myGetJSON(url);
+		if(userNumberIsDuplicate == true)
+		{
+			return false;
+		} else {
+			return true;
+		}
+	},"系统中已存在相同的用户编号！");
+
 	// 验证
 	$("#userInfoForm").validate({
 		rules: {
@@ -23,7 +34,8 @@ $(function(){
 				required: true,
 				number: true,
 				minlength: 4,
-				maxlength: 4
+				maxlength: 4,
+				numberIsDuplicate :true
 			},
 			name: {
 				required: true,
@@ -114,6 +126,9 @@ $(function(){
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
 			$("#userInfo").dialog( "open" );
+			var url = "system/user/getNewUserNumber";
+			var newUserNumber = $.myGetJSON(url);
+			$("#userInfoNumber").val(newUserNumber);
 		}
 	});
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
@@ -189,7 +204,7 @@ $(function(){
 			</td>
 			<td>
 				<input type="hidden" name="id" id="userInfoId"/>
-				<input type="text" name="number"/>
+				<input type="text" name="number" id="userInfoNumber"/>
 			</td>
 			<td>
 				用户姓名：

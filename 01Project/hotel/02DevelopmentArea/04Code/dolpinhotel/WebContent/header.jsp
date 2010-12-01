@@ -23,14 +23,8 @@ $(function() {
 	});
 	
 	var url = 'system/user/getCurrentUserName';
-	$.ajaxSetup({ async: false});
-	$.getJSON(url,function(respData){
-		$('#CurrentUserName').text(respData.returnData);
-		var sysMsg = respData.userdata;
-		if(sysMsg){
-			$.addMessage(sysMsg);
-		}
-	});
+	var currentUserName = $.myGetJSON(url);
+	$('#CurrentUserName').text(currentUserName);
 });
 </script>
 <h1><b>AAAA</b></h1>

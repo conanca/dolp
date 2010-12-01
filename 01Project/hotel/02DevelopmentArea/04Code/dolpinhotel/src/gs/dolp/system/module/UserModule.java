@@ -48,20 +48,28 @@ public class UserModule {
 		if (cUser != null) {
 			reData.setReturnData(cUser.getName());
 			reData.setUserdata(new SystemMessage("登录成功!", null, null));
-		} else {
-			reData.setUserdata(new SystemMessage(null, "请先登录系统", null));
 		}
 		return reData;
 	}
 
 	@At
-	public ResponseData save(@Param("..") User user) {
-		if (user.getId() == 0) {
-			userService.dao().insert(user);
-		} else {
-			userService.dao().update(user);
-		}
+	public ResponseData getNewUserNumber() {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
+		reData.setReturnData(userService.getNewUserNumber());
+		return reData;
+	}
+
+	@At("/userNumberIsDuplicate/*")
+	public ResponseData userNumberIsDuplicate(String userNumber) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
+		reData.setReturnData(userService.userNumberIsDuplicate(userNumber));
+		return reData;
+	}
+
+	@At
+	public ResponseData save(@Param("..") User user) {
+		ResponseSysMsgData reData = new ResponseSysMsgData();
+		userService.save(user);
 		reData.setUserdata(new SystemMessage("保存成功!", null, null));
 		return reData;
 	}

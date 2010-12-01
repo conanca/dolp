@@ -44,8 +44,8 @@ public class SysEnumModule {
 		return sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
 	}
 
-	@At("/getSysEnumOption/*")
-	public Map<String, String> getSysEnumOption(String sysEnumName) {
+	@At("/getSysEnumItems/*")
+	public Map<String, String> getSysEnumItems(String sysEnumName) {
 		return sysEnumItemService.getSysEnumItem(sysEnumName);
 	}
 }

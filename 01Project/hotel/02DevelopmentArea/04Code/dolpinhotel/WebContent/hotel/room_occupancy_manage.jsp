@@ -9,11 +9,7 @@ $(function(){
 
 	//获取所有已入住房间的房间号-房间Id键值对
 	var url3 = "dolpinhotel/setup/room/getAllRoomForSelectOption";
-	var allRooms;
-	$.ajaxSetup({ async: false});//设为同步模式
-	$.getJSON(url3,function(response){
-		allRooms = response;
-	});
+	var allRooms = $.myGetJSON(url3);
 	
 	$("#roomOccupancyList").jqGrid({
 		rowNum:10,
