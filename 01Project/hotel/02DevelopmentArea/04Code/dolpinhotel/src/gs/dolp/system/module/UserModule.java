@@ -53,17 +53,13 @@ public class UserModule {
 	}
 
 	@At
-	public ResponseData getNewUserNumber() {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
-		reData.setReturnData(userService.getNewUserNumber());
-		return reData;
+	public String getNewUserNumber() {
+		return userService.getNewUserNumber();
 	}
 
 	@At("/userNumberIsDuplicate/*")
-	public ResponseData userNumberIsDuplicate(String userNumber) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
-		reData.setReturnData(userService.userNumberIsDuplicate(userNumber));
-		return reData;
+	public boolean userNumberIsDuplicate(String userNumber) {
+		return userService.userNumberIsDuplicate(userNumber);
 	}
 
 	@At
