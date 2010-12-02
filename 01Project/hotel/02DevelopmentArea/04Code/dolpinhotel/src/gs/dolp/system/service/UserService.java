@@ -111,8 +111,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		List<Role> roles = new ArrayList<Role>();
 		// 从数据库中获取指定id的角色
 		for (String roleId : roleIds) {
-			RoleService roleService = new RoleService(this.dao());
-			Role role = roleService.fetch(Integer.parseInt(roleId));
+			Role role = dao().fetch(Role.class, Integer.parseInt(roleId));
 			roles.add(role);
 		}
 		// 为该用户分配这些角色
