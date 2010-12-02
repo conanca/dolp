@@ -39,31 +39,8 @@ $(function(){
 			$.addMessage($("#roomList").getGridParam("userData"));
 		}
 	});
-	//不显示jqgrid自带的查询按钮
-	$("#roomList").navGrid('#roomPager',{edit:true,add:true,del:true,search:false},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{},{}
-	);
+	//开启jqgrid自带的增删改功能
+	$("#roomList").setJqGridCUD('#roomPager',{edit:true,add:true,del:true,search:false});
 
 	//查询按钮点击事件
 	$("#room_manage_search_btn").click(function () { 

@@ -31,31 +31,8 @@ $(function(){
 			$.addMessage($("#roomTypeList").getGridParam("userData"));
 		}
 	});
-	//不显示jqgrid自带的增删改查按钮
-	$("#roomTypeList").navGrid('#roomTypePager',{edit:true,add:true,del:true,search:false},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{},{}
-	);
+	//开启jqgrid自带的增删改功能
+	$("#roomTypeList").setJqGridCUD('#roomTypePager',{edit:true,add:true,del:true,search:false});
 });
 </script>
 

@@ -55,25 +55,8 @@ $(function(){
 			$("#bill_manage_print_date").val(date);
 		}
 	});
-	//不显示jqgrid自带的查询按钮
-	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
-				return [true];
-			}
-		},
-		{},{}
-	);
+	//开启jqgrid自带的删改功能
+	$("#billList").setJqGridCUD('#billPager',{edit:true,add:false,del:true,search:false});
 	$("#billList").navButtonAdd('#billPager',{caption:"打印",buttonicon:"ui-icon-print",
 		onClickButton:function(){
 			$("#billInfoPrint1").show();

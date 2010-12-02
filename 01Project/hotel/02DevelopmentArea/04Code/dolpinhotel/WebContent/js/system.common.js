@@ -1,4 +1,4 @@
-//提交获得Respons后显示系统消息
+//使用jquery.form.js时的一个公用方法，用于提交获得Respons后显示系统消息
 function showResponse(responseText, statusText, xhr, $form)  {
 	$.addMessage($.parseJSON(responseText).userdata);
 }
@@ -11,6 +11,7 @@ var opts = {
 };
 
 $.extend({
+	//显示系统消息的函数
 	addMessage : function(userData) {
 		if(!userData){
 			return;
@@ -101,11 +102,16 @@ $.extend({
     }
 });
 
+//getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 $.extend({
 	myGetJSON : function(url, data){
 		var returnData;
 		$.getJSON(url,data,function(response){
-			returnData = response.returnData;
+			if(response.returnData){
+				returnData = response.returnData;
+			}else{
+				returnData = response;
+			}
 			if(response.userdata){
 				$.addMessage(response.userdata);
 			}
@@ -149,5 +155,33 @@ $.extend({
 				var newopt='<option value="'+value+'">'+text+'</option>';					
 				$(selectorid).append(newopt);
 		});
+	};
+	//设置jqgrid的改增删功能，并增加系统消息的显示
+	$.fn.setJqGridCUD = function(pager,para) {
+		var selectorid=this.selector;
+		$(selectorid).navGrid(pager,para,
+			{
+				reloadAfterSubmit:true,
+				afterSubmit: function(xhr, postdata) {
+					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					return [true];
+				}
+			},
+			{
+				reloadAfterSubmit:true,
+				afterSubmit: function(xhr, postdata) {
+					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					return [true];
+				}
+			},
+			{
+				reloadAfterSubmit:true,
+				afterSubmit: function(xhr, postdata) {
+					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					return [true];
+				}
+			},
+			{},{}
+		);
 	};
 })(jQuery);

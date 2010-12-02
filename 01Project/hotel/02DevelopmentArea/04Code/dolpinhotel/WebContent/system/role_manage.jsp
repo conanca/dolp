@@ -29,31 +29,7 @@ $(function(){
 			$.addMessage(userData);
     	}
 	});
-	//不显示查询按钮
-	$("#rolelist").navGrid('#rolepager',{edit:true,add:true,del:true,search:false},
-			{
-				reloadAfterSubmit:true,
-				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
-					return [true];
-				}
-			},
-			{
-				reloadAfterSubmit:true,
-				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
-					return [true];
-				}
-			},
-			{
-				reloadAfterSubmit:true,
-				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
-					return [true];
-				}
-			},
-			{},{}
-	);
+	$("#rolelist").setJqGridCUD('#rolepager',{edit:true,add:true,del:true,search:false});
 });
 </script>
 
