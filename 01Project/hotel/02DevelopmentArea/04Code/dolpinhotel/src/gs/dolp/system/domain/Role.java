@@ -15,10 +15,10 @@ public class Role {
 	private String name;
 	@Column
 	private String description;
-	//	@Many(target = Privilege.class, field = "roleId")
-	//	private List<Privilege> privileges;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
 	private List<User> users;
+	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_MENU", from = "ROLEID", to = "MENUID")
+	private List<Menu> menus;
 
 	public int getId() {
 		return id;
@@ -44,20 +44,20 @@ public class Role {
 		this.description = description;
 	}
 
-	//	public List<Privilege> getPrivileges() {
-	//		return privileges;
-	//	}
-	//
-	//	public void setPrivileges(List<Privilege> privileges) {
-	//		this.privileges = privileges;
-	//	}
-
 	public List<User> getUsers() {
 		return users;
 	}
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
 	}
 
 }
