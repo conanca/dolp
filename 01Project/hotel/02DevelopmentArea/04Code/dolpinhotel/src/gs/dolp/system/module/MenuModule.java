@@ -23,6 +23,12 @@ public class MenuModule {
 	}
 
 	@At
+	public StandardJqgridResData getGridData1(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
+			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpServletRequest req) {
+		return menuService.getGridData1(nodeId, nLeft, nRight, nLevel);
+	}
+
+	@At
 	public void save(@Param("..") Menu menu) {
 		if (menu.getId() == 0) {
 			menuService.dao().insert(menu);

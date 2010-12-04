@@ -4,7 +4,6 @@ $(function(){
 	$("#menuAssignList").jqGrid({
 	   	rowNum:10,
 	   	rowList:[10,20,30],
-	   	autowidth: true,
 	   	height: "100%",
 	   	datatype: "json",
 	    jsonReader:{
@@ -23,7 +22,6 @@ $(function(){
 	   	pager: '#menuAssignPager',
 	   	sortname: 'id',
 	    sortorder: "asc",
-	    multiselect: true,
 	    loadComplete: function(){
     	    var userData = $("#menuAssignList").getUserData();
 			$.addMessage(userData);
@@ -33,7 +31,6 @@ $(function(){
 
 	$("#menuGrid").jqGrid({
 		height: "auto",
-		//autowidth: true, 为适应IE6而注掉此句
 		treeGrid: true,
 		treeGridModel: 'nested',
 		pager: false,
@@ -42,16 +39,23 @@ $(function(){
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
 		rowNum: 200,
-		caption: "",
-		multiselect: true,
-		url: "system/menu/getGridData",
-		colNames: ["id","功能菜单","url","description"],
+		caption: "菜单列表",
+		url: "system/menu/getGridData1",
+		colNames: ["id","功能菜单","url","描述","已分配"],
 		colModel: [
-			{name: "id",width:0,hidden:true,key:true},
-			{name: "menu", width:180, resizable: false, sortable:false},
-			{name: "url",width:0,hidden:true},
-			{name: "description",width:0,hidden:true}
+			{name: "id",index:"id", width:0,hidden:true,key:true},
+			{name: "menu",index:"menu", width:200, resizable: false, sortable:false},
+			{name: "url",index:"url", width:0,hidden:true},
+			{name: "description",index:"description", width:300},
+			{name: 'enbl', index:'enbl', width: 60, align:'center', formatter:'checkbox', formatoptions:{disabled:false}, editoptions:{value:'1:0',
+					dataEvents: [
+						{ type: 'click', fn: function(e) { alert('test'); } }
+					]
+				}
+			}
 		],
+		pager: '#menuPager',
+		multiselect: true,
 	    loadComplete: function(){
 			$.addMessage($("#menuGrid").getGridParam("userData"));
 		}
@@ -63,3 +67,4 @@ $(function(){
 <div id="menuAssignPager"></div>
 <br/>
 <table id="menuGrid"></table>
+<div id="menuPager"></div>

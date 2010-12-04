@@ -33,6 +33,53 @@ public class MenuService extends Service {
 		return jq;
 	}
 
+	@Aop(value = "log")
+	public StandardJqgridResData getGridData1(int nodeId, int nLeft, int nRight, int nLevel) {
+		StandardJqgridResData jq = new StandardJqgridResData();
+		jq.setPage(1);
+		jq.setTotal(1);
+		jq.setRecords(0);
+		List<StandardJqgridResDataRow> rows = getMenuNodes1(nodeId, nLeft, nRight, nLevel);
+		jq.setRows(rows);
+		return jq;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<StandardJqgridResDataRow> getMenuNodes1(int nodeId, int nLeft, int nRight, int nLevel) {
+		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
+				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
+				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
+				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT " + " GROUP BY NODE.ID ORDER BY NODE.LFT");
+
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
+				int i = 1;
+				while (rs.next()) {
+					List cell = new ArrayList();
+					cell.add(rs.getInt("ID"));
+					cell.add(rs.getString("NAME"));
+					cell.add(rs.getString("URL"));
+					cell.add(rs.getString("DESCRIPTION"));
+					cell.add(1);
+					cell.add(rs.getInt("LEVEL"));
+					cell.add(rs.getInt("LFT"));
+					cell.add(rs.getInt("RGT"));
+					cell.add(rs.getBoolean("ISLEAF"));
+					cell.add(false);
+					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
+					row.setId(i);
+					row.setCell(cell);
+					rows.add(row);
+					i++;
+				}
+				return rows;
+			}
+		});
+		dao().execute(sql);
+		return (List<StandardJqgridResDataRow>) sql.getResult();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<StandardJqgridResDataRow> getMenuNodes(int nodeId, int nLeft, int nRight, int nLevel) {
 		String addWhere = "";
