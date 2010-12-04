@@ -35,7 +35,7 @@ public class UserModule {
 	}
 
 	@At
-	@Ok("redirect:/login.jsp")
+	@Ok("redirect:/login.html")
 	public void logout(HttpSession session) {
 		session.invalidate();
 	}

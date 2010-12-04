@@ -14,7 +14,7 @@ import org.nutz.mvc.annotation.Param;
 
 @InjectName("roleModule")
 @At("/system/role")
-//@Filters( { @By(type = CheckSession.class, args = { "logonUser", "/login.jsp" }) })
+//@Filters( { @By(type = CheckSession.class, args = { "logonUser", "/login.html" }) })
 public class RoleModule {
 
 	private RoleService roleService;
