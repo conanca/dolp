@@ -4,8 +4,6 @@ jQuery(function($){
 	$.datepicker.regional['zh-CN'] = {
 		changeMonth: true,
 		changeYear: true,
-		showOn: 'both',
-		buttonImage: 'images/commons/calendar.gif',
 		closeText: '关闭',
 		prevText: '&#x3c;上月',
 		nextText: '下月&#x3e;',

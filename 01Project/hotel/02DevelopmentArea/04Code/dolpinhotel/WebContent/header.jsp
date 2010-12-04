@@ -5,7 +5,7 @@ $(function() {
 
 	var theme = $.cookie('theme');
 	if(theme){
-		$('#jQueryUICssSrc').attr('href', 'css/themes/' + theme + '/jquery-ui-1.8.4.custom.css');
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + theme + '/jquery-ui-1.8.6.custom.css');
 		$("#jQueryUICssSwitch option:selected").each(function() {
 			$(this).attr("selected", false);
 		});
@@ -19,7 +19,7 @@ $(function() {
 			date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
 			$.cookie('theme', $('#jQueryUICssSwitch').val(), { expires: date, path: '/'});
 		}
-		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.4.custom.css');
+		$('#jQueryUICssSrc').attr('href', 'css/themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.6.custom.css');
 	});
 	
 	var url = 'system/user/getCurrentUserName';

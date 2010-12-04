@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Dolp Main Page</title>
-<script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui-1.8.6.custom.min.js" type="text/javascript"></script>
 <script src="js/jquery.cookie.js" type="text/javascript"></script>
 <script src="js/jquery.layout.min-1.2.0.js" type="text/javascript"></script>
 <script src="js/i18n/grid.locale-cn.js" type="text/javascript"></script>
@@ -18,7 +18,7 @@
 <script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <script src="js/system.common.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
-<link href="css/themes/redmond/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
+<link href="css/themes/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
 <link href="css/ui.multiselect.css" rel="stylesheet" type="text/css"/>
 <link href="css/main.css" rel="stylesheet" type="text/css"/>
