@@ -89,14 +89,6 @@ $(function(){
 				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
 				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
-				// 自动打开或激活账单管理页面
-				var st = "#t16";
-				if($(st).html() != null ) {
-					maintab.tabs('select',st);
-				} else {
-					maintab.tabs('add',st, "账单管理");
-					$(st,"#tabs").load("hotel/bill_manage.jsp");
-				}
 			}
 		);
 	});
