@@ -31,18 +31,10 @@ $(function(){
     	    var userData = $("#sysenumList").getUserData();
 			$.addMessage(userData);
     	},
-		onSelectRow: function(ids) {
-			if(ids == null) {
-				ids=0;
-				if($("#sysenumSubList").getGridParam('records') >0 ) {
-					$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+ids,page:1});
-					$("#sysenumSubList").trigger('reloadGrid');
-				}
-			} else {
-				$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+ids});
-				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+ids,page:1});
-				$("#sysenumSubList").trigger('reloadGrid');
-			}
+		onSelectRow: function(id) {
+			$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+id});
+			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+id,page:1});
+			$("#sysenumSubList").trigger('reloadGrid');
 		}
 	});
 	//开启jqgrid自带的增删改功能

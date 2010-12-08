@@ -41,18 +41,10 @@ $(function(){
 	    loadComplete: function(){
 			$.addMessage($("#roomOccupancyList").getGridParam("userData"));
 		},
-		onSelectRow: function(ids) {
-			 if(ids == null) {
-				ids=0;
-				if($("#customerSubList").getGridParam('records') >0 ) {
-					$("#customerSubList").setGridParam({url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+ids,page:1});
-					$("#customerSubList").trigger('reloadGrid'); 
-				}
-			} else {
-				$("#customerSubList").setGridParam({url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+ids,page:1});
-				$("#customerSubList").trigger('reloadGrid');
-				selStatus = $("#roomOccupancyList").getCell(ids,'status');
-			}
+		onSelectRow: function(id) {
+			$("#customerSubList").setGridParam({url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+id,page:1});
+			$("#customerSubList").trigger('reloadGrid');
+			selStatus = $("#roomOccupancyList").getCell(id,'status');
 		}
 	});
 	//不显示jqgrid自带的增删改查按钮
