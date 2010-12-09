@@ -128,7 +128,7 @@ public class RoomOccupancyService extends AdvJqgridIdEntityService<RoomOccupancy
 
 		final Bill bill = new Bill();
 		bill.setDate(leaveDateTime);
-		final StringBuffer BillNoSb = new StringBuffer("DH");
+		final StringBuilder BillNoSb = new StringBuilder("DH");
 		BillNoSb.append(new SimpleDateFormat("yyyyMMdd").format(leaveDateTime));
 
 		Trans.exec(new Atom() {

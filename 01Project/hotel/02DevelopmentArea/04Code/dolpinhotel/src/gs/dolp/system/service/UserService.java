@@ -91,7 +91,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	@Aop(value = "log")
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
-			Condition cnd = Cnd.wrap("ID IN (" + ids + ")");
+			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
 			clear(cnd);
 		}
 	}

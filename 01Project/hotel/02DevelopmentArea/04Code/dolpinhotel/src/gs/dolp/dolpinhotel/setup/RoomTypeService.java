@@ -30,7 +30,7 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 	public ResponseSysMsgData CUDRoomType(String oper, String id, String name, String price, String description) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap("ID IN (" + id + ")");
+			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
