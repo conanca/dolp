@@ -34,4 +34,9 @@ public class RoleModule {
 	public Map<String, String> getAllRole() {
 		return roleService.getAllRole();
 	}
+
+	@At
+	public ResponseData assignMenu(@Param("roleId") String roleId, @Param("selectedMenuIds[]") String[] selectedMenuIds) {
+		return roleService.updateMenu(roleId, selectedMenuIds);
+	}
 }

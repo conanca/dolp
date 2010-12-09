@@ -12,7 +12,7 @@ $(function() {
 		datatype: "json",
 		rowNum: 200,
 		caption: "",
-		url: "system/menu/getGridData",
+		url: "system/menu/dispMenu",
 		colNames: ["id","功能菜单","url","description"],
 		colModel: [
 			{name: "id",width:0,hidden:true,key:true},
@@ -34,8 +34,8 @@ $(function() {
 			}
 		},
 	    loadComplete: function(){
-			$.addMessage($("#west-grid").getGridParam("userData"));
-		}
+			$.addMessage($("#west-grid").getUserData());
+    	}
 	});
 });
 </script>

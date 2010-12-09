@@ -2,9 +2,10 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Menu;
+import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MenuService;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -17,15 +18,15 @@ public class MenuModule {
 	private MenuService menuService;
 
 	@At
-	public StandardJqgridResData getGridData(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
-			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpServletRequest req) {
-		return menuService.getGridData(nodeId, nLeft, nRight, nLevel);
+	public StandardJqgridResData dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
+			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpSession session) {
+		User logonUser = (User) session.getAttribute("logonUser");
+		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}
 
-	@At
-	public StandardJqgridResData getGridData1(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
-			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpServletRequest req) {
-		return menuService.getGridData1(nodeId, nLeft, nRight, nLevel);
+	@At("/getMenuByRoleId/*")
+	public StandardJqgridResData getMenuByRoleId(int roleId) {
+		return menuService.getMenuByRoleId(roleId);
 	}
 
 	@At

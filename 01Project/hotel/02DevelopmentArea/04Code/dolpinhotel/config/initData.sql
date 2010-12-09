@@ -9,44 +9,14 @@ INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION) VALUES
 (1,'系统管理员','拥有系统设置的权限'),
 (2,'普通用户','拥有全部业务功能的权限'),
 (3,'经理','拥有酒店设置的权限'),
-(4,'前台','拥有业务功能的权限');
+(4,'前台','拥有基本业务功能的权限');
 
 INSERT INTO SYSTEM_USER_ROLE(ID ,USERID ,ROLEID) VALUES
 (1,1,1),
-(2,1,2),
-(3,2,3),
-(4,2,4),
-(5,3,4);
-
-INSERT INTO PUBLIC.DOLPINHOTEL_ROOMTYPE(ID, NAME, PRICE, DESCRIPTION) VALUES
-(1, '标准间', 150.00, '标准两人间'),
-(2, '商务间', 170.00, '大床房'),
-(3, '豪华间', 200.00, '豪华大床房');
-
-INSERT INTO PUBLIC.DOLPINHOTEL_ROOM(ID, NUMBER, ROOMTYPEID, ISOCCUPANCY) VALUES
-(1, '101', 1, 0),
-(2, '202', 2, 0),
-(3, '103', 1, 0),
-(4, '102', 1, 0),
-(5, '201', 2, 0),
-(6, '203', 2, 0),
-(7, '301', 3, 0),
-(8, '302', 3, 0),
-(9, '303', 3, 0),
-(10, '401', 1, 0),
-(11, '402', 1, 0),
-(12, '403', 1, 0);
-
-INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
-(1,'certificateType','证件类型'), 
-(2,'gender','性别');
-
-INSERT INTO SYSTEM_SYSENUMITEM(ID,TEXT,VALUE,SYSENUMID ) VALUES
-(1,'身份证','01',1),
-(2,'护照','02',1),
-(3,'军官证','03',1),
-(4,'男','01',2),
-(5,'女','02',2);
+(2,2,2),
+(3,3,3),
+(4,3,4),
+(5,4,4);
 
 INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (1,'系统管理',NULL,NULL,1,20),
@@ -66,3 +36,73 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (15,'入住情况','hotel/room_occupancy_manage.html',NULL,74,75),
 (16,'入住登记','hotel/check_in.html',NULL,76,77),
 (17,'账单管理','hotel/bill_manage.html',NULL,78,79);
+
+INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
+(1,1,1),
+(2,1,2),
+(3,1,3),
+(4,1,4),
+(5,1,5),
+(6,1,6),
+(7,1,7),
+(8,1,8),
+(9,1,9),
+(10,1,10),
+(11,1,11),
+(12,1,12),
+(13,1,13),
+(14,1,14),
+(15,1,15),
+(16,1,16),
+(17,1,17),
+(18,2,10),
+(19,2,11),
+(20,2,12),
+(21,2,13),
+(22,2,14),
+(23,2,15),
+(24,2,16),
+(25,2,17),
+(26,3,10),
+(27,3,11),
+(28,3,12),
+(29,3,13),
+(30,3,14),
+(31,3,15),
+(32,3,16),
+(33,3,17),
+(34,4,13),
+(35,4,14),
+(36,4,15),
+(37,4,16),
+(38,4,17);
+
+INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
+(1,'certificateType','证件类型'), 
+(2,'gender','性别');
+
+INSERT INTO SYSTEM_SYSENUMITEM(ID,TEXT,VALUE,SYSENUMID ) VALUES
+(1,'身份证','01',1),
+(2,'护照','02',1),
+(3,'军官证','03',1),
+(4,'男','01',2),
+(5,'女','02',2);
+
+INSERT INTO DOLPINHOTEL_ROOMTYPE(ID, NAME, PRICE, DESCRIPTION) VALUES
+(1, '标准间', 150.00, '标准两人间'),
+(2, '商务间', 170.00, '大床房'),
+(3, '豪华间', 200.00, '豪华大床房');
+
+INSERT INTO DOLPINHOTEL_ROOM(ID, NUMBER, ROOMTYPEID, ISOCCUPANCY) VALUES
+(1, '101', 1, 0),
+(2, '202', 2, 0),
+(3, '103', 1, 0),
+(4, '102', 1, 0),
+(5, '201', 2, 0),
+(6, '203', 2, 0),
+(7, '301', 3, 0),
+(8, '302', 3, 0),
+(9, '303', 3, 0),
+(10, '401', 1, 0),
+(11, '402', 1, 0),
+(12, '403', 1, 0);

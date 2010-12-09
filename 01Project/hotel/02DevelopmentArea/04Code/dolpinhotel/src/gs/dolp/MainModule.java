@@ -1,9 +1,12 @@
 package gs.dolp;
 
+import gs.dolp.common.filter.CheckLogon;
 import gs.dolp.common.view.MyJsonViewMaker;
 
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.IocBy;
 import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.Ok;
@@ -17,7 +20,7 @@ import org.nutz.mvc.ioc.provider.JsonIocProvider;
 @SetupBy(MvcSetup.class)
 @Ok("json")
 @Fail("jsonx")
-//@Filters({ @By(type = CheckLogon.class) })
+@Filters({ @By(type = CheckLogon.class) })
 @Views(MyJsonViewMaker.class)
 public class MainModule {
 
