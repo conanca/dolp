@@ -35,6 +35,7 @@ public class UserModule {
 	}
 
 	@At
+	@Filters
 	@Ok("redirect:/login.html")
 	public void logout(HttpSession session) {
 		session.invalidate();
