@@ -189,6 +189,8 @@ $(function(){
 </script>
 <div id="roomOccupancyDiv" title="房间登记情况">
 	<form id="roomOccupancyForm" action="#">
+		<fieldset>
+		<legend>入住信息</legend>
 		<table>
 			<tr>
 				<td>
@@ -223,9 +225,11 @@ $(function(){
 				</td>
 			</tr>
 		</table>
-		
+		<br/>
 		<table id="customerList"></table>
 		<div id="customerPager"></div>
+		</fieldset>
+		<br/>
 		<div>
 			<input type="button" value="登记" id="roomcheckin"/>
 			<input type="reset" value="重置"/>

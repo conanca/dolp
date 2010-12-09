@@ -3,6 +3,8 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
+	var userInfoIsEditFlag = false;
+	
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
 	var genders1 = $.swapJSON(genders); 
@@ -16,6 +18,10 @@ $(function(){
 	});
 
 	jQuery.validator.addMethod("numberIsDuplicate", function(value) {
+		//编辑时，不check
+		if(userInfoIsEditFlag){
+			return true;
+		}
 		var url = "system/user/userNumberIsDuplicate/"+value;
 		var userNumberIsDuplicate = $.myGetJSON(url);
 		if(userNumberIsDuplicate == true)
@@ -124,6 +130,7 @@ $(function(){
 	//添加自定义按钮——添加、编辑和删除
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"添加",buttonicon:"ui-icon-plus",
 		onClickButton:function(){
+			userInfoIsEditFlag = false;
 			$("#userInfo").dialog( "open" );
 			var url = "system/user/getNewUserNumber";
 			var newUserNumber = $.myGetJSON(url);
@@ -132,6 +139,7 @@ $(function(){
 	});
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
 		onClickButton:function(){
+			userInfoIsEditFlag = true;
 			var id = $("#userInfoList").getGridParam('selrow');
 			if (id) {
 				$("#userInfoList").GridToForm(id,"#userInfoForm");
@@ -190,7 +198,7 @@ $(function(){
 	</tr>
 </table>
 </fieldset>
-
+<br/>
 <table id="userInfoList"></table>
 <div id="userInfoPager"></div>
 
