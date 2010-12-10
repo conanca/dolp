@@ -9,6 +9,7 @@ import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -48,6 +49,10 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			List<Bill> bills = this.query(cnd, null);
+			for (Bill bill : bills) {
+				dao().clearLinks(bill, "roomOccupancy");
+			}
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}

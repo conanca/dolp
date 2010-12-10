@@ -36,7 +36,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
 		if (!Strings.isBlank(name)) {
-			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(name) + "%");
+			cnd = cnd.and("NAME", "LIKE", "%" + Strings.trim(name) + "%");
 		}
 		AdvancedJqgridResData<User> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
@@ -92,6 +92,10 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
+			List<User> users = this.query(cnd, null);
+			for (User user : users) {
+				dao().clearLinks(user, "roles");
+			}
 			clear(cnd);
 		}
 	}

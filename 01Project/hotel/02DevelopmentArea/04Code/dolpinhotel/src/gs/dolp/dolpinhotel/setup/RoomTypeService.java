@@ -31,6 +31,10 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			List<RoomType> roomTypes = this.query(cnd, null);
+			for (RoomType roomType : roomTypes) {
+				dao().clearLinks(roomType, "rooms");
+			}
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}

@@ -35,6 +35,11 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			List<Role> roles = this.query(cnd, null);
+			for (Role role : roles) {
+				dao().clearLinks(role, "users");
+				dao().clearLinks(role, "menus");
+			}
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
