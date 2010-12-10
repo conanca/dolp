@@ -10,6 +10,9 @@ $(function(){
 	   		repeatitems: false
         },
 	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 	    caption:"角色列表",
 	   	url:'system/role/getGridData',
 	    editurl:"system/role/editRow",
@@ -22,11 +25,7 @@ $(function(){
 	   	pager: '#rolepager',
 	   	sortname: 'id',
 	    sortorder: "asc",
-	    multiselect: true,
-	    loadComplete: function(){
-    	    var userData = $("#rolelist").getUserData();
-			$.addMessage(userData);
-    	}
+	    multiselect: true
 	});
 	$("#rolelist").setJqGridCUD('#rolepager',{edit:true,add:true,del:true,search:false});
 });

@@ -17,6 +17,9 @@ $(function(){
 	   		repeatitems: false
         },
 	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 	    caption: "账单列表",
 	   	url:'dolpinhotel/management/bill/getGridData',
 	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
@@ -30,10 +33,7 @@ $(function(){
 	   	pager: '#billPager',
 	   	sortname: 'number',
 	    sortorder: "asc",
-	    multiselect: false, //checkbox
-	    loadComplete: function(){
-			$.addMessage($("#billList").getGridParam("userData"));
-		},
+	    multiselect: false,
 		onSelectRow: function(id) {
 			$("#billSubList").setGridParam({url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+id,page:1});
 			$("#billSubList").trigger('reloadGrid');
@@ -71,6 +71,9 @@ $(function(){
 	   		repeatitems: false
 		},
 		viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 		caption: "房间入住情况列表",
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=3',
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
@@ -88,11 +91,7 @@ $(function(){
 	   	pager: '#billSubPager',
 	   	sortname: 'id',
 		sortorder: "desc",
-		multiselect: false, //checkbox
-	    loadComplete: function(){
-    	    var userData = $("#billSubList").getUserData();
-			$.addMessage(userData);
-    	}
+		multiselect: false
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#billSubList").navGrid('#billSubPager',{edit:false,add:false,del:false,search:false});

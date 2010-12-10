@@ -11,6 +11,9 @@ $(function(){
 	    jsonReader:{
 	   		repeatitems: false
         },
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 	    caption: "房间类型列表",
 	    viewrecords: true,
 	   	url:'dolpinhotel/setup/roomtype/getGridData',
@@ -25,10 +28,7 @@ $(function(){
 	   	pager: '#roomTypePager',
 	   	sortname: 'price',
 	    sortorder: "asc",
-	    multiselect: true, //checkbox
-	    loadComplete: function(){
-			$.addMessage($("#roomTypeList").getGridParam("userData"));
-		}
+	    multiselect: true
 	});
 	//开启jqgrid自带的增删改功能
 	$("#roomTypeList").setJqGridCUD('#roomTypePager',{edit:true,add:true,del:true,search:false});

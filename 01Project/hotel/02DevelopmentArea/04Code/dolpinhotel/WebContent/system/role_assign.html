@@ -14,6 +14,9 @@ $(function(){
 		jsonReader:{
 	   		repeatitems: false
 		},
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 	   	url:'system/user/getGridData',
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 	   	colModel:[
@@ -29,10 +32,6 @@ $(function(){
 	   	sortname: 'number',
 		sortorder: "asc",
 		caption:"用户列表",
-	    loadComplete: function(){
-    	    var userData = $("#roleAssignUserList").getUserData();
-			$.addMessage(userData);
-    	},
 		onSelectRow: function(id){
 			$("#assigningUserID").val(id);
 			

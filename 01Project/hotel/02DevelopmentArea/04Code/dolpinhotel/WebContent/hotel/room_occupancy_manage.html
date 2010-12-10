@@ -19,6 +19,9 @@ $(function(){
 		jsonReader:{
 	   		repeatitems: false
 		},
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 		viewrecords: true,
 		caption: "房间入住情况列表",
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
@@ -37,10 +40,7 @@ $(function(){
 	   	pager: '#roomOccupancyPager',
 	   	sortname: 'id',
 		sortorder: "desc",
-		multiselect: true, //checkbox
-	    loadComplete: function(){
-			$.addMessage($("#roomOccupancyList").getGridParam("userData"));
-		},
+		multiselect: true,
 		onSelectRow: function(id) {
 			$("#customerSubList").setGridParam({url:"dolpinhotel/management/customer/getGridDataByRoomOccId/"+id,page:1});
 			$("#customerSubList").trigger('reloadGrid');
@@ -51,7 +51,7 @@ $(function(){
 	$("#roomOccupancyList").navGrid('#roomOccupancyPager',{edit:false,add:false,del:false,search:false});
 	$("#roomOccupancyList").navButtonAdd('#roomOccupancyPager',{caption:"结帐离开",buttonicon:"ui-icon-cart",position:"last",
 		onClickButton:function(){
-			checkOutIdArr = $("#roomOccupancyList").getGridParam('selarrrow');
+			checkOutIdArr = $(this).getGridParam('selarrrow');
 			if( checkOutIdArr ){
 				if(selStatus=='1'){
 					$.addMessageStr(null,"该记录已结帐",null);
@@ -99,6 +99,9 @@ $(function(){
 	   		repeatitems: false
 		},
 		viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 		caption: "所选房间顾客列表",
 	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
 	   	colNames:['id','序号', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
@@ -115,10 +118,7 @@ $(function(){
 	   	pager: '#customerSubPager',
 	   	sortname: 'no',
 		sortorder: "asc",
-		multiselect: false, //checkbox
-	    loadComplete: function(){
-			$.addMessage($("#customerSubList").getGridParam("userData"));
-		}
+		multiselect: false
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#customerSubList").navGrid('#customerSubPager',{edit:false,add:false,del:false,search:false});

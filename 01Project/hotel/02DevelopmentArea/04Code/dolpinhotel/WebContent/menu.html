@@ -10,6 +10,9 @@ $(function() {
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 		rowNum: 200,
 		caption: "",
 		url: "system/menu/dispMenu",
@@ -21,7 +24,7 @@ $(function() {
 			{name: "description",width:0,hidden:true}
 		],
 		onSelectRow: function(rowid) {
-			var treedata = $("#west-grid").getRowData(rowid);
+			var treedata = $(this).getRowData(rowid);
 			if(treedata.isLeaf=="true") {
 				//treedata.url
 				var st = "#t"+treedata.id;
@@ -32,10 +35,7 @@ $(function() {
 					$(st,"#tabs").load(treedata.url);
 				}
 			}
-		},
-	    loadComplete: function(){
-			$.addMessage($("#west-grid").getUserData());
-    	}
+		}
 	});
 });
 </script>

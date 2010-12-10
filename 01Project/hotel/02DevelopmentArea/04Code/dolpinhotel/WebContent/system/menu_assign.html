@@ -14,6 +14,9 @@ $(function(){
 	   		repeatitems: false
         },
 	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
 	    caption:"角色列表",
 	   	url:'system/role/getGridData',
 	   	colNames:['id','名称','描述'],
@@ -25,9 +28,6 @@ $(function(){
 	   	pager: '#menuAssignPager',
 	   	sortname: 'id',
 	    sortorder: "asc",
-	    loadComplete: function(){
-			$.addMessage($("#menuAssignList").getUserData());
-    	},
     	onSelectRow: function(id){
     		$("#menuGrid").setGridParam({url:"system/menu/getMenuByRoleId/"+id,page:1});
 			$("#menuGrid").trigger('reloadGrid');
@@ -45,6 +45,9 @@ $(function(){
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+		},
 		rowNum: 200,
 		caption: "可见菜单列表",
 		url: "system/menu/getMenuByRoleId/0",
@@ -56,10 +59,7 @@ $(function(){
 			{name: "description",index:"description", width:300},
 			{name: 'enbl', index:'enbl', width: 60, align:'center', formatter:'checkbox', formatoptions:{disabled:false}, editoptions:{value:'1:0'}}
 		],
-		pager: '#menuPager',
-	    loadComplete: function(){
-			$.addMessage($("#menuGrid").getUserData());
-		}
+		pager: '#menuPager'
 	});
 
 	$("#menuAssignBtn").click(function() {
@@ -83,4 +83,5 @@ $(function(){
 <br/>
 <table id="menuGrid"></table>
 <div id="menuPager"></div>
+<br/>
 <input type="button" value="分配" id="menuAssignBtn"/>
