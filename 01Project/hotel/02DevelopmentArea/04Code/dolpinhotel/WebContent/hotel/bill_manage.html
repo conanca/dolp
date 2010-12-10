@@ -40,7 +40,26 @@ $(function(){
 		}
 	});
 	//开启jqgrid自带的删改功能
-	$("#billList").setJqGridCUD('#billPager',{edit:true,add:false,del:true,search:false});
+	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				//刷新表格billSubList
+				$('#billSubList').trigger("reloadGrid");
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
 
 	$("#billSubList").jqGrid({
 	   	rowNum:10,
