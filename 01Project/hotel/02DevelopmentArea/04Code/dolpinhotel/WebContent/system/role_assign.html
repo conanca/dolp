@@ -59,15 +59,10 @@ $(function(){
 	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
 	$("#roleIds").multiselect();
 
-	var options = {
-		    success:	showResponse,
-			url:		'system/user/assignRole',
-			type:		'get',
-			clearForm:	true,
-			resetForm:	true
-		};
 	$('#roleAssignForm').submit(function() {
-		$(this).ajaxSubmit(options);
+		var url = 'system/user/assignRole';
+		var roleAssignFormInfo = $(this).serializeObject();
+		$.myGetJSON(url,roleAssignFormInfo);
 		return false;
 	});
 });

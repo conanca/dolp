@@ -67,16 +67,11 @@ $(function(){
 	});
 
 	//点击保存时提交
-	var options = {
-		    success:	showResponse,
-			url:		'system/user/save',
-			type:		'post',
-			clearForm:	true,
-			resetForm:	true
-		};
 	$('#userInfoForm').submit(function() {
-		if($("#userInfoForm").valid()){
-			$(this).ajaxSubmit(options);
+		if($(this).valid()){
+			var url = 'system/user/save';
+			var userInfo = $(this).serializeObject();
+			$.myGetJSON(url,userInfo);
 			//关闭用户信息界面
 			$("#userInfo").dialog( "close" );
 			//刷新表格
@@ -121,7 +116,7 @@ $(function(){
 	    sortorder: "asc",
 	    multiselect: true,
 	    loadComplete: function(){
-    	    var userData = $("#userInfoList").getUserData();
+    	    var userData = $(this).getUserData();
 			$.addMessage(userData);
     	}
 	});
@@ -140,9 +135,9 @@ $(function(){
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
 		onClickButton:function(){
 			userInfoIsEditFlag = true;
-			var id = $("#userInfoList").getGridParam('selrow');
+			var id = $(this).getGridParam('selrow');
 			if (id) {
-				$("#userInfoList").GridToForm(id,"#userInfoForm");
+				$(this).GridToForm(id,"#userInfoForm");
 				$("#userInfo").dialog( "open" );
 			} else {
 				$.addMessageStr(null,"请选择要编辑的记录",null);
@@ -151,9 +146,9 @@ $(function(){
 	});
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"删除",buttonicon:"ui-icon-trash",position:"last",
 		onClickButton:function(){
-			var gr = $("#userInfoList").getGridParam('selarrrow');
+			var gr = $(this).getGridParam('selarrrow');
 			if( gr != null && gr != ''){
-				$("#userInfoList").delGridRow(gr,{reloadAfterSubmit:true,
+				$(this).delGridRow(gr,{reloadAfterSubmit:true,
 	                afterSubmit: function(xhr, postdata) {
 	                    $.addMessage($.parseJSON(xhr.responseText).userdata);
 	                    return [true];

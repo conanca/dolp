@@ -6,14 +6,19 @@
 <title>Login page</title>
 <script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.6.custom.min.js" type="text/javascript"></script>
-<script src="js/jquery.form.js" type="text/javascript"></script>
-<script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <script src="js/system.common.js" type="text/javascript"></script>
+<script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <link href="themes/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
 <style type="text/css" media="all">
-table{
+html, body {
+	margin: 0;			/* Remove body margin/padding */
+	padding: 0;
+	overflow: hidden;	/* Remove scroll bars on browser window */	
 	font-size: 80%;
+}
+table{
+	font-size: 95%;
 }
 </style>
 <script type="text/javascript">
@@ -26,58 +31,33 @@ $(function() {
 	opts.pnotify_text = "登录账号：1000/123";
 	$.pnotify(opts);
 
-	var options = {
-		    success:	response,
-			url:		'system/user/login',
-			type:		'post',
-			clearForm:	true,
-			resetForm:	true
-		};
 	$('#logonForm').submit(function() {
-		$(this).ajaxSubmit(options);
+		var url = 'system/user/login';
+		var logonFormInfo = $(this).serializeObject();
+		$.getJSON(url,logonFormInfo,function(response){
+			if(null==response){
+				window.location.href="main.html";
+			}else{
+				$.addMessage(response.userdata);
+			}
+		});
 		return false;
 	});
 });
-
-function response(responseText, statusText, xhr, $form)  {
-	if('null'!=responseText){
-		$.addMessage($.parseJSON(responseText).userdata);
-	}else{
-		window.location.href="main.html";
-	}
-}
 </script>
 </head>
 <body>
 <div id="login" title="请登录">
 	<form id="logonForm" action="#">
-		<table>
-			<tr>
-				<td>
-					用户编号：
-				</td>
-				<td>
-					<input type="text" name="num"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					密&nbsp;&nbsp;码：
-				</td>
-				<td>
-					<input type="password" name="pwd"/>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<center>
-						<input type="submit" value="登录"/>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="reset" value="重置"/>
-					</center>
-				</td>
-			</tr>
-		</table>
+		<br/>
+		用户编号：
+		<input type="text" name="num"/><br/><br/>
+		密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：
+		<input type="password" name="pwd"/><br/><br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" value="登录"/>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="重置"/>
 	</form>
 </div>
 </body>
