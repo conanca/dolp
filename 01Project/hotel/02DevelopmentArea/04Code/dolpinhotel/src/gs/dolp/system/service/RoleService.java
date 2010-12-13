@@ -17,6 +17,9 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.lang.Strings;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 public class RoleService extends AdvJqgridIdEntityService<Role> {
 
@@ -34,13 +37,17 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	public ResponseSysMsgData CUDRole(String oper, String id, String name, String description) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			List<Role> roles = this.query(cnd, null);
-			for (Role role : roles) {
-				dao().clearLinks(role, "users");
-				dao().clearLinks(role, "menus");
-			}
-			clear(cnd);
+			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final List<Role> roles = this.query(cnd, null);
+			Trans.exec(new Atom() {
+				public void run() {
+					for (Role role : roles) {
+						dao().clearLinks(role, "users");
+						dao().clearLinks(role, "menus");
+					}
+					clear(cnd);
+				}
+			});
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
@@ -74,15 +81,21 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	@Aop(value = "log")
 	public ResponseSysMsgData updateMenu(String roleId, String[] menuIds) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
-		// 取得要更新可见菜单的角色
-		Role role = fetch(Integer.parseInt(roleId));
-		// 清空中间表中该角色原有可见菜单
-		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", role.getId()));
-		// 如果新分配的可见菜单 menuIds为Null,则直接return
+		final String roleID;
+		if (Strings.isEmpty(roleId)) {
+			reData.setUserdata(new SystemMessage(null, "未选择角色!", null));
+			return reData;
+		} else {
+			roleID = roleId;
+		}
+		// 如果新分配的可见菜单 menuIds为Null,则清空中间表中该角色原有可见菜单并return
 		if (menuIds == null || menuIds.length == 0) {
-			reData.setUserdata(new SystemMessage(null, "未分配任何菜单!", null));
+			dao().clear("SYSTEM_ROLE_MENU", Cnd.where("ROLEID", "=", roleId));
+			reData.setUserdata(new SystemMessage(null, "该角色未分配任何菜单!", null));
 			return reData;
 		}
+		// 取得要更新可见菜单的角色
+		final Role role = fetch(Integer.parseInt(roleId));
 		List<Menu> menus = new ArrayList<Menu>();
 		// 从数据库中获取指定id的菜单
 		for (String menuId : menuIds) {
@@ -91,8 +104,14 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 		}
 		// 为该角色分配这些菜单
 		role.setMenus(menus);
-		// 插入中间表记录
-		dao().insertRelation(role, "menus");
+		Trans.exec(new Atom() {
+			public void run() {
+				// 清空中间表中该角色原有可见菜单
+				dao().clear("SYSTEM_ROLE_MENU", Cnd.where("ROLEID", "=", roleID));
+				// 插入中间表记录
+				dao().insertRelation(role, "menus");
+			}
+		});
 		reData.setUserdata(new SystemMessage("分配成功!", null, null));
 		return reData;
 	}

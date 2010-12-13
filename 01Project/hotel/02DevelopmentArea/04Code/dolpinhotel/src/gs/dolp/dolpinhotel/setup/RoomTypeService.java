@@ -14,6 +14,8 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 
@@ -30,12 +32,16 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 	public ResponseSysMsgData CUDRoomType(String oper, String id, String name, String price, String description) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			List<RoomType> roomTypes = this.query(cnd, null);
-			for (RoomType roomType : roomTypes) {
-				dao().clearLinks(roomType, "rooms");
-			}
-			clear(cnd);
+			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final List<RoomType> roomTypes = this.query(cnd, null);
+			Trans.exec(new Atom() {
+				public void run() {
+					for (RoomType roomType : roomTypes) {
+						dao().clearLinks(roomType, "rooms");
+					}
+					clear(cnd);
+				}
+			});
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {

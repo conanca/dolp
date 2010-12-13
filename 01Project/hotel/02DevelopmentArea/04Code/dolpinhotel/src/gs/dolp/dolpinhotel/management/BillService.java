@@ -16,6 +16,8 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 public class BillService extends AdvJqgridIdEntityService<Bill> {
 
@@ -48,12 +50,16 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 			throws ParseException {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			List<Bill> bills = this.query(cnd, null);
-			for (Bill bill : bills) {
-				dao().clearLinks(bill, "roomOccupancy");
-			}
-			clear(cnd);
+			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final List<Bill> bills = this.query(cnd, null);
+			Trans.exec(new Atom() {
+				public void run() {
+					for (Bill bill : bills) {
+						dao().clearLinks(bill, "roomOccupancy");
+					}
+					clear(cnd);
+				}
+			});
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("edit".equals(oper)) {

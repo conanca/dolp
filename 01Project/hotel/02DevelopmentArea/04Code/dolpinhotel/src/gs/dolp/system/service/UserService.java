@@ -22,6 +22,8 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 public class UserService extends AdvJqgridIdEntityService<User> {
 
@@ -91,28 +93,38 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	@Aop(value = "log")
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
-			List<User> users = this.query(cnd, null);
-			for (User user : users) {
-				dao().clearLinks(user, "roles");
-			}
-			clear(cnd);
+			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
+			final List<User> users = this.query(cnd, null);
+			Trans.exec(new Atom() {
+				public void run() {
+					for (User user : users) {
+						dao().clearLinks(user, "roles");
+					}
+					clear(cnd);
+				}
+			});
 		}
 	}
 
 	@Aop(value = "log")
 	public ResponseSysMsgData updateRole(String userId, String[] roleIds) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
-		// 取得要更新角色的用户
-		User user = fetch(Integer.parseInt(userId));
-		// 清空中间表中该用户原有角色
-		dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", user.getId()));
-		// 如果新分配的角色 roleIds为Null,则直接return
+		final String userID;
+		if (Strings.isEmpty(userId)) {
+			reData.setUserdata(new SystemMessage(null, "未选择用户!", null));
+			return reData;
+		} else {
+			userID = userId;
+		}
+		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
-			reData.setUserdata(new SystemMessage(null, "未分配任何角色!", null));
+			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
+			reData.setUserdata(new SystemMessage(null, "该用户未分配任何角色!", null));
 			return reData;
 		}
 		List<Role> roles = new ArrayList<Role>();
+		// 取得要更新角色的用户
+		final User user = fetch(Integer.parseInt(userId));
 		// 从数据库中获取指定id的角色
 		for (String roleId : roleIds) {
 			Role role = dao().fetch(Role.class, Integer.parseInt(roleId));
@@ -120,8 +132,14 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		}
 		// 为该用户分配这些角色
 		user.setRoles(roles);
-		// 插入中间表记录
-		dao().insertRelation(user, "roles");
+		Trans.exec(new Atom() {
+			public void run() {
+				// 清空中间表中该用户原有角色
+				dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
+				// 插入中间表记录
+				dao().insertRelation(user, "roles");
+			}
+		});
 		reData.setUserdata(new SystemMessage("分配成功!", null, null));
 		return reData;
 	}

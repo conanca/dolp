@@ -7,10 +7,14 @@ import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.SysEnum;
 
+import java.util.List;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 
@@ -28,8 +32,16 @@ public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 	public ResponseSysMsgData CUDSysEnum(String oper, String id, String name, String description) {
 		ResponseSysMsgData reData = new ResponseSysMsgData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			clear(cnd);
+			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final List<SysEnum> sysEnums = this.query(cnd, null);
+			Trans.exec(new Atom() {
+				public void run() {
+					for (SysEnum sysEnum : sysEnums) {
+						dao().clearLinks(sysEnum, "items");
+					}
+					clear(cnd);
+				}
+			});
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
