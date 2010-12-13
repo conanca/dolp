@@ -6,9 +6,24 @@ import java.util.List;
 import org.nutz.json.Json;
 import org.nutz.lang.Strings;
 
-public class SystemMessage implements ResUserData {
+/**
+ * @author Administrator
+ * 系统信息对象
+ */
+public class SystemMessage {
+	/**
+	 * 提示信息集合
+	 */
 	private List<String> infoMessages;
+
+	/**
+	 * 警告信息集合
+	 */
 	private List<String> warnMessages;
+
+	/**
+	 * 错误信息集合
+	 */
 	private List<String> errorMessages;
 
 	public SystemMessage() {
@@ -38,14 +53,26 @@ public class SystemMessage implements ResUserData {
 		}
 	}
 
+	/**
+	 * 添加提示信息
+	 * @param addMessage
+	 */
 	public void addInfoMessage(String addMessage) {
 		infoMessages.add(addMessage);
 	}
 
+	/**
+	 * 添加警告信息
+	 * @param addMessage
+	 */
 	public void addWarnMessage(String addMessage) {
 		warnMessages.add(addMessage);
 	}
 
+	/**
+	 * 添加错误信息
+	 * @param addMessage
+	 */
 	public void addErrorMessage(String addMessage) {
 		errorMessages.add(addMessage);
 	}

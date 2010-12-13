@@ -14,10 +14,10 @@ import org.nutz.service.IdEntityService;
 
 /**
  * @author Administrator
- * @param <T>
  * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
  * 使用时可以继承该类。
  * 注：实体的主键是数值型的。
+ * @param <T>
  */
 public class AdvJqgridIdEntityService<T> extends IdEntityService<T> {
 
@@ -26,13 +26,13 @@ public class AdvJqgridIdEntityService<T> extends IdEntityService<T> {
 	}
 
 	/**
+	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
 	 * @param cnd
 	 * @param jqReq
 	 * @return
-	 * 通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
 	 */
 	public AdvancedJqgridResData<T> getAdvancedJqgridRespData(Condition cnd, JqgridReqData jqReq) {
-		// 设置开始页数
+		// 设置页码
 		int page = jqReq.getPage();
 		int pageNumber = page == 0 ? 1 : page;
 		// 设置每页记录数

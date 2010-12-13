@@ -2,7 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
@@ -44,7 +44,7 @@ public class UserModule {
 	@At
 	@Filters
 	public ResponseData getCurrentUserName(HttpSession session) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+		AjaxResData reData = new AjaxResData();
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser != null) {
 			reData.setReturnData(cUser.getName());
@@ -65,7 +65,7 @@ public class UserModule {
 
 	@At
 	public ResponseData save(@Param("..") User user) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+		AjaxResData reData = new AjaxResData();
 		userService.save(user);
 		reData.setUserdata(new SystemMessage("保存成功!", null, null));
 		return reData;
@@ -74,7 +74,7 @@ public class UserModule {
 	@At
 	public ResponseData deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+		AjaxResData reData = new AjaxResData();
 		reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		return reData;
 	}

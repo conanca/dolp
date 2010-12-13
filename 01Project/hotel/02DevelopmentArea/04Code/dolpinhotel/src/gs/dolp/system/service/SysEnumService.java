@@ -2,7 +2,7 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.SysEnum;
@@ -29,8 +29,8 @@ public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData CUDSysEnum(String oper, String id, String name, String description) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData CUDSysEnum(String oper, String id, String name, String description) {
+		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			final List<SysEnum> sysEnums = this.query(cnd, null);

@@ -6,16 +6,35 @@ import org.nutz.json.Json;
 
 /**
  * @author Administrator
- *	jqGrid所需的扩展格式的数据，需设置jsonReader:{ repeatitems: false }
- *	rows中为自定义的实体数据
+ *	扩展了格式的jqGrid所需的response数据，需设置jsonReader:{ repeatitems: false }
+ *	rows中为自定义的T型实体数据的集合
  * @param <T>
  */
 public class AdvancedJqgridResData<T> implements ResponseData {
+	/**
+	 * 页码
+	 */
 	private int page;
+
+	/**
+	 * 页数
+	 */
 	private int total;
+
+	/**
+	 * 总记录数
+	 */
 	private int records;
+
+	/**
+	 * 记录
+	 */
 	private List<T> rows;
-	private ResUserData userdata;
+
+	/**
+	 * 用户自定义数据——系统信息
+	 */
+	private SystemMessage userdata;
 
 	public int getPage() {
 		return page;
@@ -49,11 +68,11 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 		this.rows = rows;
 	}
 
-	public ResUserData getUserdata() {
+	public SystemMessage getUserdata() {
 		return userdata;
 	}
 
-	public void setUserdata(ResUserData userdata) {
+	public void setUserdata(SystemMessage userdata) {
 		this.userdata = userdata;
 	}
 

@@ -6,15 +6,33 @@ import org.nutz.json.Json;
 
 /**
  * @author Administrator
- * jqGrid所需的标准格式的数据
- *
+ * 标准格式的jqGrid所需的后台响应数据
  */
 public class StandardJqgridResData implements ResponseData {
+	/**
+	 * 页码
+	 */
 	private int page;
+
+	/**
+	 * 页数
+	 */
 	private int total;
+
+	/**
+	 * 总记录数
+	 */
 	private int records;
+
+	/**
+	 * 记录
+	 */
 	private List<StandardJqgridResDataRow> rows;
-	private ResUserData userdata;
+
+	/**
+	 * 用户自定义数据——系统信息
+	 */
+	private SystemMessage userdata;
 
 	public int getPage() {
 		return page;
@@ -48,11 +66,11 @@ public class StandardJqgridResData implements ResponseData {
 		this.rows = rows;
 	}
 
-	public ResUserData getUserdata() {
+	public SystemMessage getUserdata() {
 		return userdata;
 	}
 
-	public void setUserdata(ResUserData userdata) {
+	public void setUserdata(SystemMessage userdata) {
 		this.userdata = userdata;
 	}
 

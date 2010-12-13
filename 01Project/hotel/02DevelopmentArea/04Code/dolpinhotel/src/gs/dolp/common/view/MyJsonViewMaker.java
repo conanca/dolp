@@ -7,6 +7,10 @@ import org.nutz.lang.Strings;
 import org.nutz.mvc.View;
 import org.nutz.mvc.ViewMaker;
 
+/**
+ * @author Administrator
+ * 用于处理异常的JSON自定义视图
+ */
 public class MyJsonViewMaker implements ViewMaker {
 
 	@Override

@@ -2,12 +2,21 @@ package gs.dolp.common.jqgrid.domain;
 
 import java.util.List;
 
+import org.nutz.json.Json;
+
 /**
  * @author Administrator
- * jqGrid所需的标准格式的数据的Row数据
+ * 标准格式的jqGrid所需的后台响应数据的rows的格式定义
  */
 public class StandardJqgridResDataRow {
+	/**
+	 * 记录的ID
+	 */
 	private int id;
+
+	/**
+	 * 记录的详细信息
+	 */
 	private List<String> cell;
 
 	public int getId() {
@@ -26,4 +35,7 @@ public class StandardJqgridResDataRow {
 		this.cell = cell;
 	}
 
+	public String toString() {
+		return Json.toJson(this);
+	}
 }

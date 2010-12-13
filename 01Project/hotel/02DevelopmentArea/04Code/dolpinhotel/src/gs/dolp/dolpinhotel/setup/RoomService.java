@@ -2,7 +2,7 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
@@ -40,8 +40,8 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
+		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			clear(cnd);

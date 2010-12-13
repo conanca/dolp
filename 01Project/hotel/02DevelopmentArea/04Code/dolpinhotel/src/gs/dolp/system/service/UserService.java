@@ -2,7 +2,7 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Role;
@@ -107,8 +107,8 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData updateRole(String userId, String[] roleIds) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData updateRole(String userId, String[] roleIds) {
+		AjaxResData reData = new AjaxResData();
 		final String userID;
 		if (Strings.isEmpty(userId)) {
 			reData.setUserdata(new SystemMessage(null, "未选择用户!", null));

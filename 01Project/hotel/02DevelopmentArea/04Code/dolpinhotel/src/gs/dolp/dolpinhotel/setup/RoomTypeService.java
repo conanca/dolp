@@ -2,7 +2,7 @@ package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
@@ -29,8 +29,8 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 		return jq;
 	}
 
-	public ResponseSysMsgData CUDRoomType(String oper, String id, String name, String price, String description) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData CUDRoomType(String oper, String id, String name, String price, String description) {
+		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			final List<RoomType> roomTypes = this.query(cnd, null);

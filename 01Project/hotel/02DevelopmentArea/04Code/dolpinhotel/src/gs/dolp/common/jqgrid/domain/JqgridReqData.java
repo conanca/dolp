@@ -1,10 +1,29 @@
 package gs.dolp.common.jqgrid.domain;
 
+/**
+ * @author Administrator
+ * jqGrid向后台请求的参数的集合封装成的对象
+ */
 public class JqgridReqData {
 
+	/**
+	 * 显示第几页
+	 */
 	private int page;
+
+	/**
+	 * 每页显示的记录数
+	 */
 	private int rows;
+
+	/**
+	 * 排序字段
+	 */
 	private String sidx;
+
+	/**
+	 * 升序/降序
+	 */
 	private String sord;
 
 	public int getPage() {

@@ -3,7 +3,7 @@ package gs.dolp.dolpinhotel.setup;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class RoomModule {
 
 	@At
 	public ResponseData getAllRoomForSelectOption() {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+		AjaxResData reData = new AjaxResData();
 		reData.setReturnData(roomService.getAllRoomForSelectOption());
 		return reData;
 	}

@@ -2,7 +2,7 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Menu;
@@ -34,8 +34,8 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData CUDRole(String oper, String id, String name, String description) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData CUDRole(String oper, String id, String name, String description) {
+		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			final List<Role> roles = this.query(cnd, null);
@@ -79,8 +79,8 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData updateMenu(String roleId, String[] menuIds) {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+	public AjaxResData updateMenu(String roleId, String[] menuIds) {
+		AjaxResData reData = new AjaxResData();
 		final String roleID;
 		if (Strings.isEmpty(roleId)) {
 			reData.setUserdata(new SystemMessage(null, "未选择角色!", null));

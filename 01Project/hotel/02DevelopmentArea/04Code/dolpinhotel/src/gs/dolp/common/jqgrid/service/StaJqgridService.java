@@ -21,11 +21,11 @@ public class StaJqgridService extends Service {
 	}
 
 	/**
+	 * 将各条记录和分页信息封装为StandardJqgridResData格式。
 	 * @param jqReq
 	 * @param rows
 	 * @return
 	 * @throws Exception
-	 * 将各条记录和分页信息封装为StandardJqgridResData格式。
 	 */
 	public StandardJqgridResData getGridData(JqgridReqData jqReq, List<StandardJqgridResDataRow> rows) throws Exception {
 		// 设置开始页数

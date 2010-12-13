@@ -2,7 +2,7 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseSysMsgData;
+import gs.dolp.common.jqgrid.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
@@ -46,9 +46,9 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 	}
 
 	@Aop(value = "log")
-	public ResponseSysMsgData UDBill(String oper, String id, String number, String amount, String date)
+	public AjaxResData UDBill(String oper, String id, String number, String amount, String date)
 			throws ParseException {
-		ResponseSysMsgData reData = new ResponseSysMsgData();
+		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
 			final List<Bill> bills = this.query(cnd, null);
