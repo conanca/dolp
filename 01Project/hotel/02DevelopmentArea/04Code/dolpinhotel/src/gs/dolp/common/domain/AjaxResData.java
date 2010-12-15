@@ -1,4 +1,5 @@
-package gs.dolp.common.jqgrid.domain;
+package gs.dolp.common.domain;
+
 
 import org.nutz.json.Json;
 

@@ -1,9 +1,9 @@
 package gs.dolp.dolpinhotel.management;
 
+import gs.dolp.common.domain.AjaxResData;
+import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.AjaxResData;
-import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 
 import java.sql.Timestamp;

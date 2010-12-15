@@ -1,7 +1,7 @@
 package gs.dolp.common.filter;
 
-import gs.dolp.common.jqgrid.domain.AjaxResData;
-import gs.dolp.common.jqgrid.domain.SystemMessage;
+import gs.dolp.common.domain.AjaxResData;
+import gs.dolp.common.domain.SystemMessage;
 
 import java.lang.reflect.Method;
 

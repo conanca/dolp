@@ -1,5 +1,8 @@
 package gs.dolp.common.jqgrid.domain;
 
+import gs.dolp.common.domain.ResponseData;
+import gs.dolp.common.domain.SystemMessage;
+
 import java.util.List;
 
 import org.nutz.json.Json;

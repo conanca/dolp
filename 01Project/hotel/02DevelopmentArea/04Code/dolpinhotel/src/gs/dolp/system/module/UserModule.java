@@ -1,9 +1,9 @@
 package gs.dolp.system.module;
 
+import gs.dolp.common.domain.AjaxResData;
+import gs.dolp.common.domain.ResponseData;
+import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AjaxResData;
-import gs.dolp.common.jqgrid.domain.SystemMessage;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
@@ -20,12 +20,6 @@ import org.nutz.mvc.annotation.Param;
 public class UserModule {
 
 	private UserService userService;
-
-	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
-			@Param("name") String name) {
-		return userService.getGridData(jqReq, number, name);
-	}
 
 	@At
 	@Filters
@@ -51,6 +45,12 @@ public class UserModule {
 			reData.setUserdata(new SystemMessage("登录成功!", null, null));
 		}
 		return reData;
+	}
+
+	@At
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
+			@Param("name") String name) {
+		return userService.getGridData(jqReq, number, name);
 	}
 
 	@At
