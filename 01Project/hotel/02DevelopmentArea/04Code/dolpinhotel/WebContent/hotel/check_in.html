@@ -8,6 +8,9 @@ $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
 
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+		
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
 	var genders1 = $.swapJSON(genders); 
@@ -16,6 +19,16 @@ $(function(){
 	var certificateTypes = $.getSysEmnuItem("certificateType");
 	$("#certificateType").addItems(certificateTypes);
 	var certificateTypes1 = $.swapJSON(certificateTypes);
+	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
+	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
+	$("#roomTypeSelector").addItems($.getItem(url3));
+	$("#roomTypeSelector").selectSubcategory({
+		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
+		subcategoryid: 'roomSelector'
+	});
+	
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
 
 	$("#customerList").jqGrid({
 		rowNum:10,
@@ -134,14 +147,6 @@ $(function(){
 		//关闭用户信息界面
 		$("#customerDiv").dialog( "close" );
 		return false;
-	});
-
-	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
-	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	$("#roomTypeSelector").addItems($.getItem(url3));
-	$("#roomTypeSelector").selectSubcategory({
-		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
-		subcategoryid: 'roomSelector'
 	});
 
 	// 验证

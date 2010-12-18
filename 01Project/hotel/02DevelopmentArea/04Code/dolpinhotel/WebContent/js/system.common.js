@@ -69,7 +69,6 @@ $.extend({
 	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
 	getItem: function(url) {
 		var Items = {};
-		$.ajaxSetup({ async: false});//设为同步模式
 		$.getJSON(url,function(response){
 			if(response.userdata){
 				$.addMessage(response.userdata);
@@ -149,12 +148,16 @@ $.extend({
 	//为该下拉列表框添加指定系统枚举值作为option
 	$.fn.addSysEmnuItems = function(SysEnumName) {
 		var selectorid=this.selector;
+		//------------------设为同步模式------------------
+		$.ajaxSetup({ async: false});
 		var SysEnumItems = $.getSysEmnuItem(SysEnumName);
 		$(selectorid).find('option').remove().end();
 		   $.each(SysEnumItems,function(text,value){
 				var newopt='<option value="'+value+'">'+text+'</option>';					
 				$(selectorid).append(newopt);
 		});
+		$.ajaxSetup({ async: true});
+		//------------------设回异步模式------------------
 	};
 	//设置jqgrid的改增删功能，并增加系统消息的显示
 	$.fn.setJqGridCUD = function(pager,para) {

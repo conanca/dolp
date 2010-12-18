@@ -4,11 +4,15 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 
 	var userInfoIsEditFlag = false;
-	
+
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
 	var genders1 = $.swapJSON(genders); 
 	$("#user_manage_gender").addItems(genders);
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
 
 	//初始化用户信息界面
 	$("#userInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {

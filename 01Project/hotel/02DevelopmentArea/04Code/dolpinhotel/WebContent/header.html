@@ -19,10 +19,14 @@ $(function() {
 		}
 		$('#jQueryUICssSrc').attr('href', 'themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.6.custom.css');
 	});
-	
+
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
 	var url = 'system/user/getCurrentUserName';
 	var currentUserName = $.myGetJSON(url);
 	$('#CurrentUserName').text(currentUserName);
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
 });
 </script>
 <h1><b>AAAA</b></h1>
