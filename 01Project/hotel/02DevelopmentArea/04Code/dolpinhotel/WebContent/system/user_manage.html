@@ -52,11 +52,13 @@ $(function(){
 			},
 			password: {
 				required: true,
-				minlength: 5
+				maxlength: 20,
+				minlength: 3
 			},
 			password_again: {
 				required: true,
-				minlength: 5,
+				maxlength: 20,
+				minlength: 3,
 				equalTo: "#password1"
 			},
 			gender: "required",
