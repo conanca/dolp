@@ -27,7 +27,11 @@ $(function(){
 			return true;
 		}
 		var url = "system/user/userNumberIsDuplicate/"+value;
+		//------------------设为同步模式------------------
+		$.ajaxSetup({ async: false});
 		var userNumberIsDuplicate = $.myGetJSON(url);
+		$.ajaxSetup({ async: true});
+		//------------------设回异步模式------------------
 		if(userNumberIsDuplicate == true)
 		{
 			return false;
@@ -77,11 +81,15 @@ $(function(){
 		if($(this).valid()){
 			var url = 'system/user/save';
 			var userInfo = $(this).serializeObject();
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
 			$.myGetJSON(url,userInfo);
 			//关闭用户信息界面
 			$("#userInfo").dialog( "close" );
 			//刷新表格
 			$('#userInfoList').trigger("reloadGrid");
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}
@@ -133,8 +141,12 @@ $(function(){
 			userInfoIsEditFlag = false;
 			$("#userInfo").dialog( "open" );
 			var url = "system/user/getNewUserNumber";
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
 			var newUserNumber = $.myGetJSON(url);
 			$("#userInfoNumber").val(newUserNumber);
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
 		}
 	});
 	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"编辑",buttonicon:"ui-icon-pencil",
