@@ -12,17 +12,8 @@
 <script src="js/i18n/messages_cn.js" type="text/javascript"></script>
 <link href="themes/redmond/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
-<style type="text/css" media="all">
-html, body {
-	margin: 0;			/* Remove body margin/padding */
-	padding: 0;
-	overflow: hidden;	/* Remove scroll bars on browser window */	
-	font-size: 80%;
-}
-table{
-	font-size: 95%;
-}
-</style>
+<link href="css/jquery.validate.css" rel="stylesheet" type="text/css"/>
+<link href="css/main.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 $(function() {
 	$("#login").dialog( { draggable: false } );
@@ -42,7 +33,7 @@ $(function() {
 				minlength: 4,
 				maxlength: 4
 			},
-			password: {
+			pwd: {
 				required: true,
 				minlength: 3
 			}
@@ -50,16 +41,20 @@ $(function() {
 	});
 
 	$('#logonForm').submit(function() {
-		var url = 'system/user/login';
-		var logonFormInfo = $(this).serializeObject();
-		$.getJSON(url,logonFormInfo,function(response){
-			if(null==response){
-				window.location.href="main.html";
-			}else{
-				$('#logonForm')[0].reset();
-				$.addMessage(response.userdata);
-			}
-		});
+		if($(this).valid()){
+			var url = 'system/user/login';
+			var logonFormInfo = $(this).serializeObject();
+			$.getJSON(url,logonFormInfo,function(response){
+				if(null==response){
+					window.location.href="main.html";
+				}else{
+					$('#logonForm')[0].reset();
+					$.addMessage(response.userdata);
+				}
+			});
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
 		return false;
 	});
 });
