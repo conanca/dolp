@@ -5,6 +5,7 @@ import gs.dolp.common.domain.SystemMessage;
 
 import java.lang.reflect.Method;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.mvc.ActionFilter;
@@ -18,7 +19,7 @@ import org.nutz.mvc.view.UTF8JsonView;
 public class CheckLogon implements ActionFilter {
 
 	@Override
-	public View match(HttpServletRequest request, Method method) {
+	public View match(ServletContext context, HttpServletRequest request, Method method) {
 		Object obj = request.getSession().getAttribute("logonUser");
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
@@ -29,4 +30,5 @@ public class CheckLogon implements ActionFilter {
 		}
 		return null;
 	}
+
 }
