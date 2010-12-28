@@ -1,7 +1,7 @@
 package gs.dolp;
 
-import gs.dolp.common.filter.CheckLogon;
 import gs.dolp.common.view.MyJsonViewMaker;
+import gs.dolp.system.filter.CheckLogon;
 
 import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Encoding;

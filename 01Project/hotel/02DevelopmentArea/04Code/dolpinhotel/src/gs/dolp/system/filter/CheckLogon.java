@@ -1,4 +1,4 @@
-package gs.dolp.common.filter;
+package gs.dolp.system.filter;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
