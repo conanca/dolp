@@ -4,10 +4,18 @@
 $(function(){
 	$("input:submit").button();
 
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	//初始化性别下拉列表框
+	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
+
 	$("#roleAssignUserList").jqGrid({
 		rowNum:10,
 	   	rowList:[10,20,30],
-	   	autowidth: true,
+	   	autowidth: false,
 	   	height: "100%", //自动调整高度(无滚动条)
 	   	viewrecords: true,
 	   	datatype: "json",
@@ -18,15 +26,12 @@ $(function(){
 			$.addMessage($(this).getUserData());
     	},
 	   	url:'system/user/getGridData',
-	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
+	   	colNames:['id','登录号', '姓名','性别'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:90},
 	   		{name:'name',index:'name', width:100},
-	   		{name:'gender',index:'gender', width:80,resizable:false},//不可调整宽度
-	   		{name:'age',index:'age', width:80},
-	   		{name:'birthday',index:'birthday', width:80},
-	   		{name:'phone',index:'phone', width:150}
+	   		{name:'gender',index:'gender', width:80,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
 	   	],
 	   	pager: '#roleAssignUserPager',
 	   	sortname: 'number',
@@ -76,13 +81,21 @@ $(function(){
 });
 
 </script>
-<table id="roleAssignUserList"></table>
-<div id="roleAssignUserPager"></div>
-<br/>
 <form id="roleAssignForm" action="#">
-	<input type="hidden" name="userId" id="assigningUserID"/>
-	<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
-	</select>
-	<br/>
-	<input type="submit" value="分配"/>
+	<table>
+		<tr>
+			<td valign="top">
+				<table id="roleAssignUserList"></table>
+				<div id="roleAssignUserPager"></div>
+			</td>
+			<td valign="top">
+				<input type="hidden" name="userId" id="assigningUserID"/>
+				<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
+				</select>
+			</td>
+			<td valign="top">
+				<input type="submit" value="分配"/>
+			</td>
+		</tr>
+	</table>
 </form>

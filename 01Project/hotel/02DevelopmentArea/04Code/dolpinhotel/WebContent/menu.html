@@ -6,7 +6,7 @@ $(function() {
 		treeGrid: true,
 		treeGridModel: 'nested',
 		pager: false,
-		ExpandColumn: "menu",
+		ExpandColumn: "name",
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
@@ -19,19 +19,19 @@ $(function() {
 		colNames: ["id","功能菜单","url","description"],
 		colModel: [
 			{name: "id",width:0,hidden:true,key:true},
-			{name: "menu", width:180, resizable: false, sortable:false},
+			{name: "name", width:180, resizable: false, sortable:false},
 			{name: "url",width:0,hidden:true},
 			{name: "description",width:0,hidden:true}
 		],
-		onSelectRow: function(rowid) {
-			var treedata = $(this).getRowData(rowid);
+		onSelectRow: function(id) {
+			var treedata = $(this).getRowData(id);
 			if(treedata.isLeaf=="true") {
 				//treedata.url
 				var st = "#t"+treedata.id;
 				if($(st).html() != null ) {
 					maintab.tabs('select',st);
 				} else {
-					maintab.tabs('add',st, treedata.menu);
+					maintab.tabs('add',st, treedata.name);
 					$(st,"#tabs").load(treedata.url);
 				}
 			}

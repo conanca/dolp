@@ -31,8 +31,8 @@ $(function(){
 	    sortorder: "asc",
 	    multiselect: false,
 		onSelectRow: function(id) {
-			$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+id});
 			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+id,page:1});
+			$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+id});
 			$("#sysenumSubList").trigger('reloadGrid');
 		}
 	});

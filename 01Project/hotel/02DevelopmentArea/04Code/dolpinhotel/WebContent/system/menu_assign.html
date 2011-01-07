@@ -22,8 +22,8 @@ $(function(){
 	   	colNames:['id','名称','描述'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:150},
-	   		{name:'description',index:'description', width:350}
+	   		{name:'name',index:'name', width:100},
+	   		{name:'description',index:'description', width:300}
 	   	],
 	   	pager: '#menuAssignPager',
 	   	sortname: 'id',
@@ -41,7 +41,7 @@ $(function(){
 		treeGrid: true,
 		treeGridModel: 'nested',
 		pager: false,
-		ExpandColumn: "menu",
+		ExpandColumn: "name",
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
@@ -54,9 +54,9 @@ $(function(){
 		colNames: ["id","功能菜单","url","描述","已分配"],
 		colModel: [
 			{name: "id",index:"id", width:0,hidden:true,key:true},
-			{name: "menu",index:"menu", width:200, resizable: false, sortable:false},
+			{name: "name",index:"name", width:150, resizable: false, sortable:false},
 			{name: "url",index:"url", width:0,hidden:true},
-			{name: "description",index:"description", width:300},
+			{name: "description",index:"description", width:200},
 			{name: 'enbl', index:'enbl', width: 60, align:'center', formatter:'checkbox', formatoptions:{disabled:false}, editoptions:{value:'1:0'}}
 		],
 		pager: '#menuPager'
@@ -77,11 +77,18 @@ $(function(){
 	});
 });
 </script>
-
-<table id="menuAssignList"></table>
-<div id="menuAssignPager"></div>
-<br/>
-<table id="menuGrid"></table>
-<div id="menuPager"></div>
-<br/>
-<input type="button" value="分配" id="menuAssignBtn"/>
+<table>
+	<tr>
+		<td valign="top">
+			<table id="menuAssignList"></table>
+			<div id="menuAssignPager"></div>
+		</td>
+		<td valign="top">
+			<table id="menuGrid"></table>
+			<div id="menuPager"></div>
+		</td>
+		<td valign="top">
+			<input type="button" value="分配" id="menuAssignBtn"/>
+		</td>
+	</tr>
+</table>
