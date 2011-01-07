@@ -38,7 +38,7 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			final List<Role> roles = this.query(cnd, null);
+			final List<Role> roles = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
 					for (Role role : roles) {

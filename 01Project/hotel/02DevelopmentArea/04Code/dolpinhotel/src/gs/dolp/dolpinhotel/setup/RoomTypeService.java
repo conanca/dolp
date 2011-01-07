@@ -33,7 +33,7 @@ public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			final List<RoomType> roomTypes = this.query(cnd, null);
+			final List<RoomType> roomTypes = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
 					for (RoomType roomType : roomTypes) {

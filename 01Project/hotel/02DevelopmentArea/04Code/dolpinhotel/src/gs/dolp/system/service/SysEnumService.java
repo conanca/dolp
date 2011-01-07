@@ -33,7 +33,7 @@ public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			final List<SysEnum> sysEnums = this.query(cnd, null);
+			final List<SysEnum> sysEnums = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
 					for (SysEnum sysEnum : sysEnums) {

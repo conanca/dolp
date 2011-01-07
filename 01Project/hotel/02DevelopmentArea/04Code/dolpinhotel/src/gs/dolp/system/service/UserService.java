@@ -74,7 +74,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 
 	@Aop(value = "log")
 	public boolean userNumberIsDuplicate(String userNumber) {
-		int count = this.count(Cnd.where("NUMBER", "=", userNumber));
+		int count = count(Cnd.where("NUMBER", "=", userNumber));
 		if (count > 0) {
 			return true;
 		}
@@ -94,7 +94,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
-			final List<User> users = this.query(cnd, null);
+			final List<User> users = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
 					for (User user : users) {

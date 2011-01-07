@@ -71,7 +71,7 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 	public Map<String, String> getAllAvailableRoomForSelectOption(int roomTypeId) {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
 		Condition cnd = Cnd.where("ISOCCUPANCY", "=", 0).and("ROOMTYPEID", "=", roomTypeId);
-		List<Room> rooms = this.query(cnd, null);
+		List<Room> rooms = query(cnd, null);
 		for (Room room : rooms) {
 			roomOptions.put(room.getNumber(), String.valueOf(room.getId()));
 		}
@@ -81,7 +81,7 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 	@Aop(value = "log")
 	public Map<String, String> getAllRoomForSelectOption() {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
-		List<Room> rooms = this.query(null, null);
+		List<Room> rooms = query(null, null);
 		for (Room room : rooms) {
 			roomOptions.put(String.valueOf(room.getId()), room.getNumber());
 		}

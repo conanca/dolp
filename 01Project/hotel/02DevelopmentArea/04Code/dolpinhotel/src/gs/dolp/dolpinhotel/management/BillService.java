@@ -46,12 +46,11 @@ public class BillService extends AdvJqgridIdEntityService<Bill> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData UDBill(String oper, String id, String number, String amount, String date)
-			throws ParseException {
+	public AjaxResData UDBill(String oper, String id, String number, String amount, String date) throws ParseException {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
-			final List<Bill> bills = this.query(cnd, null);
+			final List<Bill> bills = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
 					for (Bill bill : bills) {
