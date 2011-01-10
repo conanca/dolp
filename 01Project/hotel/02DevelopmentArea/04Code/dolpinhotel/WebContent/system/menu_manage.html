@@ -1,1 +1,74 @@
-<h2>该页废弃！</h2>
+<script type="text/javascript">
+$(function() {
+	$("#menuTree").jqGrid({
+		height: "auto",
+		//autowidth: true, 为适应IE6而注掉此句
+		treeGrid: true,
+		treeGridModel: 'nested',
+		pager: false,
+		ExpandColumn: "name",
+		ExpandColClick: true,
+		treeIcons: {leaf:'ui-icon-document-b'},
+		datatype: "json",
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+		rowNum: 200,
+		caption: "",
+		url: "system/menu/dispParentMenu",
+		colNames: ["id","功能菜单","url","description"],
+		colModel: [
+			{name: "id",width:0,hidden:true,key:true},
+			{name: "name", width:180, resizable: false, sortable:false},
+			{name: "url",width:0,hidden:true},
+			{name: "description",width:0,hidden:true}
+		],
+		onSelectRow: function(id) {
+    		$("#menuList").setGridParam({url:"system/menu/getGridData/"+id,page:1});
+    		$("#menuList").setGridParam({editurl:"system/menu/editRow/"+id});
+			$("#menuList").trigger('reloadGrid');
+		}
+	});
+
+	$("#menuList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: false,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption:"菜单列表",
+	   	url:'system/menu/getGridData',
+	    editurl:"system/menu/editRow",
+	    colNames: ["id","菜单名","url","描述"],
+		colModel: [
+			{name: "id",index:'id',width:0,hidden:true,key:true},
+			{name: "name",index:'name', width:100,editable:true},
+			{name: "url",index:'url',width:300,editable:true},
+			{name: "description",index:'description',width:200,editable:true}
+		],
+	   	pager: '#menuPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: true
+	});
+	$("#menuList").setJqGridCUD('#menuPager',{edit:true,add:true,del:true,search:false});
+});
+</script>
+<table>
+	<tr>
+		<td valign="top">
+			<table id="menuTree"></table>
+		</td>
+		<td valign="top">
+			<table id="menuList"></table>
+			<div id="menuPager"></div>
+		</td>
+	</tr>
+</table>
