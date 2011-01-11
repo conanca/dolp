@@ -3,8 +3,8 @@ package gs.dolp.system.module;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Menu;
+import gs.dolp.system.domain.MenuEntity;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MenuService;
 
@@ -30,14 +30,14 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public StandardJqgridResData dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
+	public AdvancedJqgridResData<MenuEntity> dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
 			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpSession session) {
 		User logonUser = (User) session.getAttribute("logonUser");
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}
 
 	@At
-	public StandardJqgridResData dispParentMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
+	public AdvancedJqgridResData<MenuEntity> dispParentMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
 			@Param("n_right") int nRight, @Param("n_level") int nLevel) {
 		return menuService.getGridDataOnlyParent(nodeId, nLeft, nRight, nLevel);
 	}
@@ -48,7 +48,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getMenuByRoleId/*")
-	public StandardJqgridResData getMenuByRoleId(int roleId) {
+	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
 		return menuService.getMenuByRoleId(roleId);
 	}
 

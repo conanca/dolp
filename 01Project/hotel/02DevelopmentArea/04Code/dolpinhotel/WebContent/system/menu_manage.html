@@ -10,6 +10,9 @@ $(function() {
 		ExpandColClick: true,
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
 	    loadComplete: function(){
 			$.addMessage($(this).getUserData());
     	},
@@ -54,7 +57,7 @@ $(function() {
 			{name: "description",index:'description',width:200,editable:true}
 		],
 	   	pager: '#menuPager',
-	   	sortname: 'id',
+	   	sortname: 'lft',
 	    sortorder: "asc",
 	    multiselect: true
 	});
