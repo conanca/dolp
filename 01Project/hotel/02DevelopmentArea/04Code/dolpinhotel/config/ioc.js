@@ -57,6 +57,54 @@ var ioc = {
 			}
 		}
 	},
+	
+	sysEnumService : {
+		type : "gs.dolp.system.service.SysEnumService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	sysEnumItemService : {
+		type : "gs.dolp.system.service.SysEnumItemService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	sysEnumModule : {
+		type : "gs.dolp.system.module.SysEnumModule",
+		fields : {
+			sysEnumService : {
+				refer : 'sysEnumService'
+			},
+			sysEnumItemService : {
+				refer : 'sysEnumItemService'
+			}
+		}
+	},
+	
+	sysParaService : {
+		type : "gs.dolp.system.service.SysParaService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	sysParaModule : {
+		type : "gs.dolp.system.module.SysParaModule",
+		fields : {
+			sysParaService : {
+				refer : 'sysParaService'
+			}
+		}
+	},
 
 	roomTypeService : {
 		type : "gs.dolp.dolpinhotel.setup.RoomTypeService",
@@ -162,36 +210,6 @@ var ioc = {
 		fields : {
 			billService : {
 				refer : 'billService'
-			}
-		}
-	},
-
-	sysEnumService : {
-		type : "gs.dolp.system.service.SysEnumService",
-		args : {
-			dao : {
-				refer : 'dao'
-			}
-		}
-	},
-
-	sysEnumItemService : {
-		type : "gs.dolp.system.service.SysEnumItemService",
-		args : {
-			dao : {
-				refer : 'dao'
-			}
-		}
-	},
-
-	sysEnumModule : {
-		type : "gs.dolp.system.module.SysEnumModule",
-		fields : {
-			sysEnumService : {
-				refer : 'sysEnumService'
-			},
-			sysEnumItemService : {
-				refer : 'sysEnumItemService'
 			}
 		}
 	}
