@@ -10,6 +10,7 @@ public class MenuEntity {
 	private int level;
 	private boolean isLeaf;
 	private boolean expanded;
+	private boolean visible;
 
 	public int getId() {
 		return id;
@@ -81,5 +82,13 @@ public class MenuEntity {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }

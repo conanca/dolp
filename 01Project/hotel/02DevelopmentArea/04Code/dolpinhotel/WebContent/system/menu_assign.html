@@ -29,14 +29,14 @@ $(function(){
 	   	sortname: 'id',
 	    sortorder: "asc",
     	onSelectRow: function(id){
-    		$("#menuGrid").setGridParam({url:"system/menu/getMenuByRoleId/"+id,page:1});
-			$("#menuGrid").trigger('reloadGrid');
+    		$("#menuList").setGridParam({url:"system/menu/getMenuByRoleId/"+id,page:1});
+			$("#menuList").trigger('reloadGrid');
 			roleId = id;
         }
 	});
 	$("#menuAssignList").navGrid('#menuAssignPager',{edit:false,add:false,del:false,search:false});
 
-	$("#menuGrid").jqGrid({
+	$("#menuList").jqGrid({
 		height: "auto",
 		treeGrid: true,
 		treeGridModel: 'nested',
@@ -60,13 +60,13 @@ $(function(){
 			{name: "name",index:"name", width:150, resizable: false, sortable:false},
 			{name: "url",index:"url", width:0,hidden:true},
 			{name: "description",index:"description", width:200},
-			{name: 'enbl', index:'enbl', width: 60, align:'center', formatter:'checkbox', formatoptions:{disabled:false}, editoptions:{value:'1:0'}}
+			{name: 'visible', index:'visible', width: 60, align:'center', formatter:'checkbox', formatoptions:{disabled:false}, editoptions:{value:'1:0'}}
 		],
 		pager: '#menuPager'
 	});
 
 	$("#menuAssignBtn").click(function() {
-		var selectedMenu = $("#menuGrid").getCol('enbl',true);
+		var selectedMenu = $("#menuList").getCol('visible',true);
 		var selectedMenuIds = new Array();;
 		var i=0;
         $.each(selectedMenu, function(k, v) {
@@ -87,7 +87,7 @@ $(function(){
 			<div id="menuAssignPager"></div>
 		</td>
 		<td valign="top">
-			<table id="menuGrid"></table>
+			<table id="menuList"></table>
 			<div id="menuPager"></div>
 		</td>
 		<td valign="top">
