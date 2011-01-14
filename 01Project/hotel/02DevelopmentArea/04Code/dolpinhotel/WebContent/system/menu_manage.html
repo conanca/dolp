@@ -22,17 +22,18 @@ $(function() {
 		rowNum: 200,
 		caption: "",
 		url: "system/menu/dispParentMenu",
-		colNames: ["id","功能菜单","url","description"],
+		colNames: ["id","功能菜单","level"],
 		colModel: [
 			{name: "id",width:0,hidden:true,key:true},
 			{name: "name", width:180, resizable: false, sortable:false},
-			{name: "url",width:0,hidden:true},
-			{name: "description",width:0,hidden:true}
+			{name: "level",width:0,hidden:true}
 		],
 		onSelectRow: function(id) {
     		$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+id,page:1});
     		$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+id});
 			$("#menuEditList").trigger('reloadGrid');
+			var row=$("#menuTree").getRowData(id);
+			$("#parentMenuInfoLevel").val(row.level);
 		}
 	});
 
@@ -134,6 +135,7 @@ $(function() {
 			</td>
 			<td>
 				<input type="hidden" name="id" id="parentMenuInfoId"/>
+				<input type="hidden" name="level" id="parentMenuInfoLevel">
 				<input type="text" name="name"/>
 			</td>
 			<td>
