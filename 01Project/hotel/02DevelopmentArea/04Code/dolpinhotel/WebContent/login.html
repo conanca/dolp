@@ -42,7 +42,7 @@ $(function() {
 
 	$('#logonForm').submit(function() {
 		if($(this).valid()){
-			var url = 'system/user/login';
+			var url = 'system/login';
 			var logonFormInfo = $(this).serializeObject();
 			$.getJSON(url,logonFormInfo,function(response){
 				if(null==response){

@@ -51,4 +51,11 @@ public class SysParaService extends AdvJqgridIdEntityService<SysPara> {
 		}
 		return reData;
 	}
+
+	@Aop(value = "log")
+	public static String getSysParaValue(String name, Dao dao) {
+		SysPara sysPara = dao.fetch(SysPara.class, Cnd.where("NAME", "=", name));
+		return sysPara.getValue();
+	}
+
 }

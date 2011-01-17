@@ -105,6 +105,32 @@ var ioc = {
 			}
 		}
 	},
+	
+	systemService : {
+		type : "gs.dolp.system.service.SystemService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	systemModule : {
+		type : "gs.dolp.system.module.SystemModule",
+		fields : {
+			systemService : {
+				refer : 'systemService'
+			},
+			userService : {
+				refer : 'userService'
+			},
+			menuService : {
+				refer : 'menuService'
+			}
+		}
+	},
+	
+	//------------------分割线--------------------------------
 
 	roomTypeService : {
 		type : "gs.dolp.dolpinhotel.setup.RoomTypeService",

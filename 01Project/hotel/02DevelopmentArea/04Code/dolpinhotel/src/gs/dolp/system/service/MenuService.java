@@ -273,20 +273,36 @@ public class MenuService extends IdEntityService<Menu> {
 	}
 
 	/**
-	 * 根据指定的Menu的ID获取其Level
-	 * @param Id
+	 * 添加 非叶节点
+	 * @param parentId
+	 * @param name
+	 * @param description
+	 * @param parentLevel
 	 * @return
 	 */
-	private int getMenuLevelById(int Id) {
-		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
-				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID=$Id GROUP BY NODE.ID");
-		sql.vars().set("Id", Id);
-		// 获取单个实体的回调
-		sql.setEntity(dao().getEntity(MenuEntity.class));
-		dao().execute(sql);
-		MenuEntity menu = sql.getObject(MenuEntity.class);
-		return menu.getLevel();
+	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description, int parentLevel) {
+		AjaxResData reData = new AjaxResData();
+		String levelCountStr = SysParaService.getSysParaValue("levelCount", dao());
+		int levelCount = Integer.parseInt(levelCountStr);
+
+		return reData;
 	}
+
+	//	/**
+	//	 * 根据指定的Menu的ID获取其Level
+	//	 * @param Id
+	//	 * @return
+	//	 */
+	//	private int getMenuLevelById(int Id) {
+	//		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
+	//				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
+	//				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
+	//				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID=$Id GROUP BY NODE.ID");
+	//		sql.vars().set("Id", Id);
+	//		// 获取单个实体的回调
+	//		sql.setEntity(dao().getEntity(MenuEntity.class));
+	//		dao().execute(sql);
+	//		MenuEntity menu = sql.getObject(MenuEntity.class);
+	//		return menu.getLevel();
+	//	}
 }
