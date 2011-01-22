@@ -77,7 +77,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/addParentMenu/*")
-	public ResponseData addParentMenu(int parentId, @Param("name") String name,
+	public ResponseData addParentMenu(@Param("parentId") int parentId, @Param("name") String name,
 			@Param("description") String description, @Param("parentLevel") int parentLevel) {
 		return menuService.addMenuIsNotLeaf(parentId, name, description, parentLevel);
 	}

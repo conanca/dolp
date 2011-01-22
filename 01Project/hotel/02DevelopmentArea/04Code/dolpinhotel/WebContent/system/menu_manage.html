@@ -32,6 +32,7 @@ $(function() {
     		$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+id,page:1});
     		$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+id});
 			$("#menuEditList").trigger('reloadGrid');
+			$("#parentMenuInfoParentId").val(id);
 			var row=$("#menuTree").getRowData(id);
 			$("#parentMenuInfoLevel").val(row.level);
 		}
@@ -93,7 +94,7 @@ $(function() {
 	//点击保存时提交
 	$('#parentMenuInfoForm').submit(function() {
 		if($(this).valid()){
-			var url = 'system/user/save';
+			var url = 'system/menu/addParentMenu/';
 			var parentMenuInfo = $(this).serializeObject();
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
@@ -136,6 +137,7 @@ $(function() {
 			<td>
 				<input type="hidden" name="id" id="parentMenuInfoId"/>
 				<input type="hidden" name="level" id="parentMenuInfoLevel">
+				<input type="hidden" name="parentId" id="parentMenuInfoParentId">
 				<input type="text" name="name"/>
 			</td>
 			<td>
