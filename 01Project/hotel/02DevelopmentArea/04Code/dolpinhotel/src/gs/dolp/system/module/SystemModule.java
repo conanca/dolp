@@ -14,12 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 @InjectName("systemModule")
-@At("/system")
 @Filters
 public class SystemModule {
 
@@ -33,9 +33,19 @@ public class SystemModule {
 	}
 
 	@At
-	public void login(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
+	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		User logonUser = userService.userAuthenticate(number, password);
 		session.setAttribute("logonUser", logonUser);
+	}
+
+	@At
+	@Ok("forward:/main.html")
+	@Fail("forward:/login.html")
+	public void main(HttpSession session) {
+		User cUser = (User) session.getAttribute("logonUser");
+		if (cUser == null) {
+			throw new RuntimeException("用户未登录!");
+		}
 	}
 
 	@At

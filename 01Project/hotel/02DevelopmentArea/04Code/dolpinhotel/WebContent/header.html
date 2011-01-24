@@ -22,12 +22,12 @@ $(function() {
 
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
-	var url = 'system/getSystemName';
+	var url = 'getSystemName';
 	var systemName = $.myGetJSON(url);
 	$('#SystemName').text(systemName);
 	$("#SystemName").css({"font-size":40 });
 
-	var url = 'system/getCurrentUserName';
+	var url = 'getCurrentUserName';
 	var currentUserName = $.myGetJSON(url);
 	$('#CurrentUserName').text(currentUserName);
 	$.ajaxSetup({ async: true});
@@ -37,7 +37,7 @@ $(function() {
 <label id="SystemName"></label>
 <div align="right">
 	欢迎：<label id="CurrentUserName"></label>&nbsp;|&nbsp;
-	<a href="system/logout">登出</a>&nbsp;|&nbsp;
+	<a href="logout">登出</a>&nbsp;|&nbsp;
 	换肤：
 	<select id="jQueryUICssSwitch">
 		<option value="black-tie">black-tie</option>

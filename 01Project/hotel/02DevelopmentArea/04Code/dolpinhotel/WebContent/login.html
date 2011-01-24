@@ -42,11 +42,11 @@ $(function() {
 
 	$('#logonForm').submit(function() {
 		if($(this).valid()){
-			var url = 'system/login';
+			var url = 'logon';
 			var logonFormInfo = $(this).serializeObject();
 			$.getJSON(url,logonFormInfo,function(response){
 				if(null==response){
-					window.location.href="main.html";
+					window.location="main";
 				}else{
 					$('#logonForm')[0].reset();
 					$.addMessage(response.userdata);
