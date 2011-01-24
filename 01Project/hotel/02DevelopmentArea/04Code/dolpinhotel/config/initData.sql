@@ -5,11 +5,11 @@ INSERT INTO SYSTEM_USER(ID, NUMBER, PASSWORD, NAME, GENDER, AGE, BIRTHDAY, PHONE
 (3,'1002','123','Kate','02',23,'2010-6-1','1122334455'),
 (4,'1003','123','John','01',21,'2010-6-1','1234567890');
 
-INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION) VALUES
-(1,'系统管理员','拥有系统设置的权限'),
-(2,'普通用户','拥有全部业务功能的权限'),
-(3,'经理','拥有酒店设置的权限'),
-(4,'前台','拥有基本业务功能的权限');
+INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA) VALUES
+(1,'系统管理员','拥有系统设置的权限',0),
+(2,'普通用户','拥有全部业务功能的权限',0),
+(3,'经理','拥有酒店设置的权限',0),
+(4,'前台','拥有基本业务功能的权限',0);
 
 INSERT INTO SYSTEM_USER_ROLE(ID ,USERID ,ROLEID) VALUES
 (1,1,1),

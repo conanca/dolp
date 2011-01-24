@@ -15,6 +15,8 @@ public class Role {
 	private String name;
 	@Column
 	private String description;
+	@Column
+	private int isOrgaRela;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
 	private List<User> users;
 	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_MENU", from = "ROLEID", to = "MENUID")
@@ -42,6 +44,14 @@ public class Role {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getIsOrgaRela() {
+		return isOrgaRela;
+	}
+
+	public void setIsOrgaRela(int isOrgaRela) {
+		this.isOrgaRela = isOrgaRela;
 	}
 
 	public List<User> getUsers() {

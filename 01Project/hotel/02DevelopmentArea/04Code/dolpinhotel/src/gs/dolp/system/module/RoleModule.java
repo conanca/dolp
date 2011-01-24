@@ -19,8 +19,8 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq) {
-		return roleService.getGridData(jqReq);
+	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") int isOrgaRela) {
+		return roleService.getGridData(jqReq, isOrgaRela);
 	}
 
 	@At
@@ -30,8 +30,8 @@ public class RoleModule {
 	}
 
 	@At
-	public Map<String, String> getAllRole() {
-		return roleService.getAllRole();
+	public Map<String, String> getAllRole(@Param("isOrgaRela") int isOrgaRela) {
+		return roleService.getAllRole(isOrgaRela);
 	}
 
 	@At

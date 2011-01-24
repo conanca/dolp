@@ -28,8 +28,12 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq) {
-		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(null, jqReq);
+	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, int isOrgaRela) {
+		Condition cnd = null;
+		if (isOrgaRela != -1) {
+			cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
+		}
+		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
@@ -69,8 +73,8 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public Map<String, String> getAllRole() {
-		List<Role> roles = query(null, null);
+	public Map<String, String> getAllRole(int isOrgaRela) {
+		List<Role> roles = query(Cnd.where("ISORGARELA", "=", 0), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
 			roleOptions.put(r.getName(), String.valueOf(r.getId()));
