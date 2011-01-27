@@ -27,6 +27,7 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (6,'角色可见菜单分配','system/menu_assign.html',NULL,10,11),
 (7,'枚举管理','system/sysenum_mange.html',NULL,12,13),
 (8,'系统参数管理','system/syspara_manage.html',NULL,14,15),
+(19,'机构管理','system/organization_manage.html',NULL,16,17),
 (9,'演示页面',NULL,NULL,21,40),
 (10,'格式化文本框','demo1.html',NULL,22,23),
 (11,'酒店设置',NULL,NULL,51,70),
@@ -57,6 +58,7 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (16,1,16),
 (17,1,17),
 (18,1,18),
+(40,1,19),
 (19,2,11),
 (20,2,12),
 (21,2,13),
@@ -78,6 +80,14 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (37,4,16),
 (38,4,17),
 (39,4,18);
+
+INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
+(1,'0100','Beijign','',0),
+(2,'0200','Shanghai','',0),
+(3,'0300','Guangzhou','',0),
+(4,'0101','BeijignF1','',1),
+(5,'0102','BeijignF2','',1);
+
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 

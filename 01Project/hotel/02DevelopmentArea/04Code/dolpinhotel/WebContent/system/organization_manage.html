@@ -1,0 +1,28 @@
+<script type="text/javascript">
+$(function(){
+
+	var zTree1;
+	var setting;
+	setting = {
+		checkable: false,
+		async: true,
+		asyncUrl: "system/organization/getNodes",  //获取节点数据的URL地址
+		asyncParam: ["name", "id"],  //获取节点数据时，必须的数据名称，例如：id、name
+		asyncParamOther: ["test","true"], //其它参数 ( key, value 键值对格式)
+		callback:{
+			//asyncSuccess: zTreeOnAsyncSuccess,
+			//asyncError: zTreeOnAsyncError
+			expand: function(event, treeId, treeNode){
+				zTree1.reAsyncChildNodes(treeNode, "refresh");
+			}
+		}
+	};
+	var zNodes =[];
+	zTree1 = $("#treeDemo").zTree(setting, zNodes);
+
+});
+</script>
+
+<div>
+	<ul id="treeDemo" class="tree"></ul>
+</div>

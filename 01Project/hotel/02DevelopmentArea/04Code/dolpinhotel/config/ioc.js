@@ -58,6 +58,24 @@ var ioc = {
 		}
 	},
 	
+	organizationService : {
+		type : "gs.dolp.system.service.OrganizationService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	organizationModule : {
+		type : "gs.dolp.system.module.OrganizationModule",
+		fields : {
+			organizationService : {
+				refer : 'organizationService'
+			}
+		}
+	},
+	
 	sysEnumService : {
 		type : "gs.dolp.system.service.SysEnumService",
 		args : {
