@@ -40,7 +40,7 @@ public class SystemModule {
 
 	@At
 	@Ok("forward:/main.html")
-	@Fail("forward:/login.html")
+	@Fail("redirect:/login.html")
 	public void main(HttpSession session) {
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser == null) {
