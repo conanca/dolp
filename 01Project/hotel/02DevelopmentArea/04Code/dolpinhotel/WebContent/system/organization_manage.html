@@ -1,28 +1,81 @@
 <script type="text/javascript">
 $(function(){
+	$("input:button,input:submit,input:reset").button();
 
-	var zTree1;
-	var setting;
-	setting = {
+	var setting = {
 		checkable: false,
 		async: true,
-		asyncUrl: "system/organization/getNodes",  //获取节点数据的URL地址
-		asyncParam: ["name", "id"],  //获取节点数据时，必须的数据名称，例如：id、name
-		asyncParamOther: ["test","true"], //其它参数 ( key, value 键值对格式)
+		asyncUrl: "system/organization/getNodes",
+		asyncParam: ["name", "id"],
 		callback:{
 			//asyncSuccess: zTreeOnAsyncSuccess,
 			//asyncError: zTreeOnAsyncError
-			expand: function(event, treeId, treeNode){
+			beforeExpand: function(treeId, treeNode){
 				zTree1.reAsyncChildNodes(treeNode, "refresh");
+			},
+			beforeClick: function(treeId, treeNode){
+				$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId="+treeNode.id,page:1});
+				$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId="+treeNode.id});
+				$("#organizationList").trigger('reloadGrid');
 			}
 		}
 	};
 	var zNodes =[];
-	zTree1 = $("#treeDemo").zTree(setting, zNodes);
+	var zTree1 = $("#treeDemo").zTree(setting, zNodes);
+
+	//点击刷新按钮
+	$("#organizationRefreshBtn").click(function() {
+		zTree1 = $("#treeDemo").zTree(setting, zNodes);
+		$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId=0",page:1});
+		$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId=0"});
+		$("#organizationList").trigger('reloadGrid');
+	});
+
+	$("#organizationList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: false,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption:"机构详细信息列表",
+	   	url:'system/organization/getGridData?parentOrgId=0',
+	    editurl:"system/organization/editRow?parentOrgId=0",
+	   	colNames:['id','代码','名称','描述','父节点Id'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'code',index:'code', width:100,editable:true},
+	   		{name:'name',index:'name', width:100,editable:true},
+	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},	//设置弹出窗口中字段类型
+	   		{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true}
+	   	],
+	   	pager: '#organizationPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: true
+	});
+	$("#organizationList").setJqGridCUD('#organizationPager',{edit:true,add:true,del:true,search:false});
 
 });
 </script>
 
-<div>
-	<ul id="treeDemo" class="tree"></ul>
-</div>
+<table>
+	<tr>
+		<td valign="top" width="200">
+			<input type="button" value="刷新" id="organizationRefreshBtn"/>
+			<div>
+				<ul id="treeDemo" class="tree"></ul>
+			</div>
+		</td>
+		<td valign="top">
+			<table id="organizationList"></table>
+			<div id="organizationPager"></div>
+		</td>
+	</tr>
+</table>

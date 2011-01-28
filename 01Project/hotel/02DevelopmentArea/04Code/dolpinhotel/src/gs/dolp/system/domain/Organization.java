@@ -24,7 +24,7 @@ public class Organization {
 	@One(target = Organization.class, field = "parentOrgId")
 	private Organization parentOrg;
 	@Many(target = Organization.class, field = "parentOrgId")
-	private List<Organization> nodes;
+	private List<Organization> childrenOrgs;
 	private boolean open;
 	private boolean isParent;
 
@@ -77,19 +77,11 @@ public class Organization {
 	}
 
 	public List<Organization> getChildrenOrgs() {
-		return nodes;
+		return childrenOrgs;
 	}
 
 	public void setChildrenOrgs(List<Organization> childrenOrgs) {
-		this.nodes = childrenOrgs;
-	}
-
-	public List<Organization> getNodes() {
-		return nodes;
-	}
-
-	public void setNodes(List<Organization> nodes) {
-		this.nodes = nodes;
+		this.childrenOrgs = childrenOrgs;
 	}
 
 	public boolean isOpen() {

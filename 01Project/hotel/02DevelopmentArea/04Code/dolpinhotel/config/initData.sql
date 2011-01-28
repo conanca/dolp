@@ -82,12 +82,15 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (39,4,18);
 
 INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
-(1,'0100','Beijign','',0),
-(2,'0200','Shanghai','',0),
-(3,'0300','Guangzhou','',0),
-(4,'0101','BeijignF1','',1),
-(5,'0102','BeijignF2','',1);
-
+(1,'0100','北京','',0),
+(2,'0200','上海','',0),
+(3,'0300','广州','',0),
+(4,'0101','东城区','',1),
+(5,'0102','西城区','',1),
+(6,'01AA','安定门外','',4),
+(7,'01AA','鼓楼大街','',4),
+(8,'01AA','雍和宫','',4),
+(9,'0201','浦东','',2);
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 
