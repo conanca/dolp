@@ -102,43 +102,6 @@ public class MenuService extends IdEntityService<Menu> {
 	}
 
 	/**
-	 * 菜单管理页面，左侧菜单树的显示（不显示叶子节点）所调用到的方法
-	 * @param nodeId
-	 * @param nLeft
-	 * @param nRight
-	 * @param nLevel
-	 * @return
-	 */
-	public List<MenuEntity> getMenuNodesOnlyParent(int nodeId, int nLeft, int nRight, int nLevel) {
-		StringBuilder addWhere = new StringBuilder();
-		if (nodeId != 0) {
-			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
-			nLevel++;
-		} else {
-			nLevel = 0;
-		}
-
-		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
-				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-				+ " WHERE (NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT) AND NODE.RGT<>NODE.LFT+1" + addWhere
-				+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
-
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
-		dao().execute(sql);
-		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		List<MenuEntity> menus = new ArrayList<MenuEntity>();
-		for (MenuEntity menuEntity : rs) {
-			if (menuEntity.getLevel() == nLevel) {
-				menus.add(menuEntity);
-			}
-		}
-		return menus;
-	}
-
-	/**
 	 * 菜单管理页面，左侧菜单树的显示（不显示叶子节点）
 	 * @param nodeId
 	 * @param nLeft
@@ -147,14 +110,29 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridDataOnlyParent(int nodeId, int nLeft, int nRight, int nLevel) {
-		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
-		jq.setPage(1);
-		jq.setTotal(1);
-		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodesOnlyParent(nodeId, nLeft, nRight, nLevel);
-		jq.setRows(rows);
-		return jq;
+	public List<MenuEntity> getNodes(int nodeId) {
+		int parentLft;
+		int parentRgt;
+		if (nodeId == 0) {
+			parentLft = 0;
+			parentRgt = 1000;
+		} else {
+			Menu parentNode = fetch(nodeId);
+			parentLft = parentNode.getLft();
+			parentRgt = parentNode.getRgt();
+		}
+		Sql sql = Sqls.create("SELECT M1.ID,M1.NAME,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 $condition"
+				+ " AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT"
+				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
+		sql.vars().set("parentLft", parentLft);
+		sql.vars().set("parentRgt", parentRgt);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(MenuEntity.class));
+		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
+		dao().execute(sql.setCondition(cnd));
+		List<MenuEntity> rs = sql.getList(MenuEntity.class);
+		return rs;
 	}
 
 	/**
@@ -165,9 +143,16 @@ public class MenuService extends IdEntityService<Menu> {
 	 */
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, int parentId) {
-		Menu parentNode = fetch(parentId);
-		int parentLft = parentNode.getLft();
-		int parentRgt = parentNode.getRgt();
+		int parentLft;
+		int parentRgt;
+		if (parentId == 0) {
+			parentLft = 0;
+			parentRgt = 1000;
+		} else {
+			Menu parentNode = fetch(parentId);
+			parentLft = parentNode.getLft();
+			parentRgt = parentNode.getRgt();
+		}
 		Sql sql = Sqls.create("SELECT * FROM  SYSTEM_MENU M1 $condition AND NOT EXISTS "
 				+ "(SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT"
 				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
@@ -286,7 +271,7 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @param parentLevel
 	 * @return
 	 */
-	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description, int parentLevel) {
+	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
 		AjaxResData reData = new AjaxResData();
 
 		//获取父菜单;

@@ -7,6 +7,8 @@ import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
 import gs.dolp.system.service.MenuService;
 
+import java.util.List;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -36,9 +38,8 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public AdvancedJqgridResData<MenuEntity> dispParentMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
-			@Param("n_right") int nRight, @Param("n_level") int nLevel) {
-		return menuService.getGridDataOnlyParent(nodeId, nLeft, nRight, nLevel);
+	public List<MenuEntity> getNodes(@Param("id") int id, @Param("name") String name) {
+		return menuService.getNodes(id);
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class MenuModule {
 	 */
 	@At("/addParentMenu/*")
 	public ResponseData addParentMenu(@Param("parentId") int parentId, @Param("name") String name,
-			@Param("description") String description, @Param("parentLevel") int parentLevel) {
-		return menuService.addMenuIsNotLeaf(parentId, name, description, parentLevel);
+			@Param("description") String description) {
+		return menuService.addMenuIsNotLeaf(parentId, name, description);
 	}
 }

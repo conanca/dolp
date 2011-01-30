@@ -2,17 +2,12 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 
-	var setting = {
+	var organizationTreeSetting = {
 		checkable: false,
 		async: true,
 		asyncUrl: "system/organization/getNodes",
 		asyncParam: ["name", "id"],
 		callback:{
-			//asyncSuccess: zTreeOnAsyncSuccess,
-			//asyncError: zTreeOnAsyncError
-			beforeExpand: function(treeId, treeNode){
-				zTree1.reAsyncChildNodes(treeNode, "refresh");
-			},
 			beforeClick: function(treeId, treeNode){
 				$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId="+treeNode.id,page:1});
 				$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId="+treeNode.id});
@@ -21,11 +16,11 @@ $(function(){
 		}
 	};
 	var zNodes =[];
-	var zTree1 = $("#treeDemo").zTree(setting, zNodes);
+	var organizationTree = $("#organizationTreeUl").zTree(organizationTreeSetting, zNodes);
 
 	//点击刷新按钮
-	$("#organizationRefreshBtn").click(function() {
-		zTree1 = $("#treeDemo").zTree(setting, zNodes);
+	$("#organizationTreeRefreshBtn").click(function() {
+		organizationTree.reAsyncChildNodes(null, "refresh");
 		$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId=0",page:1});
 		$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId=0"});
 		$("#organizationList").trigger('reloadGrid');
@@ -68,9 +63,9 @@ $(function(){
 <table>
 	<tr>
 		<td valign="top" width="200">
-			<input type="button" value="刷新" id="organizationRefreshBtn"/>
+			<input type="button" value="刷新" id="organizationTreeRefreshBtn"/>
 			<div>
-				<ul id="treeDemo" class="tree"></ul>
+				<ul id="organizationTreeUl" class="tree"></ul>
 			</div>
 		</td>
 		<td valign="top">

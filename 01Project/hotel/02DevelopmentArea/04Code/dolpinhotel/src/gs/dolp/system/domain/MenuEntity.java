@@ -11,6 +11,8 @@ public class MenuEntity {
 	private boolean isLeaf;
 	private boolean expanded;
 	private boolean visible;
+	private boolean open;
+	private boolean isParent;
 
 	public int getId() {
 		return id;
@@ -90,5 +92,21 @@ public class MenuEntity {
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
+
+	public boolean isParent() {
+		return isParent;
+	}
+
+	public void setParent(boolean isParent) {
+		this.isParent = isParent;
 	}
 }
