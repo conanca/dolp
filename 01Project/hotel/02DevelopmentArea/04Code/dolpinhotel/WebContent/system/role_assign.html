@@ -2,7 +2,7 @@
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
-	$("input:submit").button();
+	$("input:button,input:submit,input:reset").button();
 
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
@@ -78,9 +78,42 @@ $(function(){
 		$.myGetJSON(url,roleAssignFormInfo);
 		return false;
 	});
+
+	//查询按钮点击事件
+	$("#userInfo_search_btn").click(function () { 
+		var number = $("#userInfo_search_number").val();
+		var name = $("#userInfo_search_name").val();
+		url = "system/user/getGridData?number="+number+"&name="+name;
+		$("#roleAssignUserList").setGridParam({url:url, page:1}).trigger("reloadGrid");
+    });
 });
 
 </script>
+<fieldset>
+<legend>用户查询</legend>
+<table>
+	<tr>
+		<td>
+			用户编号：
+		</td>
+		<td>
+			<input type="text" name="number" id="userInfo_search_number"/>
+		</td>
+		<td>
+			用户姓名：
+		</td>
+		<td>
+			<input type="text" name="name" id="userInfo_search_name"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="right">
+			<input type="button" id="userInfo_search_btn" value="查询"/>
+		</td>
+	</tr>
+</table>
+</fieldset>
+<br/>
 <form id="roleAssignForm" action="#">
 	<table>
 		<tr>

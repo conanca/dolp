@@ -17,6 +17,7 @@ $(function(){
 	//初始化用户信息界面
 	$("#userInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			$("#userInfoId").attr("value",'');	//清空隐藏域的值
+			$("#userInfoOrganizationId").attr("value",'');	//清空隐藏域的值
 			$('#userInfoForm')[0].reset();	//清空表单的值
 		}
 	});
@@ -105,7 +106,7 @@ $(function(){
 	$("#userInfoList").jqGrid({
 		rowNum:10,
 	   	rowList:[10,20,30],
-	   	autowidth: true,
+	   	autowidth: false,
 	   	height: "100%",
 	    datatype: "json",
 	    jsonReader:{
@@ -116,9 +117,9 @@ $(function(){
 			$.addMessage($(this).getUserData());
     	},
         caption: "用户列表",
-	   	url:'system/user/getGridData',
+	   	url:'system/user/getGridData?organizationId=0',
 	   	editurl: "system/user/deleteRow",
-	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
+	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码','organizationId'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'number',index:'number', width:90},
@@ -126,7 +127,8 @@ $(function(){
 	   		{name:'gender',index:'gender', width:80,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
 	   		{name:'age',index:'age', width:80, editable:true},
 	   		{name:'birthday',index:'birthday', width:80},
-	   		{name:'phone',index:'phone', width:150}
+	   		{name:'phone',index:'phone', width:150},
+	   		{name:'organizationId',index:'organizationId', width:0,hidden:true}
 	   	],
 	   	pager: '#userInfoPager',
 	   	sortname: 'number',
@@ -176,43 +178,46 @@ $(function(){
 			}
 		}
 	});
-	//查询按钮点击事件
-	$("#userInfo_search_btn").click(function () { 
-		var number = $("#userInfo_search_number").val();
-		var name = $("#userInfo_search_name").val();
-		url = "system/user/getGridData?number="+number+"&name="+name;
-		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
-    });
+
+	var uOrganizationTreeSetting = {
+		checkable: false,
+		async: true,
+		asyncUrl: "system/organization/getNodes",
+		asyncParam: ["name", "id"],
+		callback:{
+			beforeClick: function(treeId, treeNode){
+				$("#userInfoOrganizationId").val(treeNode.id);
+				$("#userInfoList").setGridParam({url:"system/user/getGridData?organizationId="+treeNode.id,page:1});
+				$("#userInfoList").trigger('reloadGrid');
+			}
+		}
+	};
+	var zNodes =[];
+	var uOrganizationTree = $("#uOrganizationTreeUl").zTree(uOrganizationTreeSetting, zNodes);
+	//点击刷新按钮
+	$("#uOrganizationTreeRefreshBtn").click(function() {
+		uOrganizationTree.reAsyncChildNodes(null, "refresh");
+		$("#userInfoOrganizationId").val(0);
+		$("#userInfoList").setGridParam({url:"system/user/getGridData?organizationId=0",page:1});
+		$("#userInfoList").trigger('reloadGrid');
+	});
 });
 </script>
 
-<fieldset>
-<legend>用户查询</legend>
 <table>
 	<tr>
-		<td>
-			用户编号：
+		<td valign="top" width="200">
+			<input type="button" value="刷新" id="uOrganizationTreeRefreshBtn"/>
+			<div>
+				<ul id="uOrganizationTreeUl" class="tree"></ul>
+			</div>
 		</td>
-		<td>
-			<input type="text" name="number" id="userInfo_search_number"/>
-		</td>
-		<td>
-			用户姓名：
-		</td>
-		<td>
-			<input type="text" name="name" id="userInfo_search_name"/>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4" align="right">
-			<input type="button" id="userInfo_search_btn" value="查询"/>
+		<td valign="top">
+			<table id="userInfoList"></table>
+			<div id="userInfoPager"></div>
 		</td>
 	</tr>
 </table>
-</fieldset>
-<br/>
-<table id="userInfoList"></table>
-<div id="userInfoPager"></div>
 
 <div id="userInfo" title="用户信息">
 	<form id="userInfoForm" action="#">
@@ -223,6 +228,7 @@ $(function(){
 			</td>
 			<td>
 				<input type="hidden" name="id" id="userInfoId"/>
+				<input type="hidden" name="organizationId" id="userInfoOrganizationId"/>
 				<input type="text" name="number" id="userInfoNumber"/>
 			</td>
 			<td>

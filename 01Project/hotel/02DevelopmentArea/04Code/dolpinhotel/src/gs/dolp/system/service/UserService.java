@@ -32,8 +32,12 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String number, String name) {
+	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String organizationId, String number,
+			String name) {
 		Cnd cnd = Cnd.where("1", "=", 1);
+		if (!Strings.isBlank(organizationId)) {
+			cnd = cnd.and("ORGANIZATIONID", "=", Strings.trim(organizationId));
+		}
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
