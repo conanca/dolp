@@ -101,11 +101,11 @@ $.extend({
     }
 });
 
-//getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
+//post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 $.extend({
 	myGetJSON : function(url, data){
 		var returnData;
-		$.getJSON(url,data,function(response){
+		$.post(url,data,function(response){
 			if(response.returnData){
 				returnData = response.returnData;
 			}else{
@@ -114,7 +114,7 @@ $.extend({
 			if(response.userdata){
 				$.addMessage(response.userdata);
 			}
-		});
+		},"json");
 		return returnData;
 	}
 });
