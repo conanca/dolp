@@ -27,17 +27,17 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (6,'角色可见菜单分配','system/menu_assign.html',NULL,10,11),
 (7,'枚举管理','system/sysenum_mange.html',NULL,12,13),
 (8,'系统参数管理','system/syspara_manage.html',NULL,14,15),
-(19,'机构管理','system/organization_manage.html',NULL,16,17),
-(9,'演示页面',NULL,NULL,21,40),
-(10,'格式化文本框','demo1.html',NULL,22,23),
-(11,'酒店设置',NULL,NULL,51,70),
-(12,'房间类型设置','hotel/room_type_manage.html',NULL,52,53),
-(13,'房间设置','hotel/room_manage.html',NULL,54,55),
-(14,'经营管理',NULL,NULL,71,100),
-(15,'可用房确认','hotel/available_room_check.html',NULL,72,73),
-(16,'入住情况','hotel/room_occupancy_manage.html',NULL,74,75),
-(17,'入住登记','hotel/check_in.html',NULL,76,77),
-(18,'账单管理','hotel/bill_manage.html',NULL,78,79);
+(9,'机构管理','system/organization_manage.html',NULL,16,17),
+(10,'演示页面',NULL,NULL,21,40),
+(11,'格式化文本框','demo1.html',NULL,22,23),
+(12,'酒店设置',NULL,NULL,51,70),
+(13,'房间类型设置','hotel/room_type_manage.html',NULL,52,53),
+(14,'房间设置','hotel/room_manage.html',NULL,54,55),
+(15,'经营管理',NULL,NULL,71,100),
+(16,'可用房确认','hotel/available_room_check.html',NULL,72,73),
+(17,'入住情况','hotel/room_occupancy_manage.html',NULL,74,75),
+(18,'入住登记','hotel/check_in.html',NULL,76,77),
+(19,'账单管理','hotel/bill_manage.html',NULL,78,79);
 
 INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (1,1,1),
@@ -82,15 +82,15 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (39,4,18);
 
 INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
-(1,'0100','北京','',0),
-(2,'0200','上海','',0),
-(3,'0300','广州','',0),
-(4,'0101','东城区','',1),
-(5,'0102','西城区','',1),
-(6,'01AA','安定门外','',4),
-(7,'01AA','鼓楼大街','',4),
-(8,'01AA','雍和宫','',4),
-(9,'0201','浦东','',2);
+(1,'0100','综合行政部','',0),
+(2,'0200','人力资源部','',0),
+(3,'0300','研发部','',0),
+(4,'0400','实施部','',0),
+(5,'0500','运营部','',0),
+(6,'0401','实施1组','',4),
+(7,'0402','实施2组','',4),
+(8,'0301','产品组','',3),
+(9,'0301','财务部','',0);
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 
