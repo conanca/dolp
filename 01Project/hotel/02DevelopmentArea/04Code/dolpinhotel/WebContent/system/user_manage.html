@@ -30,7 +30,7 @@ $(function(){
 		var url = "system/user/userNumberIsDuplicate/"+value;
 		//------------------设为同步模式------------------
 		$.ajaxSetup({ async: false});
-		var userNumberIsDuplicate = $.myGetJSON(url);
+		var userNumberIsDuplicate = $.dolpPost(url);
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 		if(userNumberIsDuplicate == true)
@@ -84,7 +84,7 @@ $(function(){
 			var userInfo = $(this).serializeObject();
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
-			$.myGetJSON(url,userInfo);
+			$.dolpPost(url,userInfo);
 			//关闭用户信息界面
 			$("#userInfo").dialog( "close" );
 			//刷新表格
@@ -145,7 +145,7 @@ $(function(){
 			var url = "system/user/getNewUserNumber";
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
-			var newUserNumber = $.myGetJSON(url);
+			var newUserNumber = $.dolpPost(url);
 			$("#userInfoNumber").val(newUserNumber);
 			$.ajaxSetup({ async: true});
 			//------------------设回异步模式------------------

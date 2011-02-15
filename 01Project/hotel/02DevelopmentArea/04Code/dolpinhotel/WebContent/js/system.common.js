@@ -103,7 +103,7 @@ $.extend({
 
 //post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 $.extend({
-	myGetJSON : function(url, data){
+	dolpPost : function(url, data){
 		var returnData;
 		$.post(url,data,function(response){
 			if(response.returnData){

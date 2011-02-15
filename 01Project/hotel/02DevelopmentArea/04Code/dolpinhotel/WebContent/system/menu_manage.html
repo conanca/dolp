@@ -89,7 +89,7 @@ $(function() {
 			var parentMenuInfo = $(this).serializeObject();
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
-			$.myGetJSON(url,parentMenuInfo);
+			$.dolpPost(url,parentMenuInfo);
 			//关闭用户信息界面
 			$("#parentMenuInfo").dialog( "close" );
 			//刷新表格

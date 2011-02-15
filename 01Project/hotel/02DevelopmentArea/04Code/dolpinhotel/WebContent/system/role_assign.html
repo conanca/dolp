@@ -75,7 +75,7 @@ $(function(){
 	$('#roleAssignForm').submit(function() {
 		var url = 'system/user/assignRole';
 		var roleAssignFormInfo = $(this).serializeObject();
-		$.myGetJSON(url,roleAssignFormInfo);
+		$.dolpPost(url,roleAssignFormInfo);
 		return false;
 	});
 
