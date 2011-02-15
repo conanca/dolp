@@ -23,12 +23,11 @@ $(function() {
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
 	var url = 'getSystemName';
-	var systemName = $.myGetJSON(url);
+	var systemName = $.dolpPost(url);
 	$('#SystemName').text(systemName);
-	$("#SystemName").css({"font-size":40 });
 
 	var url = 'getCurrentUserName';
-	var currentUserName = $.myGetJSON(url);
+	var currentUserName = $.dolpPost(url);
 	$('#CurrentUserName').text(currentUserName);
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
