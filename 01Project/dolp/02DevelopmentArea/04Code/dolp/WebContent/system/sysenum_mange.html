@@ -1,0 +1,104 @@
+<script type="text/javascript">
+
+$(function(){
+	$(".datepicker").datepicker();
+	$("input:button,input:submit,input:reset").button();
+	
+	$("#sysenumList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+	   	datatype: "json",
+	   	jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption: "系统枚举列表",
+	   	url:'system/sysEnum/getSysEnumGridData',
+	    editurl: "system/sysEnum/editSysEnum",
+	   	colNames:['id','名称', '描述'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'name',index:'name', width:100, editable:true},
+	   		{name:'description',index:'description', width:300, editable:true, edittype:"textarea"}
+	   	],
+	   	pager: '#sysenumPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: false,
+		onSelectRow: function(id) {
+			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+id,page:1});
+			$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+id});
+			$("#sysenumSubList").trigger('reloadGrid');
+		}
+	});
+	//开启jqgrid自带的增删改功能
+	$("#sysenumList").navGrid('#sysenumPager',{edit:true,add:true,del:true,search:false},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{
+			reloadAfterSubmit:true,
+			afterSubmit: function(xhr, postdata) {
+				//刷新表格billSubList
+				$('#sysenumSubList').trigger("reloadGrid");
+				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				return [true];
+			}
+		},
+		{},{}
+	);
+	
+	$("#sysenumSubList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%", //自动调整高度(无滚动条)
+		jsonReader:{
+	   		repeatitems: false
+		},
+		viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+		caption: "枚举项列表",
+	   	url:'system/sysEnum/getSysEnumItemGridData',
+		editurl: "system/sysEnum/editSysEnumItem",
+		datatype: "json",
+	   	colNames:['id','文本', '值','sysEnumId'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'text',index:'text', width:100, editable:true},
+	   		{name:'value',index:'value', width:100, editable:true},
+	   		{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true}
+	   	],
+	   	pager: '#sysenumSubPager',
+	   	sortname: 'id',
+		sortorder: "asc",
+		multiselect: false
+	});
+	//不显示jqgrid自带的增删改查按钮
+	$("#sysenumSubList").setJqGridCUD('#sysenumSubPager',{edit:true,add:true,del:true,search:false});
+});
+</script>
+
+<table id="sysenumList"></table>
+<div id="sysenumPager"></div>
+<br/>
+<table id="sysenumSubList"></table>
+<div id="sysenumSubPager"></div>

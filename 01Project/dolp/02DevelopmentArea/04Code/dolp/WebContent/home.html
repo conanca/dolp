@@ -1,0 +1,65 @@
+<script type="text/javascript">
+$(function(){
+	$("input:button,input:submit,input:reset").button();
+
+	$("#home_btn1").click(function() {
+		var st = "#t2";
+		if($(st).html() != null ) {
+			maintab.tabs('select',st);
+		} else {
+			maintab.tabs('add',st, "用户管理");
+			$(st,"#tabs").load("system/user_manage.html");
+		}
+	});
+
+
+	$("#home_btn2").click(function() {
+		var st = "#t3";
+		if($(st).html() != null ) {
+			maintab.tabs('select',st);
+		} else {
+			maintab.tabs('add',st, "角色管理");
+			$(st,"#tabs").load("system/role_manage.html");
+		}
+	});
+
+	$("#home_btn3").click(function() {
+		var st = "#t5";
+		if($(st).html() != null ) {
+			maintab.tabs('select',st);
+		} else {
+			maintab.tabs('add',st, "菜单管理");
+			$(st,"#tabs").load("system/menu_manage.html");
+		}
+	});
+
+	$("#home_btn4").click(function() {
+		var st = "#t9";
+		if($(st).html() != null ) {
+			maintab.tabs('select',st);
+		} else {
+			maintab.tabs('add',st, "机构管理");
+			$(st,"#tabs").load("system/organization_manage.html");
+		}
+	});
+});
+</script>
+<br/>
+<table>
+	<tr>
+		<td>
+			<input type="button" id="home_btn1" value="用户管理"/>
+		</td>
+		<td>
+			<input type="button" id="home_btn2" value="角色管理"/>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<input type="button" id="home_btn3" value="菜单管理"/>
+		</td>
+		<td>
+			<input type="button" id="home_btn4" value="机构管理"/>
+		</td>
+	</tr>
+</table>

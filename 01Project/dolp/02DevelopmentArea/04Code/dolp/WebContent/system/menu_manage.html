@@ -1,0 +1,152 @@
+<script type="text/javascript">
+$(function() {
+
+	$("input:button,input:submit,input:reset").button();
+	
+	var menuTreeSetting = {
+		checkable: false,
+		async: true,
+		asyncUrl: "system/menu/getNodes",
+		asyncParam: ["name", "id"],
+		callback:{
+			beforeClick: function(treeId, treeNode){
+				$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+treeNode.id,page:1});
+				$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+treeNode.id});
+				$("#menuEditList").trigger('reloadGrid');
+				$("#parentMenuInfoParentId").val(treeNode.id);
+				var row=$("#menuTree").getRowData(treeNode.id);
+			}
+		}
+	};
+	var zNodes =[];
+	var menuTree = $("#menuTreeUl").zTree(menuTreeSetting, zNodes);
+
+	//点击刷新按钮
+	$("#menuTreeRefreshBtn").click(function() {
+		menuTree.reAsyncChildNodes(null, "refresh");
+		$("#menuEditList").setGridParam({url:"system/menu/getGridData/0",page:1});
+		$("#menuEditList").setGridParam({editurl:"system/menu/editRow/0"});
+		$("#menuEditList").trigger('reloadGrid');
+	});
+
+	$("#menuEditList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: false,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption:"菜单列表",
+	   	url:'system/menu/getGridData/0',
+	    editurl:"system/menu/editRow/0",
+	    colNames: ["id","菜单名","url","描述"],
+		colModel: [
+			{name: "id",index:'id',width:0,hidden:true,key:true},
+			{name: "name",index:'name', width:100,editable:true},
+			{name: "url",index:'url',width:300,editable:true},
+			{name: "description",index:'description',width:200,editable:true}
+		],
+	   	pager: '#menuEditPager',
+	   	sortname: 'lft',
+	    sortorder: "asc",
+	    multiselect: true
+	});
+	$("#menuEditList").setJqGridCUD('#menuEditPager',{edit:true,add:true,del:true,search:false});
+	// 添加父菜单按钮
+	$("#menuEditList").navButtonAdd('#menuEditPager',{caption:"添加父菜单",buttonicon:"ui-icon-plus",
+		onClickButton:function(){
+			$("#parentMenuInfo").dialog( "open" );
+		}
+	});
+	//初始化用户信息界面
+	$("#parentMenuInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
+			$("#parentMenuInfoId").attr("value",'');	//清空隐藏域的值
+			$('#parentMenuInfoForm')[0].reset();	//清空表单的值
+		}
+	});
+	// 验证
+	$("#parentMenuInfoForm").validate({
+		rules: {
+			name: {
+				required: true
+			},
+			description: {
+				required: true
+			}
+		}
+	});
+
+	//点击保存时提交
+	$('#parentMenuInfoForm').submit(function() {
+		if($(this).valid()){
+			var url = 'system/menu/addParentMenu/';
+			var parentMenuInfo = $(this).serializeObject();
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
+			$.dolpPost(url,parentMenuInfo);
+			//关闭用户信息界面
+			$("#parentMenuInfo").dialog( "close" );
+			//刷新表格
+			$('#menuEditList').trigger("reloadGrid");
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
+		return false;
+	});
+	// 点击取消时关闭对话框
+	$("#parentMenuInfoCancelBtn").click(function() {
+		$("#parentMenuInfo").dialog( "close" );
+	});
+});
+</script>
+<table>
+	<tr>
+		<td valign="top" width="200">
+			<input type="button" value="刷新" id="menuTreeRefreshBtn"/>
+			<div>
+				<ul id="menuTreeUl" class="tree"></ul>
+			</div>
+		</td>
+		<td valign="top">
+			<table id="menuEditList"></table>
+			<div id="menuEditPager"></div>
+		</td>
+	</tr>
+</table>
+<div id="parentMenuInfo" title="添加父菜单">
+	<form id="parentMenuInfoForm" action="#">
+	<table>
+		<tr>
+			<td>
+				菜单名：
+			</td>
+			<td>
+				<input type="hidden" name="id" id="parentMenuInfoId"/>
+				<input type="hidden" name="parentId" id="parentMenuInfoParentId">
+				<input type="text" name="name"/>
+			</td>
+			<td>
+				描述：
+			</td>
+			<td>
+				<input type="text" name="description"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" align="center">
+				<input type="submit" value="保存"/>
+				<input type="reset" value="重置"/>
+				<input id="parentMenuInfoCancelBtn" type="button" value="取消"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>

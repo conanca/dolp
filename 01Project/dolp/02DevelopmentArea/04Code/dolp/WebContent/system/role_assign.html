@@ -1,0 +1,134 @@
+<script src="js/i18n/jquery.localisation-min.js" type="text/javascript"></script>
+<script src="js/ui.multiselect.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("input:button,input:submit,input:reset").button();
+
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	//初始化性别下拉列表框
+	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
+
+	$("#roleAssignUserList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: false,
+	   	height: "100%", //自动调整高度(无滚动条)
+	   	viewrecords: true,
+	   	datatype: "json",
+		jsonReader:{
+	   		repeatitems: false
+		},
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	   	url:'system/user/getGridData',
+	   	colNames:['id','登录号', '姓名','性别'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'number',index:'number', width:90},
+	   		{name:'name',index:'name', width:100},
+	   		{name:'gender',index:'gender', width:80,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
+	   	],
+	   	pager: '#roleAssignUserPager',
+	   	sortname: 'number',
+		sortorder: "asc",
+		caption:"用户列表",
+		onSelectRow: function(id){
+			$("#assigningUserID").val(id);
+			
+			$("#roleIds option").each(function(){
+				if($(this).attr("selected") == true){
+					$(this).removeAttr("selected");
+				}
+			});
+
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
+			var currentRole = $.getItem("system/user/getCurrentRoleIDs/"+id);
+			$.each(currentRole,function(index,value){
+				$("#roleIds option[value='"+value+"']").attr("selected",true);
+			});
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
+			
+			$("#roleIds").multiselect("destroy");
+			$("#roleIds").multiselect();
+		}
+	});
+	//不显示jqgrid自带的增删改查按钮
+	$("#roleAssignUserList").navGrid('#roleAssignUserPager',{edit:false,add:false,del:false,search:false});
+
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	$("#roleIds").addItems($.getItem("system/role/getAllRole?isOrgaRela=0"));
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
+	
+	$("#roleIds").multiselect("destroy");
+	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
+	$("#roleIds").multiselect();
+
+	$('#roleAssignForm').submit(function() {
+		var url = 'system/user/assignRole';
+		var roleAssignFormInfo = $(this).serializeObject();
+		$.dolpPost(url,roleAssignFormInfo);
+		return false;
+	});
+
+	//查询按钮点击事件
+	$("#userInfo_search_btn").click(function () { 
+		var number = $("#userInfo_search_number").val();
+		var name = $("#userInfo_search_name").val();
+		url = "system/user/getGridData?number="+number+"&name="+name;
+		$("#roleAssignUserList").setGridParam({url:url, page:1}).trigger("reloadGrid");
+    });
+});
+
+</script>
+<fieldset>
+<legend>用户查询</legend>
+<table>
+	<tr>
+		<td>
+			用户编号：
+		</td>
+		<td>
+			<input type="text" name="number" id="userInfo_search_number"/>
+		</td>
+		<td>
+			用户姓名：
+		</td>
+		<td>
+			<input type="text" name="name" id="userInfo_search_name"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="right">
+			<input type="button" id="userInfo_search_btn" value="查询"/>
+		</td>
+	</tr>
+</table>
+</fieldset>
+<br/>
+<form id="roleAssignForm" action="#">
+	<table>
+		<tr>
+			<td valign="top">
+				<table id="roleAssignUserList"></table>
+				<div id="roleAssignUserPager"></div>
+			</td>
+			<td valign="top">
+				<input type="hidden" name="userId" id="assigningUserID"/>
+				<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
+				</select>
+			</td>
+			<td valign="top">
+				<input type="submit" value="分配"/>
+			</td>
+		</tr>
+	</table>
+</form>
