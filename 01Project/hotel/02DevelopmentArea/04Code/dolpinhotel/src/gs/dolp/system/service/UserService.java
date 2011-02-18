@@ -35,7 +35,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String organizationId, String number,
 			String name) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		if (!Strings.isBlank(organizationId)) {
+		if (!Strings.isEmpty(organizationId)) {
 			cnd = cnd.and("ORGANIZATIONID", "=", Strings.trim(organizationId));
 		}
 		if (!Strings.isBlank(number)) {

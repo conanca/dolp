@@ -5,6 +5,7 @@ import java.util.List;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.ManyMany;
+import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_ROLE")
@@ -17,6 +18,10 @@ public class Role {
 	private String description;
 	@Column
 	private int isOrgaRela;
+	@Column
+	private int organizationId;
+	@One(target = Organization.class, field = "organizationId")
+	private Organization organization;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
 	private List<User> users;
 	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_MENU", from = "ROLEID", to = "MENUID")
@@ -52,6 +57,22 @@ public class Role {
 
 	public void setIsOrgaRela(int isOrgaRela) {
 		this.isOrgaRela = isOrgaRela;
+	}
+
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	public List<User> getUsers() {

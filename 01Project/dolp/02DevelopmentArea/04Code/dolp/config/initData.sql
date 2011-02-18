@@ -5,9 +5,10 @@ INSERT INTO SYSTEM_USER(ID, NUMBER, PASSWORD, NAME, GENDER, AGE, BIRTHDAY, PHONE
 (3,'1002','123','Kate','02',23,'2010-6-1','1122334455',0),
 (4,'1003','123','John','01',21,'2010-6-1','1234567890',0);
 
-INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA) VALUES
-(1,'系统管理员','拥有系统设置的权限',0),
-(2,'普通用户','拥有全部业务功能的权限',0);
+INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA,ORGANIZATIONID) VALUES
+(1,'系统管理员','拥有系统设置的权限',0,null),
+(2,'普通用户','拥有全部业务功能的权限',0,null),
+(3,'财务人员',null,1,9);
 
 INSERT INTO SYSTEM_USER_ROLE(ID ,USERID ,ROLEID) VALUES
 (1,1,1),
@@ -26,8 +27,9 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (7,'枚举管理','system/sysenum_mange.html',NULL,12,13),
 (8,'系统参数管理','system/syspara_manage.html',NULL,14,15),
 (9,'机构管理','system/organization_manage.html',NULL,16,17),
-(10,'演示页面',NULL,NULL,21,40),
-(11,'格式化文本框','demo1.html',NULL,22,23);
+(10,'岗位管理','system/post_manage.html',NULL,18,19),
+(11,'演示页面',NULL,NULL,21,40),
+(12,'格式化文本框','demo1.html',NULL,22,23);
 
 INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (1,1,1),
@@ -42,15 +44,8 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (10,1,10),
 (11,1,11),
 (12,1,12),
-(13,1,13),
-(14,1,14),
-(15,1,15),
-(16,1,16),
-(17,1,17),
-(18,1,18),
-(19,1,19),
-(20,2,10),
-(21,2,11);
+(13,2,11),
+(14,2,12);
 
 INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
 (1,'0100','综合行政部','',0),

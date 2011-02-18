@@ -19,14 +19,16 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") int isOrgaRela) {
-		return roleService.getGridData(jqReq, isOrgaRela);
+	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq,
+			@Param("isOrgaRela") int isOrgaRela, @Param("organizationId") int organizationId) {
+		return roleService.getGridData(jqReq, isOrgaRela, organizationId);
 	}
 
 	@At
 	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
-			@Param("description") String description) {
-		return roleService.CUDRole(oper, id, name, description);
+			@Param("description") String description, @Param("isOrgaRela") String isOrgaRela,
+			@Param("organizationId") String organizationId) {
+		return roleService.CUDRole(oper, id, name, description, isOrgaRela, organizationId);
 	}
 
 	@At

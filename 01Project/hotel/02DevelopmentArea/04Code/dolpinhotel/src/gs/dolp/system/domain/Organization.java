@@ -27,6 +27,8 @@ public class Organization {
 	private List<Organization> childrenOrgs;
 	@Many(target = User.class, field = "organizationId")
 	private List<User> users;
+	@Many(target = Role.class, field = "organizationId")
+	private List<Role> roles;
 	private boolean open;
 	private boolean isParent;
 
@@ -92,6 +94,14 @@ public class Organization {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public boolean isOpen() {

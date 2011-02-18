@@ -28,17 +28,18 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, int isOrgaRela) {
-		Condition cnd = null;
-		if (isOrgaRela != -1) {
-			cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
+	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, int isOrgaRela, int organizationId) {
+		Condition cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
+		if (isOrgaRela == 1) {
+			cnd = ((Cnd) cnd).and("ORGANIZATIONID", "=", organizationId);
 		}
 		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDRole(String oper, String id, String name, String description) {
+	public AjaxResData CUDRole(String oper, String id, String name, String description, String isOrgaRela,
+			String organizationId) {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
@@ -58,14 +59,26 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 			Role role = new Role();
 			role.setName(name);
 			role.setDescription(description);
+			if (!Strings.isEmpty(isOrgaRela)) {
+				role.setIsOrgaRela(Integer.parseInt(isOrgaRela));
+				if (isOrgaRela.equals("1")) {
+					role.setOrganizationId(Integer.parseInt(organizationId));
+				}
+			}
 			dao().insert(role);
 			reData.setUserdata(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
-			Role role = new Role();
+			Role role = fetch(Integer.parseInt(id));
 			role.setId(Integer.parseInt(id));
 			role.setName(name);
 			role.setDescription(description);
+			if (!Strings.isEmpty(isOrgaRela)) {
+				role.setIsOrgaRela(Integer.parseInt(isOrgaRela));
+				if (isOrgaRela.equals("1")) {
+					role.setOrganizationId(Integer.parseInt(organizationId));
+				}
+			}
 			dao().update(role);
 			reData.setUserdata(new SystemMessage("修改成功!", null, null));
 		}
