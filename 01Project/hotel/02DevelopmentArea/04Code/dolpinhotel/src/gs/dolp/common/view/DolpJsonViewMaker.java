@@ -11,7 +11,7 @@ import org.nutz.mvc.ViewMaker;
  * @author Administrator
  * 用于处理异常的JSON自定义视图
  */
-public class MyJsonViewMaker implements ViewMaker {
+public class DolpJsonViewMaker implements ViewMaker {
 
 	public static final String VIEW_JSON = "dolpjson";
 
@@ -19,9 +19,9 @@ public class MyJsonViewMaker implements ViewMaker {
 	public View make(Ioc ioc, String type, String value) {
 		if (VIEW_JSON.equals(type))
 			if (Strings.isBlank(value))
-				return new MyJsonView(JsonFormat.compact());
+				return new DolpJsonView(JsonFormat.compact());
 			else
-				return new MyJsonView(Json.fromJson(JsonFormat.class, value));
+				return new DolpJsonView(Json.fromJson(JsonFormat.class, value));
 		return null;
 	}
 

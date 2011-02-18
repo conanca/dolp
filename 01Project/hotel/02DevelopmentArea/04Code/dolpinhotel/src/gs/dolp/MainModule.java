@@ -1,6 +1,6 @@
 package gs.dolp;
 
-import gs.dolp.common.view.MyJsonViewMaker;
+import gs.dolp.common.view.DolpJsonViewMaker;
 import gs.dolp.system.filter.CheckLogon;
 
 import org.nutz.mvc.annotation.By;
@@ -21,7 +21,7 @@ import org.nutz.mvc.ioc.provider.JsonIocProvider;
 @Ok("json")
 @Fail("dolpjson")
 @Filters({ @By(type = CheckLogon.class) })
-@Views(MyJsonViewMaker.class)
+@Views(DolpJsonViewMaker.class)
 public class MainModule {
 
 }

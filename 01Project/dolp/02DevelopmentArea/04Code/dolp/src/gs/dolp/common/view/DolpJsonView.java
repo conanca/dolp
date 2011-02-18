@@ -16,7 +16,7 @@ import org.nutz.mvc.View;
  * @author Administrator
  * 用于处理异常的JSON自定义视图
  */
-public class MyJsonView implements View {
+public class DolpJsonView implements View {
 
 	private JsonFormat format;
 
@@ -26,7 +26,7 @@ public class MyJsonView implements View {
 		this.data = data;
 	}
 
-	public MyJsonView(JsonFormat format) {
+	public DolpJsonView(JsonFormat format) {
 		this.format = format;
 	}
 

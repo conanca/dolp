@@ -1,6 +1,5 @@
 package gs.dolp.common.domain;
 
-
 import org.nutz.json.Json;
 
 /**
@@ -15,7 +14,7 @@ public class AjaxResData implements ResponseData {
 	private Object returnData;
 
 	/**
-	 * 系统消息,之所以名叫userdata,是为了便于自定义的视图—— MyJsonView 统一处理 ajax提交或请求 和 jqGrid的请求 的异常
+	 * 系统消息,之所以名叫userdata,是为了便于自定义的视图—— DolpJsonView 统一处理 ajax提交或请求 和 jqGrid的请求 的异常
 	 */
 	private SystemMessage userdata;
 
