@@ -39,15 +39,15 @@ public class SystemMessage {
 
 	public SystemMessage(String infoMessage, String warnMessage, String errorMessage) {
 		super();
-		if (!Strings.isBlank(infoMessage)) {
+		if (!Strings.isEmpty(infoMessage)) {
 			infoMessages = new ArrayList<String>();
 			infoMessages.add(infoMessage);
 		}
-		if (!Strings.isBlank(warnMessage)) {
+		if (!Strings.isEmpty(warnMessage)) {
 			warnMessages = new ArrayList<String>();
 			warnMessages.add(warnMessage);
 		}
-		if (!Strings.isBlank(errorMessage)) {
+		if (!Strings.isEmpty(errorMessage)) {
 			errorMessages = new ArrayList<String>();
 			errorMessages.add(errorMessage);
 		}

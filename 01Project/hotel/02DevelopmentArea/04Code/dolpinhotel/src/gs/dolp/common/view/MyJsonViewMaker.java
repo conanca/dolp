@@ -13,16 +13,15 @@ import org.nutz.mvc.ViewMaker;
  */
 public class MyJsonViewMaker implements ViewMaker {
 
+	public static final String VIEW_JSON = "dolpjson";
+
 	@Override
 	public View make(Ioc ioc, String type, String value) {
-		if ("jsonx".equals(type)) {
-			if (Strings.isBlank(value)) {
+		if (VIEW_JSON.equals(type))
+			if (Strings.isBlank(value))
 				return new MyJsonView(JsonFormat.compact());
-			} else {
-				JsonFormat format = Json.fromJson(JsonFormat.class, value);
-				return new MyJsonView(format);
-			}
-		}
+			else
+				return new MyJsonView(Json.fromJson(JsonFormat.class, value));
 		return null;
 	}
 

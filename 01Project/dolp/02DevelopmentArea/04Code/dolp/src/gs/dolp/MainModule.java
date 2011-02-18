@@ -19,7 +19,7 @@ import org.nutz.mvc.ioc.provider.JsonIocProvider;
 @Encoding(input = "UTF-8", output = "UTF-8")
 @SetupBy(MvcSetup.class)
 @Ok("json")
-@Fail("jsonx")
+@Fail("dolpjson")
 @Filters({ @By(type = CheckLogon.class) })
 @Views(MyJsonViewMaker.class)
 public class MainModule {
