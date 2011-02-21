@@ -25,7 +25,7 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (3,'角色管理','system/role_manage.html',NULL,4,5),
 (4,'用户角色分配','system/role_assign.html',NULL,6,7),
 (5,'菜单管理','system/menu_manage.html',NULL,8,9),
-(6,'角色可见菜单分配','system/menu_assign.html',NULL,10,11),
+(6,'角色权限分配','system/menu_assign.html',NULL,10,11),
 (7,'枚举管理','system/sysenum_mange.html',NULL,12,13),
 (8,'系统参数管理','system/syspara_manage.html',NULL,14,15),
 (9,'机构管理','system/organization_manage.html',NULL,16,17),
@@ -98,6 +98,18 @@ INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
 (7,'0402','实施2组','',4),
 (8,'0301','产品组','',3),
 (9,'0301','财务部','',0);
+
+INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
+(1,'查询',null,2,null),
+(2,'删除/修改/查询',null,2,null),
+(3,'查询',null,3,null),
+(4,'删除/修改/查询',null,3,null);
+
+INSERT INTO SYSTEM_ROLE_PRIVILEGE(ID,ROLEID,PRIVILEGEID) VALUES
+(1,1,1),
+(2,1,2),
+(3,2,3),
+(4,2,4);
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 

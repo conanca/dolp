@@ -1,17 +1,11 @@
 package gs.dolp.system.domain;
 
-import org.nutz.json.Json;
-
-public class MenuEntity implements TreeNode {
+public class PrivilegeEntity implements TreeNode {
 	private int id;
 	private String name;
-	private String url;
 	private String description;
-	private int lft;
-	private int rgt;
-	private int level;
-	private boolean isLeaf;
-	private boolean expanded;
+	private int menuId;
+	private String methodPath;
 	private boolean checked;
 	private boolean open;
 	private boolean isParent;
@@ -32,14 +26,6 @@ public class MenuEntity implements TreeNode {
 		this.name = name;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -48,44 +34,20 @@ public class MenuEntity implements TreeNode {
 		this.description = description;
 	}
 
-	public int getLft() {
-		return lft;
+	public int getMenuId() {
+		return menuId;
 	}
 
-	public void setLft(int lft) {
-		this.lft = lft;
+	public void setMenuId(int menuId) {
+		this.menuId = menuId;
 	}
 
-	public int getRgt() {
-		return rgt;
+	public String getMethodPath() {
+		return methodPath;
 	}
 
-	public void setRgt(int rgt) {
-		this.rgt = rgt;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public boolean isLeaf() {
-		return isLeaf;
-	}
-
-	public void setLeaf(boolean isLeaf) {
-		this.isLeaf = isLeaf;
-	}
-
-	public boolean isExpanded() {
-		return expanded;
-	}
-
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
+	public void setMethodPath(String methodPath) {
+		this.methodPath = methodPath;
 	}
 
 	public boolean isChecked() {
@@ -110,9 +72,5 @@ public class MenuEntity implements TreeNode {
 
 	public void setParent(boolean isParent) {
 		this.isParent = isParent;
-	}
-
-	public String toString() {
-		return Json.toJson(this);
 	}
 }

@@ -5,6 +5,7 @@ import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
+import gs.dolp.system.domain.TreeNode;
 import gs.dolp.system.service.MenuService;
 
 import java.util.List;
@@ -24,9 +25,10 @@ public class MenuModule {
 	 * @param roleId
 	 * @return
 	 */
-	@At("/getMenuByRoleId/*")
-	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
-		return menuService.getMenuByRoleId(roleId);
+	@At("/getPrivilegeByRoleId/*")
+	public List<TreeNode> getPrivilegeByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
+			@Param("rgt") int rgt, @Param("level") int level) {
+		return menuService.getPrivilegeByRoleId(roleId, id, lft, rgt, level);
 	}
 
 	/**

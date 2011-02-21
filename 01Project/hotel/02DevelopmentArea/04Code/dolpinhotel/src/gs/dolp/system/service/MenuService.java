@@ -6,7 +6,10 @@ import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
+import gs.dolp.system.domain.Privilege;
+import gs.dolp.system.domain.PrivilegeEntity;
 import gs.dolp.system.domain.Role;
+import gs.dolp.system.domain.TreeNode;
 import gs.dolp.system.domain.User;
 
 import java.util.ArrayList;
@@ -175,43 +178,53 @@ public class MenuService extends IdEntityService<Menu> {
 		return jq;
 	}
 
-	/**
-	 * 角色可见分配菜单页面中的菜单显示调用到的方法
-	 * @param roleId
-	 * @return
-	 */
-	public List<MenuEntity> getMenuNodesByRoleId(int roleId) {
-		Sql sql = Sqls
-				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-						+ "NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS VISIBLE,"
-						+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
-						+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-						+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
-		sql.vars().set("roleId", roleId);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
-		dao().execute(sql);
-		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		return rs;
-	}
+	//	/**
+	//	 * 角色可见分配菜单页面中的菜单显示调用到的方法
+	//	 * @param roleId
+	//	 * @return
+	//	 */
+	//	public List<MenuEntity> getMenuNodesByRoleId(int roleId) {
+	//		Sql sql = Sqls
+	//				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
+	//						+ "NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS VISIBLE,"
+	//						+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
+	//						+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
+	//						+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
+	//		sql.vars().set("roleId", roleId);
+	//		// 查询实体的回调
+	//		sql.setCallback(Sqls.callback.entities());
+	//		sql.setEntity(dao().getEntity(MenuEntity.class));
+	//		dao().execute(sql);
+	//		List<MenuEntity> rs = sql.getList(MenuEntity.class);
+	//		return rs;
+	//	}
+	//
+	//	/**
+	//	 * 角色可见分配菜单页面中的菜单显示
+	//	 * @param roleId
+	//	 * @return
+	//	 */
+	//	@Aop(value = "log")
+	//	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
+	//		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
+	//		jq.setPage(1);
+	//		jq.setTotal(1);
+	//		jq.setRecords(0);
+	//		List<MenuEntity> rows = getMenuNodesByRoleId(roleId);
+	//		jq.setRows(rows);
+	//		return jq;
+	//	}
 
 	/**
-	 * 角色可见分配菜单页面中的菜单显示
-	 * @param roleId
+	 * 菜单管理页面，右侧菜单grid的增删改
+	 * @param oper
+	 * @param id
+	 * @param name
+	 * @param url
+	 * @param description
+	 * @param parentId
 	 * @return
 	 */
-	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
-		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
-		jq.setPage(1);
-		jq.setTotal(1);
-		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodesByRoleId(roleId);
-		jq.setRows(rows);
-		return jq;
-	}
-
 	@Aop(value = "log")
 	public AjaxResData CUDMenu(String oper, String id, String name, String url, String description, int parentId) {
 		AjaxResData reData = new AjaxResData();
@@ -271,6 +284,7 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @param parentLevel
 	 * @return
 	 */
+	@Aop(value = "log")
 	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
 		AjaxResData reData = new AjaxResData();
 
@@ -303,5 +317,55 @@ public class MenuService extends IdEntityService<Menu> {
 		}
 
 		return reData;
+	}
+
+	@Aop(value = "log")
+	public List<TreeNode> getPrivilegeByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+
+		StringBuilder addWhere = new StringBuilder();
+		if (nodeId != 0) {
+			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
+			nLevel++;
+		} else {
+			nLevel = 0;
+		}
+		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.LFT,NODE.RGT,"
+				+ "NODE.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS CHECKED,"
+				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.RGT<>NODE.LFT+1 AS ISPARENT"
+				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
+				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT " + addWhere
+				+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
+		sql.vars().set("roleId", roleId);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(MenuEntity.class));
+		dao().execute(sql);
+		List<MenuEntity> menuEntites = sql.getList(MenuEntity.class);
+		for (MenuEntity menuEntity : menuEntites) {
+			if (menuEntity.getLevel() == nLevel) {
+				// 如果该菜单含操作权限数据，则将其设为父节点
+				int privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
+				if (privilegesCount > 0) {
+					menuEntity.setParent(true);
+				}
+				nodes.add(menuEntity);
+			}
+		}
+
+		sql = Sqls
+				.create("SELECT ID,NAME,"
+						+ "ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = $roleId) AS CHECKED"
+						+ " FROM SYSTEM_PRIVILEGE WHERE MENUID=$nodeId");
+		sql.vars().set("roleId", roleId);
+		sql.vars().set("nodeId", nodeId);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(PrivilegeEntity.class));
+		dao().execute(sql);
+		List<PrivilegeEntity> privileges = sql.getList(PrivilegeEntity.class);
+
+		nodes.addAll(privileges);
+		return nodes;
 	}
 }

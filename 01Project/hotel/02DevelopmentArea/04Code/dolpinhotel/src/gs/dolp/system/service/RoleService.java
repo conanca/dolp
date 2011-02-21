@@ -5,14 +5,13 @@ import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
-import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.Role;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -96,39 +95,43 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData updateMenu(String roleId, String[] menuIds) {
+	public AjaxResData updateMenu(final String roleId, final String[] checkedMenus, final String[] checkedPrivileges,
+			final String[] unCheckedMenus, final String[] unCheckedPrivileges) {
 		AjaxResData reData = new AjaxResData();
-		final String roleID;
-		if (Strings.isEmpty(roleId)) {
-			reData.setUserdata(new SystemMessage(null, "未选择角色!", null));
-			return reData;
-		} else {
-			roleID = roleId;
-		}
-		// 如果新分配的可见菜单 menuIds为Null,则清空中间表中该角色原有可见菜单并return
-		if (menuIds == null || menuIds.length == 0) {
-			dao().clear("SYSTEM_ROLE_MENU", Cnd.where("ROLEID", "=", roleId));
-			reData.setUserdata(new SystemMessage(null, "该角色未分配任何菜单!", null));
-			return reData;
-		}
-		// 取得要更新可见菜单的角色
-		final Role role = fetch(Integer.parseInt(roleId));
-		List<Menu> menus = new ArrayList<Menu>();
-		// 从数据库中获取指定id的菜单
-		for (String menuId : menuIds) {
-			Menu menu = dao().fetch(Menu.class, Integer.parseInt(menuId));
-			menus.add(menu);
-		}
-		// 为该角色分配这些菜单
-		role.setMenus(menus);
+
 		Trans.exec(new Atom() {
 			public void run() {
-				// 清空中间表中该角色原有可见菜单
-				dao().clear("SYSTEM_ROLE_MENU", Cnd.where("ROLEID", "=", roleID));
-				// 插入中间表记录
-				dao().insertRelation(role, "menus");
+				if (unCheckedMenus != null && unCheckedMenus.length > 0) {
+					dao().clear("SYSTEM_ROLE_MENU",
+							Cnd.where("ROLEID", "=", roleId).and("MENUID", "in", unCheckedMenus));
+				}
+				if (unCheckedPrivileges != null && unCheckedMenus.length > 0) {
+					dao().clear("SYSTEM_ROLE_PRIVILEGE",
+							Cnd.where("ROLEID", "=", roleId).and("PRIVILEGEID", "in", unCheckedPrivileges));
+				}
+
+				if (checkedMenus != null) {
+					for (String checkedMenu : checkedMenus) {
+						int checkedMenuCount = dao().count("SYSTEM_ROLE_MENU",
+								Cnd.where("ROLEID", "=", roleId).and("MENUID", "=", checkedMenu));
+						if (checkedMenuCount == 0) {
+							dao().insert("SYSTEM_ROLE_MENU", Chain.make("ROLEID", roleId).add("MENUID", checkedMenu));
+						}
+					}
+				}
+				if (checkedPrivileges != null) {
+					for (String checkedPrivilege : checkedPrivileges) {
+						int checkedPrivilegeCount = dao().count("SYSTEM_ROLE_PRIVILEGE",
+								Cnd.where("ROLEID", "=", roleId).and("PRIVILEGEID", "=", checkedPrivilege));
+						if (checkedPrivilegeCount == 0) {
+							dao().insert("SYSTEM_ROLE_PRIVILEGE",
+									Chain.make("ROLEID", roleId).add("PRIVILEGEID", checkedPrivilege));
+						}
+					}
+				}
 			}
 		});
+
 		reData.setUserdata(new SystemMessage("分配成功!", null, null));
 		return reData;
 	}
