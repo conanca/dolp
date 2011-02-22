@@ -18,9 +18,9 @@ public class UserModule {
 	private UserService userService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("organizationId") String organizationId,
-			@Param("number") String number, @Param("name") String name) {
-		return userService.getGridData(jqReq, organizationId, number, name);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
+			@Param("name") String name) {
+		return userService.getGridData(jqReq, number, name);
 	}
 
 	@At

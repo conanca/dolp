@@ -1,5 +1,7 @@
 <script type="text/javascript">
 $(function(){
+	$("input:button,input:submit,input:reset").button();
+	var roleId=0;	
 	$("#roleList").jqGrid({
 	   	rowNum:10,
 	   	rowList:[10,20,30],
@@ -28,8 +30,78 @@ $(function(){
 	    multiselect: true
 	});
 	$("#roleList").setJqGridCUD('#rolePager',{edit:true,add:true,del:true,search:false});
+	//添加自定义按钮——权限分配
+	$("#roleList").navButtonAdd('#rolePager',{caption:"权限分配",buttonicon:"ui-icon-key",
+		onClickButton:function(){
+			var id = $(this).getGridParam('selrow');
+			if (id) {
+				roleId = id;
+				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeByRoleId/"+roleId;
+				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting, zNodes);
+				$("#privilegeInfo").dialog( "open" );
+			} else {
+				$.addMessageStr(null,"请选择角色",null);
+			}
+		}
+	});
+
+	//初始化权限信息界面
+	$("#privilegeInfo").dialog({ width: 200 , hide: 'slide' , modal: true , autoOpen: false});
+
+	var privilegeTreeSetting = {
+		checkable: true,
+		async: true,
+		asyncUrl: "system/menu/getPrivilegeByRoleId/0",
+		asyncParam: ["name", "id","lft","rgt","level"]
+	};
+	var zNodes =[];
+	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting, zNodes);
+	$("#privilegeAssignBtn").click(function() {
+		$.blockUI();
+
+		var checkedTreeNodes = privilegeTree.getCheckedNodes();
+		var checkedMenus = [];
+		var checkedPrivileges = [];
+		var i = 0;
+		var j = 0;
+		$.each(checkedTreeNodes,function(index,value){
+			if(value.lft){
+				checkedMenus[i] = value.id;
+				i++;
+			}else{
+				checkedPrivileges[j] = value.id;
+				j++;
+			}
+		});
+
+		var unCheckedTreeNodes = privilegeTree.getCheckedNodes(false);
+		var unCheckedMenus = [];
+		var unCheckedPrivileges = [];
+		i = 0;
+		j = 0;
+		$.each(unCheckedTreeNodes,function(index,value){
+			if(value.lft){
+				unCheckedMenus[i] = value.id;
+				i++;
+			}else{
+				unCheckedPrivileges[j] = value.id;
+				j++;
+			}
+		});
+
+		var url = "system/role/assignMenu";
+		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges});
+		$.unblockUI();
+	});
 });
 </script>
 
 <table id="roleList"></table>
 <div id="rolePager"></div>
+
+<div id="privilegeInfo" title="权限信息">
+	<input type="button" value="分配" id="privilegeAssignBtn"/>
+	<div>
+		<ul id="privilegeTreeUl" class="tree"></ul>
+	</div>
+</div>

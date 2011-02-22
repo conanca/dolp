@@ -7,7 +7,6 @@ import java.util.List;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.ManyMany;
-import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_USER")
@@ -28,10 +27,6 @@ public class User {
 	private String birthday;
 	@Column
 	private String phone;
-	@Column
-	private int organizationId;
-	@One(target = Organization.class, field = "organizationId")
-	private Organization organization;
 	@ManyMany(target = Role.class, relation = "SYSTEM_USER_ROLE", from = "USERID", to = "ROLEID")
 	private List<Role> roles;
 
@@ -45,7 +40,6 @@ public class User {
 		user.age = rs.getInt("AGE");
 		user.birthday = rs.getString("BIRTHDAY");
 		user.phone = rs.getString("PHONE");
-		user.organizationId = rs.getInt("ORGANIZATIONID");
 		return user;
 	}
 
@@ -111,22 +105,6 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public int getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(int organizationId) {
-		this.organizationId = organizationId;
-	}
-
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
 	}
 
 	public List<Role> getRoles() {

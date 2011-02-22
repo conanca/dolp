@@ -42,6 +42,6 @@ public class RoleModule {
 			@Param("unCheckedMenus[]") String[] unCheckedMenus,
 			@Param("unCheckedPrivileges[]") String[] unCheckedPrivileges) {
 		System.out.println("123");
-		return roleService.updateMenu(roleId, checkedMenus, checkedPrivileges, unCheckedMenus, unCheckedPrivileges);
+		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus, unCheckedPrivileges);
 	}
 }
