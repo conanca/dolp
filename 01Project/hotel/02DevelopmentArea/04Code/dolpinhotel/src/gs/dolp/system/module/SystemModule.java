@@ -5,10 +5,13 @@ import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.system.domain.MenuEntity;
+import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MenuService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
+
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,6 +39,8 @@ public class SystemModule {
 	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
 		User logonUser = userService.userAuthenticate(number, password);
 		session.setAttribute("logonUser", logonUser);
+		List<Privilege> currentPrivileges = userService.getCurrentPrivileges(logonUser.getId());
+		session.setAttribute("currPrivs", currentPrivileges);
 	}
 
 	@At

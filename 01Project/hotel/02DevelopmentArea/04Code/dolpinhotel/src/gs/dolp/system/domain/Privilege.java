@@ -1,7 +1,10 @@
 package gs.dolp.system.domain;
 
+import java.util.List;
+
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 import org.nutz.json.Json;
@@ -20,6 +23,8 @@ public class Privilege {
 	private Menu menu;
 	@Column
 	private String methodPath;
+	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "PRIVILEGEID", to = "ROLEID")
+	private List<Role> roles;
 
 	public int getId() {
 		return id;
@@ -67,6 +72,14 @@ public class Privilege {
 
 	public void setMethodPath(String methodPath) {
 		this.methodPath = methodPath;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public String toString() {

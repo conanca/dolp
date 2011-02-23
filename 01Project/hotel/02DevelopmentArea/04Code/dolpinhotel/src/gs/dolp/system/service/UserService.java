@@ -5,6 +5,7 @@ import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
@@ -155,5 +156,20 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 			i++;
 		}
 		return currentRoleIDs;
+	}
+
+	@Aop(value = "log")
+	@SuppressWarnings("unchecked")
+	public List<Privilege> getCurrentPrivileges(int userId) {
+
+		Sql sql = Sqls.create("SELECT * FROM SYSTEM_PRIVILEGE WHERE ID IN"
+				+ "(SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN"
+				+ "(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID=$userId))");
+		sql.vars().set("userId", userId);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(Privilege.class));
+		dao().execute(sql);
+		return (List<Privilege>) sql.getResult();
 	}
 }
