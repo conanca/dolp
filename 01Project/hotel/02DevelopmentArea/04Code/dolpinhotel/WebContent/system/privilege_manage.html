@@ -1,0 +1,75 @@
+<script type="text/javascript">
+$(function() {
+	$("input:button,input:submit,input:reset").button();
+	
+	var privilegeMenuTreeSetting = {
+		checkable: false,
+		async: true,
+		asyncUrl: "system/menu/getNodes",
+		asyncParam: ["name", "id"],
+		callback:{
+			beforeClick: function(treeId, treeNode){
+				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
+				$("#privilegeList").setGridParam({editurl:"system/privilege/editRow/"+treeNode.id});
+				$("#privilegeList").trigger('reloadGrid');
+			}
+		}
+	};
+	var zNodes =[];
+	var privilegeMenuTree = $("#privilegeMenuTreeUl").zTree(privilegeMenuTreeSetting, zNodes);
+
+	//点击刷新按钮
+	$("#privilegeMenuTreeRefreshBtn").click(function() {
+		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
+		$("#privilegeList").setGridParam({url:"system/privilege/getGridData/0",page:1});
+		$("#privilegeList").setGridParam({editurl:"system/privilege/editRow/0"});
+		$("#privilegeList").trigger('reloadGrid');
+	});
+
+	$("#privilegeList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: false,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption:"权限列表",
+	   	url:'system/privilege/getGridData/0',
+	    editurl:"system/privilege/editRow/0",
+	    colNames: ["id","权限名","方法路径","描述","menuId"],
+		colModel: [
+			{name: "id",index:'id',width:0,hidden:true,key:true},
+			{name: "name",index:'name', width:100,editable:true},
+			{name: "methodPath",index:'methodPath',width:300,editable:true},
+			{name: "description",index:'description',width:200,editable:true},
+			{name: "menuId",index:'menuId',width:0,hidden:true}
+		],
+	   	pager: '#privilegePager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: true
+	});
+	$("#privilegeList").setJqGridCUD('#privilegePager',{edit:true,add:true,del:true,search:false});
+});
+</script>
+<table>
+	<tr>
+		<td valign="top">
+			<input type="button" value="刷新" id="privilegeMenuTreeRefreshBtn"/>
+			<div>
+				<ul id="privilegeMenuTreeUl" class="tree"></ul>
+			</div>
+		</td>
+		<td style="border-left: 1px dashed #CCCCCC;">&nbsp;</td>
+		<td valign="top">
+			<table id="privilegeList"></table>
+			<div id="privilegePager"></div>
+		</td>
+	</tr>
+</table>

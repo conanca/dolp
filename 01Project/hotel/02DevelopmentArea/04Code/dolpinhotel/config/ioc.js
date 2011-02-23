@@ -148,6 +148,24 @@ var ioc = {
 		}
 	},
 	
+	privilegeService : {
+		type : "gs.dolp.system.service.PrivilegeService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	privilegeModule : {
+		type : "gs.dolp.system.module.PrivilegeModule",
+		fields : {
+			privilegeService : {
+				refer : 'privilegeService'
+			}
+		}
+	},
+	
 	//------------------分割线--------------------------------
 
 	roomTypeService : {
