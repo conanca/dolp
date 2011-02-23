@@ -37,11 +37,11 @@ public class RoleModule {
 	}
 
 	@At
-	public ResponseData assignMenu(@Param("roleId") String roleId, @Param("checkedMenus[]") String[] checkedMenus,
+	public ResponseData assignPrivilege(@Param("roleId") String roleId, @Param("checkedMenus[]") String[] checkedMenus,
 			@Param("checkedPrivileges[]") String[] checkedPrivileges,
 			@Param("unCheckedMenus[]") String[] unCheckedMenus,
 			@Param("unCheckedPrivileges[]") String[] unCheckedPrivileges) {
-		System.out.println("123");
-		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus, unCheckedPrivileges);
+		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus,
+				unCheckedPrivileges);
 	}
 }

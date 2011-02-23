@@ -89,7 +89,7 @@ $(function(){
 			}
 		});
 
-		var url = "system/role/assignMenu";
+		var url = "system/role/assignPrivilege";
 		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges});
 		$.unblockUI();
 	});
