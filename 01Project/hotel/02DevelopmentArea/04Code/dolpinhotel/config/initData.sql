@@ -26,7 +26,7 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (4,'菜单管理','system/menu_manage.html',NULL,6,7),
 (5,'权限管理','system/privilege_manage.html',NULL,8,9),
 (6,'机构管理','system/organization_manage.html',NULL,10,11),
-(7,'岗位管理','system/post_manage.html',NULL,12,1),
+(7,'岗位管理','system/post_manage.html',NULL,12,13),
 (8,'枚举管理','system/sysenum_mange.html',NULL,14,15),
 (9,'系统参数管理','system/syspara_manage.html',NULL,16,17),
 (10,'演示页面',NULL,NULL,21,40),
