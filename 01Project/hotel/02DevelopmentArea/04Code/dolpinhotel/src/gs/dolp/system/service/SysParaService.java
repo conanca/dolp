@@ -28,7 +28,7 @@ public class SysParaService extends AdvJqgridIdEntityService<SysPara> {
 	public AjaxResData CUDSysPara(String oper, String id, String name, String value, String description) {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}

@@ -94,7 +94,7 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	@Aop(value = "log")
 	public void deleteUsers(String ids) {
 		if (!Strings.isEmpty(ids)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<User> users = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -159,17 +159,12 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
-	@SuppressWarnings("unchecked")
 	public List<Privilege> getCurrentPrivileges(int userId) {
-
-		Sql sql = Sqls.create("SELECT * FROM SYSTEM_PRIVILEGE WHERE ID IN"
-				+ "(SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN"
-				+ "(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID=$userId))");
-		sql.vars().set("userId", userId);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(Privilege.class));
-		dao().execute(sql);
-		return (List<Privilege>) sql.getResult();
+		StringBuilder sb = new StringBuilder(
+				"ID IN (SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID='");
+		sb.append(userId).append("'))");
+		Condition cnd = Cnd.wrap(sb.toString());
+		List<Privilege> privileges = dao().query(Privilege.class, cnd, null);
+		return privileges;
 	}
 }

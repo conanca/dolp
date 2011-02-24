@@ -1,5 +1,7 @@
 package gs.dolp.system.domain;
 
+import org.nutz.json.Json;
+
 public class PrivilegeEntity implements TreeNode {
 	private int id;
 	private String name;
@@ -72,5 +74,9 @@ public class PrivilegeEntity implements TreeNode {
 
 	public void setParent(boolean isParent) {
 		this.isParent = isParent;
+	}
+
+	public String toString() {
+		return Json.toJson(this);
 	}
 }

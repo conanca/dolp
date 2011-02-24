@@ -34,7 +34,7 @@ public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
 	public AjaxResData CUDSysEnumItem(String oper, String id, String text, String value, int sysEnumId) {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}

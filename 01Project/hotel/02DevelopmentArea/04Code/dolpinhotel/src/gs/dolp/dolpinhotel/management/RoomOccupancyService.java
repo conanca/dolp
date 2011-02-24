@@ -75,7 +75,7 @@ public class RoomOccupancyService extends AdvJqgridIdEntityService<RoomOccupancy
 			String leaveDateTo, String occupancyDays, String status, int billId) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (!Strings.isBlank(number)) {
-			List<Room> rooms = dao().query(Room.class, Cnd.wrap("NUMBER LIKE '%" + number + "%'"), null);
+			List<Room> rooms = dao().query(Room.class, Cnd.where("NUMBER", "LIKE", "%" + number + "%"), null);
 			int[] roomIds = new int[rooms.size()];
 			for (int i = 0; i < rooms.size(); i++) {
 				roomIds[i] = rooms.get(i).getId();

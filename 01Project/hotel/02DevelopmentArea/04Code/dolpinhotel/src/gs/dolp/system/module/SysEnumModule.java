@@ -26,7 +26,6 @@ public class SysEnumModule {
 		return sysEnumService.getGridData(jqReq);
 	}
 
-	// 使用REST风格的路径参数。对于所有 Nutz.Mvc 提供的内置适配器，路径参数是最优先的，所以把int sysEnumId放在第一个参数
 	@At("/getSysEnumItemGridData/*")
 	public AdvancedJqgridResData<SysEnumItem> getSysEnumItemGridData(int sysEnumId, @Param("..") JqgridReqData jqReq) {
 		return sysEnumItemService.getGridData(jqReq, sysEnumId);

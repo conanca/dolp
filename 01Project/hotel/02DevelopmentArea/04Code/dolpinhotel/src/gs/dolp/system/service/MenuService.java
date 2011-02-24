@@ -178,43 +178,6 @@ public class MenuService extends IdEntityService<Menu> {
 		return jq;
 	}
 
-	//	/**
-	//	 * 角色可见分配菜单页面中的菜单显示调用到的方法
-	//	 * @param roleId
-	//	 * @return
-	//	 */
-	//	public List<MenuEntity> getMenuNodesByRoleId(int roleId) {
-	//		Sql sql = Sqls
-	//				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-	//						+ "NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS VISIBLE,"
-	//						+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
-	//						+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-	//						+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
-	//		sql.vars().set("roleId", roleId);
-	//		// 查询实体的回调
-	//		sql.setCallback(Sqls.callback.entities());
-	//		sql.setEntity(dao().getEntity(MenuEntity.class));
-	//		dao().execute(sql);
-	//		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-	//		return rs;
-	//	}
-	//
-	//	/**
-	//	 * 角色可见分配菜单页面中的菜单显示
-	//	 * @param roleId
-	//	 * @return
-	//	 */
-	//	@Aop(value = "log")
-	//	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
-	//		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
-	//		jq.setPage(1);
-	//		jq.setTotal(1);
-	//		jq.setRecords(0);
-	//		List<MenuEntity> rows = getMenuNodesByRoleId(roleId);
-	//		jq.setRows(rows);
-	//		return jq;
-	//	}
-
 	/**
 	 * 菜单管理页面，右侧菜单grid的增删改
 	 * @param oper
@@ -319,6 +282,15 @@ public class MenuService extends IdEntityService<Menu> {
 		return reData;
 	}
 
+	/**
+	 * 角色管理页面中的权限分配菜单树显示
+	 * @param roleId
+	 * @param nodeId
+	 * @param nLeft
+	 * @param nRight
+	 * @param nLevel
+	 * @return
+	 */
 	@Aop(value = "log")
 	public List<TreeNode> getPrivilegeByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
 		List<TreeNode> nodes = new ArrayList<TreeNode>();

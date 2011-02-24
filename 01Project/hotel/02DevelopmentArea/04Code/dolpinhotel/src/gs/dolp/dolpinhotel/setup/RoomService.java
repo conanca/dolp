@@ -43,7 +43,7 @@ public class RoomService extends AdvJqgridIdEntityService<Room> {
 	public AjaxResData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
-			Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
 			reData.setUserdata(new SystemMessage("删除成功!", null, null));
 		}

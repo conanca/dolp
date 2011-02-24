@@ -50,7 +50,7 @@ public class OrganizationService extends AdvJqgridIdEntityService<Organization> 
 			int parentOrgId) {
 		AjaxResData reData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<Organization> organizations = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {

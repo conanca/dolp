@@ -21,7 +21,7 @@ public class MenuModule {
 	private MenuService menuService;
 
 	/**
-	 * 角色可见分配菜单页面中的菜单显示
+	 * 角色管理页面中的权限分配菜单树显示
 	 * @param roleId
 	 * @return
 	 */
