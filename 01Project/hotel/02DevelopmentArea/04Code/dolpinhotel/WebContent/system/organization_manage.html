@@ -29,7 +29,7 @@ $(function(){
 	$("#organizationList").jqGrid({
 	   	rowNum:10,
 	   	rowList:[10,20,30],
-	   	autowidth: false,
+	   	autowidth: true,
 	   	height: "100%",
 	   	datatype: "json",
 	    jsonReader:{
@@ -60,9 +60,9 @@ $(function(){
 });
 </script>
 
-<table>
+<table width='100%'>
 	<tr>
-		<td valign="top">
+		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="organizationTreeRefreshBtn"/>
 			<div>
 				<ul id="organizationTreeUl" class="tree"></ul>
