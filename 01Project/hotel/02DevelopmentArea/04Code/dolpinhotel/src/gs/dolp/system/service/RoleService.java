@@ -4,9 +4,14 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
 import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
 import gs.dolp.system.domain.Role;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +20,9 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
@@ -137,5 +145,35 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 
 		reData.setUserdata(new SystemMessage("分配成功!", null, null));
 		return reData;
+	}
+
+	@Aop(value = "log")
+	public List<StandardJqgridResDataRow> getRows(int organizationId, int userId) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT ID,NAME,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE ID = ");
+		sb.append(userId);
+		sb.append(") AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = ");
+		sb.append(organizationId);
+		Sql sql = Sqls.create(sb.toString());
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
+				int i = 1;
+				while (rs.next()) {
+					List cell = new ArrayList();
+					cell.add(rs.getInt("ID"));
+					cell.add(rs.getString("NAME"));
+					cell.add(rs.getBoolean("ISSET"));
+					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
+					row.setId(i);
+					row.setCell(cell);
+					rows.add(row);
+					i++;
+				}
+				return rows;
+			}
+		});
+		dao().execute(sql);
+		return (List<StandardJqgridResDataRow>) sql.getResult();
 	}
 }

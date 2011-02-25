@@ -10,7 +10,7 @@ import org.nutz.dao.entity.annotation.Table;
 import org.nutz.json.Json;
 
 @Table("SYSTEM_ORGANIZATION")
-public class Organization {
+public class Organization implements TreeNode {
 	@Id
 	private int id;
 	@Column

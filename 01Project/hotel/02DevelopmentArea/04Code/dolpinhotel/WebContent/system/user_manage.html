@@ -24,6 +24,8 @@ $(function(){
 			});
 		}
 	});
+	//初始化用户岗位分配界面
+	$("#postAssignInfo").dialog({ width: 650 , hide: 'slide' , modal: true , autoOpen: false});
 	
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
@@ -141,7 +143,17 @@ $(function(){
 			}
 		}
 	});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"岗位",buttonicon:"ui-icon-person",position:"last"});
+	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"岗位",buttonicon:"ui-icon-person",position:"last",
+		onClickButton:function(){
+			var id = $(this).getGridParam('selrow');
+			if (id) {
+				roleId = id;
+				$("#postAssignInfo").dialog( "open" );
+			} else {
+				$.addMessageStr(null,"请选择用户",null);
+			}
+		}
+	});
 
 	//查询按钮点击事件
 	$("#userInfo_search_btn").click(function () { 
@@ -249,6 +261,47 @@ $(function(){
 		$.unblockUI();
 		return false;
 	});
+
+	var postOrganizationTreeSetting = {
+			checkable: false,
+			async: true,
+			asyncUrl: "system/organization/getNodes",
+			asyncParam: ["name", "id"],
+			callback:{
+				beforeClick: function(treeId, treeNode){
+					$("#userPostList").setGridParam({url:"system/role/getUserPost?&organizationId="+treeNode.id,page:1});
+					$("#userPostList").trigger('reloadGrid');
+				}
+			}
+		};
+	var zNodes =[];
+	var postOrganizationTree = $("#userPostOrganizationTreeUl").zTree(postOrganizationTreeSetting, zNodes);
+
+	$("#userPostList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%",
+	   	datatype: "json",
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+	    caption:"岗位列表",
+	   	url:'system/role/getUserPost',
+	   	colNames:['id','名称','isset'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'name',index:'name', width:150,editable:true},
+	   		{name:'isset',index:'isset', width:150,editable:true}
+	   	],
+	   	pager: '#userPostPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: false
+	});
+	$("#userPostList").setJqGridCUD('#userPostPager',{edit:false,add:false,del:false,search:false});
+
 });
 </script>
 
@@ -361,4 +414,22 @@ $(function(){
 		<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
 		</select>
 	</form>
+</div>
+
+<div id="postAssignInfo" title="岗位分配信息">
+	<input type="button" value="分配"/>
+	<table width='100%'>
+		<tr>
+			<td valign="top" width="15%">
+				<div>
+					<ul id="userPostOrganizationTreeUl" class="tree"></ul>
+				</div>
+			</td>
+			<td style="border-left: 1px dashed #CCCCCC;">&nbsp;</td>
+			<td valign="top">
+				<table id="userPostList"></table>
+				<div id="userPostPager"></div>
+			</td>
+		</tr>
+	</table>
 </div>

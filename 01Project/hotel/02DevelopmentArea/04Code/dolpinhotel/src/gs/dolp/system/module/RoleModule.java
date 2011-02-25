@@ -3,6 +3,7 @@ package gs.dolp.system.module;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
@@ -43,5 +44,11 @@ public class RoleModule {
 			@Param("unCheckedPrivileges[]") String[] unCheckedPrivileges) {
 		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus,
 				unCheckedPrivileges);
+	}
+
+	@At
+	public StandardJqgridResData getUserPost(@Param("..") JqgridReqData jqReq,
+			@Param("organizationId") int organizationId, @Param("userId") int userId) throws Exception {
+		return roleService.getGridData(jqReq, roleService.getRows(organizationId, userId));
 	}
 }

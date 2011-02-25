@@ -9,7 +9,7 @@ import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_ROLE")
-public class Role {
+public class Role implements TreeNode {
 	@Id
 	private int id;
 	@Column
