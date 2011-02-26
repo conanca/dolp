@@ -2,13 +2,13 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class CustomerService extends AdvJqgridIdEntityService<Customer> {
+public class CustomerService extends JqgridService<Customer> {
 
 	public CustomerService(Dao dao) {
 		super(dao);

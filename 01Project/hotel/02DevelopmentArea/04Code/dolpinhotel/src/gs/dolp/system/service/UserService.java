@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -26,7 +27,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class UserService extends AdvJqgridIdEntityService<User> {
+public class UserService extends JqgridService<User> {
 
 	public UserService(Dao dao) {
 		super(dao);
@@ -166,5 +167,33 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 		Condition cnd = Cnd.wrap(sb.toString());
 		List<Privilege> privileges = dao().query(Privilege.class, cnd, null);
 		return privileges;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData updatePost(final String userId, String orgId, final String[] postIds) {
+		AjaxResData reData = new AjaxResData();
+		StringBuilder sb = new StringBuilder();
+		sb.append("ROLEID IN (SELECT ID FROM SYSTEM_ROLE WHERE ORGANIZATIONID =");
+		sb.append(orgId);
+		sb.append(") AND USERID = ");
+		sb.append(userId);
+		final Condition cnd = Cnd.wrap(sb.toString());
+		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
+		if (postIds == null || postIds.length == 0) {
+			dao().clear("SYSTEM_USER_ROLE", cnd);
+			reData.setUserdata(new SystemMessage(null, "该机构下未分配任何岗位!", null));
+			return reData;
+		}
+		// 清除旧岗位关系，插入新的关系
+		Trans.exec(new Atom() {
+			public void run() {
+				dao().clear("SYSTEM_USER_ROLE", cnd);
+				for (String postId : postIds) {
+					dao().insert("SYSTEM_USER_ROLE", Chain.make("ROLEID", postId).add("USERID", userId));
+				}
+			}
+		});
+		reData.setUserdata(new SystemMessage("分配成功!", null, null));
+		return reData;
 	}
 }

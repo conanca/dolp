@@ -7,6 +7,8 @@ import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
+import java.sql.SQLException;
+
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -57,5 +59,11 @@ public class UserModule {
 	@At("/getCurrentRoleIDs/*")
 	public int[] getCurrentRoleIDs(String userId) {
 		return userService.getCurrentRoleIDs(userId);
+	}
+
+	@At
+	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
+			@Param("selectedPostIds[]") String[] postIds) throws SQLException {
+		return userService.updatePost(userId, orgId, postIds);
 	}
 }

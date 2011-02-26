@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.Privilege;
 
 import org.nutz.dao.Cnd;
@@ -12,7 +12,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class PrivilegeService extends AdvJqgridIdEntityService<Privilege> {
+public class PrivilegeService extends JqgridService<Privilege> {
 
 	public PrivilegeService(Dao dao) {
 		super(dao);

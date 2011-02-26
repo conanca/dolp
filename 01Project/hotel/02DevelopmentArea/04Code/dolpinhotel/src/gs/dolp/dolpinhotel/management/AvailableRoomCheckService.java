@@ -1,7 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
-import gs.dolp.common.jqgrid.service.StaJqgridService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 
-public class AvailableRoomCheckService extends StaJqgridService {
+public class AvailableRoomCheckService extends JqgridService<Object> {
 
 	public AvailableRoomCheckService(Dao dao) {
 		super(dao);

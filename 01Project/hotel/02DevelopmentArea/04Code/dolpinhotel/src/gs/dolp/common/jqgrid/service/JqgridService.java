@@ -21,9 +21,9 @@ import org.nutz.service.IdEntityService;
  * 注：实体的主键是数值型的。
  * @param <T>
  */
-public class AdvJqgridIdEntityService<T> extends IdEntityService<T> {
+public class JqgridService<T> extends IdEntityService<T> {
 
-	public AdvJqgridIdEntityService(Dao dao) {
+	public JqgridService(Dao dao) {
 		super(dao);
 	}
 

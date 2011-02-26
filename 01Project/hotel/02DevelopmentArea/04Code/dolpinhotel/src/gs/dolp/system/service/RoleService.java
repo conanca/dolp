@@ -5,7 +5,7 @@ import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.Role;
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoleService extends AdvJqgridIdEntityService<Role> {
+public class RoleService extends JqgridService<Role> {
 
 	public RoleService(Dao dao) {
 		super(dao);
@@ -150,7 +150,7 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 	@Aop(value = "log")
 	public List<StandardJqgridResDataRow> getRows(int organizationId, int userId) throws SQLException {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT ID,NAME,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE ID = ");
+		sb.append("SELECT ID,NAME,DESCRIPTION,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = ");
 		sb.append(userId);
 		sb.append(") AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = ");
 		sb.append(organizationId);
@@ -158,17 +158,16 @@ public class RoleService extends AdvJqgridIdEntityService<Role> {
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
 				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
-				int i = 1;
 				while (rs.next()) {
 					List cell = new ArrayList();
 					cell.add(rs.getInt("ID"));
 					cell.add(rs.getString("NAME"));
+					cell.add(rs.getString("DESCRIPTION"));
 					cell.add(rs.getBoolean("ISSET"));
 					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
-					row.setId(i);
+					row.setId(rs.getInt("ID"));
 					row.setCell(cell);
 					rows.add(row);
-					i++;
 				}
 				return rows;
 			}

@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.SysEnum;
 import gs.dolp.system.domain.SysEnumItem;
 
@@ -17,7 +17,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class SysEnumItemService extends AdvJqgridIdEntityService<SysEnumItem> {
+public class SysEnumItemService extends JqgridService<SysEnumItem> {
 
 	public SysEnumItemService(Dao dao) {
 		super(dao);

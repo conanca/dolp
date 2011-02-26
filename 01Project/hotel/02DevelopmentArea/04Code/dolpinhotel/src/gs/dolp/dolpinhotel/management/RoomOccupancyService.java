@@ -2,7 +2,7 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.dolpinhotel.setup.Room;
 import gs.dolp.dolpinhotel.setup.RoomType;
 
@@ -19,7 +19,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoomOccupancyService extends AdvJqgridIdEntityService<RoomOccupancy> {
+public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 
 	public RoomOccupancyService(Dao dao) {
 		super(dao);

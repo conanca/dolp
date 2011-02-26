@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoomTypeService extends AdvJqgridIdEntityService<RoomType> {
+public class RoomTypeService extends JqgridService<RoomType> {
 
 	public RoomTypeService(Dao dao) {
 		super(dao);

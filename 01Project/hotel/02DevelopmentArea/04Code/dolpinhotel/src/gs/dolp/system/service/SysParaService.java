@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.SysPara;
 
 import org.nutz.dao.Cnd;
@@ -12,7 +12,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class SysParaService extends AdvJqgridIdEntityService<SysPara> {
+public class SysParaService extends JqgridService<SysPara> {
 
 	public SysParaService(Dao dao) {
 		super(dao);

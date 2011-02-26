@@ -4,7 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.jqgrid.service.JqgridService;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -19,7 +19,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class BillService extends AdvJqgridIdEntityService<Bill> {
+public class BillService extends JqgridService<Bill> {
 
 	public BillService(Dao dao) {
 		super(dao);
