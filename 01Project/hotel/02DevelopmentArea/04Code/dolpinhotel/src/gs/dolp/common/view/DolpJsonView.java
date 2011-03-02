@@ -2,6 +2,7 @@ package gs.dolp.common.view;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
+import gs.dolp.common.util.ExceptionHandler;
 
 import java.io.IOException;
 
@@ -11,12 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.nutz.json.JsonFormat;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Administrator
  * 用于处理异常的JSON自定义视图
  */
 public class DolpJsonView implements View {
+	final static Logger logger = LoggerFactory.getLogger("ROOT");
 
 	private JsonFormat format;
 
@@ -38,6 +42,8 @@ public class DolpJsonView implements View {
 			AjaxResData reData = new AjaxResData();
 			reData.setUserdata(new SystemMessage(null, null, exception.getMessage()));
 			jsonWritedStr = reData;
+			// 输出日志
+			logger.error(ExceptionHandler.packageException(exception));
 		}
 		Mvcs.write(resp, null == jsonWritedStr ? data : jsonWritedStr, format);
 	}
