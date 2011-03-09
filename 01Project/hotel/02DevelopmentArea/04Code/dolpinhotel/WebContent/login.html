@@ -17,11 +17,11 @@
 <script type="text/javascript">
 $(function() {
 	$("#login").dialog( { draggable: false } );
-	$("input:submit,input:reset").button();
+	$("input:button,input:submit,input:reset").button();
 
 	opts.pnotify_title = "消息";
 	opts.pnotify_type = "notice";
-	opts.pnotify_text = "登录账号：1000/123";
+	opts.pnotify_text = "用户编号：1000\n 密码：123";
 	$.pnotify(opts);
 
 	// 验证
@@ -40,7 +40,7 @@ $(function() {
 		}
 	});
 
-	$('#logonForm').submit(function() {
+	$("#logonForm").submit(function() {
 		if($(this).valid()){
 			var url = 'logon';
 			var logonFormInfo = $(this).serializeObject();
@@ -57,6 +57,11 @@ $(function() {
 		}
 		return false;
 	});
+
+	$("#initDatabaseBtn").click(function(){
+		var url = 'initDatabase';
+		$.dolpPost(url);
+	});
 });
 </script>
 </head>
@@ -68,10 +73,12 @@ $(function() {
 		<input type="text" name="num"/><br/><br/>
 		密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：
 		<input type="password" name="pwd"/><br/><br/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;
 		<input type="submit" value="登录"/>
-		&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;
 		<input type="reset" value="重置"/>
+		&nbsp;&nbsp;&nbsp;
+		<input type="button" value="初始化数据库" id="initDatabaseBtn"/>
 	</form>
 </div>
 </body>
