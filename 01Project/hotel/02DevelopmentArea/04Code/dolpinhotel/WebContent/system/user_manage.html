@@ -2,20 +2,20 @@
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
-	$(".datepicker").datepicker();
+	$("#userBirthday").datepicker({yearRange: '1960:2000'});
 	$("input:button,input:submit,input:reset").button();
 
 	var userInfoIsEditFlag = false;
 
 	//初始化用户信息界面
-	$("#userInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
+	$("#userInfo").dialog({ width: 520 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			$("#userInfoId").attr("value",'');	//清空隐藏域的值
 			$("#userInfoOrganizationId").attr("value",'');	//清空隐藏域的值
 			$('#userInfoForm')[0].reset();	//清空表单的值
 		}
 	});
 	//初始化用户角色分配界面
-	$("#roleAssignInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
+	$("#roleAssignInfo").dialog({ width: 500 , height: 320 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			//关闭后全部取消选中
 			$("#roleIds option").each(function(){
 				if($(this).attr("selected") == true){
@@ -300,7 +300,7 @@ $(function(){
 	   	colModel:[
 	   		{name:'id',index:'id', width:0,hidden:true},
 	   		{name:'name',index:'name', width:150},
-	   		{name:'description',index:'name', width:150},
+	   		{name:'description',index:'name', width:280},
 	   		{name:'isset',index:'isset', width:50, align:'center', formatter:'checkbox', formatoptions:{disabled:false}}
 	   	],
 	   	pager: '#userPostPager',
@@ -411,7 +411,7 @@ $(function(){
 				出生日期：
 			</td>
 			<td>
-				<input type="text" name="birthday" class="datepicker"/>
+				<input type="text" name="birthday" id="userBirthday"/>
 			</td>
 			<td>
 				电话号码：
