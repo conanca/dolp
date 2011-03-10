@@ -4,11 +4,11 @@ html, body {
 	margin: 0;			/* Remove body margin/padding */
 	padding: 0;
 	overflow: hidden;	/* Remove scroll bars on browser window */	
-	font-size: 80%;
+	font-size: 81%;
 }
 
 table{
-	font-size: 95%;
+	font-size: 13px;
 }
 
 #LeftPane {
