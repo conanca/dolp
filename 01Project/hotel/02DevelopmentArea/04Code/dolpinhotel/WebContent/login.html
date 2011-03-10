@@ -16,12 +16,13 @@
 <link href="css/main.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 $(function() {
-	$("#login").dialog( { draggable: false } );
+	$("#login").dialog( {width:330, draggable: false } );
 	$("input:button,input:submit,input:reset").button();
 
 	opts.pnotify_title = "消息";
 	opts.pnotify_type = "notice";
 	opts.pnotify_text = "用户编号：1000\n 密码：123";
+	opts.pnotify_hide = false;
 	$.pnotify(opts);
 
 	// 验证
@@ -42,16 +43,15 @@ $(function() {
 
 	$("#logonForm").submit(function() {
 		if($(this).valid()){
-			var url = 'logon';
 			var logonFormInfo = $(this).serializeObject();
-			$.getJSON(url,logonFormInfo,function(response){
+			$.post('logon',logonFormInfo,function(response){
 				if(null==response){
 					window.location="main";
 				}else{
 					$('#logonForm')[0].reset();
 					$.addMessage(response.userdata);
 				}
-			});
+			},"json");
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}
@@ -59,8 +59,7 @@ $(function() {
 	});
 
 	$("#initDatabaseBtn").click(function(){
-		var url = 'initDatabase';
-		$.dolpPost(url);
+		$.dolpPost('initDatabase');
 	});
 });
 </script>
