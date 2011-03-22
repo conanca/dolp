@@ -39,7 +39,8 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (16,'可用房确认','hotel/available_room_check.html',NULL,72,73),
 (17,'入住情况','hotel/room_occupancy_manage.html',NULL,74,75),
 (18,'入住登记','hotel/check_in.html',NULL,76,77),
-(19,'账单管理','hotel/bill_manage.html',NULL,78,79);
+(19,'账单管理','hotel/bill_manage.html',NULL,78,79),
+(20,'账单统计','hotel/statisticBill.html',NULL,80,81);
 
 INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (1,1,1),
@@ -61,6 +62,7 @@ INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
 (17,1,17),
 (18,1,18),
 (19,1,19),
+(99,1,20),
 (20,2,10),
 (21,2,11),
 (22,2,12),
