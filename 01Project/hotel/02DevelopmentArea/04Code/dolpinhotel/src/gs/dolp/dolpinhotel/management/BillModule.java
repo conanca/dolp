@@ -26,4 +26,10 @@ public class BillModule {
 			@Param("amount") String amount, @Param("date") String date) throws ParseException {
 		return billService.UDBill(oper, id, number, amount, date);
 	}
+
+	@At
+	public ResponseData statisticBill(@Param("startDate") String startDate, @Param("endDate") String endDate) {
+		return billService.statisticBill(startDate, endDate);
+	}
+
 }

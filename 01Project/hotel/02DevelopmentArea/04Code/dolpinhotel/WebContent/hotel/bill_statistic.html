@@ -1,0 +1,62 @@
+<script src="js/highcharts.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+
+	var option = {
+		chart: {
+			renderTo: 'container',
+			defaultSeriesType: 'column'
+		},
+		title: {
+			text: '营业额统计'
+		},
+		subtitle: {
+			text: '统计每个月的营业额及盈利情况'
+		},
+		xAxis: {
+			categories: []
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: '金额(元)'
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			backgroundColor: '#FFFFFF',
+			align: 'left',
+			verticalAlign: 'top',
+			x: 100,
+			y: 70,
+			floating: true,
+			shadow: true
+		},
+		tooltip: {
+			formatter: function() {
+				return ''+
+					this.x +': '+ this.y +' 元';
+			}
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		},
+		series: []
+	}
+
+	var url = "dolpinhotel/management/bill/statisticBill";
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	var chartData = $.dolpPost(url);
+	option.xAxis.categories = chartData.categories;
+	option.series = chartData.series;
+	$.ajaxSetup({ async: true});
+	
+	var chart = new Highcharts.Chart(option);
+});
+</script>
+
+<div id="container" style="width: 600px; height: 350px; margin: 0 auto"></div>

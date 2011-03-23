@@ -2,18 +2,27 @@ package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
+import gs.dolp.common.highchart.domain.ChartReturnData;
+import gs.dolp.common.highchart.domain.SeriesItem;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
@@ -75,4 +84,33 @@ public class BillService extends JqgridService<Bill> {
 		return reData;
 	}
 
+	@Aop(value = "log")
+	public AjaxResData statisticBill(String startDate, String endDate) {
+		AjaxResData reData = new AjaxResData();
+
+		Sql sql = Sqls
+				.create("SELECT MONTH(DATE) AS MONTH,SUM(AMOUNT) AS MONTHAMOUNT FROM DOLPINHOTEL_BILL GROUP BY MONTH(DATE)");
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<String> categories = new ArrayList<String>();
+				List<Float> data1 = new ArrayList<Float>();
+				List<Float> data2 = new ArrayList<Float>();
+				while (rs.next()) {
+					String month = rs.getString("MONTH") + "月";
+					categories.add(month);
+					data1.add(rs.getFloat("MONTHAMOUNT"));
+					data2.add(rs.getFloat("MONTHAMOUNT") / 2);
+				}
+				List<SeriesItem> series = new ArrayList<SeriesItem>();
+				series.add(new SeriesItem("营业额", data1));
+				series.add(new SeriesItem("盈利", data2));
+				return new ChartReturnData(categories, series);
+			}
+		});
+		dao().execute(sql);
+		ChartReturnData chartData = (ChartReturnData) sql.getResult();
+		reData.setReturnData(chartData);
+		reData.setUserdata(new SystemMessage("统计完成!", null, null));
+		return reData;
+	}
 }
