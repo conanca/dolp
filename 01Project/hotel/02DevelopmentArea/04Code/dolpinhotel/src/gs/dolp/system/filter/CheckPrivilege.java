@@ -7,9 +7,7 @@ import gs.dolp.system.domain.Privilege;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
+import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
 import org.nutz.mvc.view.UTF8JsonView;
@@ -21,12 +19,14 @@ import org.nutz.mvc.view.UTF8JsonView;
 public class CheckPrivilege implements ActionFilter {
 
 	@Override
-	public View match(ServletContext context, HttpServletRequest request, Method method) {
+	public View match(ActionContext context) {
+		Method method = context.getMethod();
 		// 获取被过滤的入口方法的path
 		String methodPath = method.getDeclaringClass().getName() + "." + method.getName();
 		@SuppressWarnings("unchecked")
 		// 获取session中当前用户的所有权限
-		List<Privilege> currentPrivileges = (List<Privilege>) request.getSession().getAttribute("currPrivs");
+		List<Privilege> currentPrivileges = (List<Privilege>) context.getRequest().getSession()
+				.getAttribute("currPrivs");
 		// 比较该用户有没有入口方法的权限
 		for (Privilege currPriv : currentPrivileges) {
 			String currPrivMethodPath = currPriv.getMethodPath();
