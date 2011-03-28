@@ -11,6 +11,9 @@ import gs.dolp.system.service.MenuService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -90,4 +93,12 @@ public class SystemModule {
 		User logonUser = (User) session.getAttribute("logonUser");
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}
+
+	@At
+	@Ok("raw")
+	public InputStream exportExcel(@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) throws IOException {
+		InputStream is = systemService.genExcel(rowDatas);
+		return is;
+	}
+
 }
