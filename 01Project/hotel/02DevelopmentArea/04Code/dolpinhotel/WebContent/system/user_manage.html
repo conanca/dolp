@@ -227,6 +227,10 @@ $(function(){
 			birthday: {
 				date: true
 			}
+		},
+		errorPlacement: function(error, element) {
+			$('<br/>').appendTo(element.parent());
+			error.appendTo(element.parent());
 		}
 	});
 
