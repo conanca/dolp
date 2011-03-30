@@ -38,6 +38,13 @@ public class SystemModule {
 		return systemService.getSystemName();
 	}
 
+	/**
+	 * dummy existing url, 用于 jqGrid 的 CRUD on Local Data
+	 */
+	@At
+	public void nothing() {
+	}
+
 	@At
 	public ResponseData initDatabase() {
 		return systemService.initDatabase();
