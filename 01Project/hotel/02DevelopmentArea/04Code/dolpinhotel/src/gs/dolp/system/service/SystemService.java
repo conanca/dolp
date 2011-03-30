@@ -30,6 +30,10 @@ public class SystemService extends Service {
 		return reData;
 	}
 
+	/**
+	 * 根据数据库脚本，初始化数据库
+	 * @return
+	 */
 	@Aop(value = "log")
 	public AjaxResData initDatabase() {
 		AjaxResData reData = new AjaxResData();
@@ -41,15 +45,16 @@ public class SystemService extends Service {
 	}
 
 	@Aop(value = "log")
-	public InputStream genExcel(Map<String, String>[] rowDatas) throws IOException {
-		ByteArrayOutputStream fos = new ByteArrayOutputStream();
-		InputStream is;
+	public InputStream genExcel(String[] colNames, Map<String, String>[] rowDatas) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sh = wb.createSheet();
 		HSSFRow firstRow = sh.createRow(0);
 		int i = 0;
-		for (String key : rowDatas[0].keySet()) {
-			firstRow.createCell(i).setCellValue(key);
+		for (String colName : colNames) {
+			if (colName != null && colName.contains("type='checkbox'")) {
+				continue;
+			}
+			firstRow.createCell(i).setCellValue(colName);
 			i++;
 		}
 		i = 1;
@@ -62,9 +67,9 @@ public class SystemService extends Service {
 			}
 			i++;
 		}
-		wb.write(fos);
-		is = new ByteArrayInputStream(fos.toByteArray());
-
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		wb.write(os);
+		InputStream is = new ByteArrayInputStream(os.toByteArray());
 		return is;
 	}
 }

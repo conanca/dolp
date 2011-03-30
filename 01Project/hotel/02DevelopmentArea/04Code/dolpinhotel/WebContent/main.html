@@ -16,6 +16,7 @@
 <script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <script src="js/jquery-ztree-2.5.min.js" type="text/javascript"></script>
 <script src="js/jquery.blockUI.js" type="text/javascript"></script>
+<script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
 <script src="js/system.common.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
 <link href="themes/redmond/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
@@ -70,5 +71,9 @@ $(function() {
 	</div>
 	<div id="LeftPane" class="ui-layout-west ui-widget ui-widget-content">
 	</div>
+	<form method="post" action="export.xls" id="GridExportForm">
+		<input name="colNames" type="hidden" id="GridExportFormColNames"/>
+		<input name="rowDatas" type="hidden" id="GridExportFormRowDatas"/>
+	</form>
 </body>
 </html>

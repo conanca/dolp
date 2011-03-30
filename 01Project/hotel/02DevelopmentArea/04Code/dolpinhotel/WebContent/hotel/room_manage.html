@@ -42,7 +42,8 @@ $(function(){
 	});
 	//开启jqgrid自带的增删改功能
 	$("#roomList").setJqGridCUD('#roomPager',{edit:true,add:true,del:true,search:false});
-
+	//添加自定义按钮——导出Excel
+	$("#roomList").export2Excel('#roomPager');
 	//查询按钮点击事件
 	$("#room_manage_search_btn").click(function () { 
 		var number = $("#room_manage_number").val();

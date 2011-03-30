@@ -187,4 +187,17 @@ $.extend({
 			{},{}
 		);
 	};
+	//为grid添加自定义按钮——导出Excel
+	$.fn.export2Excel = function(pager) {
+		var selectorid=this.selector;
+		$(selectorid).navButtonAdd(pager,{caption:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
+			onClickButton:function(){
+				var colNames = $(selectorid).getGridParam("colNames");
+				var rowDatas = $.toJSON($(selectorid).getRowData());
+				$("#GridExportFormColNames").val(colNames);
+				$("#GridExportFormRowDatas").val(rowDatas);
+				$("#GridExportForm").submit();
+			}
+		});
+	};
 })(jQuery);

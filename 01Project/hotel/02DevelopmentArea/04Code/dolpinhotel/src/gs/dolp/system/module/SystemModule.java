@@ -96,8 +96,9 @@ public class SystemModule {
 
 	@At
 	@Ok("raw")
-	public InputStream exportExcel(@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) throws IOException {
-		InputStream is = systemService.genExcel(rowDatas);
+	public InputStream export(@Param("colNames") String[] colNames,
+			@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) throws IOException {
+		InputStream is = systemService.genExcel(colNames, rowDatas);
 		return is;
 	}
 
