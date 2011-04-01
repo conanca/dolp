@@ -6,7 +6,7 @@ $(function(){
 
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
-		
+
 	//初始化性别下拉列表框
 	var genders = $.swapJSON($.getSysEmnuItem("gender"));
 	var certificateTypes = $.swapJSON($.getSysEmnuItem("certificateType"));
@@ -28,6 +28,7 @@ $(function(){
 		height: "100%", //自动调整高度(无滚动条)
 		datatype: "local",
 		caption:"顾客信息列表",
+		editurl: 'nothing',	// 存在的但是不作任何事情的url,用于 CRUD on Local Data
 		colNames:['姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
 			{name:'name',index:'name', width:80,editable:true},
@@ -36,8 +37,7 @@ $(function(){
 			{name:'credentialNumber',index:'credentialNumber', width:150,editable:true},
 			{name:'address',index:'address', width:300,editable:true}
 		],
-		pager: '#customerPager',
-		editurl: 'nothing'	// 存在的但是不作任何事情的url,用于 CRUD on Local Data
+		pager: '#customerPager'
 	});
 	//不显示查询按钮
 	$("#customerList").navGrid('#customerPager',{edit:true,add:true,del:true,search:false});
