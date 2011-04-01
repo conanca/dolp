@@ -1,5 +1,7 @@
 package gs.dolp.dolpinhotel.management;
 
+import gs.dolp.common.domain.AjaxResData;
+import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -34,10 +36,12 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 	 * @throws ParseException
 	 */
 	@Aop(value = "log")
-	public void saveRoomOccupancy(String enterDate, String expectedCheckOutDate, final int roomId,
+	public AjaxResData saveRoomOccupancy(String enterDate, String expectedCheckOutDate, final int roomId,
 			final Customer[] customers) throws ParseException {
-
-		if (!Strings.isBlank(enterDate) && roomId != 0) {
+		AjaxResData reData = new AjaxResData();
+		if (Strings.isBlank(enterDate) || roomId == 0) {
+			reData.setUserdata(new SystemMessage(null, null, "登记失败！"));
+		} else {
 			final RoomOccupancy roomOccupancy = new RoomOccupancy();
 			roomOccupancy.setRoomId(roomId);
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -66,7 +70,9 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 					}
 				}
 			});
+			reData.setUserdata(new SystemMessage("登记成功！", null, null));
 		}
+		return reData;
 	}
 
 	@Aop(value = "log")
@@ -121,49 +127,54 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 	 * @throws ParseException
 	 */
 	@Aop(value = "log")
-	public void checkOut(final int[] ids, String leaveDate) throws ParseException {
+	public AjaxResData checkOut(final int[] ids, String leaveDate) throws ParseException {
+		AjaxResData reData = new AjaxResData();
+		if (Strings.isBlank(leaveDate) || ids == null) {
+			reData.setUserdata(new SystemMessage(null, null, "结帐失败！"));
+		} else {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		final Timestamp leaveDateTime = new Timestamp(dateFormat.parse(leaveDate).getTime());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			final Timestamp leaveDateTime = new Timestamp(dateFormat.parse(leaveDate).getTime());
+			final Bill bill = new Bill();
+			bill.setDate(leaveDateTime);
+			final StringBuilder BillNoSb = new StringBuilder("DH");
+			BillNoSb.append(new SimpleDateFormat("yyyyMMdd").format(leaveDateTime));
+			Trans.exec(new Atom() {
+				public void run() {
 
-		final Bill bill = new Bill();
-		bill.setDate(leaveDateTime);
-		final StringBuilder BillNoSb = new StringBuilder("DH");
-		BillNoSb.append(new SimpleDateFormat("yyyyMMdd").format(leaveDateTime));
+					int currDayBillCount = dao().count(Bill.class, Cnd.where("DATE", "=", leaveDateTime)) + 1;
+					BillNoSb.append(Strings.alignRight(String.valueOf(currDayBillCount), 4, '0'));
+					bill.setNumber(BillNoSb.toString());
+					dao().insert(bill);
+					int billId = bill.getId();
+					double billAmount = 0;
 
-		Trans.exec(new Atom() {
-			public void run() {
-
-				int currDayBillCount = dao().count(Bill.class, Cnd.where("DATE", "=", leaveDateTime)) + 1;
-				BillNoSb.append(Strings.alignRight(String.valueOf(currDayBillCount), 4, '0'));
-				bill.setNumber(BillNoSb.toString());
-				dao().insert(bill);
-				int billId = bill.getId();
-				double billAmount = 0;
-
-				for (int id : ids) {
-					RoomOccupancy roomOccupancy = dao().fetchLinks(fetch((long) id), "room");
-					// 获取房间并更新其状态
-					Room room = roomOccupancy.getRoom();
-					room.setIsOccupancy(0);
-					roomOccupancy.setRoom(room);
-					roomOccupancy.setStatus(1);
-					// 设置离开日期
-					roomOccupancy.setLeaveDate(leaveDateTime);
-					// 计算并设置消费金额
-					int days = (int) (leaveDateTime.getTime() - roomOccupancy.getEnterDate().getTime()) / 86400000;
-					roomOccupancy.setOccupancyDays(days);
-					RoomType roomType = dao().fetch(RoomType.class, room.getRoomTypeId());
-					double amount = roomType.getPrice() * days;
-					billAmount += amount;
-					roomOccupancy.setAmount(amount);
-					roomOccupancy.setBillId(billId);
-					dao().update(roomOccupancy);
-					dao().update(room);
+					for (int id : ids) {
+						RoomOccupancy roomOccupancy = dao().fetchLinks(fetch((long) id), "room");
+						// 获取房间并更新其状态
+						Room room = roomOccupancy.getRoom();
+						room.setIsOccupancy(0);
+						roomOccupancy.setRoom(room);
+						roomOccupancy.setStatus(1);
+						// 设置离开日期
+						roomOccupancy.setLeaveDate(leaveDateTime);
+						// 计算并设置消费金额
+						int days = (int) (leaveDateTime.getTime() - roomOccupancy.getEnterDate().getTime()) / 86400000;
+						roomOccupancy.setOccupancyDays(days);
+						RoomType roomType = dao().fetch(RoomType.class, room.getRoomTypeId());
+						double amount = roomType.getPrice() * days;
+						billAmount += amount;
+						roomOccupancy.setAmount(amount);
+						roomOccupancy.setBillId(billId);
+						dao().update(roomOccupancy);
+						dao().update(room);
+					}
+					bill.setAmount(billAmount);
+					dao().update(bill);
 				}
-				bill.setAmount(billAmount);
-				dao().update(bill);
-			}
-		});
+			});
+			reData.setUserdata(new SystemMessage("结帐成功！", null, null));
+		}
+		return reData;
 	}
 }

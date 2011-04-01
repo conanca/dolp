@@ -71,13 +71,15 @@ $(function(){
 		var expectedCheckOutDate=$('input:text[name=expectedCheckOutDate]').val();
 		var roomId=$('select[name=roomId]').val();
 		var customers =$.toJSON($("#customerList").getRowData());
-		$.post(url, { customers: customers, enterDate: enterDate, expectedCheckOutDate: expectedCheckOutDate, roomId: roomId },
-			function(data) {
-			  $.addMessageStr("登记成功",null,null);			  
-			  $('#roomSelector').find('option').remove().end();	//移除房间号选择框的所有option
-			  $("#roomSelector").append(new Option("请先选择房间类型",""));
-			}
-		);
+		$.dolpPost(url, { customers: customers, enterDate: enterDate, expectedCheckOutDate: expectedCheckOutDate, roomId: roomId });
+
+		$('input:text[name=enterDate]').val("");
+		$('input:text[name=expectedCheckOutDate]').val("");
+		//移除房间号选择框的所有option
+		$('#roomSelector').find('option').remove().end();
+		$("#roomSelector").append(new Option("请先选择房间类型",""));
+		$("#roomTypeSelector").val("");
+		$("#customerList").clearGridData();
 	});
 });
 </script>

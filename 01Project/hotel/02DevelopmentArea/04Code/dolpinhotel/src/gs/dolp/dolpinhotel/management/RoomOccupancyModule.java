@@ -1,5 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
+import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
@@ -15,10 +16,10 @@ public class RoomOccupancyModule {
 	private RoomOccupancyService roomOccupancyService;
 
 	@At
-	public void saveRoomOccupancy(@Param("enterDate") String enterDate,
+	public ResponseData saveRoomOccupancy(@Param("enterDate") String enterDate,
 			@Param("expectedCheckOutDate") String expectedCheckOutDate, @Param("roomId") int roomId,
 			@Param("customers") Customer[] customers) throws ParseException {
-		roomOccupancyService.saveRoomOccupancy(enterDate, expectedCheckOutDate, roomId, customers);
+		return roomOccupancyService.saveRoomOccupancy(enterDate, expectedCheckOutDate, roomId, customers);
 	}
 
 	@At
@@ -34,8 +35,8 @@ public class RoomOccupancyModule {
 	}
 
 	@At
-	public void checkOut(@Param("checkOutIdArr[]") int[] ids, @Param("leaveDate") String leaveDate)
+	public ResponseData checkOut(@Param("checkOutIdArr[]") int[] ids, @Param("leaveDate") String leaveDate)
 			throws ParseException {
-		roomOccupancyService.checkOut(ids, leaveDate);
+		return roomOccupancyService.checkOut(ids, leaveDate);
 	}
 }

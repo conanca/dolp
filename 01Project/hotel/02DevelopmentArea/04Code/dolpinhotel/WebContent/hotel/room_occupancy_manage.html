@@ -70,22 +70,27 @@ $(function(){
 	});
 
 	//初始化结帐日期界面
-	$("#room_occupancy_manage_checkOutDiv").dialog({width: 300, hide: 'slide' , modal: true , autoOpen: false,close: function(event, ui) {
-			$("#room_occupancy_manage_checkOutId").attr("value",'');	//清空隐藏域的值
-			$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
+	$("#room_occupancy_manage_checkOutDiv").dialog({width: 300, hide: 'slide' , modal: true , autoOpen: false,
+		close: function(event, ui) {
+			//清空隐藏域的值
+			$("#room_occupancy_manage_checkOutId").attr("value",'');
+			//清空离开日期的值
+			$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');
 		}
 	});
 	
 	$("#room_occupancy_manage_checkOutBtn").click(function() {
 		var leaveDate = $("#room_occupancy_manage_checkOutLeaveDate").val();
-		$.post("dolpinhotel/management/roomoccupancy/checkOut", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate},
-			function(data) {
-				$.addMessageStr("结帐成功",null,null);
-				$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
-				$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
-				$('#roomOccupancyList').trigger("reloadGrid");	//刷新grid
-			}
-		);
+		//------------------设为同步模式------------------
+		$.ajaxSetup({ async: false});
+		$.dolpPost("dolpinhotel/management/roomoccupancy/checkOut", { checkOutIdArr: checkOutIdArr, leaveDate: leaveDate});
+		//清空离开日期控件的值
+		$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');
+		$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
+		//刷新grid
+		$('#roomOccupancyList').trigger("reloadGrid");
+		$.ajaxSetup({ async: true});
+		//------------------设回异步模式------------------
 	});
 	
 	$("#room_occupancy_manage_checkOutCancelBtn").click(function() {
@@ -108,10 +113,9 @@ $(function(){
     	},
 		caption: "所选房间顾客列表",
 	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
-	   	colNames:['id','序号', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
+	   	colNames:['id', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
 	   	colModel:[
 	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'no',index:'no', width:80},
 	   		{name:'name',index:'name', width:80},
 	   		{name:'gender',index:'gender', width:80},
 	   		{name:'certificateType',index:'certificateType', width:120},		
@@ -120,7 +124,7 @@ $(function(){
 	   		{name:'roomOccupancyId',index:'roomOccupancyId', width:0,hidden:true}
 	   	],
 	   	pager: '#customerSubPager',
-	   	sortname: 'no',
+	   	sortname: 'id',
 		sortorder: "asc",
 		multiselect: false
 	});

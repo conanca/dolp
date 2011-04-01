@@ -10,8 +10,6 @@ public class Customer {
 	@Id
 	private int id;
 	@Column
-	private int no;
-	@Column
 	private String name;
 	@Column
 	private String gender;
@@ -32,14 +30,6 @@ public class Customer {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getNo() {
-		return no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
 	}
 
 	public String getName() {
