@@ -32,12 +32,10 @@ public class AvailableRoomCheckService extends JqgridService<Object> {
 				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
 				int i = 1;
 				while (rs.next()) {
-					List cell = new ArrayList();
-					cell.add(rs.getString("ROOMTYPENAME"));
-					cell.add(rs.getInt("AVAILABLEROOMCOUNT"));
 					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
 					row.setId(i);
-					row.setCell(cell);
+					row.addCellItem(rs.getString("ROOMTYPENAME"));
+					row.addCellItem(String.valueOf(rs.getInt("AVAILABLEROOMCOUNT")));
 					rows.add(row);
 					i++;
 				}

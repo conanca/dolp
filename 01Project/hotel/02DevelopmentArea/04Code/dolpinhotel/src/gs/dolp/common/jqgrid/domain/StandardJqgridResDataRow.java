@@ -1,5 +1,6 @@
 package gs.dolp.common.jqgrid.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.json.Json;
@@ -33,6 +34,13 @@ public class StandardJqgridResDataRow {
 
 	public void setCell(List<String> cell) {
 		this.cell = cell;
+	}
+
+	public void addCellItem(String cellItem) {
+		if (cell == null) {
+			cell = new ArrayList<String>();
+		}
+		cell.add(cellItem);
 	}
 
 	public String toString() {

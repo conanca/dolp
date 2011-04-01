@@ -147,6 +147,7 @@ public class RoleService extends JqgridService<Role> {
 		return reData;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public List<StandardJqgridResDataRow> getRows(int organizationId, int userId) throws SQLException {
 		StringBuilder sb = new StringBuilder();
@@ -159,14 +160,12 @@ public class RoleService extends JqgridService<Role> {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
 				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
 				while (rs.next()) {
-					List cell = new ArrayList();
-					cell.add(rs.getInt("ID"));
-					cell.add(rs.getString("NAME"));
-					cell.add(rs.getString("DESCRIPTION"));
-					cell.add(rs.getBoolean("ISSET"));
 					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
 					row.setId(rs.getInt("ID"));
-					row.setCell(cell);
+					row.addCellItem(String.valueOf(rs.getInt("ID")));
+					row.addCellItem(rs.getString("NAME"));
+					row.addCellItem(rs.getString("DESCRIPTION"));
+					row.addCellItem(String.valueOf(rs.getBoolean("ISSET")));
 					rows.add(row);
 				}
 				return rows;
