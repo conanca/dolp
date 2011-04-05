@@ -37,7 +37,7 @@ $(function(){
 			if (id) {
 				roleId = id;
 				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeByRoleId/"+roleId;
-				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting, zNodes);
+				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
 				$("#privilegeInfo").dialog( "open" );
 			} else {
 				$.addMessageStr(null,"请选择角色",null);
@@ -56,8 +56,7 @@ $(function(){
 		asyncUrl: "system/menu/getPrivilegeByRoleId/0",
 		asyncParam: ["name", "id","lft","rgt","level"]
 	};
-	var zNodes =[];
-	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting, zNodes);
+	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
 	$("#privilegeAssignBtn").click(function() {
 		$.blockUI();
 
