@@ -93,10 +93,11 @@ public class SystemModule {
 	 * @param nLevel
 	 * @param session
 	 * @return
+	 * @throws Exception 
 	 */
 	@At
 	public AdvancedJqgridResData<MenuEntity> dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft,
-			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpSession session) {
+			@Param("n_right") int nRight, @Param("n_level") int nLevel, HttpSession session) throws Exception {
 		User logonUser = (User) session.getAttribute("logonUser");
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}

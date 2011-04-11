@@ -4,6 +4,7 @@ import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
 import gs.dolp.system.domain.Privilege;
@@ -78,9 +79,11 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @param nLevel
 	 * @param logonUser
 	 * @return
+	 * @throws Exception 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser) {
+	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser)
+			throws Exception {
 		if (logonUser == null) {
 			throw new RuntimeException("用户未登录!");
 		}
@@ -89,17 +92,12 @@ public class MenuService extends IdEntityService<Menu> {
 		if (null == roles || roles.size() == 0) {
 			throw new RuntimeException("当前用户未被分配角色!");
 		}
-		StringBuilder roleIdsSB = new StringBuilder();
-		for (Role r : roles) {
-			roleIdsSB.append(r.getId());
-			roleIdsSB.append(",");
-		}
-		roleIdsSB.deleteCharAt(roleIdsSB.length() - 1);
+		String roleIds = DolpCollectionHandler.getIdsString(roles, ",");
 		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIdsSB.toString());
+		List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
 		jq.setRows(rows);
 		return jq;
 	}

@@ -57,7 +57,7 @@ public class UserModule {
 	}
 
 	@At("/getCurrentRoleIDs/*")
-	public int[] getCurrentRoleIDs(String userId) {
+	public int[] getCurrentRoleIDs(String userId) throws Exception {
 		return userService.getCurrentRoleIDs(userId);
 	}
 

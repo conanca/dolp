@@ -5,6 +5,7 @@ import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -147,15 +148,10 @@ public class UserService extends JqgridService<User> {
 	}
 
 	@Aop(value = "log")
-	public int[] getCurrentRoleIDs(String userId) {
+	public int[] getCurrentRoleIDs(String userId) throws Exception {
 		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
 		List<Role> roles = user.getRoles();
-		int[] currentRoleIDs = new int[roles.size()];
-		int i = 0;
-		for (Role r : roles) {
-			currentRoleIDs[i] = r.getId();
-			i++;
-		}
+		int[] currentRoleIDs = DolpCollectionHandler.getIdsArr(roles);
 		return currentRoleIDs;
 	}
 
