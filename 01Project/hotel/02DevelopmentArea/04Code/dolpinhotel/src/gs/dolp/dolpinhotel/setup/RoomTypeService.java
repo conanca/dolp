@@ -6,7 +6,7 @@ import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +67,7 @@ public class RoomTypeService extends JqgridService<RoomType> {
 	@Aop(value = "log")
 	public Map<String, Integer> getAllRoomTypes() {
 		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
-		Map<String, Integer> roomTypeMap = new HashMap<String, Integer>();
+		Map<String, Integer> roomTypeMap = new LinkedHashMap<String, Integer>();
 		for (RoomType roomType : allRoomTypes) {
 			roomTypeMap.put(roomType.getName(), roomType.getId());
 		}
