@@ -6,7 +6,7 @@ $(function(){
 	$.ajaxSetup({ async: false});
 	// 查询出所有的房间类型
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	var allRoomTypes = $.getItem(url3);
+	var allRoomTypes = $.dolpGet(url3);
 	$("#room_manage_roomTypeId").addItems(allRoomTypes);
 	var allRoomTypes1 = $.swapJSON(allRoomTypes);
 	$.ajaxSetup({ async: true});

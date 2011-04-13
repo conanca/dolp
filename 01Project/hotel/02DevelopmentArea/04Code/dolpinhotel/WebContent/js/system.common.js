@@ -67,16 +67,16 @@ $.extend({
 		}
 	},
 	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
-	getItem: function(url) {
-		var Items = {};
+	dolpGet: function(url) {
+		var returnData = {};
 		$.getJSON(url,function(response){
 			if(response.userdata){
 				$.addMessage(response.userdata);
 				return;
 			}
-			Items = response;
+			returnData = response;
 		});
-		return Items;
+		return returnData;
 	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
@@ -98,11 +98,8 @@ $.extend({
             o[v] = k;
         });
         return o;
-    }
-});
-
-//post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-$.extend({
+    },
+    //post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 	dolpPost : function(url, data){
 		var returnData;
 		$.post(url,data,function(response){

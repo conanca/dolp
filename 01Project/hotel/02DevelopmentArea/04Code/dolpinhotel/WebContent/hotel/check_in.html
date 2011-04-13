@@ -12,7 +12,7 @@ $(function(){
 	var certificateTypes = $.swapJSON($.getSysEmnuItem("certificateType"));
 	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
 	var url3 = "dolpinhotel/setup/roomtype/getAllRoomTypes";
-	$("#roomTypeSelector").addItems($.getItem(url3));
+	$("#roomTypeSelector").addItems($.dolpGet(url3));
 	$("#roomTypeSelector").selectSubcategory({
 		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
 		subcategoryid: 'roomSelector'
