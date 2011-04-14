@@ -29,6 +29,8 @@ public class User {
 	private String phone;
 	@ManyMany(target = Role.class, relation = "SYSTEM_USER_ROLE", from = "USERID", to = "ROLEID")
 	private List<Role> roles;
+	@ManyMany(target = Message.class, relation = "SYSTEM_MESSAGE_RECEIVERUSER", from = "USERID", to = "MESSAGEID")
+	private List<Message> messages;
 
 	public static User getInstance(ResultSet rs) throws SQLException {
 		User user = new User();
@@ -115,4 +117,11 @@ public class User {
 		this.roles = roles;
 	}
 
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
 }

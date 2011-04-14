@@ -1,0 +1,69 @@
+<script type="text/javascript">
+$(function(){
+	var userMap;
+	
+	$("#messageInboxList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false
+        },
+	    viewrecords: true,
+	    caption:"收件箱消息列表",
+	   	url:'system/message/getInboxGridData',
+	   	colNames:['id','标题','发件人','日期','内容'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'title',index:'title', width:500},
+	   		{name:'senderUserId',index:'senderUserId', width:200, editable:true},
+	   		{name:'date',index:'date', width:200},
+	   		{name:'content',index:'content', width:0,hidden:true}
+	   	],
+	   	pager: '#messageInboxPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: true,
+	    loadComplete: function(data){
+	    	//------------------设为同步模式------------------
+	    	$.ajaxSetup({ async: false});
+	    	var sendUserIdArr = new Array();
+	    	var rows = data.rows;
+	    	$.each(rows, function(index, row) {
+	    		var id = row.senderUserId
+	    		if($.inArray(id,sendUserIdArr)==-1){
+	    			sendUserIdArr.push(id);
+	    		}
+	    	});
+	    	userMap = $.dolpGet('system/user/getUserMap?userIds='+sendUserIdArr);
+	    	var list = $(this)
+	    	list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
+	    	list.clearGridData();
+	    	$.each(rows, function(index, row) {
+	    		list.addRowData(index,row);
+	    	});
+	    	$.ajaxSetup({ async: true});
+	    	//------------------设回异步模式------------------
+	    	$.addMessage($(this).getUserData());
+	    },
+	    ondblClickRow: function(id) {
+	    	// TODO WRITEDETAIL
+	    	this.setGridState('hidden');
+		}
+	});
+	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:true,search:false});
+});
+</script>
+
+<table id="messageInboxList"></table>
+<div id="messageInboxPager"></div>
+<br/>
+<button id='aaqabtn'>test</button>
+<div id="messageInboxDetail">
+	<div id="messageInboxDetailTitle"></div>
+	<div id="messageInboxDetailDate"></div>
+	<label id="messageInboxDetailSender"></label> 发送至 <label id="messageInboxDetailSender"></label>
+	<div id="messageInboxDetailContent"></div>
+</div>

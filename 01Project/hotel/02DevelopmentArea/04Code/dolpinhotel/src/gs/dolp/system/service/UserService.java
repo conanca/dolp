@@ -14,7 +14,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
@@ -191,5 +193,22 @@ public class UserService extends JqgridService<User> {
 		});
 		reData.setUserdata(new SystemMessage("分配成功!", null, null));
 		return reData;
+	}
+
+	/**
+	 * 获取指定Id的用户的 ID-NAME 的Map
+	 * @param userIds
+	 * @return
+	 */
+	@Aop(value = "log")
+	public Map<String, String> getUserMap(String userIds) {
+		String[] userIdArr = userIds.split(",");
+		List<User> users = query(Cnd.where("ID", "IN", userIdArr), null);
+		//this.
+		Map<String, String> userMap = new LinkedHashMap<String, String>();
+		for (User u : users) {
+			userMap.put(String.valueOf(u.getId()), u.getName());
+		}
+		return userMap;
 	}
 }

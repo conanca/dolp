@@ -8,6 +8,7 @@ import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -65,5 +66,10 @@ public class UserModule {
 	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
 			@Param("selectedPostIds[]") String[] postIds) throws SQLException {
 		return userService.updatePost(userId, orgId, postIds);
+	}
+
+	@At
+	public Map<String, String> getUserMap(@Param("userIds") String userIds) {
+		return userService.getUserMap(userIds);
 	}
 }

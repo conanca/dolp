@@ -166,6 +166,24 @@ var ioc = {
 		}
 	},
 	
+	messageService : {
+		type : "gs.dolp.system.service.MessageService",
+		args : {
+			dao : {
+				refer : 'dao'
+			}
+		}
+	},
+
+	messageModule : {
+		type : "gs.dolp.system.module.MessageModule",
+		fields : {
+			messageService : {
+				refer : 'messageService'
+			}
+		}
+	},
+	
 	//------------------分割线--------------------------------
 
 	roomTypeService : {
