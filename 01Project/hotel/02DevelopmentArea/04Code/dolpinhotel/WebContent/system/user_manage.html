@@ -50,7 +50,8 @@ $(function(){
 	   	height: "100%",
 	    datatype: "json",
 	    jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
         },
 	    viewrecords: true,
 	    loadComplete: function(){
@@ -109,7 +110,7 @@ $(function(){
 			if( gr != null && gr != ''){
 				$(this).delGridRow(gr,{reloadAfterSubmit:true,
 	                afterSubmit: function(xhr, postdata) {
-	                    $.addMessage($.parseJSON(xhr.responseText).userdata);
+	                    $.addMessage($.parseJSON(xhr.responseText).systemMessage);
 	                    return [true];
                 }});
 			}

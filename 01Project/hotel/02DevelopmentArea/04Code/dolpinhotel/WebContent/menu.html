@@ -11,7 +11,8 @@ $(function() {
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
 		jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
         },
 	    loadComplete: function(){
 			$.addMessage($(this).getUserData());

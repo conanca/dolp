@@ -68,7 +68,7 @@ public class BillService extends JqgridService<Bill> {
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Bill bill = new Bill();
@@ -79,7 +79,7 @@ public class BillService extends JqgridService<Bill> {
 			Timestamp dateTime = new Timestamp(dateFormat.parse(date).getTime());
 			bill.setDate(dateTime);
 			dao().update(bill);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}
@@ -110,7 +110,7 @@ public class BillService extends JqgridService<Bill> {
 		dao().execute(sql);
 		ChartReturnData chartData = (ChartReturnData) sql.getResult();
 		reData.setReturnData(chartData);
-		reData.setUserdata(new SystemMessage("统计完成!", null, null));
+		reData.setSystemMessage(new SystemMessage("统计完成!", null, null));
 		return reData;
 	}
 }

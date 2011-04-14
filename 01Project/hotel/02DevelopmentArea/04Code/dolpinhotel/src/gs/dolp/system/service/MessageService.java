@@ -31,7 +31,7 @@ public class MessageService extends JqgridService<Message> {
 		Message message = getNewMessage(senderUser, receiverUserIds, title, content);
 		message.setState(0);
 		dao().insertLinks(message, "receivers");
-		reData.setUserdata(new SystemMessage("!", null, null));
+		reData.setSystemMessage(new SystemMessage("!", null, null));
 		return reData;
 	}
 
@@ -41,7 +41,7 @@ public class MessageService extends JqgridService<Message> {
 		Message message = getNewMessage(senderUser, receiverUserIds, title, content);
 		message.setState(1);
 		dao().insertLinks(message, "receivers");
-		reData.setUserdata(new SystemMessage("!", null, null));
+		reData.setSystemMessage(new SystemMessage("!", null, null));
 		return reData;
 	}
 
@@ -49,14 +49,14 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData sendDraftMessage(String messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isEmpty(messageId)) {
-			reData.setUserdata(new SystemMessage(null, "!", null));
+			reData.setSystemMessage(new SystemMessage(null, "!", null));
 			return reData;
 		}
 		int messId = Integer.valueOf(messageId);
 		Message message = fetch(messId);
 		message.setState(1);
 		dao().update(message);
-		reData.setUserdata(new SystemMessage("!", null, null));
+		reData.setSystemMessage(new SystemMessage("!", null, null));
 		return reData;
 	}
 
@@ -80,12 +80,12 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData readMessade(User readerUser, String messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isEmpty(messageId)) {
-			reData.setUserdata(new SystemMessage(null, "!", null));
+			reData.setSystemMessage(new SystemMessage(null, "!", null));
 			return reData;
 		}
 		dao().update("SYSTEM_MESSAGE_RECEIVERUSER", Chain.make("ISREAD", 1),
 				Cnd.where("MESSAGEID", "=", messageId).and("USERID", "=", readerUser.getId()));
-		reData.setUserdata(new SystemMessage("!", null, null));
+		reData.setSystemMessage(new SystemMessage("!", null, null));
 		return reData;
 	}
 

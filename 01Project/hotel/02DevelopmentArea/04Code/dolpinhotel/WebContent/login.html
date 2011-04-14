@@ -48,7 +48,7 @@ $(function() {
 					window.location="main";
 				}else{
 					$('#logonForm')[0].reset();
-					$.addMessage(response.userdata);
+					$.addMessage(response.systemMessage);
 				}
 			},"json");
 		}else{

@@ -60,7 +60,7 @@ public class OrganizationService extends JqgridService<Organization> {
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			Organization organization = new Organization();
@@ -69,7 +69,7 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().insert(organization);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Organization organization = new Organization();
@@ -79,7 +79,7 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().update(organization);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}

@@ -35,7 +35,7 @@ public class StandardJqgridResData implements ResponseData {
 	/**
 	 * 用户自定义数据——系统信息
 	 */
-	private SystemMessage userdata;
+	private SystemMessage systemMessage;
 
 	public int getPage() {
 		return page;
@@ -69,12 +69,12 @@ public class StandardJqgridResData implements ResponseData {
 		this.rows = rows;
 	}
 
-	public SystemMessage getUserdata() {
-		return userdata;
+	public SystemMessage getSystemMessage() {
+		return systemMessage;
 	}
 
-	public void setUserdata(SystemMessage userdata) {
-		this.userdata = userdata;
+	public void setSystemMessage(SystemMessage systemMessage) {
+		this.systemMessage = systemMessage;
 	}
 
 	public String toString() {

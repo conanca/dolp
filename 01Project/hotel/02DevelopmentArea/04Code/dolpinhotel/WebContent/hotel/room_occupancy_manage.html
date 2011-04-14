@@ -21,7 +21,8 @@ $(function(){
 	   	height: "100%", //自动调整高度(无滚动条)
 	    datatype: "json",
 		jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
 		},
 	    loadComplete: function(){
 			$.addMessage($(this).getUserData());
@@ -105,7 +106,8 @@ $(function(){
 	   	height: "100%", //自动调整高度(无滚动条)
 	   	datatype: "json",
 		jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
 		},
 		viewrecords: true,
 	    loadComplete: function(){

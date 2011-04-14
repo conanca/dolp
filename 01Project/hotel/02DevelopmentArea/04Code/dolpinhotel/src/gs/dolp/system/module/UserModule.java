@@ -40,7 +40,7 @@ public class UserModule {
 	public ResponseData save(@Param("..") User user) {
 		AjaxResData reData = new AjaxResData();
 		userService.save(user);
-		reData.setUserdata(new SystemMessage("保存成功!", null, null));
+		reData.setSystemMessage(new SystemMessage("保存成功!", null, null));
 		return reData;
 	}
 
@@ -48,7 +48,7 @@ public class UserModule {
 	public ResponseData deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
 		AjaxResData reData = new AjaxResData();
-		reData.setUserdata(new SystemMessage("删除成功!", null, null));
+		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		return reData;
 	}
 

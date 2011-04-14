@@ -40,7 +40,7 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 			final Customer[] customers) throws ParseException {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isBlank(enterDate) || roomId == 0) {
-			reData.setUserdata(new SystemMessage(null, null, "登记失败！"));
+			reData.setSystemMessage(new SystemMessage(null, null, "登记失败！"));
 		} else {
 			final RoomOccupancy roomOccupancy = new RoomOccupancy();
 			roomOccupancy.setRoomId(roomId);
@@ -70,7 +70,7 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 					}
 				}
 			});
-			reData.setUserdata(new SystemMessage("登记成功！", null, null));
+			reData.setSystemMessage(new SystemMessage("登记成功！", null, null));
 		}
 		return reData;
 	}
@@ -130,7 +130,7 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 	public AjaxResData checkOut(final int[] ids, String leaveDate) throws ParseException {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isBlank(leaveDate) || ids == null) {
-			reData.setUserdata(new SystemMessage(null, null, "结帐失败！"));
+			reData.setSystemMessage(new SystemMessage(null, null, "结帐失败！"));
 		} else {
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -173,7 +173,7 @@ public class RoomOccupancyService extends JqgridService<RoomOccupancy> {
 					dao().update(bill);
 				}
 			});
-			reData.setUserdata(new SystemMessage("结帐成功！", null, null));
+			reData.setSystemMessage(new SystemMessage("结帐成功！", null, null));
 		}
 		return reData;
 	}

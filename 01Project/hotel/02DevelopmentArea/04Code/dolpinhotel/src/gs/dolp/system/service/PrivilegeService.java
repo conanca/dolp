@@ -32,7 +32,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -41,7 +41,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().insert(privilege);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -51,7 +51,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().update(privilege);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}

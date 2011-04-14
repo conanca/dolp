@@ -195,7 +195,7 @@ public class MenuService extends IdEntityService<Menu> {
 				Cnd cnd = Cnd.where("LFT", ">=", menu.getLft()).and("RGT", "<=", menu.getRgt());
 				clear(cnd);
 			}
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			//获取父菜单;
@@ -213,7 +213,7 @@ public class MenuService extends IdEntityService<Menu> {
 			dao().execute(sql);
 			Menu brotherOfnewMenu = sql.getObject(Menu.class);
 			if (brotherOfnewMenu == null) {
-				reData.setUserdata(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
+				reData.setSystemMessage(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
 			} else {
 				// 新建菜单
 				Menu menu = new Menu();
@@ -223,7 +223,7 @@ public class MenuService extends IdEntityService<Menu> {
 				menu.setLft(brotherOfnewMenu.getLft() + 2);
 				menu.setRgt(brotherOfnewMenu.getRgt() + 2);
 				dao().insert(menu);
-				reData.setUserdata(new SystemMessage("添加成功!", null, null));
+				reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 			}
 		}
 		if ("edit".equals(oper)) {
@@ -232,7 +232,7 @@ public class MenuService extends IdEntityService<Menu> {
 			menu.setUrl(url);
 			menu.setDescription(description);
 			dao().update(menu);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}
@@ -265,7 +265,7 @@ public class MenuService extends IdEntityService<Menu> {
 		dao().execute(sql);
 		List<Menu> brotherOfnewMenus = sql.getList(Menu.class);
 		if (brotherOfnewMenus == null) {
-			reData.setUserdata(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
+			reData.setSystemMessage(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
 		} else {
 			// 新建菜单
 			Menu menu = new Menu();
@@ -274,7 +274,7 @@ public class MenuService extends IdEntityService<Menu> {
 			menu.setLft(brotherOfnewMenus.get(0).getRgt() + 1);
 			menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
 			dao().insert(menu);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 
 		return reData;

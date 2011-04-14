@@ -61,7 +61,7 @@ public class RoleService extends JqgridService<Role> {
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			Role role = new Role();
@@ -74,7 +74,7 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().insert(role);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			Role role = fetch(Integer.parseInt(id));
@@ -88,7 +88,7 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().update(role);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}
@@ -143,7 +143,7 @@ public class RoleService extends JqgridService<Role> {
 			}
 		});
 
-		reData.setUserdata(new SystemMessage("分配成功!", null, null));
+		reData.setSystemMessage(new SystemMessage("分配成功!", null, null));
 		return reData;
 	}
 

@@ -40,7 +40,7 @@ public class SystemService extends Service {
 		Tables.define(dao(), Tables.loadFrom("tables.dod"));
 		FileSqlManager fm = new FileSqlManager("initData.sql");
 		dao().execute(fm.createCombo(fm.keys()));
-		reData.setUserdata(new SystemMessage("初始化数据库完成！", null, null));
+		reData.setSystemMessage(new SystemMessage("初始化数据库完成！", null, null));
 		return reData;
 	}
 

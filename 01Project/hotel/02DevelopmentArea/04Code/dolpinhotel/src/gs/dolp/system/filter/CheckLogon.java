@@ -20,7 +20,7 @@ public class CheckLogon implements ActionFilter {
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			AjaxResData reData = new AjaxResData();
-			reData.setUserdata(new SystemMessage(null, null, "请先登录系统"));
+			reData.setSystemMessage(new SystemMessage(null, null, "请先登录系统"));
 			jsonView.setData(reData);
 			return jsonView;
 		}

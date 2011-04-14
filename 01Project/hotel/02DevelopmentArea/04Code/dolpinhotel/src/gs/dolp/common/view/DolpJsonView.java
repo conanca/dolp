@@ -40,7 +40,7 @@ public class DolpJsonView implements View {
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			Throwable exception = (Throwable) obj;
 			AjaxResData reData = new AjaxResData();
-			reData.setUserdata(new SystemMessage(null, null, exception.getMessage()));
+			reData.setSystemMessage(new SystemMessage(null, null, exception.getMessage()));
 			jsonWritedStr = reData;
 			// 输出日志
 			logger.error(ExceptionHandler.packageException(exception));

@@ -11,7 +11,8 @@ $(function(){
 	   	height: "100%", //自动调整高度(无滚动条)
 	   	datatype: "json",
 	   	jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
         },
 	    viewrecords: true,
 	    loadComplete: function(){
@@ -41,14 +42,14 @@ $(function(){
 		{
 			reloadAfterSubmit:true,
 			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
 			}
 		},
 		{
 			reloadAfterSubmit:true,
 			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
 			}
 		},
@@ -57,7 +58,7 @@ $(function(){
 			afterSubmit: function(xhr, postdata) {
 				//刷新表格billSubList
 				$('#sysenumSubList').trigger("reloadGrid");
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
 			}
 		},
@@ -70,7 +71,8 @@ $(function(){
 	   	autowidth: true,
 	   	height: "100%", //自动调整高度(无滚动条)
 		jsonReader:{
-	   		repeatitems: false
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
 		},
 		viewrecords: true,
 	    loadComplete: function(){

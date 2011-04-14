@@ -42,14 +42,14 @@ public class SysEnumService extends JqgridService<SysEnum> {
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			SysEnum sysEnum = new SysEnum();
 			sysEnum.setName(name);
 			sysEnum.setDescription(description);
 			dao().insert(sysEnum);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			SysEnum sysEnum = new SysEnum();
@@ -57,7 +57,7 @@ public class SysEnumService extends JqgridService<SysEnum> {
 			sysEnum.setName(name);
 			sysEnum.setDescription(description);
 			dao().update(sysEnum);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}

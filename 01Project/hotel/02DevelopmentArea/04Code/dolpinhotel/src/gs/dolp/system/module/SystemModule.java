@@ -80,7 +80,7 @@ public class SystemModule {
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser != null) {
 			reData.setReturnData(cUser.getName());
-			reData.setUserdata(new SystemMessage("登录成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("登录成功!", null, null));
 		}
 		return reData;
 	}

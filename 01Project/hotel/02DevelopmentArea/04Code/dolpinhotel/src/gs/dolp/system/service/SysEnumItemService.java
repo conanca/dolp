@@ -36,7 +36,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		}
 		if ("add".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -44,7 +44,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().insert(item);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
 		}
 		if ("edit".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -53,7 +53,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().update(item);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
 		}
 		return reData;
 	}

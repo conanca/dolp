@@ -1,6 +1,6 @@
 //使用jquery.form.js时的一个公用方法，用于提交获得Respons后显示系统消息
 function showResponse(responseText, statusText, xhr, $form)  {
-	$.addMessage($.parseJSON(responseText).userdata);
+	$.addMessage($.parseJSON(responseText).systemMessage);
 }
 
 //jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
@@ -12,13 +12,13 @@ var opts = {
 
 $.extend({
 	//显示系统消息的函数
-	addMessage : function(userData) {
-		if(!userData){
+	addMessage : function(systemMessage) {
+		if(!systemMessage){
 			return;
 		}
-		var infoMessages = userData.infoMessages;
-		var warnMessages = userData.warnMessages;
-		var errorMessages = userData.errorMessages;
+		var infoMessages = systemMessage.infoMessages;
+		var warnMessages = systemMessage.warnMessages;
+		var errorMessages = systemMessage.errorMessages;
 		if (infoMessages) {
 			opts.pnotify_title = "消息";
 			opts.pnotify_type = "notice";
@@ -70,8 +70,8 @@ $.extend({
 	dolpGet: function(url) {
 		var returnData = {};
 		$.getJSON(url,function(response){
-			if(response.userdata){
-				$.addMessage(response.userdata);
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
 				return;
 			}
 			returnData = response;
@@ -83,8 +83,8 @@ $.extend({
 		var url = 'system/sysEnum/getSysEnumItems/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
-			if(response.userdata){
-				$.addMessage(response.userdata);
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
 				return;
 			}
 			Items = response;
@@ -108,13 +108,16 @@ $.extend({
 			}else{
 				returnData = response;
 			}
-			if(response.userdata){
-				$.addMessage(response.userdata);
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
 			}
 		},"json");
 		return returnData;
 	}
 });
+
+//覆盖jqGrid的全局参数，以设置默认值
+//$.extend($.jgrid.defaults, { altRows:true });
 
 (function($) {
 	//将表单数据封装成对象，各个控件的name为属性名，value为属性值
@@ -163,21 +166,21 @@ $.extend({
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
