@@ -24,9 +24,14 @@ table{
 	overflow: auto;
 }
 
-#SystemName {
+label.header-systemname {
 	font-size:40px;
 	font-family:"黑体";
+}
+
+label.messagetitle{
+	font-size:18px;
+	font-weight: bold;
 }
 
 .ui-tabs-nav li {position: relative;}

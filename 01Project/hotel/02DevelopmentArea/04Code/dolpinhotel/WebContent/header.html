@@ -22,18 +22,13 @@ $(function() {
 
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
-	var url = 'getSystemName';
-	var systemName = $.dolpPost(url);
-	$('#SystemName').text(systemName);
-
-	var url = 'getCurrentUserName';
-	var currentUserName = $.dolpPost(url);
-	$('#CurrentUserName').text(currentUserName);
+	$('#SystemName').text($.dolpPost('getSystemName'));
+	$('#CurrentUserName').text($.dolpPost('getCurrentUserName'));
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
 });
 </script>
-<label id="SystemName"></label>
+<label id="SystemName" class="header-systemname"></label>
 <div align="right">
 	<br/>
 	欢迎：<label id="CurrentUserName"></label>&nbsp;|&nbsp;
