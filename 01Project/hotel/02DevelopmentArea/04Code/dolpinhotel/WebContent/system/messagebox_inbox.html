@@ -1,5 +1,6 @@
 <script type="text/javascript">
 $(function(){
+	$("input:button,input:submit,input:reset").button();
 	var userMap;
 	
 	$("#messageInboxList").jqGrid({
@@ -26,14 +27,14 @@ $(function(){
 	   	pager: '#messageInboxPager',
 	   	sortname: 'id',
 	    sortorder: "asc",
-	    multiselect: true,
+	    multiselect: false,
 	    loadComplete: function(data){
 	    	//------------------设为同步模式------------------
 	    	$.ajaxSetup({ async: false});
 	    	var sendUserIdArr = new Array();
 	    	var rows = data.rows;
 	    	$.each(rows, function(index, row) {
-	    		var id = row.senderUserId
+	    		var id = row.senderUserId;
 	    		if($.inArray(id,sendUserIdArr)==-1){
 	    			sendUserIdArr.push(id);
 	    		}
@@ -49,22 +50,58 @@ $(function(){
 	    	//------------------设回异步模式------------------
 	    	$.addMessage($(this).getUserData());
 	    },
-	    ondblClickRow: function(id) {
-	    	// TODO WRITEDETAIL
-	    	this.setGridState('hidden');
+	    onSelectRow: function(id) {
+	    	var row = $(this).getRowData(id);
+	    	// 显示消息详细内容，隐藏Grid
+	    	$('#messageInboxDetailId').val(row.id);
+	    	$('#messageInboxDetailTitle').text(row.title);
+	    	$('#messageInboxDetailDate').text(row.date);
+	    	$('#messageInboxDetailSender').text(userMap[row.senderUserId]);
+	    	$('#messageInboxDetailContent').html(row.content);
+	    	$(this).setGridState('hidden');
+	    	$('#messageInboxDetail').show();
+	    	// 设置该消息的已读标志
+	    	$.dolpPost('system/message/readMessade',{messageId:row.id});
 		}
 	});
-	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:true,search:false});
+	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:false,search:false});
+
+	$('#messageInboxDetail').hide();
+	
+	$('#messageInboxBack').click(function(){
+		// 显示Grid，隐藏消息详细内容
+		$("#messageInboxList").setGridState('visible');
+		$('#messageInboxDetail').hide();
+	});
+	$('#messageInboxDelete').click(function(){
+		var url = 'system/message/deleteMessage';
+		var messageId = $('#messageInboxDetailId').val();
+		$.dolpPost(url,{messageId:messageId});
+		$("#messageInboxList").trigger('reloadGrid');
+		$("#messageInboxList").setGridState('visible');
+		$('#messageInboxDetail').hide();
+	});
 });
 </script>
 
 <table id="messageInboxList"></table>
 <div id="messageInboxPager"></div>
-<br/>
-<button id='aaqabtn'>test</button>
 <div id="messageInboxDetail">
-	<div id="messageInboxDetailTitle"></div>
-	<div id="messageInboxDetailDate"></div>
-	<label id="messageInboxDetailSender"></label> 发送至 <label id="messageInboxDetailSender"></label>
-	<div id="messageInboxDetailContent"></div>
+	<input type="button" value="返回收件箱" id="messageInboxBack"/>
+	<input type="button" value="删除" id="messageInboxDelete"/>
+	<br/>
+	<input type="hidden" id="messageInboxDetailId"/>
+	<br/>
+	<label id="messageInboxDetailTitle" class="messagetitle"></label>
+	<fieldset>
+		<table width="100%">
+			<tr>
+				<td>发件人:<label id="messageInboxDetailSender"></label></td>
+				<td align="right">
+					<label id="messageInboxDetailDate"></label>
+				</td>
+			</tr>
+		</table>
+		<div id="messageInboxDetailContent"></div>
+	</fieldset>
 </div>

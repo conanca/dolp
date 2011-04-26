@@ -8,7 +8,9 @@ import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.Message;
 import gs.dolp.system.domain.User;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.nutz.dao.Chain;
@@ -30,8 +32,9 @@ public class MessageService extends JqgridService<Message> {
 		AjaxResData reData = new AjaxResData();
 		Message message = getNewMessage(senderUser, receiverUserIds, title, content);
 		message.setState(0);
-		dao().insertLinks(message, "receivers");
-		reData.setSystemMessage(new SystemMessage("!", null, null));
+		dao().insert(message);
+		dao().insertRelation(message, "receivers");
+		reData.setSystemMessage(new SystemMessage("保存草稿成功!", null, null));
 		return reData;
 	}
 
@@ -40,8 +43,9 @@ public class MessageService extends JqgridService<Message> {
 		AjaxResData reData = new AjaxResData();
 		Message message = getNewMessage(senderUser, receiverUserIds, title, content);
 		message.setState(1);
-		dao().insertLinks(message, "receivers");
-		reData.setSystemMessage(new SystemMessage("!", null, null));
+		dao().insert(message);
+		dao().insertRelation(message, "receivers");
+		reData.setSystemMessage(new SystemMessage("发送成功!", null, null));
 		return reData;
 	}
 
@@ -49,21 +53,34 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData sendDraftMessage(String messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isEmpty(messageId)) {
-			reData.setSystemMessage(new SystemMessage(null, "!", null));
+			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
 			return reData;
 		}
 		int messId = Integer.valueOf(messageId);
 		Message message = fetch(messId);
 		message.setState(1);
 		dao().update(message);
-		reData.setSystemMessage(new SystemMessage("!", null, null));
+		reData.setSystemMessage(new SystemMessage("发送成功!", null, null));
+		return reData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData deleteMessage(String messageId) {
+		AjaxResData reData = new AjaxResData();
+		if (Strings.isEmpty(messageId)) {
+			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+			return reData;
+		}
+		int messId = Integer.valueOf(messageId);
+		delete(messId);
+		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
 		return reData;
 	}
 
 	@Aop(value = "log")
 	private Message getNewMessage(User senderUser, int[] receiverUserIds, String title, String content) {
 		Message message = new Message();
-		message.setSender(senderUser);
+		message.setSenderUserId(senderUser.getId());
 		List<User> receivers = new ArrayList<User>();
 		for (int id : receiverUserIds) {
 			User user = new User();
@@ -73,6 +90,8 @@ public class MessageService extends JqgridService<Message> {
 		message.setReceivers(receivers);
 		message.setTitle(title);
 		message.setContent(content);
+		Timestamp dateTime = new Timestamp((new Date()).getTime());
+		message.setDate(dateTime);
 		return message;
 	}
 
@@ -80,12 +99,12 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData readMessade(User readerUser, String messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (Strings.isEmpty(messageId)) {
-			reData.setSystemMessage(new SystemMessage(null, "!", null));
+			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
 			return reData;
 		}
 		dao().update("SYSTEM_MESSAGE_RECEIVERUSER", Chain.make("ISREAD", 1),
 				Cnd.where("MESSAGEID", "=", messageId).and("USERID", "=", readerUser.getId()));
-		reData.setSystemMessage(new SystemMessage("!", null, null));
+		//reData.setSystemMessage(new SystemMessage("读取成功!", null, null));
 		return reData;
 	}
 
@@ -101,7 +120,7 @@ public class MessageService extends JqgridService<Message> {
 				messageIds[i] = rec.getInt("MESSAGEID");
 				i++;
 			}
-			cnd = Cnd.where("ID", "IN", messageIds);
+			cnd = Cnd.where("ID", "IN", messageIds).and("STATE", "=", 1);
 		} else {
 			cnd = Cnd.where("1", "=", "0");
 		}

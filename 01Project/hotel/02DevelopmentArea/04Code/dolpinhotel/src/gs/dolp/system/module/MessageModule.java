@@ -1,5 +1,6 @@
 package gs.dolp.system.module;
 
+import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.Message;
@@ -20,8 +21,7 @@ public class MessageModule {
 	//TODO 改名为currentUser
 	@At
 	public AdvancedJqgridResData<Message> getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
-		Object obj = session.getAttribute("logonUser");
-		User user = (User) obj;
+		User user = (User) session.getAttribute("logonUser");
 		return messageService.getReceivedMessageGridData(jqReq, user);
 	}
 
@@ -37,5 +37,30 @@ public class MessageModule {
 		Object obj = session.getAttribute("logonUser");
 		User user = (User) obj;
 		return messageService.getSentMessageGridData(jqReq, user, 0);
+	}
+
+	@At
+	public ResponseData sendMessage(@Param("receiverUserIds") int[] receiverUserIds, @Param("title") String title,
+			@Param("content") String content, HttpSession session) {
+		User user = (User) session.getAttribute("logonUser");
+		return messageService.sendMessage(user, receiverUserIds, title, content);
+	}
+
+	@At
+	public ResponseData saveMessage(@Param("receiverUserIds") int[] receiverUserIds, @Param("title") String title,
+			@Param("content") String content, HttpSession session) {
+		User user = (User) session.getAttribute("logonUser");
+		return messageService.saveMessage(user, receiverUserIds, title, content);
+	}
+
+	@At
+	public ResponseData deleteMessage(@Param("messageId") String messageId) {
+		return messageService.deleteMessage(messageId);
+	}
+
+	@At
+	public ResponseData readMessade(@Param("messageId") String messageId, HttpSession session) {
+		User user = (User) session.getAttribute("logonUser");
+		return messageService.readMessade(user, messageId);
 	}
 }

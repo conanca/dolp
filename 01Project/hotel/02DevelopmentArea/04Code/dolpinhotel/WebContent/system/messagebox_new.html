@@ -1,16 +1,170 @@
 <script type="text/javascript">
 $(function(){
-	$( "#receiverUser" ).accordion();
+	$("input:button,input:submit,input:reset").button();
+
+	//初始化用户信息界面
+	$("#messageNewUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
+
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	//初始化性别下拉列表框
+	var genders = $.getSysEmnuItem("gender");
+	var genders1 = $.swapJSON(genders); 
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
+
+	//设置Grid
+	$("#messageNewUserInfoList").jqGrid({
+		rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%",
+	    datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
+        },
+	    viewrecords: true,
+	    loadComplete: function(){
+			$.addMessage($(this).getUserData());
+    	},
+        caption: "用户列表",
+	   	url:'system/user/getGridData',
+	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'number',index:'number', width:100},
+	   		{name:'name',index:'name', width:100},
+	   		{name:'gender',index:'gender', width:100,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
+	   		{name:'age',index:'age', width:100, editable:true,hidden:true},
+	   		{name:'birthday',index:'birthday', width:100,hidden:true},
+	   		{name:'phone',index:'phone', width:150}
+	   	],
+	   	pager: '#messageNewUserInfoPager',
+	   	sortname: 'number',
+	    sortorder: "asc",
+	    multiselect: true
+	});
+	//不显示jqgrid自带的增删改查按钮
+	$("#messageNewUserInfoList").navGrid('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
+	
+	//查询按钮点击事件
+	$("#messageNewUserInfo_search_btn").click(function () { 
+		var number = $("#messageNewUserInfo_search_number").val();
+		var name = $("#messageNewUserInfo_search_name").val();
+		url = "system/user/getGridData?number="+number+"&name="+name;
+		$("#messageNewUserInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
+    });
+	
+	// 打开选择用户界面
+	 $("#messageNewReceiver").click(function() {
+		 $("#messageNewUserInfoList").trigger("reloadGrid");
+			$("#messageNewUserSelect").dialog( "open" );
+		});
+	
+	// 选择按钮点击事件
+	$("#messageNewUserSelectBtn").click(function() {
+		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');;
+		var receiverUserIds = '';
+		var receiverUserNames = '';
+    	$.each(selIds, function(index, selId) {
+    		var row = $("#messageNewUserInfoList").getRowData(selId)
+    		var number = row.number;
+    		var name = row.name;
+    		receiverUserIds+=selId+",";
+    		receiverUserNames+=name+"<"+number+">,";
+    	});
+    	$('#messageNewReceiverUserIds').val(receiverUserIds);
+    	$('#messageNewReceiverUserNames').val(receiverUserNames);
+    	$("#messageNewUserCloseBtn").click();
+	});
+	
+	// 关闭按钮点击事件
+	$("#messageNewUserCloseBtn").click(function() {
+		$("#messageNewUserSelect").dialog( "close" );
+	});
+	
+	// 验证
+	$("#messageNewForm").validate({
+		rules: {
+			receiverUserIds: {
+				required: true
+			},
+			title: {
+				required: true,
+				maxlength: 100
+			},
+			content: {
+				required: true,
+				maxlength: 1000
+			}
+		},
+		errorPlacement: function(error, element) {
+			$('<br/>').appendTo(element.parent());
+			error.appendTo(element.parent());
+		}
+	});
+	
+	$("#messageNewSend").click(function(){
+		var url = 'system/message/sendMessage';
+		saveOrSendMessage(url);
+	});
+	$("#messageNewSave").click(function(){
+		var url = 'system/message/saveMessage';
+		saveOrSendMessage(url);
+	});
 });
+
+function saveOrSendMessage(url){
+	if($("#messageNewForm").valid()){
+		var messageNewFormInfo = $("#messageNewForm").serializeObject();
+		$.dolpPost(url,messageNewFormInfo);
+		$('#messageNewForm')[0].reset();
+	}else{
+		$.addMessageStr(null,"未通过验证",null);
+	}
+}
 </script>
-收件人：
-<div id=receiverUser>
-	<h3><a href="#">指定员工</a></h3>
-    <div><input type="text" name="receiverUserIds"/></div>
-    <h3><a href="#">指定机构</a></h3>
-    <div><input type="text" name="recevierUserPostIds"/></div>
-    <h3><a href="#">指定角色</a></h3>
-    <div><input type="text" name="recevierUserRoleIds"/></div>
+
+<input type="button" value="发送" id="messageNewSend"/>
+<input type="button" value="保存" id="messageNewSave"/>
+<br/>
+<form id="messageNewForm" action="#">
+	<input type="hidden" name="receiverUserIds" id="messageNewReceiverUserIds"/>
+	<p><a href="#" id="messageNewReceiver">收件人：</a><textarea name="receiverUserNames" rows="2" style="width:91%;" id="messageNewReceiverUserNames"/></textarea></p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;主题：<input type="text" name="title" style="width:91%;"/></p>
+	<p><textarea name="content" rows="8" style="width:98%;"></textarea></p>
+</form>
+
+<div id="messageNewUserSelect" title="用户列表">
+	<fieldset>
+	<legend>用户查询</legend>
+	<table>
+		<tr>
+			<td>
+				编号：
+			</td>
+			<td>
+				<input type="text" name="number" id="messageNewUserInfo_search_number"/>
+			</td>
+			<td>
+				姓名：
+			</td>
+			<td>
+				<input type="text" name="name" id="messageNewUserInfo_search_name"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" id="messageNewUserInfo_search_btn" value="查询"/>
+			</td>
+		</tr>
+	</table>
+	</fieldset>
+	<br/>
+	<table id="messageNewUserInfoList"></table>
+	<div id="messageNewUserInfoPager"></div>
+	<br/>
+	<input type="button" id="messageNewUserSelectBtn" value="选择"/>
+	<input type="button" id="messageNewUserCloseBtn" value="关闭"/>
 </div>
-<p>主题：<input type="text" name="title"/></p>
-<p><textarea name="content" rows="8" cols="200"></textarea></p>

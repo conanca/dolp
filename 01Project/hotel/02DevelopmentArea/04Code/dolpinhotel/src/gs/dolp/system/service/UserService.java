@@ -202,10 +202,12 @@ public class UserService extends JqgridService<User> {
 	 */
 	@Aop(value = "log")
 	public Map<String, String> getUserMap(String userIds) {
+		Map<String, String> userMap = new LinkedHashMap<String, String>();
+		if (Strings.isEmpty(userIds)) {
+			return userMap;
+		}
 		String[] userIdArr = userIds.split(",");
 		List<User> users = query(Cnd.where("ID", "IN", userIdArr), null);
-		//this.
-		Map<String, String> userMap = new LinkedHashMap<String, String>();
 		for (User u : users) {
 			userMap.put(String.valueOf(u.getId()), u.getName());
 		}
