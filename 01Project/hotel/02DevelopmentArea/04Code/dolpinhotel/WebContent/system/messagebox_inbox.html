@@ -74,7 +74,7 @@ $(function(){
 		$('#messageInboxDetail').hide();
 	});
 	$('#messageInboxDelete').click(function(){
-		var url = 'system/message/deleteMessage';
+		var url = 'system/message/deleteReceivedMessage';
 		var messageId = $('#messageInboxDetailId').val();
 		$.dolpPost(url,{messageId:messageId});
 		$("#messageInboxList").trigger('reloadGrid');

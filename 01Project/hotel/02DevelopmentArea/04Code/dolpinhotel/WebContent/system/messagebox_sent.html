@@ -1,0 +1,107 @@
+<script type="text/javascript">
+$(function(){
+	$("input:button,input:submit,input:reset").button();
+	var userMap;
+	
+	$("#messageSentboxList").jqGrid({
+	   	rowNum:10,
+	   	rowList:[10,20,30],
+	   	autowidth: true,
+	   	height: "100%",
+	   	datatype: "json",
+	    jsonReader:{
+	   		repeatitems: false,
+	   		userdata:"systemMessage"
+        },
+	    viewrecords: true,
+	    caption:"发件箱消息列表",
+	   	url:'system/message/getSentboxGridData',
+	   	colNames:['id','标题','发件人','日期','内容'],
+	   	colModel:[
+	   		{name:'id',index:'id', width:0,hidden:true},
+	   		{name:'title',index:'title', width:500},
+	   		{name:'senderUserId',index:'senderUserId', width:200, editable:true},
+	   		{name:'date',index:'date', width:200},
+	   		{name:'content',index:'content', width:0,hidden:true}
+	   	],
+	   	pager: '#messageSentboxPager',
+	   	sortname: 'id',
+	    sortorder: "asc",
+	    multiselect: false,
+	    loadComplete: function(data){
+	    	//------------------设为同步模式------------------
+	    	$.ajaxSetup({ async: false});
+	    	var sendUserIdArr = new Array();
+	    	var rows = data.rows;
+	    	$.each(rows, function(index, row) {
+	    		var id = row.senderUserId;
+	    		if($.inArray(id,sendUserIdArr)==-1){
+	    			sendUserIdArr.push(id);
+	    		}
+	    	});
+	    	userMap = $.dolpGet('system/user/getUserMap?userIds='+sendUserIdArr);
+	    	var list = $(this)
+	    	list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
+	    	list.clearGridData();
+	    	$.each(rows, function(index, row) {
+	    		list.addRowData(index,row);
+	    	});
+	    	$.ajaxSetup({ async: true});
+	    	//------------------设回异步模式------------------
+	    	$.addMessage($(this).getUserData());
+	    },
+	    onSelectRow: function(id) {
+	    	var row = $(this).getRowData(id);
+	    	// 显示消息详细内容，隐藏Grid
+	    	$('#messageSentboxDetailId').val(row.id);
+	    	$('#messageSentboxDetailTitle').text(row.title);
+	    	$('#messageSentboxDetailDate').text(row.date);
+	    	$('#messageSentboxDetailSender').text(userMap[row.senderUserId]);
+	    	$('#messageSentboxDetailContent').html(row.content);
+	    	$(this).setGridState('hidden');
+	    	$('#messageSentboxDetail').show();
+	    	// 设置该消息的已读标志
+	    	$.dolpPost('system/message/readMessade',{messageId:row.id});
+		}
+	});
+	$("#messageSentboxList").setJqGridCUD('#messageSentboxPager',{edit:false,add:false,del:false,search:false});
+
+	$('#messageSentboxDetail').hide();
+	
+	$('#messageSentboxBack').click(function(){
+		// 显示Grid，隐藏消息详细内容
+		$("#messageSentboxList").setGridState('visible');
+		$('#messageSentboxDetail').hide();
+	});
+	$('#messageSentboxDelete').click(function(){
+		var url = 'system/message/deleteSentMessage';
+		var messageId = $('#messageSentboxDetailId').val();
+		$.dolpPost(url,{messageId:messageId});
+		$("#messageSentboxList").trigger('reloadGrid');
+		$("#messageSentboxList").setGridState('visible');
+		$('#messageSentboxDetail').hide();
+	});
+});
+</script>
+
+<table id="messageSentboxList"></table>
+<div id="messageSentboxPager"></div>
+<div id="messageSentboxDetail">
+	<input type="button" value="返回发件箱" id="messageSentboxBack"/>
+	<input type="button" value="删除" id="messageSentboxDelete"/>
+	<br/>
+	<input type="hidden" id="messageSentboxDetailId"/>
+	<br/>
+	<label id="messageSentboxDetailTitle" class="messagetitle"></label>
+	<fieldset>
+		<table width="100%">
+			<tr>
+				<td>发件人:<label id="messageSentboxDetailSender"></label></td>
+				<td align="right">
+					<label id="messageSentboxDetailDate"></label>
+				</td>
+			</tr>
+		</table>
+		<div id="messageSentboxDetailContent"></div>
+	</fieldset>
+</div>

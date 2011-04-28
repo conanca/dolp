@@ -65,17 +65,14 @@ $(function(){
 	// 选择按钮点击事件
 	$("#messageNewUserSelectBtn").click(function() {
 		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');;
-		var receiverUserIds = '';
-		var receiverUserNames = '';
+		var receiverUserNames = $('#messageNewReceiverUsers').val();
     	$.each(selIds, function(index, selId) {
     		var row = $("#messageNewUserInfoList").getRowData(selId)
     		var number = row.number;
     		var name = row.name;
-    		receiverUserIds+=selId+",";
     		receiverUserNames+=name+"<"+number+">,";
     	});
-    	$('#messageNewReceiverUserIds').val(receiverUserIds);
-    	$('#messageNewReceiverUserNames').val(receiverUserNames);
+    	$('#messageNewReceiverUsers').val(receiverUserNames);
     	$("#messageNewUserCloseBtn").click();
 	});
 	
@@ -130,8 +127,7 @@ function saveOrSendMessage(url){
 <input type="button" value="保存" id="messageNewSave"/>
 <br/>
 <form id="messageNewForm" action="#">
-	<input type="hidden" name="receiverUserIds" id="messageNewReceiverUserIds"/>
-	<p><a href="#" id="messageNewReceiver">收件人：</a><textarea name="receiverUserNames" rows="2" style="width:91%;" id="messageNewReceiverUserNames"/></textarea></p>
+	<p><a href="#" id="messageNewReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageNewReceiverUsers"/></textarea></p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;主题：<input type="text" name="title" style="width:91%;"/></p>
 	<p><textarea name="content" rows="8" style="width:98%;"></textarea></p>
 </form>

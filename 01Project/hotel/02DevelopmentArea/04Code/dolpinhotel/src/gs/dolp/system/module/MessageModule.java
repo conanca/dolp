@@ -26,41 +26,57 @@ public class MessageModule {
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getSentGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public AdvancedJqgridResData<Message> getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
 		Object obj = session.getAttribute("logonUser");
 		User user = (User) obj;
 		return messageService.getSentMessageGridData(jqReq, user, 1);
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getDraftGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public AdvancedJqgridResData<Message> getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
 		Object obj = session.getAttribute("logonUser");
 		User user = (User) obj;
 		return messageService.getSentMessageGridData(jqReq, user, 0);
 	}
 
 	@At
-	public ResponseData sendMessage(@Param("receiverUserIds") int[] receiverUserIds, @Param("title") String title,
-			@Param("content") String content, HttpSession session) {
+	public ResponseData sendMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
+			@Param("title") String title, @Param("content") String content, HttpSession session) {
 		User user = (User) session.getAttribute("logonUser");
-		return messageService.sendMessage(user, receiverUserIds, title, content);
+		return messageService.sendMessage(messageId, user, receiverUsers, title, content);
 	}
 
 	@At
-	public ResponseData saveMessage(@Param("receiverUserIds") int[] receiverUserIds, @Param("title") String title,
-			@Param("content") String content, HttpSession session) {
+	public ResponseData saveMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
+			@Param("title") String title, @Param("content") String content, HttpSession session) {
 		User user = (User) session.getAttribute("logonUser");
-		return messageService.saveMessage(user, receiverUserIds, title, content);
+		return messageService.saveMessage(messageId, user, receiverUsers, title, content);
 	}
 
 	@At
-	public ResponseData deleteMessage(@Param("messageId") String messageId) {
-		return messageService.deleteMessage(messageId);
+	public ResponseData deleteReceivedMessage(@Param("messageId") int messageId, HttpSession session) {
+		User user = (User) session.getAttribute("logonUser");
+		return messageService.deleteReceivedMessage(messageId, user);
 	}
 
 	@At
-	public ResponseData readMessade(@Param("messageId") String messageId, HttpSession session) {
+	public ResponseData deleteSentMessage(@Param("messageId") int messageId) {
+		return messageService.deleteSentMessage(messageId);
+	}
+
+	@At
+	public ResponseData deleteDraftMessage(@Param("messageId") int messageId) {
+		return messageService.deleteDraftMessage(messageId);
+	}
+
+	@At
+	public ResponseData readMessade(@Param("messageId") int messageId, HttpSession session) {
 		User user = (User) session.getAttribute("logonUser");
 		return messageService.readMessade(user, messageId);
+	}
+
+	@At
+	public ResponseData getReceiverUserNum(@Param("messageId") int messageId) {
+		return messageService.getReceiverUserNum(messageId);
 	}
 }
