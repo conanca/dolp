@@ -48,8 +48,8 @@ public class MessageService extends JqgridService<Message> {
 			dao().update(message);
 		} else {
 			dao().insert(message);
-			dao().insertRelation(message, "receivers");
 		}
+		dao().insertRelation(message, "receivers");
 		reData.setSystemMessage(new SystemMessage("保存草稿成功!", null, null));
 		return reData;
 	}
@@ -74,8 +74,8 @@ public class MessageService extends JqgridService<Message> {
 			dao().update(message);
 		} else {
 			dao().insert(message);
-			dao().insertRelation(message, "receivers");
 		}
+		dao().insertRelation(message, "receivers");
 		reData.setSystemMessage(new SystemMessage("发送成功!", null, null));
 		return reData;
 	}
@@ -231,7 +231,8 @@ public class MessageService extends JqgridService<Message> {
 			sb.append(user.getNumber());
 			sb.append(",");
 		}
-		reData.setReturnData(sb.toString());
+		String receiverUserNums = sb.toString();
+		reData.setReturnData(receiverUserNums);
 		return reData;
 	}
 
