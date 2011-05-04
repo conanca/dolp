@@ -121,6 +121,7 @@ $(function(){
 	
 	$('#messageDraftboxBack').click(function(){
 		// 显示Grid，隐藏消息详细内容
+		$('#messageDraftboxList').trigger("reloadGrid");
 		$("#messageDraftboxList").setGridState('visible');
 		$('#messageDraftboxDetail').hide();
 		$('#messageDraftboxUserSelect').hide();
@@ -169,10 +170,15 @@ $(function(){
 	// 验证
 	$("#messageDraftboxForm").validate({
 		rules: {
+			receiverUsers: {
+				required: true
+			},
 			title: {
+				required: true,
 				maxlength: 100
 			},
 			content: {
+				required: true,
 				maxlength: 1000
 			}
 		},
@@ -184,15 +190,17 @@ $(function(){
 	
 	$("#messageDraftboxSend").click(function(){
 		var url = 'system/message/sendMessage';
-		saveOrSendMessage(url);
+		messageDraftboxSaveOrSendMessage(url);
+		$('#messageDraftboxBack').click();
 	});
 	$("#messageDraftboxSave").click(function(){
 		var url = 'system/message/saveMessage';
-		saveOrSendMessage(url);
+		messageDraftboxSaveOrSendMessage(url);
+		$('#messageDraftboxBack').click();
 	});
 });
 
-function saveOrSendMessage(url){
+function messageDraftboxSaveOrSendMessage(url){
 	if($("#messageDraftboxForm").valid()){
 		var messageNewFormInfo = $("#messageDraftboxForm").serializeObject();
 		$.dolpPost(url,messageNewFormInfo);

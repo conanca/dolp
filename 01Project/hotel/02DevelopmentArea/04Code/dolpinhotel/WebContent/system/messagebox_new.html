@@ -84,7 +84,7 @@ $(function(){
 	// 验证
 	$("#messageNewForm").validate({
 		rules: {
-			receiverUserIds: {
+			receiverUsers: {
 				required: true
 			},
 			title: {
@@ -104,15 +104,15 @@ $(function(){
 	
 	$("#messageNewSend").click(function(){
 		var url = 'system/message/sendMessage';
-		saveOrSendMessage(url);
+		messageNewSaveOrSendMessage(url);
 	});
 	$("#messageNewSave").click(function(){
 		var url = 'system/message/saveMessage';
-		saveOrSendMessage(url);
+		messageNewSaveOrSendMessage(url);
 	});
 });
 
-function saveOrSendMessage(url){
+function messageNewSaveOrSendMessage(url){
 	if($("#messageNewForm").valid()){
 		var messageNewFormInfo = $("#messageNewForm").serializeObject();
 		$.dolpPost(url,messageNewFormInfo);

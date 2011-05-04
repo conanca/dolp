@@ -21,6 +21,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.lang.Strings;
 
 public class MessageService extends JqgridService<Message> {
 
@@ -232,6 +233,9 @@ public class MessageService extends JqgridService<Message> {
 			sb.append(",");
 		}
 		String receiverUserNums = sb.toString();
+		if (Strings.isEmpty(receiverUserNums)) {
+			receiverUserNums = " ";
+		}
 		reData.setReturnData(receiverUserNums);
 		return reData;
 	}
