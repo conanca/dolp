@@ -85,7 +85,7 @@ $(function(){
 	    			sendUserIdArr.push(id);
 	    		}
 	    	});
-	    	userMap = $.dolpGet('system/user/getUserMap?userIds='+sendUserIdArr);
+	    	userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
 	    	var list = $(this)
 	    	list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
 	    	list.clearGridData();
