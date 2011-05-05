@@ -116,7 +116,8 @@ public class MenuService extends IdEntityService<Menu> {
 		int parentRgt;
 		if (nodeId == 0) {
 			parentLft = 0;
-			parentRgt = 1000;
+			// TODO 此处应从系统参数中取
+			parentRgt = 1001;
 		} else {
 			Menu parentNode = fetch(nodeId);
 			parentLft = parentNode.getLft();
@@ -148,7 +149,8 @@ public class MenuService extends IdEntityService<Menu> {
 		int parentRgt;
 		if (parentId == 0) {
 			parentLft = 0;
-			parentRgt = 1000;
+			// TODO 此处应从系统参数中取
+			parentRgt = 1001;
 		} else {
 			Menu parentNode = fetch(parentId);
 			parentLft = parentNode.getLft();
