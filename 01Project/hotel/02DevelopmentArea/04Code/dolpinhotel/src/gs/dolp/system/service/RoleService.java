@@ -94,13 +94,15 @@ public class RoleService extends JqgridService<Role> {
 	}
 
 	@Aop(value = "log")
-	public Map<String, String> getAllRole(int isOrgaRela) {
+	public AjaxResData getAllRoleMap(int isOrgaRela) {
+		AjaxResData reData = new AjaxResData();
 		List<Role> roles = query(Cnd.where("ISORGARELA", "=", 0), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
 			roleOptions.put(r.getName(), String.valueOf(r.getId()));
 		}
-		return roleOptions;
+		reData.setReturnData(roleOptions);
+		return reData;
 	}
 
 	@Aop(value = "log")

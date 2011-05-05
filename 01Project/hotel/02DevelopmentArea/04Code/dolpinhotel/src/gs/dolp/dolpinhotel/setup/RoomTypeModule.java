@@ -4,8 +4,6 @@ import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
-import java.util.Map;
-
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -28,8 +26,8 @@ public class RoomTypeModule {
 	}
 
 	@At
-	public Map<String, Integer> getAllRoomTypes() {
-		return roomTypeService.getAllRoomTypes();
+	public ResponseData getAllRoomTypes() {
+		return roomTypeService.getAllRoomTypeMap();
 	}
 
 }

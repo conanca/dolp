@@ -65,13 +65,15 @@ public class RoomTypeService extends JqgridService<RoomType> {
 	}
 
 	@Aop(value = "log")
-	public Map<String, Integer> getAllRoomTypes() {
+	public AjaxResData getAllRoomTypeMap() {
+		AjaxResData reData = new AjaxResData();
 		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
 		Map<String, Integer> roomTypeMap = new LinkedHashMap<String, Integer>();
 		for (RoomType roomType : allRoomTypes) {
 			roomTypeMap.put(roomType.getName(), roomType.getId());
 		}
-		return roomTypeMap;
+		reData.setReturnData(roomTypeMap);
+		return reData;
 	}
 
 }

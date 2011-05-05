@@ -8,7 +8,6 @@ import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
 import java.sql.SQLException;
-import java.util.Map;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -27,12 +26,12 @@ public class UserModule {
 	}
 
 	@At
-	public String getNewUserNumber() {
+	public ResponseData getNewUserNumber() {
 		return userService.getNewUserNumber();
 	}
 
 	@At("/userNumberIsDuplicate/*")
-	public boolean userNumberIsDuplicate(String userNumber) {
+	public ResponseData userNumberIsDuplicate(String userNumber) {
 		return userService.userNumberIsDuplicate(userNumber);
 	}
 
@@ -58,8 +57,8 @@ public class UserModule {
 	}
 
 	@At("/getCurrentRoleIDs/*")
-	public int[] getCurrentRoleIDs(String userId) throws Exception {
-		return userService.getCurrentRoleIDs(userId);
+	public ResponseData getCurrentRoleIDs(String userId) throws Exception {
+		return userService.getCurrentRoleIdArr(userId);
 	}
 
 	@At
@@ -68,8 +67,8 @@ public class UserModule {
 		return userService.updatePost(userId, orgId, postIds);
 	}
 
-	@At
-	public Map<String, String> getUserMap(@Param("userIds") String userIds) {
+	@At("/getUserMap/*")
+	public ResponseData getUserMap(String userIds) {
 		return userService.getUserMap(userIds);
 	}
 }

@@ -7,8 +7,6 @@ import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
-import java.util.Map;
-
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -33,8 +31,8 @@ public class RoleModule {
 	}
 
 	@At
-	public Map<String, String> getAllRole(@Param("isOrgaRela") int isOrgaRela) {
-		return roleService.getAllRole(isOrgaRela);
+	public ResponseData getAllRole(@Param("isOrgaRela") int isOrgaRela) {
+		return roleService.getAllRoleMap(isOrgaRela);
 	}
 
 	@At

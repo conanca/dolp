@@ -60,8 +60,8 @@ public class UserService extends JqgridService<User> {
 	}
 
 	@Aop(value = "log")
-	public String getNewUserNumber() {
-		String newUserNumber = "";
+	public AjaxResData getNewUserNumber() {
+		AjaxResData reData = new AjaxResData();
 		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -73,17 +73,22 @@ public class UserService extends JqgridService<User> {
 			}
 		});
 		dao().execute(sql);
-		newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4, '0');
-		return newUserNumber;
+		String newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4,
+				'0');
+		reData.setReturnData(newUserNumber);
+		return reData;
 	}
 
 	@Aop(value = "log")
-	public boolean userNumberIsDuplicate(String userNumber) {
+	public AjaxResData userNumberIsDuplicate(String userNumber) {
+		AjaxResData reData = new AjaxResData();
 		int count = count(Cnd.where("NUMBER", "=", userNumber));
 		if (count > 0) {
-			return true;
+			reData.setReturnData(true);
+		} else {
+			reData.setReturnData(false);
 		}
-		return false;
+		return reData;
 	}
 
 	@Aop(value = "log")
@@ -150,11 +155,13 @@ public class UserService extends JqgridService<User> {
 	}
 
 	@Aop(value = "log")
-	public int[] getCurrentRoleIDs(String userId) throws Exception {
+	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
+		AjaxResData reData = new AjaxResData();
 		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
 		List<Role> roles = user.getRoles();
 		int[] currentRoleIDs = DolpCollectionHandler.getIdsArr(roles);
-		return currentRoleIDs;
+		reData.setReturnData(currentRoleIDs);
+		return reData;
 	}
 
 	@Aop(value = "log")
@@ -201,16 +208,18 @@ public class UserService extends JqgridService<User> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public Map<String, String> getUserMap(String userIds) {
+	public AjaxResData getUserMap(String userIds) {
+		AjaxResData reData = new AjaxResData();
 		Map<String, String> userMap = new LinkedHashMap<String, String>();
 		if (Strings.isEmpty(userIds)) {
-			return userMap;
+			return reData;
 		}
 		String[] userIdArr = userIds.split(",");
 		List<User> users = query(Cnd.where("ID", "IN", userIdArr), null);
 		for (User u : users) {
 			userMap.put(String.valueOf(u.getId()), u.getName());
 		}
-		return userMap;
+		reData.setReturnData(userMap);
+		return reData;
 	}
 }

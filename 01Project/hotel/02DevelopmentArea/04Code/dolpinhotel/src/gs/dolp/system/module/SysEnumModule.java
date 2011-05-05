@@ -8,8 +8,6 @@ import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
 import gs.dolp.system.service.SysEnumService;
 
-import java.util.Map;
-
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -43,8 +41,8 @@ public class SysEnumModule {
 		return sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
 	}
 
-	@At("/getSysEnumItems/*")
-	public Map<String, String> getSysEnumItems(String sysEnumName) {
-		return sysEnumItemService.getSysEnumItem(sysEnumName);
+	@At("/getSysEnumItemMap/*")
+	public ResponseData getSysEnumItemMap(String sysEnumName) {
+		return sysEnumItemService.getSysEnumItemMap(sysEnumName);
 	}
 }

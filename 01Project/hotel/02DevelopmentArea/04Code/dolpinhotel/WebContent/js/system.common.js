@@ -72,22 +72,24 @@ $.extend({
 		$.getJSON(url,function(response){
 			if(response.systemMessage){
 				$.addMessage(response.systemMessage);
-				return;
 			}
-			returnData = response;
+			if(response.returnData){
+				returnData = response.returnData;
+			}
 		});
 		return returnData;
 	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
-		var url = 'system/sysEnum/getSysEnumItems/'+SysEnumName;
+		var url = 'system/sysEnum/getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
 			if(response.systemMessage){
 				$.addMessage(response.systemMessage);
-				return;
 			}
-			Items = response;
+			if(response.returnData){
+				Items = response.returnData;
+			}
 		});
 		return Items;
     },
@@ -101,15 +103,13 @@ $.extend({
     },
     //post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 	dolpPost : function(url, data){
-		var returnData;
+		var returnData = {};
 		$.post(url,data,function(response){
-			if(response.returnData){
-				returnData = response.returnData;
-			}else{
-				returnData = response;
-			}
 			if(response.systemMessage){
 				$.addMessage(response.systemMessage);
+			}
+			if(response.returnData){
+				returnData = response.returnData;
 			}
 		},"json");
 		return returnData;

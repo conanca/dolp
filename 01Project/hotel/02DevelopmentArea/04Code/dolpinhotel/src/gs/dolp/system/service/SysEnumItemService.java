@@ -59,13 +59,15 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 	}
 
 	@Aop(value = "log")
-	public Map<String, String> getSysEnumItem(String sysEnumName) {
+	public AjaxResData getSysEnumItemMap(String sysEnumName) {
+		AjaxResData reData = new AjaxResData();
 		SysEnum sysEnum = dao().fetch(SysEnum.class, Cnd.where("NAME", "=", sysEnumName));
 		List<SysEnumItem> items = dao().query(SysEnumItem.class, Cnd.where("SYSENUMID", "=", sysEnum.getId()), null);
 		Map<String, String> options = new LinkedHashMap<String, String>();
 		for (SysEnumItem item : items) {
 			options.put(item.getText(), item.getValue());
 		}
-		return options;
+		reData.setReturnData(options);
+		return reData;
 	}
 }
