@@ -42,7 +42,7 @@ public class SystemModule {
 	 * dummy existing url, 用于 jqGrid 的 CRUD on Local Data
 	 */
 	@At
-	public void nothing() {
+	public void doNothing() {
 	}
 
 	@At
