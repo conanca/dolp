@@ -70,3 +70,11 @@ label.messagetitle{
  * 布局左侧Panel和jqGrid下边框的样式
 */
 .ui-layout-west .ui-jqgrid tr.jqgrow td { border-bottom: 0px none;}
+
+
+/*
+ * ui-datepicker的样式
+*/
+.ui-datepicker select.ui-datepicker-month-year {width: 60%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 40%;}
