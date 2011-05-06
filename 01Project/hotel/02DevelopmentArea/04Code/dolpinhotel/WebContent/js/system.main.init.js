@@ -21,6 +21,6 @@ $.extend($.jgrid.defaults, {
 	},
 	viewrecords: true,
 	loadComplete: function(){
-		$.addMessage($(this).getUserData());
+		$.addMessage($(this).getGridParam('userData'));
 	}
 });

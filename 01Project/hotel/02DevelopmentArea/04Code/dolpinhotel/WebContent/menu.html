@@ -15,7 +15,7 @@ $(function() {
 	   		userdata:"systemMessage"
         },
 	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
+			$.addMessage($(this).getGridParam('userData'));
     	},
 		rowNum: 200,
 		caption: "",

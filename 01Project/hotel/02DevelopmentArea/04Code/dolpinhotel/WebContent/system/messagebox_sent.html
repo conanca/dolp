@@ -41,7 +41,7 @@ $(function(){
 	    	});
 	    	$.ajaxSetup({ async: true});
 	    	//------------------设回异步模式------------------
-	    	$.addMessage($(this).getUserData());
+	    	$.addMessage($(this).getGridParam('userData'));
 	    },
 	    onSelectRow: function(id) {
 	    	var row = $(this).getRowData(id);
