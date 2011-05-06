@@ -15,19 +15,9 @@ $(function(){
 	//------------------设回异步模式------------------
 	
 	$("#roomOccupancyList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	    datatype: "json",
-		jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-		},
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
-		viewrecords: true,
+	   	jsonReader:{
+	   		repeatitems: false
+        },
 		caption: "房间入住情况列表",
 	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
 	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
@@ -100,19 +90,9 @@ $(function(){
 	});
 
 	$("#customerSubList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	   	datatype: "json",
-		jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-		},
-		viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
+	   	jsonReader:{
+	   		repeatitems: false
+        },
 		caption: "所选房间顾客列表",
 	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
 	   	colNames:['id', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],

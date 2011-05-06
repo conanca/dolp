@@ -3,18 +3,9 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	$("#roomTypeList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	    datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
+	   	jsonReader:{
+	   		repeatitems: false
         },
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
 	    caption: "房间类型列表",
 	    viewrecords: true,
 	   	url:'dolpinhotel/setup/roomtype/getGridData',

@@ -3,19 +3,9 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	var roleId=0;	
 	$("#roleList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
+		jsonReader:{
+			repeatitems: false
+		},
 	    caption:"角色列表",
 	   	url:'system/role/getGridData?isOrgaRela=0',
 	    editurl:"system/role/editRow",

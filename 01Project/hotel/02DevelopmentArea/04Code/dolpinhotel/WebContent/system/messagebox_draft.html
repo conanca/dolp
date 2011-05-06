@@ -16,19 +16,9 @@ $(function(){
 	
 		//设置Grid
 	$("#messageDraftboxUserInfoList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	    datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
+	   	jsonReader:{
+	   		repeatitems: false
         },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
         caption: "用户列表",
 	   	url:'system/user/getGridData',
 	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
@@ -50,16 +40,9 @@ $(function(){
 	$("#messageDraftboxUserInfoList").navGrid('#messageDraftboxUserInfoPager',{edit:false,add:false,del:false,search:false});
 	
 	$("#messageDraftboxList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
+	   	jsonReader:{
+	   		repeatitems: false
         },
-	    viewrecords: true,
 	    caption:"草稿箱消息列表",
 	   	url:'system/message/getDraftboxGridData',
 	   	colNames:['id','标题','发件人','日期','内容'],

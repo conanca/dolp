@@ -26,19 +26,9 @@ $(function(){
 	});
 
 	$("#postList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
+		jsonReader:{
+			repeatitems: false
         },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
 	    caption:"岗位列表",
 	   	url:'system/role/getGridData?isOrgaRela=1',
 	    editurl:"system/role/editRow",

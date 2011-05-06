@@ -5,19 +5,9 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	$("#sysenumList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	   	datatype: "json",
-	   	jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
+		jsonReader:{
+			repeatitems: false
+		},
 	    caption: "系统枚举列表",
 	   	url:'system/sysEnum/getSysEnumGridData',
 	    editurl: "system/sysEnum/editSysEnum",
@@ -66,18 +56,9 @@ $(function(){
 	);
 	
 	$("#sysenumSubList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
 		jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
+			repeatitems: false
 		},
-		viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
 		caption: "枚举项列表",
 	   	url:'system/sysEnum/getSysEnumItemGridData',
 		editurl: "system/sysEnum/editSysEnumItem",

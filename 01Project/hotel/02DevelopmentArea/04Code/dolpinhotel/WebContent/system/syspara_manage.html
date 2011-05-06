@@ -1,19 +1,9 @@
 <script type="text/javascript">
 $(function(){
 	$("#sysParaList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
+		jsonReader:{
+			repeatitems: false
+		},
 	    caption:"系统参数列表",
 	   	url:'system/sysPara/getGridData',
 	    editurl:"system/sysPara/editRow",

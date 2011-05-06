@@ -44,19 +44,9 @@ $(function(){
 
 	//设置Grid
 	$("#userInfoList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	    datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
+		jsonReader:{
+			repeatitems: false
+		},
         caption: "用户列表",
 	   	url:'system/user/getGridData',
 	   	editurl: "system/user/deleteRow",
@@ -289,15 +279,6 @@ $(function(){
 	var userPostOrganizationTree = $("#userPostOrganizationTreeUl").zTree(userPostOrganizationTreeSetting);
 
 	$("#userPostList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
 	    caption:"岗位列表",
 	   	url:'system/role/getUserPost',
 	   	colNames:['id','名称','描述','已分配'],
