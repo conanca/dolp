@@ -47,10 +47,9 @@ $(function(){
 		series: []
 	}
 
-	var url = "dolpinhotel/management/bill/statisticBill";
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
-	var chartData = $.dolpPost(url);
+	var chartData = $.dolpGet("dolpinhotel/management/bill/statisticBill");
 	option.xAxis.categories = chartData.categories;
 	option.series = chartData.series;
 	$.ajaxSetup({ async: true});

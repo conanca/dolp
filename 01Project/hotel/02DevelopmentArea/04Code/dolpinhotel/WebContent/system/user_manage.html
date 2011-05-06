@@ -73,10 +73,9 @@ $(function(){
 		onClickButton:function(){
 			userInfoIsEditFlag = false;
 			$("#userInfo").dialog( "open" );
-			var url = "system/user/getNewUserNumber";
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
-			var newUserNumber = $.dolpPost(url);
+			var newUserNumber = $.dolpGet("system/user/getNewUserNumber");
 			$("#userInfoNumber").val(newUserNumber);
 			$.ajaxSetup({ async: true});
 			//------------------设回异步模式------------------
@@ -171,10 +170,9 @@ $(function(){
 		if(userInfoIsEditFlag){
 			return true;
 		}
-		var url = "system/user/userNumberIsDuplicate/"+value;
 		//------------------设为同步模式------------------
 		$.ajaxSetup({ async: false});
-		var userNumberIsDuplicate = $.dolpPost(url);
+		var userNumberIsDuplicate = $.dolpGet("system/user/userNumberIsDuplicate/"+value);
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 		if(userNumberIsDuplicate == true)
