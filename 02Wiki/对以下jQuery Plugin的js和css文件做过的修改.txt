@@ -50,16 +50,4 @@ jquery.selectsubcategory.js 82-84ÐÐ
 					   });
 					}
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-jquery.pnotify.default.cssÔö¼Ó£º
-/*----------------------------------*/
-
-/* Custom styled notice CSS */
-
-/* This one is done through code, to show how it is done. Look down
-			   at the stack_bottomright variable in the JavaScript below. */
-.ui-pnotify.stack-bottomright {
-	/* These are just CSS default values to reset the pnotify CSS. */
-	right: auto;
-	top: auto;
-}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
