@@ -3,15 +3,8 @@ function showResponse(responseText, statusText, xhr, $form)  {
 	$.addMessage($.parseJSON(responseText).systemMessage);
 }
 
-//jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
-var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-var opts = {
-	pnotify_addclass: "stack-bottomright",
-	pnotify_stack: stack_bottomright
-};
-
 $.extend({
-	//显示系统消息的函数
+	//显示系统消息的函数(消息对象systemMessage)
 	addMessage : function(systemMessage) {
 		if(!systemMessage){
 			return;
@@ -45,6 +38,7 @@ $.extend({
 	        });
 		}
 	},
+	//显示系统消息的函数(消息内容infoMessage,warnMessage,errorMessage)
 	addMessageStr : function(infoMessage,warnMessage,errorMessage) {
 		if (infoMessage) {
 			opts.pnotify_title = "消息";
@@ -66,19 +60,6 @@ $.extend({
 			$.pnotify(opts);
 		}
 	},
-	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
-	dolpGet: function(url) {
-		var returnData = {};
-		$.getJSON(url,function(response){
-			if(response.systemMessage){
-				$.addMessage(response.systemMessage);
-			}
-			if(response.returnData){
-				returnData = response.returnData;
-			}
-		});
-		return returnData;
-	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
 		var url = 'system/sysEnum/getSysEnumItemMap/'+SysEnumName;
@@ -93,14 +74,19 @@ $.extend({
 		});
 		return Items;
     },
-	//为JSON格式的map数据做键值互换
-    swapJSON: function(json) {
-        var o = {};
-        $.each(json, function(k, v) {
-            o[v] = k;
-        });
-        return o;
-    },
+	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
+	dolpGet: function(url) {
+		var returnData = {};
+		$.getJSON(url,function(response){
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
+			}
+			if(response.returnData){
+				returnData = response.returnData;
+			}
+		});
+		return returnData;
+	},
     //post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 	dolpPost : function(url, data){
 		var returnData = {};
@@ -113,11 +99,16 @@ $.extend({
 			}
 		},"json");
 		return returnData;
-	}
+	},
+	//为JSON格式的map数据做键值互换
+    swapJSON: function(json) {
+        var o = {};
+        $.each(json, function(k, v) {
+            o[v] = k;
+        });
+        return o;
+    }
 });
-
-//覆盖jqGrid的全局参数，以设置默认值
-//$.extend($.jgrid.defaults, { altRows:true });
 
 (function($) {
 	//将表单数据封装成对象，各个控件的name为属性名，value为属性值

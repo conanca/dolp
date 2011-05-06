@@ -18,6 +18,7 @@
 <script src="js/jquery.blockUI.js" type="text/javascript"></script>
 <script src="js/jquery.json-2.2.min.js" type="text/javascript"></script>
 <script src="js/system.common.js" type="text/javascript"></script>
+<script src="js/system.main.init.js" type="text/javascript"></script>
 <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css"/>
 <link href="themes/redmond/jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css" id="jQueryUICssSrc"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
@@ -25,7 +26,7 @@
 <link href="css/jquery.validate.css" rel="stylesheet" type="text/css"/>
 <link href="zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
 <link href="zTreeStyle/zTreeIcons.css" rel="stylesheet" type="text/css"/>
-<link href="css/main.css" rel="stylesheet" type="text/css"/>
+<link href="css/system.main.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 var maintab;
 $(function() {
@@ -50,10 +51,6 @@ $(function() {
             maintab.tabs('select', '#' + ui.panel.id);
         }
     });
-
-	$.blockUI.defaults.message='<h1>请稍候...</h1>';
-	$.blockUI.defaults.fadeOut = 200;
-	//$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 });
 </script>
 </head>

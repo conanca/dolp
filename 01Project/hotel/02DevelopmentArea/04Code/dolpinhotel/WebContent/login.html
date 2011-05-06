@@ -6,22 +6,28 @@
 <title>Login page</title>
 <script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.11.custom.min.js" type="text/javascript"></script>
-<script src="js/system.common.js" type="text/javascript"></script>
 <script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
 <script src="js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="js/i18n/messages_cn.js" type="text/javascript"></script>
+<script src="js/system.common.js" type="text/javascript"></script>
 <link href="themes/redmond/jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css"/>
 <link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
 <link href="css/jquery.validate.css" rel="stylesheet" type="text/css"/>
-<link href="css/main.css" rel="stylesheet" type="text/css"/>
+<link href="css/system.main.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 $(function() {
 	$("#login").dialog( {width:330, draggable: false } );
 	$("input:button,input:submit,input:reset").button();
 
-	opts.pnotify_title = "消息";
-	opts.pnotify_type = "notice";
-	opts.pnotify_text = "用户编号：1000\n 密码：123";
+	//jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
+	var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+	var opts = {
+		pnotify_addclass: "stack-bottomright",
+		pnotify_stack: stack_bottomright,
+		pnotify_title: "消息",
+		pnotify_type: "notice",
+		pnotify_text: "用户编号：1000\n 密码：123"
+	};
 	$.pnotify(opts);
 
 	// 验证
