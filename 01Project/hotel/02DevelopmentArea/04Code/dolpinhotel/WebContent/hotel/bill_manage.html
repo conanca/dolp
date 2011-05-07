@@ -11,23 +11,23 @@ $(function(){
 	//------------------设回异步模式------------------
 	
 	$("#billList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-	    caption: "账单列表",
-	   	url:'dolpinhotel/management/bill/getGridData',
-	    editurl: "dolpinhotel/management/bill/editRow",	//del:true
-	   	colNames:['id','账单号', '金额','日期'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'number',index:'number', width:100, editable:true},
-	   		{name:'amount',index:'amount', width:100, editable:true},
-	   		{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate},
-	   	],
-	   	pager: '#billPager',
-	   	sortname: 'number',
-	    sortorder: "asc",
-	    multiselect: false,
+		jsonReader:{
+			repeatitems: false
+		},
+		caption: "账单列表",
+		url:'dolpinhotel/management/bill/getGridData',
+		editurl: "dolpinhotel/management/bill/editRow",	//del:true
+		colNames:['id','账单号', '金额','日期'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'number',index:'number', width:100, editable:true},
+			{name:'amount',index:'amount', width:100, editable:true},
+			{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate},
+		],
+		pager: '#billPager',
+		sortname: 'number',
+		sortorder: "asc",
+		multiselect: false,
 		onSelectRow: function(id) {
 			$("#billSubList").setGridParam({url:"dolpinhotel/management/roomoccupancy/getGridData?billId="+id,page:1});
 			$("#billSubList").trigger('reloadGrid');
@@ -56,25 +56,25 @@ $(function(){
 	);
 
 	$("#billSubList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
+		jsonReader:{
+			repeatitems: false
+		},
 		caption: "房间入住情况列表",
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData?status=3',
-	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
-	   		{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
-	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
-	   		{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
-	   		{name:'occupancyDays',index:'occupancyDays', width:120},
-	   		{name:'amount',index:'amount', width:100},
-	   		{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"},hidden:true},
-	   		{name:'billId',index:'billId', width:0,hidden:true}
-	   	],
-	   	pager: '#billSubPager',
-	   	sortname: 'id',
+		url:'dolpinhotel/management/roomoccupancy/getGridData?status=3',
+		colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
+			{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
+			{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
+			{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
+			{name:'occupancyDays',index:'occupancyDays', width:120},
+			{name:'amount',index:'amount', width:100},
+			{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"},hidden:true},
+			{name:'billId',index:'billId', width:0,hidden:true}
+		],
+		pager: '#billSubPager',
+		sortname: 'id',
 		sortorder: "desc",
 		multiselect: false
 	});
@@ -89,7 +89,7 @@ $(function(){
 		var dateTo = $("#bill_manage_dateTo").val();
 		var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
 		$("#billList").setGridParam({url:url,page:1}).trigger("reloadGrid");
-    });
+	});
 });
 
 function fmtDate(value){

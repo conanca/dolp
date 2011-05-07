@@ -3,24 +3,24 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 	
 	$("#roomTypeList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-	    caption: "房间类型列表",
-	    viewrecords: true,
-	   	url:'dolpinhotel/setup/roomtype/getGridData',
-	    editurl: "dolpinhotel/setup/roomtype/editRow",	//del:true
-	   	colNames:['id','房间类型', '价格','描述'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:100, editable:true},
-	   		{name:'price',index:'price', width:100, editable:true},
-	   		{name:'description',index:'description', width:300, editable:true, edittype:'textarea'}
-	   	],
-	   	pager: '#roomTypePager',
-	   	sortname: 'price',
-	    sortorder: "asc",
-	    multiselect: true
+		jsonReader:{
+			repeatitems: false
+		},
+		caption: "房间类型列表",
+		viewrecords: true,
+		url:'dolpinhotel/setup/roomtype/getGridData',
+		editurl: "dolpinhotel/setup/roomtype/editRow",	//del:true
+		colNames:['id','房间类型', '价格','描述'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'name',index:'name', width:100, editable:true},
+			{name:'price',index:'price', width:100, editable:true},
+			{name:'description',index:'description', width:300, editable:true, edittype:'textarea'}
+		],
+		pager: '#roomTypePager',
+		sortname: 'price',
+		sortorder: "asc",
+		multiselect: true
 	});
 	//开启jqgrid自带的增删改功能
 	$("#roomTypeList").setJqGridCUD('#roomTypePager',{edit:true,add:true,del:true,search:false});

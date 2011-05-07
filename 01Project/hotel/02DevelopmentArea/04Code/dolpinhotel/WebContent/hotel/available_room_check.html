@@ -2,14 +2,14 @@
 $(function(){
 	$("#availableRoomCheckList").jqGrid({
 		caption:"可用房列表",
-	   	url:'dolpinhotel/management/availableroomcheck/getGridData',
-	   	colNames:['房间类型','可用房数量'],
-	   	colModel:[
-	   		{name:'roomType',index:'roomType', width:90},
-	   		{name:'count',index:'count', width:60},
-	   	],
-	   	pager: '#availableRoomCheckPager',
-	   	sortname: 'count',
+		url:'dolpinhotel/management/availableroomcheck/getGridData',
+		colNames:['房间类型','可用房数量'],
+		colModel:[
+			{name:'roomType',index:'roomType', width:90},
+			{name:'count',index:'count', width:60},
+		],
+		pager: '#availableRoomCheckPager',
+		sortname: 'count',
 		sortorder: "desc"
 	});
 	//不显示jqgrid自带的增删改查按钮

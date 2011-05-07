@@ -29,10 +29,10 @@ $(function() {
 		jsonReader:{
 			repeatitems: false
 		},
-	    caption:"权限列表",
-	   	url:'system/privilege/getGridData/0',
-	    editurl:"system/privilege/editRow/0",
-	    colNames: ["id","权限名","方法路径","描述","menuId"],
+		caption:"权限列表",
+		url:'system/privilege/getGridData/0',
+		editurl:"system/privilege/editRow/0",
+		colNames: ["id","权限名","方法路径","描述","menuId"],
 		colModel: [
 			{name: "id",index:'id',width:0,hidden:true,key:true},
 			{name: "name",index:'name', width:100,editable:true},
@@ -40,10 +40,10 @@ $(function() {
 			{name: "description",index:'description',width:200,editable:true},
 			{name: "menuId",index:'menuId',width:0,hidden:true}
 		],
-	   	pager: '#privilegePager',
-	   	sortname: 'id',
-	    sortorder: "asc",
-	    multiselect: true
+		pager: '#privilegePager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
 	});
 	$("#privilegeList").setJqGridCUD('#privilegePager',{edit:true,add:true,del:true,search:false});
 });

@@ -39,18 +39,18 @@ $(function() {
 
 	//在menu.html中触发maintab的add事件时，需要激活这个新增的tab
 	maintab =$('#tabs', '#RightPane').tabs({
-        add: function(e, ui) {
-            // append close thingy
-            $(ui.tab).parents('li:first')
-                .append('<span class="ui-tabs-close ui-icon ui-icon-close" title="Close Tab"></span>')
-                .find('span.ui-tabs-close')
-                .click(function() {
-                    maintab.tabs( 'remove', $('li', maintab).index($(this).parents('li:first')[0] ) );
-                } );
-            // select just added tab
-            maintab.tabs('select', '#' + ui.panel.id);
-        }
-    });
+		add: function(e, ui) {
+			// append close thingy
+			$(ui.tab).parents('li:first')
+				.append('<span class="ui-tabs-close ui-icon ui-icon-close" title="Close Tab"></span>')
+				.find('span.ui-tabs-close')
+				.click(function() {
+					maintab.tabs( 'remove', $('li', maintab).index($(this).parents('li:first')[0] ) );
+				} );
+			// select just added tab
+			maintab.tabs('select', '#' + ui.panel.id);
+		}
+	});
 });
 </script>
 </head>

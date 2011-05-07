@@ -11,12 +11,12 @@ $(function() {
 		treeIcons: {leaf:'ui-icon-document-b'},
 		datatype: "json",
 		jsonReader:{
-	   		repeatitems: false,
-	   		userdata:"systemMessage"
-        },
-	    loadComplete: function(){
+			repeatitems: false,
+			userdata:"systemMessage"
+		},
+		loadComplete: function(){
 			$.addMessage($(this).getGridParam('userData'));
-    	},
+ 	},
 		rowNum: 200,
 		caption: "",
 		url: "dispMenu",

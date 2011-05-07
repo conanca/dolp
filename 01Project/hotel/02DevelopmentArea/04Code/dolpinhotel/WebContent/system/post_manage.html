@@ -28,21 +28,21 @@ $(function(){
 	$("#postList").jqGrid({
 		jsonReader:{
 			repeatitems: false
-        },
-	    caption:"岗位列表",
-	   	url:'system/role/getGridData?isOrgaRela=1',
-	    editurl:"system/role/editRow",
-	   	colNames:['id','名称','描述','organizationId'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:150,editable:true},
-	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
-	   		{name:'organizationId',index:'organizationId', width:0,hidden:true}
-	   	],
-	   	pager: '#postPager',
-	   	sortname: 'id',
-	    sortorder: "asc",
-	    multiselect: true
+		},
+		caption:"岗位列表",
+		url:'system/role/getGridData?isOrgaRela=1',
+		editurl:"system/role/editRow",
+		colNames:['id','名称','描述','organizationId'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'name',index:'name', width:150,editable:true},
+			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
+			{name:'organizationId',index:'organizationId', width:0,hidden:true}
+		],
+		pager: '#postPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
 	});
 	$("#postList").setJqGridCUD('#postPager',{edit:true,add:true,del:true,search:false});
 

@@ -14,25 +14,25 @@ $(function(){
 	//------------------设回异步模式------------------
 	
 	$("#roomOccupancyList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
+		jsonReader:{
+			repeatitems: false
+		},
 		caption: "房间入住情况列表",
-	   	url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
-	   	colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
-	   		{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
-	   		{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
-	   		{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
-	   		{name:'occupancyDays',index:'occupancyDays', width:120},
-	   		{name:'amount',index:'amount', width:100},
-	   		{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
-	   		{name:'billId',index:'billId', width:0,hidden:true}
-	   	],
-	   	pager: '#roomOccupancyPager',
-	   	sortname: 'id',
+		url:'dolpinhotel/management/roomoccupancy/getGridData?billId=0',
+		colNames:['id','房间号', '入住日期','预离日期','离开日期','入住天数','金额','状态','billId'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
+			{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
+			{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
+			{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
+			{name:'occupancyDays',index:'occupancyDays', width:120},
+			{name:'amount',index:'amount', width:100},
+			{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"}},
+			{name:'billId',index:'billId', width:0,hidden:true}
+		],
+		pager: '#roomOccupancyPager',
+		sortname: 'id',
 		sortorder: "desc",
 		multiselect: true,
 		onSelectRow: function(id) {
@@ -98,23 +98,23 @@ $(function(){
 	//------------------设回异步模式------------------
 
 	$("#customerSubList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
+		jsonReader:{
+			repeatitems: false
+		},
 		caption: "所选房间顾客列表",
-	   	url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
-	   	colNames:['id', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:80},
-	   		{name:'gender',index:'gender', width:80,edittype:'select', formatter:'select', editoptions:{value:genders}},
-	   		{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},		
-	   		{name:'credentialNumber',index:'credentialNumber', width:150},		
-	   		{name:'address',index:'address', width:300},
-	   		{name:'roomOccupancyId',index:'roomOccupancyId', width:0,hidden:true}
-	   	],
-	   	pager: '#customerSubPager',
-	   	sortname: 'id',
+		url:'dolpinhotel/management/customer/getGridDataByRoomOccId',
+		colNames:['id', '姓名','性别','证件类型','证件号','籍贯地址','roomOccupancyId'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'name',index:'name', width:80},
+			{name:'gender',index:'gender', width:80,edittype:'select', formatter:'select', editoptions:{value:genders}},
+			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},		
+			{name:'credentialNumber',index:'credentialNumber', width:150},		
+			{name:'address',index:'address', width:300},
+			{name:'roomOccupancyId',index:'roomOccupancyId', width:0,hidden:true}
+		],
+		pager: '#customerSubPager',
+		sortname: 'id',
 		sortorder: "asc",
 		multiselect: false
 	});
@@ -136,7 +136,7 @@ $(function(){
 		+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
 		+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
 		$("#roomOccupancyList").setGridParam({url:url,page:1}).trigger("reloadGrid");
-    });
+	});
 });
 
 function fmtDate(value){
@@ -217,7 +217,7 @@ function fmtDate(value){
 <table id="customerSubList"></table>
 <div id="customerSubPager"></div>
 
-<div id="room_occupancy_manage_checkOutDiv"  title="请选择离开日期">
+<div id="room_occupancy_manage_checkOutDiv" title="请选择离开日期">
 	<table>
 		<tr>
 			<td>

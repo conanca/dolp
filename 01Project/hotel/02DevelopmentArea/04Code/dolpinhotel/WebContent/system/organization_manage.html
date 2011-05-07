@@ -26,24 +26,24 @@ $(function(){
 	});
 
 	$("#organizationList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-	    caption:"机构详细信息列表",
-	   	url:'system/organization/getGridData?parentOrgId=0',
-	    editurl:"system/organization/editRow?parentOrgId=0",
-	   	colNames:['id','代码','名称','描述','父节点Id'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'code',index:'code', width:100,editable:true},
-	   		{name:'name',index:'name', width:100,editable:true},
-	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},	//设置弹出窗口中字段类型
-	   		{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true}
-	   	],
-	   	pager: '#organizationPager',
-	   	sortname: 'id',
-	    sortorder: "asc",
-	    multiselect: true
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"机构详细信息列表",
+		url:'system/organization/getGridData?parentOrgId=0',
+		editurl:"system/organization/editRow?parentOrgId=0",
+		colNames:['id','代码','名称','描述','父节点Id'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'code',index:'code', width:100,editable:true},
+			{name:'name',index:'name', width:100,editable:true},
+			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},	//设置弹出窗口中字段类型
+			{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true}
+		],
+		pager: '#organizationPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
 	});
 	$("#organizationList").setJqGridCUD('#organizationPager',{edit:true,add:true,del:true,search:false});
 

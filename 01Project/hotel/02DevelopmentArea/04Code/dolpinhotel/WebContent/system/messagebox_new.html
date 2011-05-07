@@ -15,25 +15,25 @@ $(function(){
 
 	//设置Grid
 	$("#messageNewUserInfoList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-        caption: "用户列表",
-	   	url:'system/user/getGridData',
-	   	colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'number',index:'number', width:100},
-	   		{name:'name',index:'name', width:100},
-	   		{name:'gender',index:'gender', width:100,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
-	   		{name:'age',index:'age', width:100, editable:true,hidden:true},
-	   		{name:'birthday',index:'birthday', width:100,hidden:true},
-	   		{name:'phone',index:'phone', width:150}
-	   	],
-	   	pager: '#messageNewUserInfoPager',
-	   	sortname: 'number',
-	    sortorder: "asc",
-	    multiselect: true
+		jsonReader:{
+			repeatitems: false
+		},
+		caption: "用户列表",
+		url:'system/user/getGridData',
+		colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'number',index:'number', width:100},
+			{name:'name',index:'name', width:100},
+			{name:'gender',index:'gender', width:100,resizable:false, edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
+			{name:'age',index:'age', width:100, editable:true,hidden:true},
+			{name:'birthday',index:'birthday', width:100,hidden:true},
+			{name:'phone',index:'phone', width:150}
+		],
+		pager: '#messageNewUserInfoPager',
+		sortname: 'number',
+		sortorder: "asc",
+		multiselect: true
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#messageNewUserInfoList").navGrid('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
@@ -44,26 +44,26 @@ $(function(){
 		var name = $("#messageNewUserInfo_search_name").val();
 		url = "system/user/getGridData?number="+number+"&name="+name;
 		$("#messageNewUserInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
-    });
+	});
 	
 	// 打开选择用户界面
-	 $("#messageNewReceiver").click(function() {
-		 $("#messageNewUserInfoList").trigger("reloadGrid");
-			$("#messageNewUserSelect").dialog( "open" );
-		});
+	$("#messageNewReceiver").click(function() {
+		$("#messageNewUserInfoList").trigger("reloadGrid");
+		$("#messageNewUserSelect").dialog( "open" );
+	});
 	
 	// 选择按钮点击事件
 	$("#messageNewUserSelectBtn").click(function() {
 		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');;
 		var receiverUserNames = $('#messageNewReceiverUsers').val();
-    	$.each(selIds, function(index, selId) {
-    		var row = $("#messageNewUserInfoList").getRowData(selId)
-    		var number = row.number;
-    		var name = row.name;
-    		receiverUserNames+=name+"<"+number+">,";
-    	});
-    	$('#messageNewReceiverUsers').val(receiverUserNames);
-    	$("#messageNewUserCloseBtn").click();
+	 	$.each(selIds, function(index, selId) {
+	 		var row = $("#messageNewUserInfoList").getRowData(selId)
+	 		var number = row.number;
+	 		var name = row.name;
+	 		receiverUserNames+=name+"<"+number+">,";
+	 	});
+	 	$('#messageNewReceiverUsers').val(receiverUserNames);
+	 	$("#messageNewUserCloseBtn").click();
 	});
 	
 	// 关闭按钮点击事件

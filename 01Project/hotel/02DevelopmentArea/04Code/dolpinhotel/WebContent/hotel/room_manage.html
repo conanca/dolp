@@ -12,24 +12,24 @@ $(function(){
 	//------------------设回异步模式------------------
 	
 	$("#roomList").jqGrid({
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-	    caption: "房间列表",
-	   	url:'dolpinhotel/setup/room/getJqgridData',
-	    editurl: "dolpinhotel/setup/room/editRow",
+		jsonReader:{
+			repeatitems: false
+		},
+		caption: "房间列表",
+		url:'dolpinhotel/setup/room/getJqgridData',
+		editurl: "dolpinhotel/setup/room/editRow",
 		datatype: "json",
-	   	colNames:['id','房间号', '房间类型','已入住'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'number',index:'number', width:100, editable:true},
-	   		{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
-	   		{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
-	   	],
-	   	pager: '#roomPager',
-	   	sortname: 'number',
-	    sortorder: "asc",
-	    multiselect: true
+		colNames:['id','房间号', '房间类型','已入住'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'number',index:'number', width:100, editable:true},
+			{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
+			{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
+		],
+		pager: '#roomPager',
+		sortname: 'number',
+		sortorder: "asc",
+		multiselect: true
 	});
 	//开启jqgrid自带的增删改功能
 	$("#roomList").setJqGridCUD('#roomPager',{edit:true,add:true,del:true,search:false});
@@ -42,7 +42,7 @@ $(function(){
 		var roomTypeId = $("#room_manage_roomTypeId").val();
 		url = "dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId;
 		$("#roomList").setGridParam({url:url, page:1}).trigger("reloadGrid");
-    });
+	});
 });
 </script>
 
