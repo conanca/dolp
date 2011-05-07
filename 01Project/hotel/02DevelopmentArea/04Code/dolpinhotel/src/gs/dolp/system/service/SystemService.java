@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -14,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
+import org.nutz.dao.tools.DTable;
 import org.nutz.dao.tools.Tables;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.service.Service;
@@ -37,8 +39,14 @@ public class SystemService extends Service {
 	@Aop(value = "log")
 	public AjaxResData initDatabase() {
 		AjaxResData reData = new AjaxResData();
-		Tables.define(dao(), Tables.loadFrom("tables.dod"));
-		FileSqlManager fm = new FileSqlManager("initData.sql");
+		// 初始化表结构
+		List<DTable> dts = Tables.loadFrom("tables_system.dod");
+		dts.addAll(Tables.loadFrom("tables_hotel.dod"));
+		Tables.define(dao(), dts);
+		// 初始化记录
+		FileSqlManager fm = new FileSqlManager("init_system.sql");
+		dao().execute(fm.createCombo(fm.keys()));
+		fm = new FileSqlManager("init_hotel.sql");
 		dao().execute(fm.createCombo(fm.keys()));
 		reData.setSystemMessage(new SystemMessage("初始化数据库完成！", null, null));
 		return reData;

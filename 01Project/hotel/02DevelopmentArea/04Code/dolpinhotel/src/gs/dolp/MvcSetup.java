@@ -1,7 +1,10 @@
 package gs.dolp;
 
+import java.util.List;
+
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
+import org.nutz.dao.tools.DTable;
 import org.nutz.dao.tools.Tables;
 import org.nutz.ioc.Ioc;
 import org.nutz.mvc.NutConfig;
@@ -17,8 +20,14 @@ public class MvcSetup implements Setup {
 		Ioc ioc = config.getIoc();
 		Dao dao = ioc.get(Dao.class, "dao");
 		if (!dao.exists("SYSTEM_USER")) {
-			Tables.define(dao, Tables.loadFrom("tables.dod"));
-			FileSqlManager fm = new FileSqlManager("initData.sql");
+			// 初始化表结构
+			List<DTable> dts = Tables.loadFrom("tables_system.dod");
+			dts.addAll(Tables.loadFrom("tables_hotel.dod"));
+			Tables.define(dao, dts);
+			// 初始化记录
+			FileSqlManager fm = new FileSqlManager("init_system.sql");
+			dao.execute(fm.createCombo(fm.keys()));
+			fm = new FileSqlManager("init_hotel.sql");
 			dao.execute(fm.createCombo(fm.keys()));
 		}
 	}
