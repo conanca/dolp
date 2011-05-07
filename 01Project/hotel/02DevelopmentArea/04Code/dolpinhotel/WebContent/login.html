@@ -15,19 +15,21 @@
 <link href="css/jquery.validate.css" rel="stylesheet" type="text/css"/>
 <link href="css/system.main.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
+
+//登录界面的默认提示信息
+var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+var opts = {
+	pnotify_addclass: "stack-bottomright",
+	pnotify_stack: stack_bottomright,
+	pnotify_title: "消息",
+	pnotify_type: "notice",
+	pnotify_text: "用户编号：1000\n 密码：123"
+};
+
 $(function() {
 	$("#login").dialog( {width:330, draggable: false } );
 	$("input:button,input:submit,input:reset").button();
 
-	//jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
-	var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-	var opts = {
-		pnotify_addclass: "stack-bottomright",
-		pnotify_stack: stack_bottomright,
-		pnotify_title: "消息",
-		pnotify_type: "notice",
-		pnotify_text: "用户编号：1000\n 密码：123"
-	};
 	$.pnotify(opts);
 
 	// 验证
