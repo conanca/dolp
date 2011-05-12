@@ -31,6 +31,13 @@ label.messagetitle{
 	font-weight: bold;
 }
 
+/*
+ * tree和grid之间的分隔线
+*/
+td.linebetween{
+	border-left:1px dashed #CCCCCC;
+}
+
 
 /*
  * 布局——左侧和右侧Panel的样式
