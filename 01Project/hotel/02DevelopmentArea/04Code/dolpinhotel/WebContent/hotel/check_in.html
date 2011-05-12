@@ -16,11 +16,11 @@ $(function(){
 		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
 		subcategoryid: 'roomSelector'
 	});
-	
+
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
 
-	$("#customerList").jqGrid({		
+	$("#customerList").jqGrid({
 		datatype: "local",
 		viewrecords: false,
 		caption:"顾客信息列表",
@@ -37,7 +37,7 @@ $(function(){
 	});
 	//不显示查询按钮
 	$("#customerList").navGrid('#customerPager',{edit:true,add:true,del:true,search:false});
-	
+
 	// 验证
 	$("#roomOccupancyForm").validate({
 		rules: {
@@ -56,7 +56,7 @@ $(function(){
 			}
 		}
 	});
-	
+
 	$("#roomcheckin").click(function() {
 		if(!$("#roomOccupancyForm").valid()){
 			$.addMessageStr(null,"未通过验证",null);

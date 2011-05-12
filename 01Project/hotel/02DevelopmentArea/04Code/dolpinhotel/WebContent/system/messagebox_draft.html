@@ -2,7 +2,7 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 	var userMap;
-	
+
 	//初始化用户信息界面
 	$("#messageDraftboxUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
 
@@ -10,10 +10,10 @@ $(function(){
 	$.ajaxSetup({ async: false});
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders); 
+	var genders1 = $.swapJSON(genders);
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
-	
+
 		//设置Grid
 	$("#messageDraftboxUserInfoList").jqGrid({
 		jsonReader:{
@@ -38,7 +38,7 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#messageDraftboxUserInfoList").navGrid('#messageDraftboxUserInfoPager',{edit:false,add:false,del:false,search:false});
-	
+
 	$("#messageDraftboxList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -58,50 +58,50 @@ $(function(){
 		sortorder: "asc",
 		multiselect: false,
 		loadComplete: function(data){
-	 	//------------------设为同步模式------------------
-	 	$.ajaxSetup({ async: false});
-	 	var sendUserIdArr = new Array();
-	 	var rows = data.rows;
-	 	$.each(rows, function(index, row) {
-	 		var id = row.senderUserId;
-	 		if($.inArray(id,sendUserIdArr)==-1){
-	 			sendUserIdArr.push(id);
-	 		}
-	 	});
-	 	userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
-	 	var list = $(this)
-	 	list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
-	 	list.clearGridData();
-	 	$.each(rows, function(index, row) {
-	 		list.addRowData(index,row);
-	 	});
-	 	$.ajaxSetup({ async: true});
-	 	//------------------设回异步模式------------------
-	 	$.addMessage($(this).getGridParam('userData'));
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
+			var sendUserIdArr = new Array();
+			var rows = data.rows;
+			$.each(rows, function(index, row) {
+				var id = row.senderUserId;
+				if($.inArray(id,sendUserIdArr)==-1){
+					sendUserIdArr.push(id);
+				}
+			});
+			userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
+			var list = $(this)
+			list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
+			list.clearGridData();
+			$.each(rows, function(index, row) {
+				list.addRowData(index,row);
+			});
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
+			$.addMessage($(this).getGridParam('userData'));
 		},
 		onSelectRow: function(id) {
-	 	var row = $(this).getRowData(id);
-	 	// 显示消息详细内容，隐藏Grid
-	 	$('#messageDraftboxMessageId').val(row.id);
-	 	$('#messageDraftboxTitle').val(row.title);
-	 	$('#messageDraftboxContent').val(row.content);
-	 	//------------------设为同步模式------------------
-	 	$.ajaxSetup({ async: false});
-	 	var usersNum = $.dolpGet('system/message/getReceiverUserNum?messageId='+row.id);
-	 	$.ajaxSetup({ async: true});
-	 	//------------------设回异步模式------------------
-	 	$('#messageDraftboxReceiverUserNames').val(usersNum);
-	 	$(this).setGridState('hidden');
-	 	$('#messageDraftboxDetail').show();
-	 	// 设置该消息的已读标志
-	 	$.dolpPost('system/message/readMessade',{messageId:row.id});
+			var row = $(this).getRowData(id);
+			// 显示消息详细内容，隐藏Grid
+			$('#messageDraftboxMessageId').val(row.id);
+			$('#messageDraftboxTitle').val(row.title);
+			$('#messageDraftboxContent').val(row.content);
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
+			var usersNum = $.dolpGet('system/message/getReceiverUserNum?messageId='+row.id);
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
+			$('#messageDraftboxReceiverUserNames').val(usersNum);
+			$(this).setGridState('hidden');
+			$('#messageDraftboxDetail').show();
+			// 设置该消息的已读标志
+			$.dolpPost('system/message/readMessade',{messageId:row.id});
 		}
 	});
 	$("#messageDraftboxList").setJqGridCUD('#messageDraftboxPager',{edit:false,add:false,del:false,search:false});
 
 	$('#messageDraftboxDetail').hide();
 	$('#messageDraftboxUserSelect').hide();
-	
+
 	$('#messageDraftboxBack').click(function(){
 		// 显示Grid，隐藏消息详细内容
 		$('#messageDraftboxList').trigger("reloadGrid");
@@ -124,32 +124,32 @@ $(function(){
 		url = "system/user/getGridData?number="+number+"&name="+name;
 		$("#messageDraftboxUserInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
 	});
-	
+
 	// 打开选择用户界面
 	$("#messageDraftboxReceiver").click(function() {
 		$("#messageDraftboxUserInfoList").trigger("reloadGrid");
 		$("#messageDraftboxUserSelect").dialog( "open" );
 	});
-	
+
 	// 选择按钮点击事件
 	$("#messageDraftboxUserSelectBtn").click(function() {
 		var selIds = $("#messageDraftboxUserInfoList").getGridParam('selarrrow');;
 		var receiverUserNames = $('#messageDraftboxReceiverUserNames').val();
-	 	$.each(selIds, function(index, selId) {
-	 		var row = $("#messageDraftboxUserInfoList").getRowData(selId)
-	 		var number = row.number;
-	 		var name = row.name;
-	 		receiverUserNames+=name+"<"+number+">,";
-	 	});
-	 	$('#messageDraftboxReceiverUserNames').val(receiverUserNames);
-	 	$("#messageDraftboxUserCloseBtn").click();
+		$.each(selIds, function(index, selId) {
+			var row = $("#messageDraftboxUserInfoList").getRowData(selId)
+			var number = row.number;
+			var name = row.name;
+			receiverUserNames+=name+"<"+number+">,";
+		});
+		$('#messageDraftboxReceiverUserNames').val(receiverUserNames);
+		$("#messageDraftboxUserCloseBtn").click();
 	});
-	
+
 	// 关闭按钮点击事件
 	$("#messageDraftboxUserCloseBtn").click(function() {
 		$("#messageDraftboxUserSelect").dialog( "close" );
 	});
-	
+
 	// 验证
 	$("#messageDraftboxForm").validate({
 		rules: {
@@ -170,7 +170,7 @@ $(function(){
 			error.appendTo(element.parent());
 		}
 	});
-	
+
 	$("#messageDraftboxSend").click(function(){
 		var url = 'system/message/sendMessage';
 		messageDraftboxSaveOrSendMessage(url);

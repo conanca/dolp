@@ -9,7 +9,7 @@ $(function(){
 	$.ajaxSetup({ async: false});
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders); 
+	var genders1 = $.swapJSON(genders);
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
 
@@ -37,7 +37,7 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#messageNewUserInfoList").navGrid('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
-	
+
 	//查询按钮点击事件
 	$("#messageNewUserInfo_search_btn").click(function () { 
 		var number = $("#messageNewUserInfo_search_number").val();
@@ -45,32 +45,32 @@ $(function(){
 		url = "system/user/getGridData?number="+number+"&name="+name;
 		$("#messageNewUserInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
 	});
-	
+
 	// 打开选择用户界面
 	$("#messageNewReceiver").click(function() {
 		$("#messageNewUserInfoList").trigger("reloadGrid");
 		$("#messageNewUserSelect").dialog( "open" );
 	});
-	
+
 	// 选择按钮点击事件
 	$("#messageNewUserSelectBtn").click(function() {
 		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');;
 		var receiverUserNames = $('#messageNewReceiverUsers').val();
-	 	$.each(selIds, function(index, selId) {
-	 		var row = $("#messageNewUserInfoList").getRowData(selId)
-	 		var number = row.number;
-	 		var name = row.name;
-	 		receiverUserNames+=name+"<"+number+">,";
-	 	});
-	 	$('#messageNewReceiverUsers').val(receiverUserNames);
-	 	$("#messageNewUserCloseBtn").click();
+		$.each(selIds, function(index, selId) {
+			var row = $("#messageNewUserInfoList").getRowData(selId)
+			var number = row.number;
+			var name = row.name;
+			receiverUserNames+=name+"<"+number+">,";
+		});
+		$('#messageNewReceiverUsers').val(receiverUserNames);
+		$("#messageNewUserCloseBtn").click();
 	});
-	
+
 	// 关闭按钮点击事件
 	$("#messageNewUserCloseBtn").click(function() {
 		$("#messageNewUserSelect").dialog( "close" );
 	});
-	
+
 	// 验证
 	$("#messageNewForm").validate({
 		rules: {
@@ -91,7 +91,7 @@ $(function(){
 			error.appendTo(element.parent());
 		}
 	});
-	
+
 	$("#messageNewSend").click(function(){
 		var url = 'system/message/sendMessage';
 		messageNewSaveOrSendMessage(url);

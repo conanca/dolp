@@ -2,21 +2,21 @@
 $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
-	
+
 	//获取所有已入住房间的房间号-房间Id键值对
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
 	var allRooms = $.dolpGet("dolpinhotel/setup/room/getAllRoomForSelectOption");
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
-	
+
 	$("#billList").jqGrid({
 		jsonReader:{
 			repeatitems: false
 		},
 		caption: "账单列表",
 		url:'dolpinhotel/management/bill/getGridData',
-		editurl: "dolpinhotel/management/bill/editRow",	//del:true
+		editurl: "dolpinhotel/management/bill/editRow",
 		colNames:['id','账单号', '金额','日期'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},

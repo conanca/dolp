@@ -1,7 +1,7 @@
 <script type="text/javascript">
 $(function(){
 	$("input:button,input:submit,input:reset").button();
-	
+
 	$("#roomTypeList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -9,7 +9,7 @@ $(function(){
 		caption: "房间类型列表",
 		viewrecords: true,
 		url:'dolpinhotel/setup/roomtype/getGridData',
-		editurl: "dolpinhotel/setup/roomtype/editRow",	//del:true
+		editurl: "dolpinhotel/setup/roomtype/editRow",
 		colNames:['id','房间类型', '价格','描述'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},

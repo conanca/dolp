@@ -2,7 +2,7 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 	var userMap;
-	
+
 	$("#messageSentboxList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -22,45 +22,45 @@ $(function(){
 		sortorder: "asc",
 		multiselect: false,
 		loadComplete: function(data){
-	 	//------------------设为同步模式------------------
-	 	$.ajaxSetup({ async: false});
-	 	var sendUserIdArr = new Array();
-	 	var rows = data.rows;
-	 	$.each(rows, function(index, row) {
-	 		var id = row.senderUserId;
-	 		if($.inArray(id,sendUserIdArr)==-1){
-	 			sendUserIdArr.push(id);
-	 		}
-	 	});
-	 	userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
-	 	var list = $(this)
-	 	list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
-	 	list.clearGridData();
-	 	$.each(rows, function(index, row) {
-	 		list.addRowData(index,row);
-	 	});
-	 	$.ajaxSetup({ async: true});
-	 	//------------------设回异步模式------------------
-	 	$.addMessage($(this).getGridParam('userData'));
+			//------------------设为同步模式------------------
+			$.ajaxSetup({ async: false});
+			var sendUserIdArr = new Array();
+			var rows = data.rows;
+			$.each(rows, function(index, row) {
+				var id = row.senderUserId;
+				if($.inArray(id,sendUserIdArr)==-1){
+					sendUserIdArr.push(id);
+				}
+			});
+			userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
+			var list = $(this)
+			list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
+			list.clearGridData();
+			$.each(rows, function(index, row) {
+				list.addRowData(index,row);
+			});
+			$.ajaxSetup({ async: true});
+			//------------------设回异步模式------------------
+			$.addMessage($(this).getGridParam('userData'));
 		},
 		onSelectRow: function(id) {
-	 	var row = $(this).getRowData(id);
-	 	// 显示消息详细内容，隐藏Grid
-	 	$('#messageSentboxDetailId').val(row.id);
-	 	$('#messageSentboxDetailTitle').text(row.title);
-	 	$('#messageSentboxDetailDate').text(row.date);
-	 	$('#messageSentboxDetailSender').text(userMap[row.senderUserId]);
-	 	$('#messageSentboxDetailContent').html(row.content);
-	 	$(this).setGridState('hidden');
-	 	$('#messageSentboxDetail').show();
-	 	// 设置该消息的已读标志
-	 	$.dolpPost('system/message/readMessade',{messageId:row.id});
+			var row = $(this).getRowData(id);
+			// 显示消息详细内容，隐藏Grid
+			$('#messageSentboxDetailId').val(row.id);
+			$('#messageSentboxDetailTitle').text(row.title);
+			$('#messageSentboxDetailDate').text(row.date);
+			$('#messageSentboxDetailSender').text(userMap[row.senderUserId]);
+			$('#messageSentboxDetailContent').html(row.content);
+			$(this).setGridState('hidden');
+			$('#messageSentboxDetail').show();
+			// 设置该消息的已读标志
+			$.dolpPost('system/message/readMessade',{messageId:row.id});
 		}
 	});
 	$("#messageSentboxList").setJqGridCUD('#messageSentboxPager',{edit:false,add:false,del:false,search:false});
 
 	$('#messageSentboxDetail').hide();
-	
+
 	$('#messageSentboxBack').click(function(){
 		// 显示Grid，隐藏消息详细内容
 		$("#messageSentboxList").setGridState('visible');

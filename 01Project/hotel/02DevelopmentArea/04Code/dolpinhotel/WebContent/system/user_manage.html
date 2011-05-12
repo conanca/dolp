@@ -32,12 +32,12 @@ $(function(){
 			$("#userPostList").trigger('reloadGrid');
 		}
 	});
-	
+
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
 	//初始化性别下拉列表框
 	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders); 
+	var genders1 = $.swapJSON(genders);
 	$("#user_manage_gender").addItems(genders);
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
@@ -114,13 +114,13 @@ $(function(){
 			var id = $(this).getGridParam('selrow');
 			if (id) {
 				$("#assigningUserID").val(id);
-			
+
 				$("#roleIds option").each(function(){
 					if($(this).attr("selected") == true){
 						$(this).removeAttr("selected");
 					}
 				});
-	
+
 				//------------------设为同步模式------------------
 				$.ajaxSetup({ async: false});
 				var currentRole = $.dolpGet("system/user/getCurrentRoleIDs/"+id);
@@ -129,10 +129,10 @@ $(function(){
 				});
 				$.ajaxSetup({ async: true});
 				//------------------设回异步模式------------------
-				
+
 				$("#roleIds").multiselect("destroy");
 				$("#roleIds").multiselect();
-				
+
 				$("#roleAssignInfo").dialog( "open" );
 			} else {
 				$.addMessageStr(null,"请选择用户",null);
@@ -164,7 +164,7 @@ $(function(){
 	$("#roleIds").addItems($.dolpGet("system/role/getAllRole?isOrgaRela=0"));
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
-	
+
 	jQuery.validator.addMethod("numberIsDuplicate", function(value) {
 		//编辑时，不check
 		if(userInfoIsEditFlag){
@@ -299,7 +299,7 @@ $(function(){
 		var i=0;
 		$.each(selectedPost, function(k, v) {
 			if(v.value=='Yes'){
-		 	selectedPostIds[i]=v.id;
+			selectedPostIds[i]=v.id;
 				i++;
 			}
 		});
@@ -308,7 +308,7 @@ $(function(){
 		var orgId = userPostOrganizationTree.getSelectedNode().id;
 		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
 	});
-	
+
 });
 </script>
 

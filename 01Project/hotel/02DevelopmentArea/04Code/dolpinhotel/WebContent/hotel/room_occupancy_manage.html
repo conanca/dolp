@@ -12,7 +12,7 @@ $(function(){
 	var allRooms = $.dolpGet("dolpinhotel/setup/room/getAllRoomForSelectOption");
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
-	
+
 	$("#roomOccupancyList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -68,7 +68,7 @@ $(function(){
 			$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');
 		}
 	});
-	
+
 	$("#room_occupancy_manage_checkOutBtn").click(function() {
 		var leaveDate = $("#room_occupancy_manage_checkOutLeaveDate").val();
 		//------------------设为同步模式------------------
@@ -82,12 +82,12 @@ $(function(){
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	});
-	
+
 	$("#room_occupancy_manage_checkOutCancelBtn").click(function() {
 		$("#room_occupancy_manage_checkOutLeaveDate").attr("value",'');	//清空离开日期的值
 		$("#room_occupancy_manage_checkOutDiv").dialog( "close" );
 	});
-	
+
 	//初始化性别下拉列表框
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
@@ -108,8 +108,8 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'name',index:'name', width:80},
 			{name:'gender',index:'gender', width:80,edittype:'select', formatter:'select', editoptions:{value:genders}},
-			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},		
-			{name:'credentialNumber',index:'credentialNumber', width:150},		
+			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},
+			{name:'credentialNumber',index:'credentialNumber', width:150},
 			{name:'address',index:'address', width:300},
 			{name:'roomOccupancyId',index:'roomOccupancyId', width:0,hidden:true}
 		],
