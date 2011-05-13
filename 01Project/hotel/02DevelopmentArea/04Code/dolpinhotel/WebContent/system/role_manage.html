@@ -12,8 +12,8 @@ $(function(){
 		colNames:['id','名称','描述'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
-			{name:'name',index:'name', width:100,editable:true},
-			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}
 		],
 		pager: '#rolePager',
 		sortname: 'id',

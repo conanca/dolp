@@ -20,9 +20,14 @@ $(function(){
 		colNames:['id','账单号', '金额','日期'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
-			{name:'number',index:'number', width:100, editable:true},
-			{name:'amount',index:'amount', width:100, editable:true},
-			{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate},
+			{name:'number',index:'number', width:100, editable:true,editrules:{required:true}},
+			{name:'amount',index:'amount', width:100, editable:true,editrules:{required:true}},
+			{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate,editrules:{required:true,date:true},
+				editoptions:{size:12, dataInit:function(el){
+						$(el).datepicker({dateFormat:'yy-mm-dd'});
+					}
+				}, formoptions:{elmsuffix:" yyyy-mm-dd" },
+			}
 		],
 		pager: '#billPager',
 		sortname: 'number',

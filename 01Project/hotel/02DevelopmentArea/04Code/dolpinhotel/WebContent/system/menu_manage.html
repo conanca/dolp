@@ -37,8 +37,8 @@ $(function() {
 		colNames: ["id","菜单名","url","描述"],
 		colModel: [
 			{name: "id",index:'id',width:0,hidden:true,key:true},
-			{name: "name",index:'name', width:100,editable:true},
-			{name: "url",index:'url',width:300,editable:true},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
+			{name: "url",index:'url',width:300,editable:true,editrules:{required:true}},
 			{name: "description",index:'description',width:200,editable:true}
 		],
 		pager: '#menuEditPager',
