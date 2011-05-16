@@ -2,6 +2,8 @@
 syntax: glob
 .settings
 syntax: glob
+build
+syntax: glob
 .classpath
 syntax: glob
 .project
