@@ -12,7 +12,7 @@ $.blockUI.defaults.fadeOut = 200;
 //覆盖jqGrid的全局参数，以设置默认值
 $.extend($.jgrid.defaults, {
 	rowNum:10,
-   	rowList:[10,20,30],
+   	rowList:[10,20,50],
    	autowidth: true,
    	height: "100%",
 	datatype: "json",
