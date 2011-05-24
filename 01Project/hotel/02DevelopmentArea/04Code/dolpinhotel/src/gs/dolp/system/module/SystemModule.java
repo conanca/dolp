@@ -110,4 +110,11 @@ public class SystemModule {
 		return is;
 	}
 
+	@At
+	public ResponseData changeUserPassword(HttpSession session, @Param("oldPassword") String oldPassword,
+			@Param("newPassword") String newPassword) {
+		User cUser = (User) session.getAttribute("logonUser");
+		return systemService.changeUserPassword(cUser, oldPassword, newPassword);
+	}
+
 }

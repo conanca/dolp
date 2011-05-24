@@ -1,0 +1,64 @@
+<script type="text/javascript">
+$(function(){
+	$("input:button,input:submit,input:reset").button();
+
+	// 验证
+	$("#changePwdForm").validate({
+		rules: {
+			oldPassword: {
+				required: true
+			},
+			newPassword: {
+				required: true,
+				maxlength: 20,
+				minlength: 3
+			},
+			password_again: {
+				required: true,
+				maxlength: 20,
+				minlength: 3,
+				equalTo: "#changePwdForm_Password1"
+			}
+		},
+		errorPlacement: function(error, element) {
+			$('<br/>').appendTo(element.parent());
+			error.appendTo(element.parent());
+		}
+	});
+	
+	//点击保存时提交
+	$('#changePwdForm').submit(function() {
+		$.blockUI();
+		if($(this).valid()){
+			var changePwdInfo = $(this).serializeObject();
+			$.dolpPost('changeUserPassword',changePwdInfo);
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
+		$.unblockUI();
+		return false;
+	});
+});
+</script>
+
+<form id="changePwdForm" action="#">
+<table>
+	<tr>
+		<td>原密码：</td>
+		<td><input type="password" name="oldPassword"/></td>
+	</tr>
+	<tr>
+		<td>新密码：</td>
+		<td><input type="password" name="newPassword" id="changePwdForm_Password1"/></td>
+	</tr>
+	<tr>
+		<td>再次输入新密码：</td>
+		<td><input type="password" name="password_again"/></td>
+	</tr>
+</table>
+<p>
+	<input type="submit" value="修改"/>
+	&nbsp;&nbsp;&nbsp;
+	<input type="reset" value="重置"/>
+</p>
+</form>
