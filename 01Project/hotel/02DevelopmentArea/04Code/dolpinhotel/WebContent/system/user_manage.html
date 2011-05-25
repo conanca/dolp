@@ -17,10 +17,8 @@ $(function(){
 	//初始化用户角色分配界面
 	$("#roleAssignInfo").dialog({ width: 500 , height: 320 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			//关闭后全部取消选中
-			$("#roleIds option").each(function(){
-				if($(this).attr("selected") == true){
-					$(this).removeAttr("selected");
-				}
+			$("#roleIds option:selected").each(function(){
+				$(this).removeAttr("selected");
 			});
 		}
 	});
@@ -125,7 +123,7 @@ $(function(){
 				$.ajaxSetup({ async: false});
 				var currentRole = $.dolpGet("system/user/getCurrentRoleIDs/"+id);
 				$.each(currentRole,function(index,value){
-					$("#roleIds option[value='"+value+"']").attr("selected",true);
+					$("#roleIds option[value='"+value+"']").attr("selected","selected");
 				});
 				$.ajaxSetup({ async: true});
 				//------------------设回异步模式------------------
