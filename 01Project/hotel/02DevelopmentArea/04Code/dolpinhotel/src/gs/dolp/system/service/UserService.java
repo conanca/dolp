@@ -5,7 +5,6 @@ import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
-import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -154,12 +153,24 @@ public class UserService extends JqgridService<User> {
 		return reData;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
 		AjaxResData reData = new AjaxResData();
-		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
-		List<Role> roles = user.getRoles();
-		int[] currentRoleIDs = DolpCollectionHandler.getIdsArr(roles);
+		Sql sql = Sqls
+				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = '0' AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
+		sql.vars().set("userId", userId);
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<Integer> currentRoleIDs = new ArrayList<Integer>();
+				while (rs.next()) {
+					currentRoleIDs.add(rs.getInt("ID"));
+				}
+				return currentRoleIDs;
+			}
+		});
+		dao().execute(sql);
+		List<Integer> currentRoleIDs = (List<Integer>) sql.getResult();
 		reData.setReturnData(currentRoleIDs);
 		return reData;
 	}
