@@ -18,6 +18,16 @@ public class AjaxResData implements ResponseData {
 	 */
 	private SystemMessage systemMessage;
 
+	public AjaxResData() {
+		super();
+	}
+
+	public AjaxResData(Object returnData, SystemMessage systemMessage) {
+		super();
+		this.returnData = returnData;
+		this.systemMessage = systemMessage;
+	}
+
 	public Object getReturnData() {
 		return returnData;
 	}
@@ -32,6 +42,16 @@ public class AjaxResData implements ResponseData {
 
 	public void setSystemMessage(SystemMessage systemMessage) {
 		this.systemMessage = systemMessage;
+	}
+
+	/**
+	 * 用于简化 设置systemMessage 的帮助函数
+	 * @param infoMessage
+	 * @param warnMessage
+	 * @param errorMessage
+	 */
+	public void setSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
+		setSystemMessage(new SystemMessage(infoMessage, warnMessage, errorMessage));
 	}
 
 	public String toString() {

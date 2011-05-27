@@ -1,7 +1,6 @@
 package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -45,7 +44,7 @@ public class RoomService extends JqgridService<Room> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Room room = new Room();
@@ -53,7 +52,7 @@ public class RoomService extends JqgridService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().insert(room);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Room room = new Room();
@@ -62,7 +61,7 @@ public class RoomService extends JqgridService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().update(room);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}

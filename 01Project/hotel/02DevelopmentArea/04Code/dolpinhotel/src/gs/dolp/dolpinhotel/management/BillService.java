@@ -1,7 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.highchart.domain.ChartReturnData;
 import gs.dolp.common.highchart.domain.SeriesItem;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
@@ -68,7 +67,7 @@ public class BillService extends JqgridService<Bill> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Bill bill = new Bill();
@@ -79,7 +78,7 @@ public class BillService extends JqgridService<Bill> {
 			Timestamp dateTime = new Timestamp(dateFormat.parse(date).getTime());
 			bill.setDate(dateTime);
 			dao().update(bill);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}
@@ -110,7 +109,7 @@ public class BillService extends JqgridService<Bill> {
 		dao().execute(sql);
 		ChartReturnData chartData = (ChartReturnData) sql.getResult();
 		reData.setReturnData(chartData);
-		reData.setSystemMessage(new SystemMessage("统计完成!", null, null));
+		reData.setSystemMessage("统计完成!", null, null);
 		return reData;
 	}
 }

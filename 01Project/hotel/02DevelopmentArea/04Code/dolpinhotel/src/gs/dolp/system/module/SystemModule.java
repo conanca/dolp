@@ -2,7 +2,6 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.system.domain.MenuEntity;
 import gs.dolp.system.domain.Privilege;
@@ -80,7 +79,7 @@ public class SystemModule {
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser != null) {
 			reData.setReturnData(cUser.getName());
-			reData.setSystemMessage(new SystemMessage("登录成功!", null, null));
+			reData.setSystemMessage("登录成功!", null, null);
 		}
 		return reData;
 	}

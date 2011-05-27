@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -30,7 +29,7 @@ public class SysParaService extends JqgridService<SysPara> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			SysPara sysPara = new SysPara();
@@ -38,7 +37,7 @@ public class SysParaService extends JqgridService<SysPara> {
 			sysPara.setValue(value);
 			sysPara.setDescription(description);
 			dao().insert(sysPara);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			SysPara sysPara = new SysPara();
@@ -47,7 +46,7 @@ public class SysParaService extends JqgridService<SysPara> {
 			sysPara.setValue(value);
 			sysPara.setDescription(description);
 			dao().update(sysPara);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}

@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -36,7 +35,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -44,7 +43,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().insert(item);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -53,7 +52,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().update(item);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}

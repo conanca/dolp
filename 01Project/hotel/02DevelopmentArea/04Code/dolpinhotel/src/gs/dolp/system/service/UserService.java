@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -120,7 +119,7 @@ public class UserService extends JqgridService<User> {
 		AjaxResData reData = new AjaxResData();
 		final String userID;
 		if (Strings.isEmpty(userId)) {
-			reData.setSystemMessage(new SystemMessage(null, "未选择用户!", null));
+			reData.setSystemMessage(null, "未选择用户!", null);
 			return reData;
 		} else {
 			userID = userId;
@@ -128,7 +127,7 @@ public class UserService extends JqgridService<User> {
 		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
-			reData.setSystemMessage(new SystemMessage(null, "该用户未分配任何角色!", null));
+			reData.setSystemMessage(null, "该用户未分配任何角色!", null);
 			return reData;
 		}
 		List<Role> roles = new ArrayList<Role>();
@@ -149,7 +148,7 @@ public class UserService extends JqgridService<User> {
 				dao().insertRelation(user, "roles");
 			}
 		});
-		reData.setSystemMessage(new SystemMessage("分配成功!", null, null));
+		reData.setSystemMessage("分配成功!", null, null);
 		return reData;
 	}
 
@@ -197,7 +196,7 @@ public class UserService extends JqgridService<User> {
 		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
 		if (postIds == null || postIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", cnd);
-			reData.setSystemMessage(new SystemMessage(null, "该机构下未分配任何岗位!", null));
+			reData.setSystemMessage(null, "该机构下未分配任何岗位!", null);
 			return reData;
 		}
 		// 清除旧岗位关系，插入新的关系
@@ -209,7 +208,7 @@ public class UserService extends JqgridService<User> {
 				}
 			}
 		});
-		reData.setSystemMessage(new SystemMessage("分配成功!", null, null));
+		reData.setSystemMessage("分配成功!", null, null);
 		return reData;
 	}
 
@@ -219,18 +218,15 @@ public class UserService extends JqgridService<User> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getUserMap(String userIds) {
-		AjaxResData reData = new AjaxResData();
-		Map<String, String> userMap = new LinkedHashMap<String, String>();
-		if (Strings.isEmpty(userIds)) {
-			return reData;
+	public static Map<String, String> getUserMap(Dao dao, String[] userIdArr) {
+		if (userIdArr == null) {
+			return null;
 		}
-		String[] userIdArr = userIds.split(",");
-		List<User> users = query(Cnd.where("ID", "IN", userIdArr), null);
+		Map<String, String> userMap = new LinkedHashMap<String, String>();
+		List<User> users = dao.query(User.class, Cnd.where("ID", "IN", userIdArr), null);
 		for (User u : users) {
 			userMap.put(String.valueOf(u.getId()), u.getName());
 		}
-		reData.setReturnData(userMap);
-		return reData;
+		return userMap;
 	}
 }

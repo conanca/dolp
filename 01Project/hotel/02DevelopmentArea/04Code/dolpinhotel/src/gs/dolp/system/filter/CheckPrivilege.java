@@ -1,7 +1,6 @@
 package gs.dolp.system.filter;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.system.domain.Privilege;
 
 import java.lang.reflect.Method;
@@ -36,7 +35,7 @@ public class CheckPrivilege implements ActionFilter {
 		}
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 		AjaxResData reData = new AjaxResData();
-		reData.setSystemMessage(new SystemMessage(null, null, "用户没有此权限"));
+		reData.setSystemMessage(null, null, "用户没有此权限");
 		jsonView.setData(reData);
 		return jsonView;
 	}

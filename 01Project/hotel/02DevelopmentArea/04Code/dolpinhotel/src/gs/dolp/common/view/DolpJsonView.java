@@ -1,7 +1,6 @@
 package gs.dolp.common.view;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.util.ExceptionHandler;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class DolpJsonView implements View {
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			Throwable exception = (Throwable) obj;
 			AjaxResData reData = new AjaxResData();
-			reData.setSystemMessage(new SystemMessage(null, null, exception.getMessage()));
+			reData.setSystemMessage(null, null, exception.getMessage());
 			jsonWritedStr = reData;
 			// 输出日志
 			logger.error(ExceptionHandler.packageException(exception));

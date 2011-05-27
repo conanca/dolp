@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
@@ -61,7 +60,7 @@ public class RoleService extends JqgridService<Role> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Role role = new Role();
@@ -74,7 +73,7 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().insert(role);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Role role = fetch(Integer.parseInt(id));
@@ -88,7 +87,7 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().update(role);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}
@@ -145,7 +144,7 @@ public class RoleService extends JqgridService<Role> {
 			}
 		});
 
-		reData.setSystemMessage(new SystemMessage("分配成功!", null, null));
+		reData.setSystemMessage("分配成功!", null, null);
 		return reData;
 	}
 

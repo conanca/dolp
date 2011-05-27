@@ -1,5 +1,6 @@
 package gs.dolp.common.jqgrid.domain;
 
+import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.SystemMessage;
 
@@ -33,9 +34,9 @@ public class StandardJqgridResData implements ResponseData {
 	private List<StandardJqgridResDataRow> rows;
 
 	/**
-	 * 用户自定义数据——系统信息
+	 * 用户自定义数据
 	 */
-	private SystemMessage systemMessage;
+	private AjaxResData userdata;
 
 	public int getPage() {
 		return page;
@@ -69,12 +70,51 @@ public class StandardJqgridResData implements ResponseData {
 		this.rows = rows;
 	}
 
-	public SystemMessage getSystemMessage() {
-		return systemMessage;
+	public AjaxResData getUserdata() {
+		return userdata;
 	}
 
-	public void setSystemMessage(SystemMessage systemMessage) {
-		this.systemMessage = systemMessage;
+	public void setUserdata(AjaxResData userdata) {
+		this.userdata = userdata;
+	}
+
+	/**
+	 * 用于简化创建AjaxResData类的帮助函数
+	 * @param returnData
+	 * @param infoMessages
+	 * @param warnMessages
+	 * @param errorMessages
+	 */
+	public void setUserdata(Object returnData, String infoMessages, String warnMessages, String errorMessages) {
+		AjaxResData userdata = new AjaxResData(returnData, new SystemMessage(infoMessages, warnMessages, errorMessages));
+		setUserdata(userdata);
+	}
+
+	/**
+	 * 用于简化 创建userdata对象的returnData 的帮助函数
+	 * @param returnData
+	 */
+	public void setReturnData(Object returnData) {
+		if (userdata != null) {
+			userdata.setReturnData(returnData);
+		} else {
+			setUserdata(new AjaxResData(returnData, null));
+		}
+	}
+
+	/**
+	 * 用于简化 创建userdata对象的systemMessage 的帮助函数
+	 * @param infoMessage
+	 * @param warnMessage
+	 * @param errorMessage
+	 */
+	public void setSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
+		SystemMessage systemMessage = new SystemMessage(infoMessage, warnMessage, errorMessage);
+		if (userdata != null) {
+			userdata.setSystemMessage(systemMessage);
+		} else {
+			setUserdata(new AjaxResData(null, systemMessage));
+		}
 	}
 
 	public String toString() {

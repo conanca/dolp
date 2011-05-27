@@ -16,11 +16,8 @@ $.extend($.jgrid.defaults, {
    	autowidth: true,
    	height: "100%",
 	datatype: "json",
-	jsonReader:{
-	   	userdata:"systemMessage"
-	},
 	viewrecords: true,
 	loadComplete: function(){
-		$.addMessage($(this).getGridParam('userData'));
+		$.addMessage($(this).getGridParam('userData').systemMessage);
 	}
 });

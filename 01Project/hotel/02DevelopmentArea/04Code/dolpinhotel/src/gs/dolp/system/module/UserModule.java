@@ -2,7 +2,6 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
@@ -39,7 +38,7 @@ public class UserModule {
 	public ResponseData save(@Param("..") User user) {
 		AjaxResData reData = new AjaxResData();
 		userService.save(user);
-		reData.setSystemMessage(new SystemMessage("保存成功!", null, null));
+		reData.setSystemMessage("保存成功!", null, null);
 		return reData;
 	}
 
@@ -47,7 +46,7 @@ public class UserModule {
 	public ResponseData deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
 		AjaxResData reData = new AjaxResData();
-		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+		reData.setSystemMessage("删除成功!", null, null);
 		return reData;
 	}
 
@@ -65,10 +64,5 @@ public class UserModule {
 	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
 			@Param("selectedPostIds[]") String[] postIds) throws SQLException {
 		return userService.updatePost(userId, orgId, postIds);
-	}
-
-	@At("/getUserMap/*")
-	public ResponseData getUserMap(String userIds) {
-		return userService.getUserMap(userIds);
 	}
 }

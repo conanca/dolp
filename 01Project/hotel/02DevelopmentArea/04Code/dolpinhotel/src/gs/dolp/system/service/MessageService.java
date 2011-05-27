@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.nutz.dao.Chain;
@@ -51,7 +51,7 @@ public class MessageService extends JqgridService<Message> {
 			dao().insert(message);
 		}
 		dao().insertRelation(message, "receivers");
-		reData.setSystemMessage(new SystemMessage("保存草稿成功!", null, null));
+		reData.setSystemMessage("保存草稿成功!", null, null);
 		return reData;
 	}
 
@@ -77,7 +77,7 @@ public class MessageService extends JqgridService<Message> {
 			dao().insert(message);
 		}
 		dao().insertRelation(message, "receivers");
-		reData.setSystemMessage(new SystemMessage("发送成功!", null, null));
+		reData.setSystemMessage("发送成功!", null, null);
 		return reData;
 	}
 
@@ -90,14 +90,14 @@ public class MessageService extends JqgridService<Message> {
 	//	public AjaxResData sendDraftMessage(String messageId) {
 	//		AjaxResData reData = new AjaxResData();
 	//		if (Strings.isEmpty(messageId)) {
-	//			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+	//			reData.setSystemMessage(null, "未选择消息!", null);
 	//			return reData;
 	//		}
 	//		int messId = Integer.valueOf(messageId);
 	//		Message message = fetch(messId);
 	//		message.setState(1);
 	//		dao().update(message);
-	//		reData.setSystemMessage(new SystemMessage("发送成功!", null, null));
+	//		reData.setSystemMessage("发送成功!", null, null);
 	//		return reData;
 	//	}
 
@@ -111,12 +111,12 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData deleteReceivedMessage(int messageId, User user) {
 		AjaxResData reData = new AjaxResData();
 		if (messageId <= 0) {
-			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+			reData.setSystemMessage(null, "未选择消息!", null);
 			return reData;
 		}
 		dao().clear("SYSTEM_MESSAGE_RECEIVERUSER",
 				Cnd.where("USERID", "=", user.getId()).and("MESSAGEID", "=", messageId));
-		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+		reData.setSystemMessage("删除成功!", null, null);
 		return reData;
 	}
 
@@ -129,13 +129,13 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData deleteSentMessage(int messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (messageId <= 0) {
-			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+			reData.setSystemMessage(null, "未选择消息!", null);
 			return reData;
 		}
 		Message message = fetch(messageId);
 		message.setState(2);
 		dao().update(message);
-		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+		reData.setSystemMessage("删除成功!", null, null);
 		return reData;
 	}
 
@@ -148,11 +148,11 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData deleteDraftMessage(int messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (messageId <= 0) {
-			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+			reData.setSystemMessage(null, "未选择消息!", null);
 			return reData;
 		}
 		delete(Long.valueOf(messageId));
-		reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+		reData.setSystemMessage("删除成功!", null, null);
 		return reData;
 	}
 
@@ -166,12 +166,12 @@ public class MessageService extends JqgridService<Message> {
 	public AjaxResData readMessade(User readerUser, int messageId) {
 		AjaxResData reData = new AjaxResData();
 		if (messageId <= 0) {
-			reData.setSystemMessage(new SystemMessage(null, "未选择消息!", null));
+			reData.setSystemMessage(null, "未选择消息!", null);
 			return reData;
 		}
 		dao().update("SYSTEM_MESSAGE_RECEIVERUSER", Chain.make("ISREAD", 1),
 				Cnd.where("MESSAGEID", "=", messageId).and("USERID", "=", readerUser.getId()));
-		//reData.setSystemMessage(new SystemMessage("读取成功!", null, null));
+		//reData.setSystemMessage("读取成功!", null, null);
 		return reData;
 	}
 
@@ -180,9 +180,14 @@ public class MessageService extends JqgridService<Message> {
 	 * @param jqReq
 	 * @param readerUser
 	 * @return
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchFieldException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser) {
+	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser)
+			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		List<Record> recList = dao().query("SYSTEM_MESSAGE_RECEIVERUSER", Cnd.where("USERID", "=", readerUser.getId()),
 				null);
 		Condition cnd = null;
@@ -198,6 +203,10 @@ public class MessageService extends JqgridService<Message> {
 			cnd = Cnd.where("1", "=", "0");
 		}
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
+		// 获取发件人的id和name的Map,并放入returnData中
+		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
+		Map<String, String> userMap = UserService.getUserMap(dao(), userIdArr);
+		jq.setReturnData(userMap);
 		return jq;
 	}
 
@@ -207,13 +216,22 @@ public class MessageService extends JqgridService<Message> {
 	 * @param senderUser
 	 * @param state
 	 * @return
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchFieldException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state) {
+	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state)
+			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		// TODO 查找Condition cnd = null并重构
 		Condition cnd = null;
 		cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
+		// 获取发件人的id和name的Map,并放入returnData中
+		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
+		Map<String, String> userMap = UserService.getUserMap(dao(), userIdArr);
+		jq.setReturnData(userMap);
 		return jq;
 	}
 

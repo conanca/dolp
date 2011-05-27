@@ -20,20 +20,23 @@ public class MessageModule {
 
 	//TODO 改名为currentUser
 	@At
-	public AdvancedJqgridResData<Message> getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public AdvancedJqgridResData<Message> getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		User user = (User) session.getAttribute("logonUser");
 		return messageService.getReceivedMessageGridData(jqReq, user);
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public AdvancedJqgridResData<Message> getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		Object obj = session.getAttribute("logonUser");
 		User user = (User) obj;
 		return messageService.getSentMessageGridData(jqReq, user, 1);
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public AdvancedJqgridResData<Message> getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		Object obj = session.getAttribute("logonUser");
 		User user = (User) obj;
 		return messageService.getSentMessageGridData(jqReq, user, 0);

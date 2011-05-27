@@ -1,7 +1,6 @@
 package gs.dolp.system.filter;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
@@ -20,7 +19,7 @@ public class CheckLogon implements ActionFilter {
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			AjaxResData reData = new AjaxResData();
-			reData.setSystemMessage(new SystemMessage(null, null, "请先登录系统"));
+			reData.setSystemMessage(null, null, "请先登录系统");
 			jsonView.setData(reData);
 			return jsonView;
 		}

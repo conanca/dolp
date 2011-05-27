@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -60,7 +59,7 @@ public class OrganizationService extends JqgridService<Organization> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Organization organization = new Organization();
@@ -69,7 +68,7 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().insert(organization);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Organization organization = new Organization();
@@ -79,7 +78,7 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().update(organization);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}

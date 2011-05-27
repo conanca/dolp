@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
@@ -32,7 +31,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage(new SystemMessage("删除成功!", null, null));
+			reData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -41,7 +40,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().insert(privilege);
-			reData.setSystemMessage(new SystemMessage("添加成功!", null, null));
+			reData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -51,7 +50,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().update(privilege);
-			reData.setSystemMessage(new SystemMessage("修改成功!", null, null));
+			reData.setSystemMessage("修改成功!", null, null);
 		}
 		return reData;
 	}

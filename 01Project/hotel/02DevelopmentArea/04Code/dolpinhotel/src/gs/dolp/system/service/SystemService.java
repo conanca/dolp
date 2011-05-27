@@ -1,7 +1,6 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
 import gs.dolp.system.domain.User;
 
 import java.io.ByteArrayInputStream;
@@ -50,7 +49,7 @@ public class SystemService extends Service {
 		dao().execute(fm.createCombo(fm.keys()));
 		fm = new FileSqlManager("init_hotel.sql");
 		dao().execute(fm.createCombo(fm.keys()));
-		reData.setSystemMessage(new SystemMessage("初始化数据库完成！", null, null));
+		reData.setSystemMessage("初始化数据库完成！", null, null);
 		return reData;
 	}
 
@@ -89,11 +88,11 @@ public class SystemService extends Service {
 		int countAuthenticatedUser = dao().count(User.class,
 				Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
-			reData.setSystemMessage(new SystemMessage(null, "原密码错误！", null));
+			reData.setSystemMessage(null, "原密码错误！", null);
 		} else {
 			user.setPassword(newPassword);
 			dao().update(user);
-			reData.setSystemMessage(new SystemMessage("密码修改成功！", null, null));
+			reData.setSystemMessage("密码修改成功！", null, null);
 		}
 		return reData;
 	}

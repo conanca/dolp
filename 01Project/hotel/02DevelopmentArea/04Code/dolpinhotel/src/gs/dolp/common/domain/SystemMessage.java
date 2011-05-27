@@ -77,6 +77,12 @@ public class SystemMessage {
 		errorMessages.add(addMessage);
 	}
 
+	public void addSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
+		addInfoMessage(infoMessage);
+		addWarnMessage(warnMessage);
+		addErrorMessage(errorMessage);
+	}
+
 	public List<String> getInfoMessages() {
 		return infoMessages;
 	}
