@@ -117,6 +117,23 @@ public class StandardJqgridResData implements ResponseData {
 		}
 	}
 
+	/**
+	 * 获取指定字段的值的数组
+	 * @param columnIndex
+	 * @return
+	 */
+	public String[] getArrValueOfTheColumn(int columnIndex) {
+		if (rows == null || rows.size() == 0) {
+			return null;
+		}
+		int length = rows.size();
+		String[] arrValue = new String[length];
+		for (int i = 0; i < length; i++) {
+			arrValue[i] = rows.get(i).getCell().get(columnIndex);
+		}
+		return arrValue;
+	}
+
 	public String toString() {
 		return Json.toJson(this);
 	}
