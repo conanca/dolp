@@ -24,15 +24,8 @@ $(function(){
 		loadComplete: function(data){
 			//------------------设为同步模式------------------
 			$.ajaxSetup({ async: false});
-			var sendUserIdArr = new Array();
 			var rows = data.rows;
-			$.each(rows, function(index, row) {
-				var id = row.senderUserId;
-				if($.inArray(id,sendUserIdArr)==-1){
-					sendUserIdArr.push(id);
-				}
-			});
-			userMap = $.dolpGet('system/user/getUserMap/'+sendUserIdArr);
+			userMap = $(this).getGridParam('userData').returnData;
 			var list = $(this)
 			list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
 			list.clearGridData();
@@ -41,7 +34,7 @@ $(function(){
 			});
 			$.ajaxSetup({ async: true});
 			//------------------设回异步模式------------------
-			$.addMessage($(this).getGridParam('userData'));
+			$.addMessage($(this).getGridParam('userData').systemMessage);
 		},
 		onSelectRow: function(id) {
 			var row = $(this).getRowData(id);
