@@ -112,11 +112,15 @@ public class MenuService extends IdEntityService<Menu> {
 	@Aop(value = "log")
 	public List<MenuEntity> getNodes(int nodeId) {
 		int parentLft;
-		int parentRgt;
+		int parentRgt = 0;
 		if (nodeId == 0) {
 			parentLft = 0;
-			// TODO 此处应从系统参数中取
-			parentRgt = 1001;
+			// 取系统参数:"菜单节点最大Rigth值"
+			int rootRgt = Integer.valueOf(SysParaService.getSysParaValue("MaxRightValue", dao()));
+			if (rootRgt <= 0) {
+				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
+			}
+			parentRgt = rootRgt;
 		} else {
 			Menu parentNode = fetch(nodeId);
 			parentLft = parentNode.getLft();
@@ -145,11 +149,15 @@ public class MenuService extends IdEntityService<Menu> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, int parentId) {
 		int parentLft;
-		int parentRgt;
+		int parentRgt = 0;
 		if (parentId == 0) {
 			parentLft = 0;
-			// TODO 此处应从系统参数中取
-			parentRgt = 1001;
+			// 取系统参数:"菜单节点最大Rigth值"
+			int rootRgt = Integer.valueOf(SysParaService.getSysParaValue("MaxRightValue", dao()));
+			if (rootRgt <= 0) {
+				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
+			}
+			parentRgt = rootRgt;
 		} else {
 			Menu parentNode = fetch(parentId);
 			parentLft = parentNode.getLft();
