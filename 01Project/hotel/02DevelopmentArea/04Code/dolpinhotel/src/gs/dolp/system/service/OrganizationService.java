@@ -23,16 +23,14 @@ public class OrganizationService extends JqgridService<Organization> {
 
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, int parentOrgId) {
-		Condition cnd = null;
-		cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
+		Condition cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
 		AdvancedJqgridResData<Organization> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
 	@Aop(value = "log")
 	public List<Organization> getNodes(int id, String name) {
-		Condition cnd = null;
-		cnd = Cnd.where("PARENTORGID", "=", id);
+		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {
 			dao().fetchLinks(orgNode, "childrenOrgs");
