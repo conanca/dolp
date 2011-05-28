@@ -59,7 +59,7 @@ public class SystemModule {
 
 	@At
 	@Ok("forward:/main.html")
-	@Fail("redirect:/login.html")
+	@Fail("redirect:/index.html")
 	public void main(HttpSession session) {
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser == null) {
@@ -68,7 +68,7 @@ public class SystemModule {
 	}
 
 	@At
-	@Ok("redirect:/login.html")
+	@Ok("redirect:/index.html")
 	public void logout(HttpSession session) {
 		session.invalidate();
 	}
