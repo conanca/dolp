@@ -18,48 +18,45 @@ import org.nutz.mvc.annotation.Param;
 public class MessageModule {
 	private MessageService messageService;
 
-	//TODO 改名为currentUser
 	@At
 	public AdvancedJqgridResData<Message> getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-		User user = (User) session.getAttribute("logonUser");
-		return messageService.getReceivedMessageGridData(jqReq, user);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.getReceivedMessageGridData(jqReq, currentUser);
 	}
 
 	@At
 	public AdvancedJqgridResData<Message> getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-		Object obj = session.getAttribute("logonUser");
-		User user = (User) obj;
-		return messageService.getSentMessageGridData(jqReq, user, 1);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.getSentMessageGridData(jqReq, currentUser, 1);
 	}
 
 	@At
 	public AdvancedJqgridResData<Message> getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-		Object obj = session.getAttribute("logonUser");
-		User user = (User) obj;
-		return messageService.getSentMessageGridData(jqReq, user, 0);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.getSentMessageGridData(jqReq, currentUser, 0);
 	}
 
 	@At
 	public ResponseData sendMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content, HttpSession session) {
-		User user = (User) session.getAttribute("logonUser");
-		return messageService.sendMessage(messageId, user, receiverUsers, title, content);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.sendMessage(messageId, currentUser, receiverUsers, title, content);
 	}
 
 	@At
 	public ResponseData saveMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content, HttpSession session) {
-		User user = (User) session.getAttribute("logonUser");
-		return messageService.saveMessage(messageId, user, receiverUsers, title, content);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.saveMessage(messageId, currentUser, receiverUsers, title, content);
 	}
 
 	@At
 	public ResponseData deleteReceivedMessage(@Param("messageId") int messageId, HttpSession session) {
-		User user = (User) session.getAttribute("logonUser");
-		return messageService.deleteReceivedMessage(messageId, user);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.deleteReceivedMessage(messageId, currentUser);
 	}
 
 	@At
@@ -74,8 +71,8 @@ public class MessageModule {
 
 	@At
 	public ResponseData readMessade(@Param("messageId") int messageId, HttpSession session) {
-		User user = (User) session.getAttribute("logonUser");
-		return messageService.readMessade(user, messageId);
+		User currentUser = (User) session.getAttribute("logonUser");
+		return messageService.readMessade(currentUser, messageId);
 	}
 
 	@At
