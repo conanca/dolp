@@ -188,10 +188,10 @@ public class MessageService extends JqgridService<Message> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+		Condition cnd = null;
 		List<Record> recList = dao().query("SYSTEM_MESSAGE_RECEIVERUSER", Cnd.where("USERID", "=", readerUser.getId()),
 				null);
-		Condition cnd = null;
-		if (recList.size() > 0) {
+		if (recList != null && recList.size() > 0) {
 			int[] messageIds = new int[recList.size()];
 			int i = 0;
 			for (Record rec : recList) {
@@ -224,9 +224,7 @@ public class MessageService extends JqgridService<Message> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
-		// TODO 查找Condition cnd = null并重构
-		Condition cnd = null;
-		cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
+		Condition cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		// 获取发件人的id和name的Map,并放入returnData中
 		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
