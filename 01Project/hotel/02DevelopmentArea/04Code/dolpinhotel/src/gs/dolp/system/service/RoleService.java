@@ -3,14 +3,11 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
+import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
 import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.system.domain.Role;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +18,6 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
@@ -148,31 +144,16 @@ public class RoleService extends JqgridService<Role> {
 		return reData;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
-	public List<StandardJqgridResDataRow> getRows(int organizationId, int userId) throws SQLException {
+	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId)
+			throws SQLException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT ID,NAME,DESCRIPTION,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = ");
 		sb.append(userId);
 		sb.append(") AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = ");
 		sb.append(organizationId);
 		Sql sql = Sqls.create(sb.toString());
-		sql.setCallback(new SqlCallback() {
-			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
-				while (rs.next()) {
-					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
-					row.setId(rs.getInt("ID"));
-					row.addCellItem(String.valueOf(rs.getInt("ID")));
-					row.addCellItem(rs.getString("NAME"));
-					row.addCellItem(rs.getString("DESCRIPTION"));
-					row.addCellItem(String.valueOf(rs.getBoolean("ISSET")));
-					rows.add(row);
-				}
-				return rows;
-			}
-		});
-		dao().execute(sql);
-		return (List<StandardJqgridResDataRow>) sql.getResult();
+		StandardJqgridResData jq = getStandardJqgridResData(sql, null, jqReq);
+		return jq;
 	}
 }

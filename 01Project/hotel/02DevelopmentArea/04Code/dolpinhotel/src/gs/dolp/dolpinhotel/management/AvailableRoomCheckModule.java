@@ -15,6 +15,6 @@ public class AvailableRoomCheckModule {
 
 	@At
 	public StandardJqgridResData getGridData(@Param("..") JqgridReqData jq) throws Exception {
-		return availableRoomCheckService.getGridData(jq, availableRoomCheckService.getRows());
+		return availableRoomCheckService.getGridData(jq);
 	}
 }

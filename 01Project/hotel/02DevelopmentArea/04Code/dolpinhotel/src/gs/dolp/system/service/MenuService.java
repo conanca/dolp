@@ -3,6 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.jqgrid.service.JqgridService;
 import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
@@ -21,9 +22,8 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
-import org.nutz.service.IdEntityService;
 
-public class MenuService extends IdEntityService<Menu> {
+public class MenuService extends JqgridService<Menu> {
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -168,20 +168,9 @@ public class MenuService extends IdEntityService<Menu> {
 				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRgt", parentRgt);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(Menu.class));
 		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
-		dao().execute(sql.setCondition(cnd));
-		List<Menu> rs = sql.getList(Menu.class);
-		// TODO 不支持分页和排序...
-
 		// 开始封装jqGrid的json格式数据类
-		AdvancedJqgridResData<Menu> jq = new AdvancedJqgridResData<Menu>();
-		jq.setTotal(0);
-		jq.setPage(1);
-		jq.setRecords(0);
-		jq.setRows(rs);
+		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, cnd, jqReq);
 		return jq;
 	}
 
