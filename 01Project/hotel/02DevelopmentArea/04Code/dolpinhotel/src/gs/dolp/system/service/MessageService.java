@@ -276,7 +276,6 @@ public class MessageService extends JqgridService<Message> {
 	 */
 	private Set<Integer> numArr2IdArr(String[] userNumArr) {
 		// 将形如 AA<1234>这样的元素转换成1234
-		int length = userNumArr.length;
 		Set<Integer> idArr = new HashSet<Integer>();
 		for (String receiverUser : userNumArr) {
 			receiverUser = receiverUser.trim();

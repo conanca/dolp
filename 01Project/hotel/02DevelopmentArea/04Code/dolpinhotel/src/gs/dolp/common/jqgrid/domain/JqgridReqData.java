@@ -2,7 +2,7 @@ package gs.dolp.common.jqgrid.domain;
 
 /**
  * @author Administrator
- * jqGrid向后台请求的参数的集合封装成的对象
+ * jqGrid向后台请求的参数的集合封装成的对象，包含了排序和分页的具体要求
  */
 public class JqgridReqData {
 
