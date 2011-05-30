@@ -26,7 +26,7 @@ $(function(){
 	$("#postAssignInfo").dialog({ width: 650 , hide: 'slide' , modal: true , autoOpen: false, close: function(event, ui) {
 			//关闭后刷新tree和grid
 			userPostOrganizationTree.reAsyncChildNodes(null, "refresh");
-			$("#userPostList").setGridParam({url:"system/role/getUserPost",page:1});
+			$("#userPostList").setGridParam({url:"system/role/getUserPostGridData",page:1});
 			$("#userPostList").trigger('reloadGrid');
 		}
 	});
@@ -267,7 +267,7 @@ $(function(){
 			callback:{
 				beforeClick: function(treeId, treeNode){
 					var userId = $("#userInfoList").getGridParam('selrow');
-					$("#userPostList").setGridParam({url:"system/role/getUserPost?userId="+userId+"&organizationId="+treeNode.id,page:1});
+					$("#userPostList").setGridParam({url:"system/role/getUserPostGridData?userId="+userId+"&organizationId="+treeNode.id,page:1});
 					$("#userPostList").trigger('reloadGrid');
 				}
 			}
@@ -276,7 +276,7 @@ $(function(){
 
 	$("#userPostList").jqGrid({
 		caption:"岗位列表",
-		url:'system/role/getUserPost',
+		url:'system/role/getUserPostGridData',
 		colNames:['id','名称','描述','已分配'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},

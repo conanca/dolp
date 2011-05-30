@@ -44,8 +44,16 @@ public class RoleModule {
 				unCheckedPrivileges);
 	}
 
+	/**
+	 * 获取指定用户的岗位列表
+	 * @param jqReq
+	 * @param organizationId
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
 	@At
-	public StandardJqgridResData getUserPost(@Param("..") JqgridReqData jqReq,
+	public StandardJqgridResData getUserPostGridData(@Param("..") JqgridReqData jqReq,
 			@Param("organizationId") int organizationId, @Param("userId") int userId) throws Exception {
 		return roleService.getUserPostGridData(jqReq, organizationId, userId);
 	}
