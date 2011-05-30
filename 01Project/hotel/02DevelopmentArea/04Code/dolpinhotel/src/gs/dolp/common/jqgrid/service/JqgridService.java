@@ -113,6 +113,7 @@ public class JqgridService<T> extends IdEntityService<T> {
 		jq.setPage(pageNumber);
 		jq.setRecords(countRecords);
 		jq.setRows(rows);
+		//jq.setSystemMessage("查询成功!", null, null);
 		return jq;
 	}
 
