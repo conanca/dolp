@@ -1,14 +1,11 @@
 package gs.dolp.system.module;
 
+import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.Menu;
-import gs.dolp.system.domain.MenuEntity;
-import gs.dolp.system.domain.TreeNode;
 import gs.dolp.system.service.MenuService;
-
-import java.util.List;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -25,10 +22,10 @@ public class MenuModule {
 	 * @param roleId
 	 * @return
 	 */
-	@At("/getPrivilegeByRoleId/*")
-	public List<TreeNode> getPrivilegeByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
+	@At("/getPrivilegeNodesByRoleId/*")
+	public AjaxResData getPrivilegeNodesByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
 			@Param("rgt") int rgt, @Param("level") int level) {
-		return menuService.getPrivilegeByRoleId(roleId, id, lft, rgt, level);
+		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt, level);
 	}
 
 	/**
@@ -40,8 +37,8 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public List<MenuEntity> getNodes(@Param("id") int id, @Param("name") String name) {
-		return menuService.getNodes(id);
+	public AjaxResData getNodes(@Param("id") int id, @Param("name") String name) {
+		return menuService.getTreeNodes(id);
 	}
 
 	/**

@@ -110,7 +110,8 @@ public class MenuService extends JqgridService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public List<MenuEntity> getNodes(int nodeId) {
+	public AjaxResData getTreeNodes(int nodeId) {
+		AjaxResData resData = new AjaxResData();
 		int parentLft;
 		int parentRgt = 0;
 		if (nodeId == 0) {
@@ -137,7 +138,8 @@ public class MenuService extends JqgridService<Menu> {
 		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
 		dao().execute(sql.setCondition(cnd));
 		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		return rs;
+		resData.setReturnData(rs);
+		return resData;
 	}
 
 	/**
@@ -246,7 +248,6 @@ public class MenuService extends JqgridService<Menu> {
 	@Aop(value = "log")
 	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
 		AjaxResData reData = new AjaxResData();
-
 		//获取父菜单;
 		Menu parentMenu = fetch(parentId);
 		int parentLft = parentMenu.getLft();
@@ -288,7 +289,8 @@ public class MenuService extends JqgridService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public List<TreeNode> getPrivilegeByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
+	public AjaxResData getPrivilegeTreeNodesByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
+		AjaxResData reData = new AjaxResData();
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 
 		StringBuilder addWhere = new StringBuilder();
@@ -334,6 +336,7 @@ public class MenuService extends JqgridService<Menu> {
 		List<PrivilegeEntity> privileges = sql.getList(PrivilegeEntity.class);
 
 		nodes.addAll(privileges);
-		return nodes;
+		reData.setReturnData(nodes);
+		return reData;
 	}
 }

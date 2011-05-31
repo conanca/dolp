@@ -27,7 +27,7 @@ $(function(){
 			var id = $(this).getGridParam('selrow');
 			if (id) {
 				roleId = id;
-				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeByRoleId/"+roleId;
+				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
 				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
 				$("#privilegeInfo").dialog( "open" );
 			} else {
@@ -44,7 +44,8 @@ $(function(){
 	var privilegeTreeSetting = {
 		checkable: true,
 		async: true,
-		asyncUrl: "system/menu/getPrivilegeByRoleId/0",
+		asyncDataFilter: ajaxDataFilter,
+		asyncUrl: "system/menu/getPrivilegeNodesByRoleId/0",
 		asyncParam: ["name", "id","lft","rgt","level"]
 	};
 	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);

@@ -5,6 +5,7 @@ $(function(){
 	var postOrganizationTreeSetting = {
 		checkable: false,
 		async: true,
+		asyncDataFilter: ajaxDataFilter,
 		asyncUrl: "system/organization/getNodes",
 		asyncParam: ["name", "id"],
 		callback:{

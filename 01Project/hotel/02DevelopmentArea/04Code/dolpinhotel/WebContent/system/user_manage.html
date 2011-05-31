@@ -262,6 +262,7 @@ $(function(){
 	var userPostOrganizationTreeSetting = {
 			checkable: false,
 			async: true,
+			asyncDataFilter: ajaxDataFilter,
 			asyncUrl: "system/organization/getNodes",
 			asyncParam: ["name", "id"],
 			callback:{

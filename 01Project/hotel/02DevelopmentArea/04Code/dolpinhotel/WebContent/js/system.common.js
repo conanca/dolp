@@ -3,6 +3,20 @@ function showResponse(responseText, statusText, xhr, $form)  {
 	$.addMessage($.parseJSON(responseText).systemMessage);
 }
 
+// zTree异步获取到数据后，在添加到 zTree 之前利用此方法进行数据预处理，以显示系统消息
+function ajaxDataFilter(treeId, parentNode, response) {
+	if (response) {
+		if(response.systemMessage){
+			$.addMessage(response.systemMessage);
+		}
+		if(response.returnData){
+			return response.returnData;
+		}else{
+			return null;
+		}
+	}
+};
+
 $.extend({
 	//显示系统消息的函数(消息对象systemMessage)
 	addMessage : function(systemMessage) {

@@ -29,7 +29,8 @@ public class OrganizationService extends JqgridService<Organization> {
 	}
 
 	@Aop(value = "log")
-	public List<Organization> getNodes(int id, String name) {
+	public AjaxResData getNodes(int id, String name) {
+		AjaxResData reData = new AjaxResData();
 		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {
@@ -39,7 +40,8 @@ public class OrganizationService extends JqgridService<Organization> {
 				orgNode.setChildrenOrgs(null);
 			}
 		}
-		return orgNodes;
+		reData.setReturnData(orgNodes);
+		return reData;
 	}
 
 	@Aop(value = "log")

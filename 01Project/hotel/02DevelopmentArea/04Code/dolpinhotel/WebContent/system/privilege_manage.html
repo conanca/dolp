@@ -5,6 +5,7 @@ $(function() {
 	var privilegeMenuTreeSetting = {
 		checkable: false,
 		async: true,
+		asyncDataFilter: ajaxDataFilter,
 		asyncUrl: "system/menu/getNodes",
 		asyncParam: ["name", "id"],
 		callback:{
