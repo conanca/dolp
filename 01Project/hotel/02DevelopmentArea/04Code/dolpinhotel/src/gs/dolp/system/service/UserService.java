@@ -59,7 +59,7 @@ public class UserService extends JqgridService<User> {
 
 	@Aop(value = "log")
 	public AjaxResData getNewUserNumber() {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -73,20 +73,20 @@ public class UserService extends JqgridService<User> {
 		dao().execute(sql);
 		String newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4,
 				'0');
-		reData.setReturnData(newUserNumber);
-		return reData;
+		respData.setReturnData(newUserNumber);
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData userNumberIsDuplicate(String userNumber) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		int count = count(Cnd.where("NUMBER", "=", userNumber));
 		if (count > 0) {
-			reData.setReturnData(true);
+			respData.setReturnData(true);
 		} else {
-			reData.setReturnData(false);
+			respData.setReturnData(false);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")
@@ -116,19 +116,19 @@ public class UserService extends JqgridService<User> {
 
 	@Aop(value = "log")
 	public AjaxResData updateRole(String userId, String[] roleIds) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		final String userID;
 		if (Strings.isEmpty(userId)) {
-			reData.setSystemMessage(null, "未选择用户!", null);
-			return reData;
+			respData.setSystemMessage(null, "未选择用户!", null);
+			return respData;
 		} else {
 			userID = userId;
 		}
 		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
-			reData.setSystemMessage(null, "该用户未分配任何角色!", null);
-			return reData;
+			respData.setSystemMessage(null, "该用户未分配任何角色!", null);
+			return respData;
 		}
 		List<Role> roles = new ArrayList<Role>();
 		// 取得要更新角色的用户
@@ -148,14 +148,14 @@ public class UserService extends JqgridService<User> {
 				dao().insertRelation(user, "roles");
 			}
 		});
-		reData.setSystemMessage("分配成功!", null, null);
-		return reData;
+		respData.setSystemMessage("分配成功!", null, null);
+		return respData;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls
 				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = '0' AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
 		sql.vars().set("userId", userId);
@@ -170,8 +170,8 @@ public class UserService extends JqgridService<User> {
 		});
 		dao().execute(sql);
 		List<Integer> currentRoleIDs = (List<Integer>) sql.getResult();
-		reData.setReturnData(currentRoleIDs);
-		return reData;
+		respData.setReturnData(currentRoleIDs);
+		return respData;
 	}
 
 	@Aop(value = "log")
@@ -186,7 +186,7 @@ public class UserService extends JqgridService<User> {
 
 	@Aop(value = "log")
 	public AjaxResData updatePost(final String userId, String orgId, final String[] postIds) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		StringBuilder sb = new StringBuilder();
 		sb.append("ROLEID IN (SELECT ID FROM SYSTEM_ROLE WHERE ORGANIZATIONID =");
 		sb.append(orgId);
@@ -196,8 +196,8 @@ public class UserService extends JqgridService<User> {
 		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
 		if (postIds == null || postIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", cnd);
-			reData.setSystemMessage(null, "该机构下未分配任何岗位!", null);
-			return reData;
+			respData.setSystemMessage(null, "该机构下未分配任何岗位!", null);
+			return respData;
 		}
 		// 清除旧岗位关系，插入新的关系
 		Trans.exec(new Atom() {
@@ -208,8 +208,8 @@ public class UserService extends JqgridService<User> {
 				}
 			}
 		});
-		reData.setSystemMessage("分配成功!", null, null);
-		return reData;
+		respData.setSystemMessage("分配成功!", null, null);
+		return respData;
 	}
 
 	/**

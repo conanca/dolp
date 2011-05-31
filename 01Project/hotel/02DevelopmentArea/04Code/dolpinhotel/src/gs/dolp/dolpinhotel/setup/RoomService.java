@@ -40,11 +40,11 @@ public class RoomService extends JqgridService<Room> {
 
 	@Aop(value = "log")
 	public AjaxResData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Room room = new Room();
@@ -52,7 +52,7 @@ public class RoomService extends JqgridService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().insert(room);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Room room = new Room();
@@ -61,9 +61,9 @@ public class RoomService extends JqgridService<Room> {
 			room.setRoomTypeId(Integer.parseInt(roomTypeId));
 			room.setIsOccupancy(Integer.parseInt(isOccupancy));
 			dao().update(room);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")

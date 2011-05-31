@@ -73,13 +73,13 @@ public class SystemModule {
 
 	@At
 	public ResponseData getCurrentUserName(HttpSession session) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		User cUser = (User) session.getAttribute("logonUser");
 		if (cUser != null) {
-			reData.setReturnData(cUser.getName());
-			reData.setSystemMessage("登录成功!", null, null);
+			respData.setReturnData(cUser.getName());
+			respData.setSystemMessage("登录成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	/**

@@ -29,7 +29,7 @@ public class SysEnumService extends JqgridService<SysEnum> {
 
 	@Aop(value = "log")
 	public AjaxResData CUDSysEnum(String oper, String id, String name, String description) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<SysEnum> sysEnums = query(cnd, null);
@@ -41,14 +41,14 @@ public class SysEnumService extends JqgridService<SysEnum> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			SysEnum sysEnum = new SysEnum();
 			sysEnum.setName(name);
 			sysEnum.setDescription(description);
 			dao().insert(sysEnum);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			SysEnum sysEnum = new SysEnum();
@@ -56,8 +56,8 @@ public class SysEnumService extends JqgridService<SysEnum> {
 			sysEnum.setName(name);
 			sysEnum.setDescription(description);
 			dao().update(sysEnum);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 }

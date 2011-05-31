@@ -35,9 +35,9 @@ public class RoomModule {
 
 	@At
 	public ResponseData getAllRoomForSelectOption() {
-		AjaxResData reData = new AjaxResData();
-		reData.setReturnData(roomService.getAllRoomForSelectOption());
-		return reData;
+		AjaxResData respData = new AjaxResData();
+		respData.setReturnData(roomService.getAllRoomForSelectOption());
+		return respData;
 	}
 
 }

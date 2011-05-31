@@ -55,7 +55,7 @@ public class BillService extends JqgridService<Bill> {
 
 	@Aop(value = "log")
 	public AjaxResData UDBill(String oper, String id, String number, String amount, String date) throws ParseException {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<Bill> bills = query(cnd, null);
@@ -67,7 +67,7 @@ public class BillService extends JqgridService<Bill> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Bill bill = new Bill();
@@ -78,14 +78,14 @@ public class BillService extends JqgridService<Bill> {
 			Timestamp dateTime = new Timestamp(dateFormat.parse(date).getTime());
 			bill.setDate(dateTime);
 			dao().update(bill);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData statisticBill(String startDate, String endDate) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 
 		Sql sql = Sqls
 				.create("SELECT MONTH(DATE) AS MONTH,SUM(AMOUNT) AS MONTHAMOUNT FROM DOLPINHOTEL_BILL GROUP BY MONTH(DATE)");
@@ -108,8 +108,8 @@ public class BillService extends JqgridService<Bill> {
 		});
 		dao().execute(sql);
 		ChartReturnData chartData = (ChartReturnData) sql.getResult();
-		reData.setReturnData(chartData);
-		reData.setSystemMessage("统计完成!", null, null);
-		return reData;
+		respData.setReturnData(chartData);
+		respData.setSystemMessage("统计完成!", null, null);
+		return respData;
 	}
 }

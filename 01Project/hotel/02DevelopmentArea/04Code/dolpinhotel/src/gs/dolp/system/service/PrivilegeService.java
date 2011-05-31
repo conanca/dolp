@@ -27,11 +27,11 @@ public class PrivilegeService extends JqgridService<Privilege> {
 	@Aop(value = "log")
 	public AjaxResData CUDPrivilege(String oper, String id, String name, String description, int menuId,
 			String methodPath) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -40,7 +40,7 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().insert(privilege);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Privilege privilege = new Privilege();
@@ -50,8 +50,8 @@ public class PrivilegeService extends JqgridService<Privilege> {
 			privilege.setMenuId(menuId);
 			privilege.setMethodPath(methodPath);
 			dao().update(privilege);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 }

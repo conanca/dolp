@@ -30,7 +30,7 @@ public class OrganizationService extends JqgridService<Organization> {
 
 	@Aop(value = "log")
 	public AjaxResData getNodes(int id, String name) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {
@@ -40,14 +40,14 @@ public class OrganizationService extends JqgridService<Organization> {
 				orgNode.setChildrenOrgs(null);
 			}
 		}
-		reData.setReturnData(orgNodes);
-		return reData;
+		respData.setReturnData(orgNodes);
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData CUDOrganization(String oper, String id, String code, String name, String description,
 			int parentOrgId) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<Organization> organizations = query(cnd, null);
@@ -59,7 +59,7 @@ public class OrganizationService extends JqgridService<Organization> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Organization organization = new Organization();
@@ -68,7 +68,7 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().insert(organization);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Organization organization = new Organization();
@@ -78,8 +78,8 @@ public class OrganizationService extends JqgridService<Organization> {
 			organization.setDescription(description);
 			organization.setParentOrgId(parentOrgId);
 			dao().update(organization);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 }

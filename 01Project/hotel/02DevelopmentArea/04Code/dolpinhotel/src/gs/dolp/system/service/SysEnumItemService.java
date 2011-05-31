@@ -31,11 +31,11 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 
 	@Aop(value = "log")
 	public AjaxResData CUDSysEnumItem(String oper, String id, String text, String value, int sysEnumId) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -43,7 +43,7 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().insert(item);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			SysEnumItem item = new SysEnumItem();
@@ -52,21 +52,21 @@ public class SysEnumItemService extends JqgridService<SysEnumItem> {
 			item.setValue(value);
 			item.setSysEnumId(sysEnumId);
 			dao().update(item);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData getSysEnumItemMap(String sysEnumName) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		SysEnum sysEnum = dao().fetch(SysEnum.class, Cnd.where("NAME", "=", sysEnumName));
 		List<SysEnumItem> items = dao().query(SysEnumItem.class, Cnd.where("SYSENUMID", "=", sysEnum.getId()), null);
 		Map<String, String> options = new LinkedHashMap<String, String>();
 		for (SysEnumItem item : items) {
 			options.put(item.getText(), item.getValue());
 		}
-		reData.setReturnData(options);
-		return reData;
+		respData.setReturnData(options);
+		return respData;
 	}
 }

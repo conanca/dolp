@@ -25,11 +25,11 @@ public class SysParaService extends JqgridService<SysPara> {
 
 	@Aop(value = "log")
 	public AjaxResData CUDSysPara(String oper, String id, String name, String value, String description) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			clear(cnd);
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			SysPara sysPara = new SysPara();
@@ -37,7 +37,7 @@ public class SysParaService extends JqgridService<SysPara> {
 			sysPara.setValue(value);
 			sysPara.setDescription(description);
 			dao().insert(sysPara);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			SysPara sysPara = new SysPara();
@@ -46,9 +46,9 @@ public class SysParaService extends JqgridService<SysPara> {
 			sysPara.setValue(value);
 			sysPara.setDescription(description);
 			dao().update(sysPara);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")

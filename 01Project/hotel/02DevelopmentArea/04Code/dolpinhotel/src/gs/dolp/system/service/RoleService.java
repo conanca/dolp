@@ -42,7 +42,7 @@ public class RoleService extends JqgridService<Role> {
 	@Aop(value = "log")
 	public AjaxResData CUDRole(String oper, String id, String name, String description, String isOrgaRela,
 			String organizationId) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<Role> roles = query(cnd, null);
@@ -56,7 +56,7 @@ public class RoleService extends JqgridService<Role> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			Role role = new Role();
@@ -69,7 +69,7 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().insert(role);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			Role role = fetch(Integer.parseInt(id));
@@ -83,27 +83,27 @@ public class RoleService extends JqgridService<Role> {
 				}
 			}
 			dao().update(role);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData getAllRoleMap(int isOrgaRela) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		List<Role> roles = query(Cnd.where("ISORGARELA", "=", 0), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
 			roleOptions.put(r.getName(), String.valueOf(r.getId()));
 		}
-		reData.setReturnData(roleOptions);
-		return reData;
+		respData.setReturnData(roleOptions);
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData updateRolePrivileges(final String roleId, final String[] checkedMenus,
 			final String[] checkedPrivileges, final String[] unCheckedMenus, final String[] unCheckedPrivileges) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 
 		Trans.exec(new Atom() {
 			public void run() {
@@ -140,8 +140,8 @@ public class RoleService extends JqgridService<Role> {
 			}
 		});
 
-		reData.setSystemMessage("分配成功!", null, null);
-		return reData;
+		respData.setSystemMessage("分配成功!", null, null);
+		return respData;
 	}
 
 	@Aop(value = "log")

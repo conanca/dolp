@@ -28,9 +28,9 @@ public class SystemService extends Service {
 	}
 
 	public AjaxResData getSystemName() {
-		AjaxResData reData = new AjaxResData();
-		reData.setReturnData(SysParaService.getSysParaValue("SystemName", dao()));
-		return reData;
+		AjaxResData respData = new AjaxResData();
+		respData.setReturnData(SysParaService.getSysParaValue("SystemName", dao()));
+		return respData;
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class SystemService extends Service {
 	 */
 	@Aop(value = "log")
 	public AjaxResData initDatabase() {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		// 初始化表结构
 		List<DTable> dts = Tables.loadFrom("tables_system.dod");
 		dts.addAll(Tables.loadFrom("tables_hotel.dod"));
@@ -49,8 +49,8 @@ public class SystemService extends Service {
 		dao().execute(fm.createCombo(fm.keys()));
 		fm = new FileSqlManager("init_hotel.sql");
 		dao().execute(fm.createCombo(fm.keys()));
-		reData.setSystemMessage("初始化数据库完成！", null, null);
-		return reData;
+		respData.setSystemMessage("初始化数据库完成！", null, null);
+		return respData;
 	}
 
 	@Aop(value = "log")
@@ -84,16 +84,16 @@ public class SystemService extends Service {
 
 	@Aop(value = "log")
 	public AjaxResData changeUserPassword(User user, String oldPassword, String newPassword) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		int countAuthenticatedUser = dao().count(User.class,
 				Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
-			reData.setSystemMessage(null, "原密码错误！", null);
+			respData.setSystemMessage(null, "原密码错误！", null);
 		} else {
 			user.setPassword(newPassword);
 			dao().update(user);
-			reData.setSystemMessage("密码修改成功！", null, null);
+			respData.setSystemMessage("密码修改成功！", null, null);
 		}
-		return reData;
+		return respData;
 	}
 }

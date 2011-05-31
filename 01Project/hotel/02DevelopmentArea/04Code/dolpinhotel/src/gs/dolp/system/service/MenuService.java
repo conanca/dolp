@@ -188,14 +188,14 @@ public class MenuService extends JqgridService<Menu> {
 	 */
 	@Aop(value = "log")
 	public AjaxResData CUDMenu(String oper, String id, String name, String url, String description, int parentId) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			for (String aId : id.split(",")) {
 				Menu menu = fetch(Long.parseLong(aId));
 				Cnd cnd = Cnd.where("LFT", ">=", menu.getLft()).and("RGT", "<=", menu.getRgt());
 				clear(cnd);
 			}
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			//获取父菜单;
@@ -213,7 +213,7 @@ public class MenuService extends JqgridService<Menu> {
 			dao().execute(sql);
 			Menu brotherOfnewMenu = sql.getObject(Menu.class);
 			if (brotherOfnewMenu == null) {
-				reData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
+				respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 			} else {
 				// 新建菜单
 				Menu menu = new Menu();
@@ -223,7 +223,7 @@ public class MenuService extends JqgridService<Menu> {
 				menu.setLft(brotherOfnewMenu.getLft() + 2);
 				menu.setRgt(brotherOfnewMenu.getRgt() + 2);
 				dao().insert(menu);
-				reData.setSystemMessage("添加成功!", null, null);
+				respData.setSystemMessage("添加成功!", null, null);
 			}
 		}
 		if ("edit".equals(oper)) {
@@ -232,9 +232,9 @@ public class MenuService extends JqgridService<Menu> {
 			menu.setUrl(url);
 			menu.setDescription(description);
 			dao().update(menu);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class MenuService extends JqgridService<Menu> {
 	 */
 	@Aop(value = "log")
 	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		//获取父菜单;
 		Menu parentMenu = fetch(parentId);
 		int parentLft = parentMenu.getLft();
@@ -264,7 +264,7 @@ public class MenuService extends JqgridService<Menu> {
 		dao().execute(sql);
 		List<Menu> brotherOfnewMenus = sql.getList(Menu.class);
 		if (brotherOfnewMenus == null) {
-			reData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
+			respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 		} else {
 			// 新建菜单
 			Menu menu = new Menu();
@@ -273,10 +273,10 @@ public class MenuService extends JqgridService<Menu> {
 			menu.setLft(brotherOfnewMenus.get(0).getRgt() + 1);
 			menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
 			dao().insert(menu);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 
-		return reData;
+		return respData;
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class MenuService extends JqgridService<Menu> {
 	 */
 	@Aop(value = "log")
 	public AjaxResData getPrivilegeTreeNodesByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 
 		StringBuilder addWhere = new StringBuilder();
@@ -336,7 +336,7 @@ public class MenuService extends JqgridService<Menu> {
 		List<PrivilegeEntity> privileges = sql.getList(PrivilegeEntity.class);
 
 		nodes.addAll(privileges);
-		reData.setReturnData(nodes);
-		return reData;
+		respData.setReturnData(nodes);
+		return respData;
 	}
 }

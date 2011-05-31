@@ -36,18 +36,18 @@ public class UserModule {
 
 	@At
 	public ResponseData save(@Param("..") User user) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		userService.save(user);
-		reData.setSystemMessage("保存成功!", null, null);
-		return reData;
+		respData.setSystemMessage("保存成功!", null, null);
+		return respData;
 	}
 
 	@At
 	public ResponseData deleteRow(@Param("id") String ids) {
 		userService.deleteUsers(ids);
-		AjaxResData reData = new AjaxResData();
-		reData.setSystemMessage("删除成功!", null, null);
-		return reData;
+		AjaxResData respData = new AjaxResData();
+		respData.setSystemMessage("删除成功!", null, null);
+		return respData;
 	}
 
 	@At

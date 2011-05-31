@@ -29,7 +29,7 @@ public class RoomTypeService extends JqgridService<RoomType> {
 	}
 
 	public AjaxResData CUDRoomType(String oper, String id, String name, String price, String description) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
 			final List<RoomType> roomTypes = query(cnd, null);
@@ -41,7 +41,7 @@ public class RoomTypeService extends JqgridService<RoomType> {
 					clear(cnd);
 				}
 			});
-			reData.setSystemMessage("删除成功!", null, null);
+			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
 			RoomType roomType = new RoomType();
@@ -49,7 +49,7 @@ public class RoomTypeService extends JqgridService<RoomType> {
 			roomType.setPrice(Double.parseDouble(price));
 			roomType.setDescription(description);
 			dao().insert(roomType);
-			reData.setSystemMessage("添加成功!", null, null);
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
 			RoomType roomType = new RoomType();
@@ -58,21 +58,21 @@ public class RoomTypeService extends JqgridService<RoomType> {
 			roomType.setPrice(Double.parseDouble(price));
 			roomType.setDescription(description);
 			dao().update(roomType);
-			reData.setSystemMessage("修改成功!", null, null);
+			respData.setSystemMessage("修改成功!", null, null);
 		}
-		return reData;
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData getAllRoomTypeMap() {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		List<RoomType> allRoomTypes = dao().query(RoomType.class, null, null);
 		Map<String, Integer> roomTypeMap = new LinkedHashMap<String, Integer>();
 		for (RoomType roomType : allRoomTypes) {
 			roomTypeMap.put(roomType.getName(), roomType.getId());
 		}
-		reData.setReturnData(roomTypeMap);
-		return reData;
+		respData.setReturnData(roomTypeMap);
+		return respData;
 	}
 
 }
