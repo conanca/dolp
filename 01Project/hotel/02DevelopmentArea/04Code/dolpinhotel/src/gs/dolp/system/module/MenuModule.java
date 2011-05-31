@@ -1,10 +1,7 @@
 package gs.dolp.system.module;
 
-import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.system.domain.Menu;
 import gs.dolp.system.service.MenuService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -23,7 +20,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getPrivilegeNodesByRoleId/*")
-	public AjaxResData getPrivilegeNodesByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
+	public ResponseData getPrivilegeNodesByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
 			@Param("rgt") int rgt, @Param("level") int level) {
 		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt, level);
 	}
@@ -37,7 +34,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public AjaxResData getNodes(@Param("id") int id, @Param("name") String name) {
+	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
 		return menuService.getTreeNodes(id);
 	}
 
@@ -48,7 +45,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getGridData/*")
-	public AdvancedJqgridResData<Menu> getGridData(int parentId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(int parentId, @Param("..") JqgridReqData jqReq) {
 		return menuService.getGridData(jqReq, parentId);
 	}
 

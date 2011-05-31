@@ -1,10 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.system.domain.SysEnum;
-import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
 import gs.dolp.system.service.SysEnumService;
 
@@ -20,12 +17,12 @@ public class SysEnumModule {
 	private SysEnumItemService sysEnumItemService;
 
 	@At
-	public AdvancedJqgridResData<SysEnum> getSysEnumGridData(@Param("..") JqgridReqData jqReq) {
+	public ResponseData getSysEnumGridData(@Param("..") JqgridReqData jqReq) {
 		return sysEnumService.getGridData(jqReq);
 	}
 
 	@At("/getSysEnumItemGridData/*")
-	public AdvancedJqgridResData<SysEnumItem> getSysEnumItemGridData(int sysEnumId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getSysEnumItemGridData(int sysEnumId, @Param("..") JqgridReqData jqReq) {
 		return sysEnumItemService.getGridData(jqReq, sysEnumId);
 	}
 

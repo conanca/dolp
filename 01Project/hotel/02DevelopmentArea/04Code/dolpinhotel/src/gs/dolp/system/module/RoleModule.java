@@ -1,10 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
-import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -18,8 +15,8 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public AdvancedJqgridResData<Role> getGridData(@Param("..") JqgridReqData jqReq,
-			@Param("isOrgaRela") int isOrgaRela, @Param("organizationId") int organizationId) {
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") int isOrgaRela,
+			@Param("organizationId") int organizationId) {
 		return roleService.getGridData(jqReq, isOrgaRela, organizationId);
 	}
 
@@ -53,7 +50,7 @@ public class RoleModule {
 	 * @throws Exception
 	 */
 	@At
-	public StandardJqgridResData getUserPostGridData(@Param("..") JqgridReqData jqReq,
+	public ResponseData getUserPostGridData(@Param("..") JqgridReqData jqReq,
 			@Param("organizationId") int organizationId, @Param("userId") int userId) throws Exception {
 		return roleService.getUserPostGridData(jqReq, organizationId, userId);
 	}

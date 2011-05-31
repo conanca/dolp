@@ -1,9 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.system.domain.SysPara;
 import gs.dolp.system.service.SysParaService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -16,7 +14,7 @@ public class SysParaModule {
 	private SysParaService sysParaService;
 
 	@At
-	public AdvancedJqgridResData<SysPara> getGridData(@Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
 		return sysParaService.getGridData(jqReq);
 	}
 

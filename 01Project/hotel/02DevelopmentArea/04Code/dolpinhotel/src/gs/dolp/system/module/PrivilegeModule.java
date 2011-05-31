@@ -1,9 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.service.PrivilegeService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -17,7 +15,7 @@ public class PrivilegeModule {
 	private PrivilegeService privilegeService;
 
 	@At("/getGridData/*")
-	public AdvancedJqgridResData<Privilege> getGridData(int menuId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(int menuId, @Param("..") JqgridReqData jqReq) {
 		return privilegeService.getGridData(menuId, jqReq);
 	}
 

@@ -1,7 +1,6 @@
 package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -15,7 +14,7 @@ public class RoomTypeModule {
 	private RoomTypeService roomTypeService;
 
 	@At
-	public AdvancedJqgridResData<RoomType> getGridData(@Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
 		return roomTypeService.getGridData(jqReq);
 	}
 

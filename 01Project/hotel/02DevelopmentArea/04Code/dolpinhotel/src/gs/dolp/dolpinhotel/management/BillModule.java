@@ -1,7 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
 import java.text.ParseException;
@@ -16,7 +15,7 @@ public class BillModule {
 	private BillService billService;
 
 	@At
-	public AdvancedJqgridResData<Bill> getGridData(@Param("..") JqgridReqData jq, @Param("number") String number,
+	public ResponseData getGridData(@Param("..") JqgridReqData jq, @Param("number") String number,
 			@Param("amount") String amount, @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo) {
 		return billService.getGridData(jq, number, amount, dateFrom, dateTo);
 	}

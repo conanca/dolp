@@ -1,6 +1,6 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
+import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -14,7 +14,7 @@ public class CustomerModule {
 	private CustomerService customerService;
 
 	@At("/getGridDataByRoomOccId/*")
-	public AdvancedJqgridResData<Customer> getGridDataByRoomOccId(int roomOccId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridDataByRoomOccId(int roomOccId, @Param("..") JqgridReqData jqReq) {
 		return customerService.getGridDataByRoomOccId(roomOccId, jqReq);
 	}
 }

@@ -1,9 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.system.domain.Message;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MessageService;
 
@@ -19,21 +17,21 @@ public class MessageModule {
 	private MessageService messageService;
 
 	@At
-	public AdvancedJqgridResData<Message> getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getReceivedMessageGridData(jqReq, currentUser);
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, 1);
 	}
 
 	@At
-	public AdvancedJqgridResData<Message> getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
+	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, 0);
