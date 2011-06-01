@@ -1,6 +1,5 @@
 package gs.dolp.system.module;
 
-import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
@@ -73,13 +72,8 @@ public class SystemModule {
 
 	@At
 	public ResponseData getCurrentUserName(HttpSession session) {
-		AjaxResData respData = new AjaxResData();
 		User cUser = (User) session.getAttribute("logonUser");
-		if (cUser != null) {
-			respData.setReturnData(cUser.getName());
-			respData.setSystemMessage("登录成功!", null, null);
-		}
-		return respData;
+		return systemService.getCurrentUserName(cUser);
 	}
 
 	/**

@@ -25,7 +25,7 @@ public class RoomTypeModule {
 	}
 
 	@At
-	public ResponseData getAllRoomTypes() {
+	public ResponseData getAllRoomTypeMap() {
 		return roomTypeService.getAllRoomTypeMap();
 	}
 

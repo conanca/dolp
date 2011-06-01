@@ -78,12 +78,14 @@ public class RoomService extends JqgridService<Room> {
 	}
 
 	@Aop(value = "log")
-	public Map<String, String> getAllRoomForSelectOption() {
+	public AjaxResData getAllRoomForSelectOption() {
+		AjaxResData respData = new AjaxResData();
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
 		List<Room> rooms = query(null, null);
 		for (Room room : rooms) {
 			roomOptions.put(String.valueOf(room.getId()), room.getNumber());
 		}
-		return roomOptions;
+		respData.setReturnData(roomOptions);
+		return respData;
 	}
 }

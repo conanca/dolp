@@ -1,6 +1,5 @@
 package gs.dolp.dolpinhotel.setup;
 
-import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 
@@ -35,9 +34,7 @@ public class RoomModule {
 
 	@At
 	public ResponseData getAllRoomForSelectOption() {
-		AjaxResData respData = new AjaxResData();
-		respData.setReturnData(roomService.getAllRoomForSelectOption());
-		return respData;
+		return roomService.getAllRoomForSelectOption();
 	}
 
 }

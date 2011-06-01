@@ -27,8 +27,8 @@ public class RoleModule {
 		return roleService.CUDRole(oper, id, name, description, isOrgaRela, organizationId);
 	}
 
-	@At
-	public ResponseData getAllRole(@Param("isOrgaRela") int isOrgaRela) {
+	@At("/getAllRoleMap/*")
+	public ResponseData getAllRoleMap(int isOrgaRela) {
 		return roleService.getAllRoleMap(isOrgaRela);
 	}
 

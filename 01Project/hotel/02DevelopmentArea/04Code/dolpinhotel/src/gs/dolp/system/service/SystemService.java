@@ -54,6 +54,16 @@ public class SystemService extends Service {
 	}
 
 	@Aop(value = "log")
+	public AjaxResData getCurrentUserName(User cUser) {
+		AjaxResData respData = new AjaxResData();
+		if (cUser != null) {
+			respData.setReturnData(cUser.getName());
+			respData.setSystemMessage("登录成功!", null, null);
+		}
+		return respData;
+	}
+
+	@Aop(value = "log")
 	public InputStream genExcel(String[] colNames, Map<String, String>[] rowDatas) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sh = wb.createSheet();

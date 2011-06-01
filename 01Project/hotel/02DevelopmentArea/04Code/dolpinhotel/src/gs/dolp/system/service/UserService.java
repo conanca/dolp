@@ -90,16 +90,20 @@ public class UserService extends JqgridService<User> {
 	}
 
 	@Aop(value = "log")
-	public void save(User user) {
+	public AjaxResData save(User user) {
+		AjaxResData respData = new AjaxResData();
 		if (user.getId() == 0) {
 			dao().insert(user);
 		} else {
 			dao().update(user);
 		}
+		respData.setSystemMessage("保存成功!", null, null);
+		return respData;
 	}
 
 	@Aop(value = "log")
-	public void deleteUsers(String ids) {
+	public AjaxResData deleteUsers(String ids) {
+		AjaxResData respData = new AjaxResData();
 		if (!Strings.isEmpty(ids)) {
 			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<User> users = query(cnd, null);
@@ -112,6 +116,8 @@ public class UserService extends JqgridService<User> {
 				}
 			});
 		}
+		respData.setSystemMessage("删除成功!", null, null);
+		return respData;
 	}
 
 	@Aop(value = "log")

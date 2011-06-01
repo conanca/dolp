@@ -1,6 +1,5 @@
 package gs.dolp.system.module;
 
-import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.system.domain.User;
@@ -36,18 +35,12 @@ public class UserModule {
 
 	@At
 	public ResponseData save(@Param("..") User user) {
-		AjaxResData respData = new AjaxResData();
-		userService.save(user);
-		respData.setSystemMessage("保存成功!", null, null);
-		return respData;
+		return userService.save(user);
 	}
 
 	@At
 	public ResponseData deleteRow(@Param("id") String ids) {
-		userService.deleteUsers(ids);
-		AjaxResData respData = new AjaxResData();
-		respData.setSystemMessage("删除成功!", null, null);
-		return respData;
+		return userService.deleteUsers(ids);
 	}
 
 	@At
