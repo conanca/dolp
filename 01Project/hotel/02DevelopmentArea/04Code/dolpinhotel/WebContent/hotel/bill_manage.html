@@ -87,13 +87,14 @@ $(function(){
 	$("#billSubList").navGrid('#billSubPager',{edit:false,add:false,del:false,search:false});
 
 	//查询按钮点击事件
-	$("#bill_manage_search_btn").click(function () { 
+	$("#billSerchForm").submit(function() {
 		var number = $("#bill_manage_number").val();
 		var amount = $("#bill_manage_amount").val();
 		var dateFrom = $("#bill_manage_dateFrom").val();
 		var dateTo = $("#bill_manage_dateTo").val();
 		var url = "dolpinhotel/management/bill/getGridData?number="+number+"&amount="+amount+"&dateFrom="+dateFrom+"&dateTo="+dateTo;
 		$("#billList").setGridParam({url:url,page:1}).trigger("reloadGrid");
+		return false;
 	});
 });
 
@@ -108,6 +109,7 @@ function fmtDate(value){
 
 <fieldset>
 <legend>账单查询</legend>
+<form id="billSerchForm" action="#">
 <table>
 	<tr>
 		<td>
@@ -135,10 +137,11 @@ function fmtDate(value){
 	</tr>
 	<tr>
 		<td colspan="4" align="right">
-			<input type="button" id="bill_manage_search_btn" value="查询"/>
+			<input type="submit" value="查询"/>
 		</td>
 	</tr>
 </table>
+</form>
 </fieldset>
 <br/>
 <table id="billList"></table>

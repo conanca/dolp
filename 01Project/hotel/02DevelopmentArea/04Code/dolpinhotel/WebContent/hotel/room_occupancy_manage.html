@@ -122,7 +122,7 @@ $(function(){
 	$("#customerSubList").navGrid('#customerSubPager',{edit:false,add:false,del:false,search:false});
 
 	//查询按钮点击事件
-	$("#room_occupancy_manage_search_btn").click(function () { 
+	$("#roomOccupancySearchForm").submit(function() {
 		var number = $("#room_occupancy_manage_number").val();
 		var enterDateFrom = $("#room_occupancy_manage_enterDateFrom").val();
 		var enterDateTo = $("#room_occupancy_manage_enterDateTo").val();
@@ -136,6 +136,7 @@ $(function(){
 		+"&expectedCheckOutDateFrom="+expectedCheckOutDateFrom+"&expectedCheckOutDateTo="+expectedCheckOutDateTo+"&leaveDateFrom="+leaveDateFrom
 		+"&leaveDateTo="+leaveDateTo+"&occupancyDays="+occupancyDays+"&status="+status;
 		$("#roomOccupancyList").setGridParam({url:url,page:1}).trigger("reloadGrid");
+		return false;
 	});
 });
 
@@ -149,7 +150,8 @@ function fmtDate(value){
 </script>
 
 <fieldset>
-<legend>房间查询</legend>
+<legend>房间入住情况查询</legend>
+<form id="roomOccupancySearchForm" action="#">
 <table>
 	<tr>
 		<td>
@@ -205,10 +207,11 @@ function fmtDate(value){
 	</tr>
 	<tr>
 		<td colspan="4" align="right">
-			<input type="button" id="room_occupancy_manage_search_btn" value="查询"/>
+			<input type="submit" value="查询"/>
 		</td>
 	</tr>
 </table>
+</form>
 </fieldset>
 <br/>
 <table id="roomOccupancyList"></table>

@@ -36,18 +36,20 @@ $(function(){
 	//添加自定义按钮——导出Excel
 	$("#roomList").export2Excel('#roomPager');
 	//查询按钮点击事件
-	$("#room_manage_search_btn").click(function () { 
+	$("#roomSerchForm").submit(function() {
 		var number = $("#room_manage_number").val();
 		var isOccupancy = $("#room_manage_isOccupancy").val();
 		var roomTypeId = $("#room_manage_roomTypeId").val();
 		url = "dolpinhotel/setup/room/getJqgridData?number="+number+"&isOccupancy="+isOccupancy+"&roomTypeId="+roomTypeId;
 		$("#roomList").setGridParam({url:url, page:1}).trigger("reloadGrid");
+		return false;
 	});
 });
 </script>
 
 <fieldset>
 <legend>房间查询</legend>
+<form id="roomSerchForm" action="#">
 <table>
 	<tr>
 		<td>
@@ -77,10 +79,11 @@ $(function(){
 	</tr>
 	<tr>
 		<td colspan="6" align="right">
-			<input type="button" id="room_manage_search_btn" value="查询"/>
+			<input type="submit" value="查询"/>
 		</td>
 	</tr>
 </table>
+</form>
 </fieldset>
 <br/>
 <table id="roomList"></table>

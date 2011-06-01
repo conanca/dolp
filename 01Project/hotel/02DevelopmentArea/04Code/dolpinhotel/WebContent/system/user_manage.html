@@ -150,11 +150,12 @@ $(function(){
 	});
 
 	//查询按钮点击事件
-	$("#userInfo_search_btn").click(function () { 
+	$("#userInfoSerchForm").submit(function() {
 		var number = $("#userInfo_search_number").val();
 		var name = $("#userInfo_search_name").val();
 		url = "system/user/getGridData?number="+number+"&name="+name;
 		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
+		return false;
 	});
 
 	//------------------设为同步模式------------------
@@ -313,6 +314,7 @@ $(function(){
 
 <fieldset>
 <legend>用户查询</legend>
+<form id="userInfoSerchForm" action="#">
 <table>
 	<tr>
 		<td>
@@ -330,10 +332,11 @@ $(function(){
 	</tr>
 	<tr>
 		<td colspan="4" align="right">
-			<input type="button" id="userInfo_search_btn" value="查询"/>
+			<input type="submit" value="查询"/>
 		</td>
 	</tr>
 </table>
+</form>
 </fieldset>
 <br/>
 <table id="userInfoList"></table>
