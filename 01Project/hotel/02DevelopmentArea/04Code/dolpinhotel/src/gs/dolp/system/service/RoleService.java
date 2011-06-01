@@ -91,7 +91,7 @@ public class RoleService extends JqgridService<Role> {
 	@Aop(value = "log")
 	public AjaxResData getAllRoleMap(int isOrgaRela) {
 		AjaxResData respData = new AjaxResData();
-		List<Role> roles = query(Cnd.where("ISORGARELA", "=", 0), null);
+		List<Role> roles = query(Cnd.where("ISORGARELA", "=", isOrgaRela), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
 		for (Role r : roles) {
 			roleOptions.put(r.getName(), String.valueOf(r.getId()));
@@ -147,12 +147,11 @@ public class RoleService extends JqgridService<Role> {
 	@Aop(value = "log")
 	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId)
 			throws SQLException {
-		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT ID,NAME,DESCRIPTION,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = ");
-		sb.append(userId);
-		sb.append(") AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = ");
-		sb.append(organizationId);
-		Sql sql = Sqls.create(sb.toString());
+		Sql sql = Sqls.create("SELECT ID,NAME,DESCRIPTION,ID IN "
+				+ "(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId) AS ISSET "
+				+ "FROM SYSTEM_ROLE WHERE ORGANIZATIONID = $organizationId");
+		sql.vars().set("userId", userId);
+		sql.vars().set("organizationId", organizationId);
 		StandardJqgridResData jq = getStandardJqgridResData(sql, null, jqReq);
 		return jq;
 	}
