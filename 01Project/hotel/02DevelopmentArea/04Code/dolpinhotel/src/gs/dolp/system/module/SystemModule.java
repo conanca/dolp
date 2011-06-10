@@ -4,6 +4,7 @@ import gs.dolp.common.domain.ResponseData;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MenuService;
+import gs.dolp.system.service.OnlineUserService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
 
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -28,6 +30,7 @@ public class SystemModule {
 	private SystemService systemService;
 	private UserService userService;
 	private MenuService menuService;
+	private OnlineUserService onlineUserService;
 
 	@At
 	public ResponseData getSystemName() {
@@ -47,11 +50,14 @@ public class SystemModule {
 	}
 
 	@At
-	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session) {
+	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session,
+			HttpServletRequest request) {
 		User logonUser = userService.userAuthenticate(number, password);
 		session.setAttribute("logonUser", logonUser);
 		List<Privilege> currentPrivileges = userService.getCurrentPrivileges(logonUser.getId());
 		session.setAttribute("currPrivs", currentPrivileges);
+		// 将该用户放入在线用户表中
+		onlineUserService.insert(session, request);
 	}
 
 	@At
@@ -68,6 +74,8 @@ public class SystemModule {
 	@Ok("redirect:/index.html")
 	public void logout(HttpSession session) {
 		session.invalidate();
+		// 将该用户从在线用户表中删除
+		onlineUserService.delete(session);
 	}
 
 	@At

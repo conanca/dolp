@@ -1,0 +1,28 @@
+<script type="text/javascript">
+$(function(){
+	$("#onlineUserList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"在线用户",
+		url:'system/onlineUser/getGridData',
+		colNames:['id','sessionId','userId','登录时间','IP地址','浏览器'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true},
+			{name:'sessionId',index:'sessionId', width:0,hidden:true},
+			{name:'userId',index:'userId', width:200},
+			{name:'logonTime',index:'logonTime', width:200},
+			{name:'ipAddr',index:'ipAddr', width:200},
+			{name:'browser',index:'browser', width:200}
+		],
+		pager: '#onlineUserPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: false
+	});
+	$("#onlineUserList").setJqGridCUD('#onlineUserPager',{edit:false,add:false,del:false,search:false});
+});
+</script>
+
+<table id="onlineUserList"></table>
+<div id="onlineUserPager"></div>
