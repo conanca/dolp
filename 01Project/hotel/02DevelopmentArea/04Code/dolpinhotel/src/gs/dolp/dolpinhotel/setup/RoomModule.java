@@ -1,7 +1,7 @@
 package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
 import gs.dolp.system.service.OrganizationService;
 
 import org.nutz.ioc.annotation.InjectName;

@@ -1,21 +1,18 @@
-package gs.dolp.common.jqgrid.domain;
+package gs.dolp.common.domain.jqgrid;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.SystemMessage;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import org.nutz.json.Json;
 
 /**
  * @author Administrator
- *	扩展了格式的jqGrid所需的response数据，需设置jsonReader:{ repeatitems: false }
- *	rows中为自定义的T型实体数据的集合
- * @param <T>
+ * 标准格式的jqGrid所需的后台响应数据
  */
-public class AdvancedJqgridResData<T> implements ResponseData {
+public class StandardJqgridResData implements ResponseData {
 	/**
 	 * 页码
 	 */
@@ -34,7 +31,7 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 	/**
 	 * 记录
 	 */
-	private List<T> rows;
+	private List<StandardJqgridResDataRow> rows;
 
 	/**
 	 * 用户自定义数据
@@ -65,11 +62,11 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 		this.records = records;
 	}
 
-	public List<T> getRows() {
+	public List<StandardJqgridResDataRow> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<T> rows) {
+	public void setRows(List<StandardJqgridResDataRow> rows) {
 		this.rows = rows;
 	}
 
@@ -82,7 +79,7 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 	}
 
 	/**
-	 * 用于简化 创建userdata对象 的帮助函数
+	 * 用于简化创建AjaxResData类的帮助函数
 	 * @param returnData
 	 * @param infoMessages
 	 * @param warnMessages
@@ -122,29 +119,17 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 
 	/**
 	 * 获取指定字段的值的数组
-	 * @param column
+	 * @param columnIndex
 	 * @return
-	 * @throws SecurityException
-	 * @throws NoSuchFieldException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
 	 */
-	public String[] getArrValueOfTheColumn(String column) throws SecurityException, NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
+	public String[] getArrValueOfTheColumn(int columnIndex) {
 		if (rows == null || rows.size() == 0) {
 			return null;
 		}
 		int length = rows.size();
 		String[] arrValue = new String[length];
-		// 获取Field对象
-		T obj = rows.get(0);
-		Field filed = obj.getClass().getDeclaredField(column);
-		filed.setAccessible(true);
-		// 迭代各行，取指定Field的值，并放入arrValue中
 		for (int i = 0; i < length; i++) {
-			T row = rows.get(i);
-			String fieldValueStr = filed.get(row).toString();
-			arrValue[i] = fieldValueStr;
+			arrValue[i] = rows.get(i).getCell().get(columnIndex);
 		}
 		return arrValue;
 	}

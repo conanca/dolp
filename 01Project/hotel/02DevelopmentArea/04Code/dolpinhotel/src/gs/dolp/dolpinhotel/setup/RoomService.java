@@ -1,9 +1,9 @@
 package gs.dolp.dolpinhotel.setup;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.JqgridService;
 
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package gs.dolp.common.jqgrid.domain;
+package gs.dolp.common.domain.jqgrid;
 
 import java.util.ArrayList;
 import java.util.List;

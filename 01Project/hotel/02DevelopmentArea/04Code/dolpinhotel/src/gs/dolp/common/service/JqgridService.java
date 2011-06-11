@@ -1,9 +1,9 @@
-package gs.dolp.common.jqgrid.service;
+package gs.dolp.common.service;
 
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResDataRow;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.StandardJqgridResData;
+import gs.dolp.common.domain.jqgrid.StandardJqgridResDataRow;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,7 +28,7 @@ import org.nutz.service.IdEntityService;
  * 注：实体的主键是数值型的。
  * @param <T>
  */
-public class JqgridService<T> extends IdEntityService<T> {
+public abstract class JqgridService<T> extends IdEntityService<T> {
 
 	public JqgridService(Dao dao) {
 		super(dao);

@@ -1,11 +1,11 @@
 package gs.dolp.dolpinhotel.management;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.highchart.domain.ChartReturnData;
-import gs.dolp.common.highchart.domain.SeriesItem;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.domain.highcharts.ChartReturnData;
+import gs.dolp.common.domain.highcharts.SeriesItem;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.JqgridService;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

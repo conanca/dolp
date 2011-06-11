@@ -1,4 +1,4 @@
-package gs.dolp.common.highchart.domain;
+package gs.dolp.common.domain.highcharts;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package gs.dolp.dolpinhotel.management;
 
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.JqgridService;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;

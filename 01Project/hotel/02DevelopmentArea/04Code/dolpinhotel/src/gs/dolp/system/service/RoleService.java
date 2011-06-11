@@ -1,10 +1,10 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.domain.StandardJqgridResData;
-import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.StandardJqgridResData;
+import gs.dolp.common.service.JqgridService;
 import gs.dolp.system.domain.Role;
 
 import java.sql.SQLException;
