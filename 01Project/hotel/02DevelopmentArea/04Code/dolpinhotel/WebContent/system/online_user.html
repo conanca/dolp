@@ -4,23 +4,40 @@ $(function(){
 		jsonReader:{
 			repeatitems: false
 		},
-		caption:"在线用户",
+		caption:"在线用户列表",
 		url:'system/onlineUser/getGridData',
 		colNames:['id','sessionId','userId','登录时间','IP地址','浏览器'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'sessionId',index:'sessionId', width:0,hidden:true},
-			{name:'userId',index:'userId', width:200},
-			{name:'logonTime',index:'logonTime', width:200},
-			{name:'ipAddr',index:'ipAddr', width:200},
+			{name:'userId',index:'userId', width:100},
+			{name:'logonTime',index:'logonTime', width:100},
+			{name:'ipAddr',index:'ipAddr', width:100},
 			{name:'browser',index:'browser', width:200}
 		],
 		pager: '#onlineUserPager',
 		sortname: 'id',
 		sortorder: "asc",
-		multiselect: false
+		multiselect: true
 	});
 	$("#onlineUserList").setJqGridCUD('#onlineUserPager',{edit:false,add:false,del:false,search:false});
+	$("#onlineUserList").navButtonAdd('#onlineUserPager',{caption:"踢出",buttonicon:"ui-icon-trash",
+		onClickButton:function(){
+			var selIds = $(this).getGridParam('selarrrow');
+			if( selIds != null && selIds != ''){
+				var sessionIds = [];
+				$.each(selIds, function(index, selId) {
+					var row = $("#onlineUserList").getRowData(selId)
+					var sessionId = row.sessionId;
+					sessionIds[index] = sessionId;
+				});
+				$.dolpPost("system/onlineUser/kickOff",{sessionIds:sessionIds});
+				$("#onlineUserList").trigger('reloadGrid');
+			}else{
+				$.addMessageStr(null,"请选择要踢出的在线用户",null);
+			}
+		}
+	});
 });
 </script>
 

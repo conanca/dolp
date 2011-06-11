@@ -56,7 +56,7 @@ public class SystemModule {
 		session.setAttribute("logonUser", logonUser);
 		List<Privilege> currentPrivileges = userService.getCurrentPrivileges(logonUser.getId());
 		session.setAttribute("currPrivs", currentPrivileges);
-		// 将该用户放入在线用户表中
+		// 将该session相应的登录信息放入在线用户表中
 		onlineUserService.insert(session, request);
 	}
 
@@ -73,9 +73,8 @@ public class SystemModule {
 	@At
 	@Ok("redirect:/index.html")
 	public void logout(HttpSession session) {
+		// 清除该用户的session
 		session.invalidate();
-		// 将该用户从在线用户表中删除
-		onlineUserService.delete(session);
 	}
 
 	@At

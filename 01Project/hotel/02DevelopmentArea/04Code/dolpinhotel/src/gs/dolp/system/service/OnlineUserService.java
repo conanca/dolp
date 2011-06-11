@@ -1,8 +1,10 @@
 package gs.dolp.system.service;
 
+import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
 import gs.dolp.common.jqgrid.domain.JqgridReqData;
 import gs.dolp.common.jqgrid.service.JqgridService;
+import gs.dolp.common.util.DolpSessionContext;
 import gs.dolp.common.util.MVCHandler;
 import gs.dolp.system.domain.OnlineUser;
 import gs.dolp.system.domain.User;
@@ -23,10 +25,12 @@ public class OnlineUserService extends JqgridService<OnlineUser> {
 		super(dao);
 	}
 
-	public void delete(HttpSession session) {
-		this.clear(Cnd.where("SESSIONID", "=", session.getId()));
+	@Aop(value = "log")
+	public void clear(HttpSession session) {
+		clear(Cnd.where("SESSIONID", "=", session.getId()));
 	}
 
+	@Aop(value = "log")
 	public void insert(HttpSession session, HttpServletRequest request) {
 		OnlineUser onlineUser = new OnlineUser();
 		User cUser = (User) session.getAttribute("logonUser");
@@ -36,6 +40,20 @@ public class OnlineUserService extends JqgridService<OnlineUser> {
 		onlineUser.setIpAddr(MVCHandler.getIpAddr(request));
 		onlineUser.setBrowser(MVCHandler.getBrowser(request));
 		dao().insert(onlineUser);
+	}
+
+	@Aop(value = "log")
+	public AjaxResData kickOff(String[] sessionIds) {
+		AjaxResData resData = new AjaxResData();
+		if (sessionIds != null && sessionIds.length > 0) {
+			for (String sessionId : sessionIds) {
+				DolpSessionContext.getSession(sessionId).invalidate();
+			}
+			resData.setSystemMessage("已踢出用户！", null, null);
+		} else {
+			resData.setSystemMessage(null, "未踢出任何用户！", null);
+		}
+		return resData;
 	}
 
 	@Aop(value = "log")

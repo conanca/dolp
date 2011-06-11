@@ -18,4 +18,9 @@ public class OnlineUserModule {
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
 		return onlineUserService.getGridData(jqReq);
 	}
+
+	@At
+	public ResponseData kickOff(@Param("sessionIds[]") String[] sessionIds) {
+		return onlineUserService.kickOff(sessionIds);
+	}
 }
