@@ -21,3 +21,8 @@ $.extend($.jgrid.defaults, {
 		$.addMessage($(this).getGridParam('userData').systemMessage);
 	}
 });
+
+//用户关闭浏览器时，自动登出
+$(window).unload(function(){
+	$.dolpPost("logout");
+});
