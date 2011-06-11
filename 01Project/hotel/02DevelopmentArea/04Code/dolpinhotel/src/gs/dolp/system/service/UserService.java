@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
@@ -28,7 +28,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class UserService extends JqgridService<User> {
+public class UserService extends DolpBaseService<User> {
 
 	public UserService(Dao dao) {
 		super(dao);

@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.SysEnum;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class SysEnumService extends JqgridService<SysEnum> {
+public class SysEnumService extends DolpBaseService<SysEnum> {
 
 	public SysEnumService(Dao dao) {
 		super(dao);

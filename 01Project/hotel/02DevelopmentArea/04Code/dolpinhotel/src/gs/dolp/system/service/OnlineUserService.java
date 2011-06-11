@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.common.util.DolpSessionContext;
 import gs.dolp.common.util.MVCHandler;
 import gs.dolp.system.domain.OnlineUser;
@@ -19,7 +19,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class OnlineUserService extends JqgridService<OnlineUser> {
+public class OnlineUserService extends DolpBaseService<OnlineUser> {
 
 	public OnlineUserService(Dao dao) {
 		super(dao);

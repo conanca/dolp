@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.Privilege;
 
 import org.nutz.dao.Cnd;
@@ -11,7 +11,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class PrivilegeService extends JqgridService<Privilege> {
+public class PrivilegeService extends DolpBaseService<Privilege> {
 
 	public PrivilegeService(Dao dao) {
 		super(dao);

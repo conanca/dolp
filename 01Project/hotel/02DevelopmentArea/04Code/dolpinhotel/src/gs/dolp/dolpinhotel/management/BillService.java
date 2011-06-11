@@ -5,7 +5,7 @@ import gs.dolp.common.domain.highcharts.ChartReturnData;
 import gs.dolp.common.domain.highcharts.SeriesItem;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,7 +27,7 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class BillService extends JqgridService<Bill> {
+public class BillService extends DolpBaseService<Bill> {
 
 	public BillService(Dao dao) {
 		super(dao);

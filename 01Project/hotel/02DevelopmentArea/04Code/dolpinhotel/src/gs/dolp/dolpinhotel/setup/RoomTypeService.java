@@ -3,7 +3,7 @@ package gs.dolp.dolpinhotel.setup;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class RoomTypeService extends JqgridService<RoomType> {
+public class RoomTypeService extends DolpBaseService<RoomType> {
 
 	public RoomTypeService(Dao dao) {
 		super(dao);

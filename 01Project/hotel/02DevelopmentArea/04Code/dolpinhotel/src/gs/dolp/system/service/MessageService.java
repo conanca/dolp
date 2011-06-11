@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.Message;
 import gs.dolp.system.domain.User;
 
@@ -23,7 +23,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
 
-public class MessageService extends JqgridService<Message> {
+public class MessageService extends DolpBaseService<Message> {
 
 	public MessageService(Dao dao) {
 		super(dao);

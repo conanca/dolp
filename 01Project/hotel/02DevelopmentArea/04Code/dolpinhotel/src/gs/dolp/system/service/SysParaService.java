@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.SysPara;
 
 import org.nutz.dao.Cnd;
@@ -11,7 +11,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class SysParaService extends JqgridService<SysPara> {
+public class SysParaService extends DolpBaseService<SysPara> {
 
 	public SysParaService(Dao dao) {
 		super(dao);

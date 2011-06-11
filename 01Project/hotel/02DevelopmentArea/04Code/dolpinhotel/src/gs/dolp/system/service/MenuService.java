@@ -3,7 +3,7 @@ package gs.dolp.system.service;
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.JqgridService;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
@@ -23,7 +23,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 
-public class MenuService extends JqgridService<Menu> {
+public class MenuService extends DolpBaseService<Menu> {
 
 	public MenuService(Dao dao) {
 		super(dao);
