@@ -11,6 +11,7 @@ import gs.dolp.system.domain.User;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,6 +60,10 @@ public class OnlineUserService extends DolpBaseService<OnlineUser> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<OnlineUser> getGridData(JqgridReqData jqReq) {
 		AdvancedJqgridResData<OnlineUser> jq = getAdvancedJqgridRespData(null, jqReq);
+		List<OnlineUser> onlineUsers = jq.getRows();
+		for (OnlineUser onlineUser : onlineUsers) {
+			dao().fetchLinks(onlineUser, "user");
+		}
 		return jq;
 	}
 }
