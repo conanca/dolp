@@ -18,7 +18,7 @@ $(function(){
 		jsonReader:{
 			repeatitems: false
 		},
-		caption: "用户列表",
+		caption: "选择收件人列表",
 		url:'system/user/getGridData',
 		colNames:['id','登录号', '姓名','性别','年龄','生日','电话号码'],
 		colModel:[
@@ -54,16 +54,20 @@ $(function(){
 
 	// 选择按钮点击事件
 	$("#messageNewUserSelectBtn").click(function() {
-		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');;
-		var receiverUserNames = $('#messageNewReceiverUsers').val();
-		$.each(selIds, function(index, selId) {
-			var row = $("#messageNewUserInfoList").getRowData(selId)
-			var number = row.number;
-			var name = row.name;
-			receiverUserNames+=name+"<"+number+">,";
-		});
-		$('#messageNewReceiverUsers').val(receiverUserNames);
-		$("#messageNewUserCloseBtn").click();
+		var selIds = $("#messageNewUserInfoList").getGridParam('selarrrow');
+		if( selIds != null && selIds != ''){
+			var receiverUserNames = $('#messageNewReceiverUsers').val();
+			$.each(selIds, function(index, selId) {
+				var row = $("#messageNewUserInfoList").getRowData(selId)
+				var number = row.number;
+				var name = row.name;
+				receiverUserNames+=name+"<"+number+">,";
+			});
+			$('#messageNewReceiverUsers').val(receiverUserNames);
+			$("#messageNewUserCloseBtn").click();
+		}else{
+			$.addMessageStr(null,"请选择收件人",null);
+		}
 	});
 
 	// 关闭按钮点击事件
