@@ -15,4 +15,8 @@ public class DaoHandler {
 		Dao dao = new NutDao(ds);
 		return dao;
 	}
+
+	public static void clearOnlineUser(Dao dao) {
+		dao.clear("SYSTEM_ONLINE_USER");
+	}
 }
