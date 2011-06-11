@@ -12,9 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
@@ -216,23 +214,5 @@ public class UserService extends DolpBaseService<User> {
 		});
 		respData.setSystemMessage("分配成功!", null, null);
 		return respData;
-	}
-
-	/**
-	 * 获取指定Id的用户的 ID-NAME 的Map
-	 * @param userIds
-	 * @return
-	 */
-	@Aop(value = "log")
-	public static Map<String, String> getUserMap(Dao dao, String[] userIdArr) {
-		if (userIdArr == null) {
-			return null;
-		}
-		Map<String, String> userMap = new LinkedHashMap<String, String>();
-		List<User> users = dao.query(User.class, Cnd.where("ID", "IN", userIdArr), null);
-		for (User u : users) {
-			userMap.put(String.valueOf(u.getId()), u.getName());
-		}
-		return userMap;
 	}
 }

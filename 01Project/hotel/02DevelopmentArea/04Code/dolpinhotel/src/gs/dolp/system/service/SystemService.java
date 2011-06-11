@@ -1,6 +1,7 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.User;
 
 import java.io.ByteArrayInputStream;
@@ -19,9 +20,8 @@ import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.tools.DTable;
 import org.nutz.dao.tools.Tables;
 import org.nutz.ioc.aop.Aop;
-import org.nutz.service.Service;
 
-public class SystemService extends Service {
+public class SystemService extends DolpBaseService<User> {
 
 	public SystemService(Dao dao) {
 		super(dao);
@@ -29,7 +29,7 @@ public class SystemService extends Service {
 
 	public AjaxResData getSystemName() {
 		AjaxResData respData = new AjaxResData();
-		respData.setReturnData(SysParaService.getSysParaValue("SystemName", dao()));
+		respData.setReturnData(getSysParaValue("SystemName"));
 		return respData;
 	}
 
@@ -95,8 +95,7 @@ public class SystemService extends Service {
 	@Aop(value = "log")
 	public AjaxResData changeUserPassword(User user, String oldPassword, String newPassword) {
 		AjaxResData respData = new AjaxResData();
-		int countAuthenticatedUser = dao().count(User.class,
-				Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
+		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
 			respData.setSystemMessage(null, "原密码错误！", null);
 		} else {

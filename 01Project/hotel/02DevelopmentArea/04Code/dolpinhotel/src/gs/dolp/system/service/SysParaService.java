@@ -50,16 +50,4 @@ public class SysParaService extends DolpBaseService<SysPara> {
 		}
 		return respData;
 	}
-
-	@Aop(value = "log")
-	public static String getSysParaValue(String name, Dao dao) {
-		SysPara sysPara = dao.fetch(SysPara.class, Cnd.where("NAME", "=", name));
-		if (sysPara == null) {
-			StringBuilder message = new StringBuilder("系统参数:\"");
-			message.append(name);
-			message.append("\"不存在!");
-			throw new RuntimeException(message.toString());
-		}
-		return sysPara.getValue();
-	}
 }

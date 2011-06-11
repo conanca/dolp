@@ -205,7 +205,7 @@ public class MessageService extends DolpBaseService<Message> {
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		// 获取发件人的id和name的Map,并放入returnData中
 		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
-		Map<String, String> userMap = UserService.getUserMap(dao(), userIdArr);
+		Map<String, String> userMap = getUserMap(userIdArr);
 		jq.setReturnData(userMap);
 		return jq;
 	}
@@ -228,7 +228,7 @@ public class MessageService extends DolpBaseService<Message> {
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		// 获取发件人的id和name的Map,并放入returnData中
 		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
-		Map<String, String> userMap = UserService.getUserMap(dao(), userIdArr);
+		Map<String, String> userMap = getUserMap(userIdArr);
 		jq.setReturnData(userMap);
 		return jq;
 	}
