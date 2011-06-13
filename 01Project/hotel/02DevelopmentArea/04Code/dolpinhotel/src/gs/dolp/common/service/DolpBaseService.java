@@ -1,11 +1,6 @@
 package gs.dolp.common.service;
 
 import gs.dolp.system.domain.SysPara;
-import gs.dolp.system.domain.User;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
@@ -39,23 +34,4 @@ public abstract class DolpBaseService<T> extends JqgridService<T> {
 		}
 		return sysPara.getValue();
 	}
-
-	/**
-	 * 获取指定Id的用户的 ID-NAME 的Map
-	 * @param userIds
-	 * @return
-	 */
-	@Aop(value = "log")
-	public Map<String, String> getUserMap(String[] userIdArr) {
-		if (userIdArr == null) {
-			return null;
-		}
-		Map<String, String> userMap = new LinkedHashMap<String, String>();
-		List<User> users = dao().query(User.class, Cnd.where("ID", "IN", userIdArr), null);
-		for (User u : users) {
-			userMap.put(String.valueOf(u.getId()), u.getName());
-		}
-		return userMap;
-	}
-
 }
