@@ -36,7 +36,7 @@ public class MvcSetup implements Setup {
 		}
 
 		// 初始化quartz的数据表
-		if (!dao.exists("SYSTEM_USER")) {
+		if (!dao.exists("QRTZ_JOB_DETAILS")) {
 			FileSqlManager fm = new FileSqlManager("tables_quartz.sql");
 			dao.execute(fm.createCombo(fm.keys()));
 		}
