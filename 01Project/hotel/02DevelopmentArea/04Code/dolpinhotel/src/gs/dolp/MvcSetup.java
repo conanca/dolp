@@ -55,7 +55,8 @@ public class MvcSetup implements Setup {
 
 	/**
 	 * 当应用系统停止的时候，清空在线用户表;
-	 * 停止调度程序
+	 * 停止调度程序;
+	 * 关闭 DaoHandler的数据库连接
 	 */
 	@Override
 	public void destroy(NutConfig config) {
@@ -64,6 +65,7 @@ public class MvcSetup implements Setup {
 		SchedulerRunner runner = new SchedulerRunner();
 		try {
 			runner.stop();
+			DaoHandler.getDataSource().getConnection().close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
