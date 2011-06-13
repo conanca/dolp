@@ -14,8 +14,7 @@ public class DolpConnectionProvider implements ConnectionProvider {
 
 	@Override
 	public void shutdown() throws SQLException {
-		// TODO Auto-generated method stub
-		System.out.println("调用到了～～～～～～～～～～～～shutdown");
+		// 不需要让它来关闭连接
 	}
 
 }
