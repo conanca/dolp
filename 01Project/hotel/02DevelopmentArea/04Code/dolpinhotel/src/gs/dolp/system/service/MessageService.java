@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.nutz.dao.Chain;
@@ -203,10 +202,10 @@ public class MessageService extends DolpBaseService<Message> {
 			cnd = Cnd.where("1", "=", "0");
 		}
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
-		// 获取发件人的id和name的Map,并放入returnData中
-		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
-		Map<String, String> userMap = getUserMap(userIdArr);
-		jq.setReturnData(userMap);
+		List<Message> messages = jq.getRows();
+		for (Message message : messages) {
+			dao().fetchLinks(message, "sender");
+		}
 		return jq;
 	}
 
@@ -226,10 +225,10 @@ public class MessageService extends DolpBaseService<Message> {
 			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
 		Condition cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
-		// 获取发件人的id和name的Map,并放入returnData中
-		String[] userIdArr = jq.getArrValueOfTheColumn("senderUserId");
-		Map<String, String> userMap = getUserMap(userIdArr);
-		jq.setReturnData(userMap);
+		List<Message> messages = jq.getRows();
+		for (Message message : messages) {
+			dao().fetchLinks(message, "sender");
+		}
 		return jq;
 	}
 

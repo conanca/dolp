@@ -13,7 +13,7 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'title',index:'title', width:500},
-			{name:'senderUserId',index:'senderUserId', width:200, editable:true},
+			{name:'sender.name',index:'sender.name', width:200, editable:true},
 			{name:'date',index:'date', width:200},
 			{name:'content',index:'content', width:0,hidden:true}
 		],
@@ -21,21 +21,6 @@ $(function(){
 		sortname: 'id',
 		sortorder: "asc",
 		multiselect: false,
-		loadComplete: function(data){
-			//------------------设为同步模式------------------
-			$.ajaxSetup({ async: false});
-			var rows = data.rows;
-			userMap = $(this).getGridParam('userData').returnData;
-			var list = $(this)
-			list.setColProp('senderUserId',{formatter:'select',edittype:'select',editoptions:{value:userMap}});
-			list.clearGridData();
-			$.each(rows, function(index, row) {
-				list.addRowData(index,row);
-			});
-			$.ajaxSetup({ async: true});
-			//------------------设回异步模式------------------
-			$.addMessage($(this).getGridParam('userData'));
-		},
 		onSelectRow: function(id) {
 			var row = $(this).getRowData(id);
 			// 显示消息详细内容，隐藏Grid
