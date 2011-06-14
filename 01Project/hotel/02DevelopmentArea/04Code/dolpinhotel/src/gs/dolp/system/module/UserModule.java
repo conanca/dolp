@@ -2,7 +2,6 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
 import java.sql.SQLException;
@@ -28,19 +27,11 @@ public class UserModule {
 		return userService.getNewUserNumber();
 	}
 
-	@At("/userNumberIsDuplicate/*")
-	public ResponseData userNumberIsDuplicate(String userNumber) {
-		return userService.userNumberIsDuplicate(userNumber);
-	}
-
 	@At
-	public ResponseData save(@Param("..") User user) {
-		return userService.save(user);
-	}
-
-	@At
-	public ResponseData deleteRow(@Param("id") String ids) {
-		return userService.deleteUsers(ids);
+	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
+			@Param("name") String name, @Param("gender") String gender, @Param("age") int age,
+			@Param("birthday") String birthday, @Param("phone") String phone) {
+		return userService.CUDUser(oper, id, number, name, gender, age, birthday, phone);
 	}
 
 	@At

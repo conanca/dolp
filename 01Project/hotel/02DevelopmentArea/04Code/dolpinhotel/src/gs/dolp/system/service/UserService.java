@@ -76,45 +76,62 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData userNumberIsDuplicate(String userNumber) {
-		AjaxResData respData = new AjaxResData();
+	public boolean isUserNumberDuplicate(String userNumber) {
 		int count = count(Cnd.where("NUMBER", "=", userNumber));
 		if (count > 0) {
-			respData.setReturnData(true);
+			return true;
 		} else {
-			respData.setReturnData(false);
+			return false;
 		}
-		return respData;
 	}
 
 	@Aop(value = "log")
-	public AjaxResData save(User user) {
+	public AjaxResData CUDUser(String oper, String id, String number, String name, String gender, int age,
+			String birthday, String phone) {
 		AjaxResData respData = new AjaxResData();
-		if (user.getId() == 0) {
-			dao().insert(user);
-		} else {
-			dao().update(user);
-		}
-		respData.setSystemMessage("保存成功!", null, null);
-		return respData;
-	}
-
-	@Aop(value = "log")
-	public AjaxResData deleteUsers(String ids) {
-		AjaxResData respData = new AjaxResData();
-		if (!Strings.isEmpty(ids)) {
-			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
-			final List<User> users = query(cnd, null);
-			Trans.exec(new Atom() {
-				public void run() {
-					for (User user : users) {
-						dao().clearLinks(user, "roles");
+		if ("del".equals(oper)) {
+			if (!Strings.isEmpty(id)) {
+				final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+				final List<User> users = query(cnd, null);
+				Trans.exec(new Atom() {
+					public void run() {
+						for (User user : users) {
+							dao().clearLinks(user, "roles");
+						}
+						clear(cnd);
 					}
-					clear(cnd);
-				}
-			});
+				});
+			}
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
+			if (isUserNumberDuplicate(number)) {
+				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号！");
+				return respData;
+			}
+			User user = new User();
+			user.setNumber(number);
+			user.setName(name);
+			user.setGender(gender);
+			user.setAge(age);
+			user.setBirthday(birthday);
+			user.setPhone(phone);
+			user.setPassword(getSysParaValue("DefaultPassword"));
+			respData.setSystemMessage("添加成功!", null, null);
+			dao().insert(user);
+		} else if ("edit".equals(oper)) {
+			User user = new User();
+			user.setId(Integer.valueOf(id));
+			user.setNumber(number);
+			user.setName(name);
+			user.setGender(gender);
+			user.setAge(age);
+			user.setBirthday(birthday);
+			user.setPhone(phone);
+			dao().update(user);
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未操作数据", null);
 		}
-		respData.setSystemMessage("删除成功!", null, null);
 		return respData;
 	}
 

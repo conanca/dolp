@@ -131,4 +131,5 @@ INSERT INTO SYSTEM_MESSAGE_RECEIVERUSER(ID,MESSAGEID,USERID,ISREAD) VALUES
 
 INSERT INTO SYSTEM_SYSPARA(ID, NAME, VALUE, DESCRIPTION) VALUES
 (1, 'SystemName', 'AAAA', null),
-(2, 'MaxRightValue', '1001', null);
+(2, 'MaxRightValue', '1001', null),
+(3, 'DefaultPassword', '123', null);
