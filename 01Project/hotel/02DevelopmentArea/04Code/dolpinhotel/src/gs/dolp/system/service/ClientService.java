@@ -6,7 +6,7 @@ import gs.dolp.common.domain.jqgrid.JqgridReqData;
 import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.common.util.DolpSessionContext;
 import gs.dolp.common.util.MVCHandler;
-import gs.dolp.system.domain.OnlineUser;
+import gs.dolp.system.domain.Client;
 import gs.dolp.system.domain.User;
 
 import java.sql.Timestamp;
@@ -20,9 +20,9 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class OnlineUserService extends DolpBaseService<OnlineUser> {
+public class ClientService extends DolpBaseService<Client> {
 
-	public OnlineUserService(Dao dao) {
+	public ClientService(Dao dao) {
 		super(dao);
 	}
 
@@ -33,14 +33,14 @@ public class OnlineUserService extends DolpBaseService<OnlineUser> {
 
 	@Aop(value = "log")
 	public void insert(HttpSession session, HttpServletRequest request) {
-		OnlineUser onlineUser = new OnlineUser();
+		Client client = new Client();
 		User cUser = (User) session.getAttribute("logonUser");
-		onlineUser.setUserId(cUser.getId());
-		onlineUser.setSessionId(session.getId());
-		onlineUser.setLogonTime(new Timestamp((new Date()).getTime()));
-		onlineUser.setIpAddr(MVCHandler.getIpAddr(request));
-		onlineUser.setBrowser(MVCHandler.getBrowser(request));
-		dao().insert(onlineUser);
+		client.setUserId(cUser.getId());
+		client.setSessionId(session.getId());
+		client.setLogonTime(new Timestamp((new Date()).getTime()));
+		client.setIpAddr(MVCHandler.getIpAddr(request));
+		client.setBrowser(MVCHandler.getBrowser(request));
+		dao().insert(client);
 	}
 
 	@Aop(value = "log")
@@ -58,11 +58,11 @@ public class OnlineUserService extends DolpBaseService<OnlineUser> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<OnlineUser> getGridData(JqgridReqData jqReq) {
-		AdvancedJqgridResData<OnlineUser> jq = getAdvancedJqgridRespData(null, jqReq);
-		List<OnlineUser> onlineUsers = jq.getRows();
-		for (OnlineUser onlineUser : onlineUsers) {
-			dao().fetchLinks(onlineUser, "user");
+	public AdvancedJqgridResData<Client> getGridData(JqgridReqData jqReq) {
+		AdvancedJqgridResData<Client> jq = getAdvancedJqgridRespData(null, jqReq);
+		List<Client> clients = jq.getRows();
+		for (Client client : clients) {
+			dao().fetchLinks(client, "user");
 		}
 		return jq;
 	}

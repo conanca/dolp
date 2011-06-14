@@ -145,8 +145,8 @@ var ioc = {
 			menuService : {
 				refer : 'menuService'
 			},
-			onlineUserService : {
-				refer : 'onlineUserService'
+			clientService : {
+				refer : 'clientService'
 			}
 		}
 	},
@@ -187,8 +187,8 @@ var ioc = {
 		}
 	},
 	
-	onlineUserService : {
-		type : "gs.dolp.system.service.OnlineUserService",
+	clientService : {
+		type : "gs.dolp.system.service.ClientService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -196,11 +196,11 @@ var ioc = {
 		}
 	},
 
-	onlineUserModule : {
-		type : "gs.dolp.system.module.OnlineUserModule",
+	clientModule : {
+		type : "gs.dolp.system.module.ClientModule",
 		fields : {
-			onlineUserService : {
-				refer : 'onlineUserService'
+			clientService : {
+				refer : 'clientService'
 			}
 		}
 	}

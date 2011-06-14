@@ -2,25 +2,25 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.system.service.OnlineUserService;
+import gs.dolp.system.service.ClientService;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
-@InjectName("onlineUserModule")
-@At("/system/onlineUser")
-public class OnlineUserModule {
+@InjectName("clientModule")
+@At("/system/client")
+public class ClientModule {
 
-	private OnlineUserService onlineUserService;
+	private ClientService clientService;
 
 	@At
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
-		return onlineUserService.getGridData(jqReq);
+		return clientService.getGridData(jqReq);
 	}
 
 	@At
 	public ResponseData kickOff(@Param("sessionIds[]") String[] sessionIds) {
-		return onlineUserService.kickOff(sessionIds);
+		return clientService.kickOff(sessionIds);
 	}
 }

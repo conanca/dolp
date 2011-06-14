@@ -2,7 +2,6 @@ package gs.dolp.system.listener;
 
 import gs.dolp.common.util.DaoHandler;
 import gs.dolp.common.util.DolpSessionContext;
-import gs.dolp.system.domain.OnlineUser;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -22,7 +21,7 @@ public class DolpSessionListener implements HttpSessionListener {
 		HttpSession session = event.getSession();
 		DolpSessionContext.DelSession(session);
 		// 将相应的记录从在线用户表中删除
-		DaoHandler.getDao().clear(OnlineUser.class, Cnd.where("SESSIONID", "=", session.getId()));
+		DaoHandler.getDao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
 	}
 
 }

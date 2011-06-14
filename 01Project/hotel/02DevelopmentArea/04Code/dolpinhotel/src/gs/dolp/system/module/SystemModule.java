@@ -4,7 +4,7 @@ import gs.dolp.common.domain.ResponseData;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.MenuService;
-import gs.dolp.system.service.OnlineUserService;
+import gs.dolp.system.service.ClientService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
 
@@ -30,7 +30,7 @@ public class SystemModule {
 	private SystemService systemService;
 	private UserService userService;
 	private MenuService menuService;
-	private OnlineUserService onlineUserService;
+	private ClientService clientService;
 
 	@At
 	public ResponseData getSystemName() {
@@ -57,7 +57,7 @@ public class SystemModule {
 		List<Privilege> currentPrivileges = userService.getCurrentPrivileges(logonUser.getId());
 		session.setAttribute("currPrivs", currentPrivileges);
 		// 将该session相应的登录信息放入在线用户表中
-		onlineUserService.insert(session, request);
+		clientService.insert(session, request);
 	}
 
 	@At

@@ -35,7 +35,7 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (7,'岗位管理','system/post_manage.html',NULL,12,13),
 (8,'枚举管理','system/sysenum_mange.html',NULL,14,15),
 (9,'系统参数管理','system/syspara_manage.html',NULL,16,17),
-(10,'在线用户','system/online_user.html',NULL,18,19),
+(10,'在线终端管理','system/client.html',NULL,18,19),
 (11,'个人设置',NULL,NULL,201,300),
 (12,'消息管理',NULL,NULL,202,250),
 (13,'写新消息','system/messagebox_new.html',NULL,203,204),

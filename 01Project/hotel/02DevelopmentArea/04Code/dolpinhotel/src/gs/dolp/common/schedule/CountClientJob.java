@@ -11,16 +11,16 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CountOnlineUserJob implements Job {
+public class CountClientJob implements Job {
 
-	private static Logger log = LoggerFactory.getLogger(CountOnlineUserJob.class);
+	private static Logger log = LoggerFactory.getLogger(CountClientJob.class);
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobKey jobKey = context.getJobDetail().getKey();
-		log.info(jobKey + " executing at " + new Date());
-		int onlineUserCount = DaoHandler.getDao().count("SYSTEM_ONLINE_USER");
-		log.info("当前在线终端数目：" + onlineUserCount);
+		log.debug(jobKey + " executing at " + new Date());
+		int clientCount = DaoHandler.getDao().count("SYSTEM_CLIENT");
+		log.info(new Date() + " 当前在线终端数目：" + clientCount);
 	}
 
 }

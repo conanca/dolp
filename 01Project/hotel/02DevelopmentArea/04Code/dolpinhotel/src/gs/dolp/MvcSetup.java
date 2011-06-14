@@ -42,7 +42,7 @@ public class MvcSetup implements Setup {
 		}
 
 		// 清空在线用户表
-		DaoHandler.getDao().clear("SYSTEM_ONLINE_USER");
+		DaoHandler.getDao().clear("SYSTEM_CLIENT");
 
 		// 启动Scheduler
 		SchedulerRunner runner = new SchedulerRunner();
@@ -60,7 +60,7 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void destroy(NutConfig config) {
-		DaoHandler.getDao().clear("SYSTEM_ONLINE_USER");
+		DaoHandler.getDao().clear("SYSTEM_CLIENT");
 		// 停止Scheduler
 		SchedulerRunner runner = new SchedulerRunner();
 		try {

@@ -25,9 +25,9 @@ public class SchedulerRunner {
 		Scheduler sched = sf.getScheduler();
 		log.info("------- scheduler初始化完成 ------------------");
 
-		// 设置Job：CountOnlineUserJob
-		JobDetail job = JobBuilder.newJob(CountOnlineUserJob.class).withIdentity("job1", "group1").build();
-		// 设置开始时间为：5秒后
+		// 设置Job：CountClientJob
+		JobDetail job = JobBuilder.newJob(CountClientJob.class).withIdentity("job1", "group1").build();
+		// 设置开始时间(找个整的分钟)
 		Date startTime = DateBuilder.evenMinuteDate(new Date());
 		// 设置触发器：每30秒运行一次，无限运行
 		SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger_1", "group1").startAt(startTime)
