@@ -88,10 +88,10 @@ $.extend({
 		});
 		return Items;
     },
-	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
-	dolpGet: function(url) {
+	//$.getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
+	dolpGet: function(url, data) {
 		var returnData = {};
-		$.getJSON(url,function(response){
+		$.getJSON(url,data,function(response){
 			if(response.systemMessage){
 				$.addMessage(response.systemMessage);
 			}
@@ -101,7 +101,7 @@ $.extend({
 		});
 		return returnData;
 	},
-    //post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
+    //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 	dolpPost : function(url, data){
 		var returnData = {};
 		$.post(url,data,function(response){
