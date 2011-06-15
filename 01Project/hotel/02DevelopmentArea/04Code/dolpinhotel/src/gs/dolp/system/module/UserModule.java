@@ -2,9 +2,12 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.User;
 import gs.dolp.system.service.UserService;
 
 import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -48,5 +51,17 @@ public class UserModule {
 	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
 			@Param("selectedPostIds[]") String[] postIds) throws SQLException {
 		return userService.updatePost(userId, orgId, postIds);
+	}
+
+	@At
+	public ResponseData changeCurrentUserPassword(HttpSession session, @Param("oldPassword") String oldPassword,
+			@Param("newPassword") String newPassword) {
+		User cUser = (User) session.getAttribute("logonUser");
+		return userService.changePasswordForCurrentUser(cUser, oldPassword, newPassword);
+	}
+
+	@At
+	public ResponseData changeUserPassword(@Param("userId") int userId, @Param("newPassword") String newPassword) {
+		return userService.changePasswordForAUser(userId, newPassword);
 	}
 }

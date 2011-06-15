@@ -31,7 +31,7 @@ $(function(){
 		$.blockUI();
 		if($(this).valid()){
 			var changePwdInfo = $(this).serializeObject();
-			$.dolpPost('changeUserPassword',changePwdInfo);
+			$.dolpPost('system/user/changeCurrentUserPassword',changePwdInfo);
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}

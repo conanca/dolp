@@ -14,14 +14,13 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.tools.DTable;
 import org.nutz.dao.tools.Tables;
 import org.nutz.ioc.aop.Aop;
 
-public class SystemService extends DolpBaseService<User> {
+public class SystemService extends DolpBaseService<Object> {
 
 	public SystemService(Dao dao) {
 		super(dao);
@@ -90,19 +89,5 @@ public class SystemService extends DolpBaseService<User> {
 		wb.write(os);
 		InputStream is = new ByteArrayInputStream(os.toByteArray());
 		return is;
-	}
-
-	@Aop(value = "log")
-	public AjaxResData changeUserPassword(User user, String oldPassword, String newPassword) {
-		AjaxResData respData = new AjaxResData();
-		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
-		if (countAuthenticatedUser == 0) {
-			respData.setSystemMessage(null, "原密码错误！", null);
-		} else {
-			user.setPassword(newPassword);
-			dao().update(user);
-			respData.setSystemMessage("密码修改成功！", null, null);
-		}
-		return respData;
 	}
 }

@@ -3,8 +3,8 @@ package gs.dolp.system.module;
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
-import gs.dolp.system.service.MenuService;
 import gs.dolp.system.service.ClientService;
+import gs.dolp.system.service.MenuService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
 
@@ -107,12 +107,4 @@ public class SystemModule {
 		InputStream is = systemService.genExcel(colNames, rowDatas);
 		return is;
 	}
-
-	@At
-	public ResponseData changeUserPassword(HttpSession session, @Param("oldPassword") String oldPassword,
-			@Param("newPassword") String newPassword) {
-		User cUser = (User) session.getAttribute("logonUser");
-		return systemService.changeUserPassword(cUser, oldPassword, newPassword);
-	}
-
 }

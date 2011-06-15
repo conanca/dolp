@@ -232,4 +232,32 @@ public class UserService extends DolpBaseService<User> {
 		respData.setSystemMessage("分配成功!", null, null);
 		return respData;
 	}
+
+	@Aop(value = "log")
+	public AjaxResData changePasswordForCurrentUser(User user, String oldPassword, String newPassword) {
+		AjaxResData respData = new AjaxResData();
+		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
+		if (countAuthenticatedUser == 0) {
+			respData.setSystemMessage(null, "原密码错误！", null);
+		} else {
+			user.setPassword(newPassword);
+			dao().update(user);
+			respData.setSystemMessage("密码修改成功！", null, null);
+		}
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData changePasswordForAUser(int userId, String newPassword) {
+		AjaxResData respData = new AjaxResData();
+		if (userId > 0) {
+			User user = this.fetch(userId);
+			user.setPassword(newPassword);
+			dao().update(user);
+			respData.setSystemMessage("密码修改成功！", null, null);
+		} else {
+			respData.setSystemMessage(null, "未正确选择用户", null);
+		}
+		return respData;
+	}
 }
