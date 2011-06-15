@@ -73,8 +73,8 @@ public class MessageModule {
 		return messageService.readMessade(currentUser, messageId);
 	}
 
-	@At
-	public ResponseData getReceiverUserNum(@Param("messageId") int messageId) {
+	@At("/getReceiverUserNum/*")
+	public ResponseData getReceiverUserNum(int messageId) {
 		return messageService.getReceiverUserNum(messageId);
 	}
 }
