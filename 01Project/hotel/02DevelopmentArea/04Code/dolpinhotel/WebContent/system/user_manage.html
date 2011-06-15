@@ -4,6 +4,15 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 
+	//------------------设为同步模式------------------
+	$.ajaxSetup({ async: false});
+	$("#roleIds").addItems($.dolpGet("system/role/getAllRoleMap/0"));
+	$.ajaxSetup({ async: true});
+	//------------------设回异步模式------------------
+	
+	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
+	$(".multiselect").multiselect();
+
 	//初始化用户角色分配界面
 	$("#roleAssignInfo").dialog({ width: 500 , height: 320 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			//关闭后全部取消选中
@@ -96,6 +105,7 @@ $(function(){
 				$.ajaxSetup({ async: true});
 				//------------------设回异步模式------------------
 
+				// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
 				$("#roleIds").multiselect("destroy");
 				$("#roleIds").multiselect();
 
@@ -125,12 +135,6 @@ $(function(){
 		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
 		return false;
 	});
-
-	//------------------设为同步模式------------------
-	$.ajaxSetup({ async: false});
-	$("#roleIds").addItems($.dolpGet("system/role/getAllRoleMap/0"));
-	$.ajaxSetup({ async: true});
-	//------------------设回异步模式------------------
 
 	$('#roleAssignForm').submit(function() {
 		$.blockUI();
