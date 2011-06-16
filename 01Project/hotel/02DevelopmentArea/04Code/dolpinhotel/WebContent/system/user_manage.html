@@ -14,7 +14,7 @@ $(function(){
 	$(".multiselect").multiselect();
 
 	//初始化用户角色分配界面
-	$("#roleAssignInfo").dialog({ width: 500 , height: 320 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
+	$("#roleAssignInfo").dialog({ width: 500 , height: 330 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			//关闭后全部取消选中
 			$("#roleIds option:selected").each(function(){
 				$(this).removeAttr("selected");
@@ -164,6 +164,10 @@ $(function(){
 		$.unblockUI();
 		return false;
 	});
+	
+	$("#roleAssignInfoCancelbtn").click(function() {
+		$('#roleAssignInfo').dialog( "close" );
+	});
 
 	var userPostOrganizationTreeSetting = {
 			checkable: false,
@@ -214,6 +218,10 @@ $(function(){
 		var orgId = userPostOrganizationTree.getSelectedNode().id;
 		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
 	});
+	
+	$("#postAssignInfoCancelbtn").click(function() {
+		$('#postAssignInfo').dialog( "close" );
+	});
 
 	// 验证
 	$("#userMangeChangePwdForm").validate({
@@ -246,11 +254,11 @@ $(function(){
 			$.addMessageStr(null,"未通过验证",null);
 		}
 		$.unblockUI();
-		$("#userPasswordChangeInfoCbtn").click();
+		$("#userPasswordChangeInfoCancelbtn").click();
 		return false;
 	});
 	
-	$("#userPasswordChangeInfoCbtn").click(function() {
+	$("#userPasswordChangeInfoCancelbtn").click(function() {
 		$('#userPasswordChangeInfo').dialog( "close" );
 	});
 });
@@ -288,7 +296,11 @@ $(function(){
 
 <div id="roleAssignInfo" title="角色分配信息">
 	<form id="roleAssignForm" action="#">
-		<input type="submit" value="分配"/>
+		<p>
+			<input type="submit" value="分配"/>
+			&nbsp;&nbsp;&nbsp;
+			<input type="button" value="取消" id='roleAssignInfoCancelbtn'/>
+		</p>
 		<input type="hidden" name="userId" id="assigningUserID"/>
 		<select id="roleIds" name="assignedRoleIds[]" class="multiselect" multiple="multiple" size="6">
 		</select>
@@ -305,7 +317,11 @@ $(function(){
 			</td>
 			<td style="border-left: 1px dashed #CCCCCC;">&nbsp;</td>
 			<td valign="top">
-				<input type="button" value="分配" id="postAssignBtn"/>
+				<p>
+					<input type="button" value="分配" id="postAssignBtn"/>
+					&nbsp;&nbsp;&nbsp;
+					<input type="button" value="取消" id='postAssignInfoCancelbtn'/>
+				</p>
 				<table id="userPostList"></table>
 				<div id="userPostPager"></div>
 			</td>
@@ -313,7 +329,7 @@ $(function(){
 	</table>
 </div>
 
-<div  id="userPasswordChangeInfo" title="修改用户密码">
+<div id="userPasswordChangeInfo" title="修改用户密码">
 	<form id="userMangeChangePwdForm" action="#">
 		<table>
 			<tr>
@@ -328,12 +344,12 @@ $(function(){
 				<td><input type="password" name="password_again"/></td>
 			</tr>
 		</table>
-		<p>
+		<p align="center">
 			<input type="submit" value="修改"/>
 			&nbsp;&nbsp;&nbsp;
 			<input type="reset" value="重置"/>
 			&nbsp;&nbsp;&nbsp;
-			<input type="button" value="取消" id='userPasswordChangeInfoCbtn'/>
+			<input type="button" value="取消" id='userPasswordChangeInfoCancelbtn'/>
 		</p>
 	</form>
 </div>
