@@ -19,19 +19,13 @@ $(function(){
 		editurl: "dolpinhotel/management/bill/editRow",
 		colNames:['id','账单号', '金额','日期'],
 		colModel:[
-			{name:'id',index:'id', width:0,hidden:true},
+			{name:'id',index:'id', width:0,editable:true,hidden:true},
 			{name:'number',index:'number', width:100, editable:true,editrules:{required:true}},
 			{name:'amount',index:'amount', width:100, editable:true,editrules:{required:true}},
-			{name:'date',index:'date', width:120, editable:true, sorttype:'date', formatter:fmtDate,editrules:{required:true,date:true},
-				editoptions:{size:12, dataInit:function(el){
-						$(el).datepicker({dateFormat:'yy-mm-dd'});
-					}
-				},
-				formoptions:{elmsuffix:" yyyy-mm-dd" }
-			}
+			{name:'date',index:'date', width:120, editable:true, editrules:{required:true},	formoptions:{elmsuffix:" yyyy-mm-dd hh:min:ss" }}
 		],
 		pager: '#billPager',
-		sortname: 'number',
+		sortname: 'date',
 		sortorder: "asc",
 		multiselect: false,
 		onSelectRow: function(id) {
@@ -56,6 +50,18 @@ $(function(){
 				$('#billSubList').trigger("reloadGrid");
 				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
+			},
+			serializeDelData : function(postData) {
+				var id = postData['id'];
+				if(id){
+					if(parseInt(id) != id){
+						postData['ids'] = postData['id'];
+						postData['id'] = 0;
+					}else{
+						postData['ids'] = postData['id'];
+					}
+				}
+				return postData;
 			}
 		},
 		{},{}
@@ -71,9 +77,9 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'roomId',index:'roomId', width:100,formatter:'select', editoptions:{value:allRooms}},
-			{name:'enterDate',index:'enterDate', width:120, editable:true, formatter:fmtDate },
-			{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true, formatter:fmtDate},
-			{name:'leaveDate',index:'leaveDate', width:120, editable:true, formatter:fmtDate},
+			{name:'enterDate',index:'enterDate', width:120, editable:true },
+			{name:'expectedCheckOutDate',index:'expectedCheckOutDate',width:120, editable:true},
+			{name:'leaveDate',index:'leaveDate', width:120, editable:true},
 			{name:'occupancyDays',index:'occupancyDays', width:120},
 			{name:'amount',index:'amount', width:100},
 			{name:'status',index:'status', width:100,formatter:'select', editoptions:{value:"0:入住中;1:已离开"},hidden:true},
@@ -98,14 +104,6 @@ $(function(){
 		return false;
 	});
 });
-
-function fmtDate(value){
-	if(value){
-		return value.substr(0,10);
-	}else{
-		return '';
-	}
-}
 </script>
 
 <fieldset>

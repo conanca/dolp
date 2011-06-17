@@ -28,10 +28,10 @@ public class RoomTypeService extends DolpBaseService<RoomType> {
 		return jq;
 	}
 
-	public AjaxResData CUDRoomType(String oper, String id, String name, String price, String description) {
+	public AjaxResData CUDRoomType(String oper, String ids, RoomType roomType) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<RoomType> roomTypes = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -42,23 +42,14 @@ public class RoomTypeService extends DolpBaseService<RoomType> {
 				}
 			});
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			RoomType roomType = new RoomType();
-			roomType.setName(name);
-			roomType.setPrice(Double.parseDouble(price));
-			roomType.setDescription(description);
+		} else if ("add".equals(oper)) {
 			dao().insert(roomType);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			RoomType roomType = new RoomType();
-			roomType.setId(Integer.parseInt(id));
-			roomType.setName(name);
-			roomType.setPrice(Double.parseDouble(price));
-			roomType.setDescription(description);
+		} else if ("edit".equals(oper)) {
 			dao().update(roomType);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

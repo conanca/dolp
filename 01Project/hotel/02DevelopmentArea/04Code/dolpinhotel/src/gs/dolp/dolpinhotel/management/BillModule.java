@@ -21,9 +21,9 @@ public class BillModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
-			@Param("amount") String amount, @Param("date") String date) throws ParseException {
-		return billService.UDBill(oper, id, number, amount, date);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Bill bill)
+			throws ParseException {
+		return billService.UDBill(oper, ids, bill);
 	}
 
 	@At

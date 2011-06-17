@@ -24,29 +24,20 @@ public class SysParaService extends DolpBaseService<SysPara> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDSysPara(String oper, String id, String name, String value, String description) {
+	public AjaxResData CUDSysPara(String oper, String ids, SysPara sysPara) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			SysPara sysPara = new SysPara();
-			sysPara.setName(name);
-			sysPara.setValue(value);
-			sysPara.setDescription(description);
+		} else if ("add".equals(oper)) {
 			dao().insert(sysPara);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			SysPara sysPara = new SysPara();
-			sysPara.setId(Integer.parseInt(id));
-			sysPara.setName(name);
-			sysPara.setValue(value);
-			sysPara.setDescription(description);
+		} else if ("edit".equals(oper)) {
 			dao().update(sysPara);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

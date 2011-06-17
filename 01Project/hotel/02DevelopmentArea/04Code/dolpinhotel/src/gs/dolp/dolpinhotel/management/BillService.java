@@ -10,9 +10,7 @@ import gs.dolp.common.service.DolpBaseService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +52,10 @@ public class BillService extends DolpBaseService<Bill> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData UDBill(String oper, String id, String number, String amount, String date) throws ParseException {
+	public AjaxResData UDBill(String oper, String ids, Bill bill) throws ParseException {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<Bill> bills = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -68,17 +66,11 @@ public class BillService extends DolpBaseService<Bill> {
 				}
 			});
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			Bill bill = new Bill();
-			bill.setId(Integer.parseInt(id));
-			bill.setNumber(number);
-			bill.setAmount(Double.parseDouble(amount));
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Timestamp dateTime = new Timestamp(dateFormat.parse(date).getTime());
-			bill.setDate(dateTime);
+		} else if ("edit".equals(oper)) {
 			dao().update(bill);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

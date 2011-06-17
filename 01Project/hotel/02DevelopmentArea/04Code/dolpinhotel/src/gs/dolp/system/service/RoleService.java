@@ -19,7 +19,6 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
-import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -40,11 +39,10 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDRole(String oper, String id, String name, String description, String isOrgaRela,
-			String organizationId) {
+	public AjaxResData CUDRole(String oper, String ids, Role role) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<Role> roles = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -59,29 +57,10 @@ public class RoleService extends DolpBaseService<Role> {
 			respData.setSystemMessage("删除成功!", null, null);
 		}
 		if ("add".equals(oper)) {
-			Role role = new Role();
-			role.setName(name);
-			role.setDescription(description);
-			if (!Strings.isEmpty(isOrgaRela)) {
-				role.setIsOrgaRela(Integer.parseInt(isOrgaRela));
-				if (isOrgaRela.equals("1")) {
-					role.setOrganizationId(Integer.parseInt(organizationId));
-				}
-			}
 			dao().insert(role);
 			respData.setSystemMessage("添加成功!", null, null);
 		}
 		if ("edit".equals(oper)) {
-			Role role = fetch(Integer.parseInt(id));
-			role.setId(Integer.parseInt(id));
-			role.setName(name);
-			role.setDescription(description);
-			if (!Strings.isEmpty(isOrgaRela)) {
-				role.setIsOrgaRela(Integer.parseInt(isOrgaRela));
-				if (isOrgaRela.equals("1")) {
-					role.setOrganizationId(Integer.parseInt(organizationId));
-				}
-			}
 			dao().update(role);
 			respData.setSystemMessage("修改成功!", null, null);
 		}

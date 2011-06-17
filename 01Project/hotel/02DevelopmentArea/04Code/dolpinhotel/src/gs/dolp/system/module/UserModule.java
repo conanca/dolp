@@ -31,10 +31,8 @@ public class UserModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
-			@Param("name") String name, @Param("gender") String gender, @Param("age") int age,
-			@Param("birthday") String birthday, @Param("phone") String phone) {
-		return userService.CUDUser(oper, id, number, name, gender, age, birthday, phone);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") User user) {
+		return userService.CUDUser(oper, ids, user);
 	}
 
 	@At

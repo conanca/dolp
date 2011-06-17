@@ -2,7 +2,10 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.SysPara;
 import gs.dolp.system.service.SysParaService;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -19,8 +22,8 @@ public class SysParaModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
-			@Param("value") String value, @Param("description") String description) {
-		return sysParaService.CUDSysPara(oper, id, name, value, description);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") SysPara sysPara,
+			HttpServletRequest request) {
+		return sysParaService.CUDSysPara(oper, ids, sysPara);
 	}
 }

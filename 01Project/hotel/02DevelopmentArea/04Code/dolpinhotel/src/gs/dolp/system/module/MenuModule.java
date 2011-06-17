@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.Menu;
 import gs.dolp.system.service.MenuService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -60,9 +61,9 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/editRow/*")
-	public ResponseData editRow(int parentId, @Param("oper") String oper, @Param("id") String id,
-			@Param("name") String name, @Param("url") String url, @Param("description") String description) {
-		return menuService.CUDMenu(oper, id, name, url, description, parentId);
+	public ResponseData editRow(int parentId, @Param("oper") String oper, @Param("ids") String ids,
+			@Param("..") Menu menu) {
+		return menuService.CUDMenu(oper, ids, menu, parentId);
 	}
 
 	/**

@@ -22,9 +22,8 @@ public class RoomModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("number") String number,
-			@Param("roomTypeId") String roomTypeId, @Param("isOccupancy") String isOccupancy) {
-		return roomService.CUDRoom(oper, id, number, roomTypeId, isOccupancy);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Room room) {
+		return roomService.CUDRoom(oper, ids, room);
 	}
 
 	@At

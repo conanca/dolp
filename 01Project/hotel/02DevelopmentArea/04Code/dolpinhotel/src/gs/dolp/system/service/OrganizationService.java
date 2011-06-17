@@ -45,11 +45,10 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDOrganization(String oper, String id, String code, String name, String description,
-			int parentOrgId) {
+	public AjaxResData CUDOrganization(String oper, String ids, Organization organization) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<Organization> organizations = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -60,25 +59,15 @@ public class OrganizationService extends DolpBaseService<Organization> {
 				}
 			});
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			Organization organization = new Organization();
-			organization.setCode(code);
-			organization.setName(name);
-			organization.setDescription(description);
-			organization.setParentOrgId(parentOrgId);
+		} else if ("add".equals(oper)) {
+
 			dao().insert(organization);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			Organization organization = new Organization();
-			organization.setId(Integer.parseInt(id));
-			organization.setCode(code);
-			organization.setName(name);
-			organization.setDescription(description);
-			organization.setParentOrgId(parentOrgId);
+		} else if ("edit".equals(oper)) {
 			dao().update(organization);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

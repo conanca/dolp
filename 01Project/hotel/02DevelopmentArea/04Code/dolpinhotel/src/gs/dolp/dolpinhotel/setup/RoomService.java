@@ -39,29 +39,20 @@ public class RoomService extends DolpBaseService<Room> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDRoom(String oper, String id, String number, String roomTypeId, String isOccupancy) {
+	public AjaxResData CUDRoom(String oper, String ids, Room room) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			Room room = new Room();
-			room.setNumber(number);
-			room.setRoomTypeId(Integer.parseInt(roomTypeId));
-			room.setIsOccupancy(Integer.parseInt(isOccupancy));
+		} else if ("add".equals(oper)) {
 			dao().insert(room);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			Room room = new Room();
-			room.setId(Integer.parseInt(id));
-			room.setNumber(number);
-			room.setRoomTypeId(Integer.parseInt(roomTypeId));
-			room.setIsOccupancy(Integer.parseInt(isOccupancy));
+		} else if ("edit".equals(oper)) {
 			dao().update(room);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

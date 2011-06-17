@@ -25,32 +25,20 @@ public class PrivilegeService extends DolpBaseService<Privilege> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDPrivilege(String oper, String id, String name, String description, int menuId,
-			String methodPath) {
+	public AjaxResData CUDPrivilege(String oper, String ids, Privilege privilege) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			Privilege privilege = new Privilege();
-			privilege.setName(name);
-			privilege.setDescription(description);
-			privilege.setMenuId(menuId);
-			privilege.setMethodPath(methodPath);
+		} else if ("add".equals(oper)) {
 			dao().insert(privilege);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			Privilege privilege = new Privilege();
-			privilege.setId(Integer.parseInt(id));
-			privilege.setName(name);
-			privilege.setDescription(description);
-			privilege.setMenuId(menuId);
-			privilege.setMethodPath(methodPath);
+		} else if ("edit".equals(oper)) {
 			dao().update(privilege);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

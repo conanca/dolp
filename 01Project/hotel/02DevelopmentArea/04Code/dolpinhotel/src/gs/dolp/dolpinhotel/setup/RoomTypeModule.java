@@ -19,9 +19,8 @@ public class RoomTypeModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
-			@Param("price") String price, @Param("description") String description) {
-		return roomTypeService.CUDRoomType(oper, id, name, price, description);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") RoomType roomType) {
+		return roomTypeService.CUDRoomType(oper, ids, roomType);
 	}
 
 	@At

@@ -187,17 +187,17 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData CUDMenu(String oper, String id, String name, String url, String description, int parentId) {
+	public AjaxResData CUDMenu(String oper, String ids, Menu menu, int parentId) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			for (String aId : id.split(",")) {
-				Menu menu = fetch(Long.parseLong(aId));
-				Cnd cnd = Cnd.where("LFT", ">=", menu.getLft()).and("RGT", "<=", menu.getRgt());
+			for (String aId : ids.split(",")) {
+				Menu aMenu = fetch(Long.parseLong(aId));
+				Cnd cnd = Cnd.where("LFT", ">=", aMenu.getLft()).and("RGT", "<=", aMenu.getRgt());
 				clear(cnd);
 			}
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
+		} else if ("add".equals(oper)) {
+			// TODO 此处SQL待优化，应考虑从parentId直接获取lft,rgt值
 			//获取父菜单;
 			Menu parentMenu = fetch(parentId);
 			int parentLft = parentMenu.getLft();
@@ -215,24 +215,17 @@ public class MenuService extends DolpBaseService<Menu> {
 			if (brotherOfnewMenu == null) {
 				respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 			} else {
-				// 新建菜单
-				Menu menu = new Menu();
-				menu.setName(name);
-				menu.setUrl(url);
-				menu.setDescription(description);
+				// 设置左右值
 				menu.setLft(brotherOfnewMenu.getLft() + 2);
 				menu.setRgt(brotherOfnewMenu.getRgt() + 2);
 				dao().insert(menu);
 				respData.setSystemMessage("添加成功!", null, null);
 			}
-		}
-		if ("edit".equals(oper)) {
-			Menu menu = fetch(Long.parseLong(id));
-			menu.setName(name);
-			menu.setUrl(url);
-			menu.setDescription(description);
+		} else if ("edit".equals(oper)) {
 			dao().update(menu);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

@@ -164,7 +164,7 @@ $.extend({
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	};
-	//设置jqgrid的改增删功能，并增加系统消息的显示
+	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr)
 	$.fn.setJqGridCUD = function(pager,para) {
 		var selectorid=this.selector;
 		$(selectorid).navGrid(pager,para,
@@ -187,6 +187,18 @@ $.extend({
 				afterSubmit: function(xhr, postdata) {
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
+				},
+				serializeDelData : function(postData) {
+					var id = postData['id'];
+					if(id){
+						if(parseInt(id) != id){
+							postData['ids'] = postData['id'];
+							postData['id'] = 0;
+						}else{
+							postData['ids'] = postData['id'];
+						}
+					}
+					return postData;
 				}
 			},
 			{},{}

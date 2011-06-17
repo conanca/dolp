@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.Role;
 import gs.dolp.system.service.RoleService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -21,10 +22,8 @@ public class RoleModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
-			@Param("description") String description, @Param("isOrgaRela") String isOrgaRela,
-			@Param("organizationId") String organizationId) {
-		return roleService.CUDRole(oper, id, name, description, isOrgaRela, organizationId);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Role role) {
+		return roleService.CUDRole(oper, ids, role);
 	}
 
 	@At("/getAllRoleMap/*")

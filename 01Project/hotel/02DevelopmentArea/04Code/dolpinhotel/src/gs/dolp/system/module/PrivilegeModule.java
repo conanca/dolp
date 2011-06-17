@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.service.PrivilegeService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -19,9 +20,8 @@ public class PrivilegeModule {
 		return privilegeService.getGridData(menuId, jqReq);
 	}
 
-	@At("/editRow/*")
-	public ResponseData editRow(int menuId, @Param("oper") String oper, @Param("id") String id,
-			@Param("name") String name, @Param("description") String description, @Param("methodPath") String methodPath) {
-		return privilegeService.CUDPrivilege(oper, id, name, description, menuId, methodPath);
+	@At()
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Privilege privilege) {
+		return privilegeService.CUDPrivilege(oper, ids, privilege);
 	}
 }

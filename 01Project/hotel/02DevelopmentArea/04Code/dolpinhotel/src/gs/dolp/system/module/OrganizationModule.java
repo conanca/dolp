@@ -2,6 +2,7 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.Organization;
 import gs.dolp.system.service.OrganizationService;
 
 import org.nutz.ioc.annotation.InjectName;
@@ -25,8 +26,8 @@ public class OrganizationModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("id") String id, @Param("code") String code,
-			@Param("name") String name, @Param("description") String description, @Param("parentOrgId") int parentOrgId) {
-		return organizationService.CUDOrganization(oper, id, code, name, description, parentOrgId);
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids,
+			@Param("..") Organization organization) {
+		return organizationService.CUDOrganization(oper, ids, organization);
 	}
 }

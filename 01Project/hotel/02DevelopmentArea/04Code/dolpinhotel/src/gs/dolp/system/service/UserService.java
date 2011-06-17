@@ -86,12 +86,11 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDUser(String oper, String id, String number, String name, String gender, int age,
-			String birthday, String phone) {
+	public AjaxResData CUDUser(String oper, String ids, User user) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			if (!Strings.isEmpty(id)) {
-				final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			if (!Strings.isEmpty(ids)) {
+				final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 				final List<User> users = query(cnd, null);
 				Trans.exec(new Atom() {
 					public void run() {
@@ -104,29 +103,15 @@ public class UserService extends DolpBaseService<User> {
 			}
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
-			if (isUserNumberDuplicate(number)) {
+			if (isUserNumberDuplicate(user.getNumber())) {
 				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号！");
 				return respData;
 			}
-			User user = new User();
-			user.setNumber(number);
-			user.setName(name);
-			user.setGender(gender);
-			user.setAge(age);
-			user.setBirthday(birthday);
-			user.setPhone(phone);
 			user.setPassword(getSysParaValue("DefaultPassword"));
 			respData.setSystemMessage("添加成功!", null, null);
 			dao().insert(user);
 		} else if ("edit".equals(oper)) {
-			User user = new User();
-			user.setId(Integer.valueOf(id));
-			user.setNumber(number);
-			user.setName(name);
-			user.setGender(gender);
-			user.setAge(age);
-			user.setBirthday(birthday);
-			user.setPhone(phone);
+			// TODO 这个地方把密码清空了
 			dao().update(user);
 			respData.setSystemMessage("修改成功!", null, null);
 		} else {
