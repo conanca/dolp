@@ -43,7 +43,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 		} else {
 			final RoomOccupancy roomOccupancy = new RoomOccupancy();
 			roomOccupancy.setRoomId(roomId);
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			Timestamp enterDateTime = new Timestamp(dateFormat.parse(enterDate).getTime());
 			roomOccupancy.setEnterDate(enterDateTime);
 			if (null != expectedCheckOutDate && !"".equals(expectedCheckOutDate)) {
@@ -132,7 +132,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 			respData.setSystemMessage(null, null, "结帐失败！");
 		} else {
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			final Timestamp leaveDateTime = new Timestamp(dateFormat.parse(leaveDate).getTime());
 			final Bill bill = new Bill();
 			bill.setDate(leaveDateTime);
