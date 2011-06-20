@@ -2,6 +2,8 @@ package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
 import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.system.domain.SysEnum;
+import gs.dolp.system.domain.SysEnumItem;
 import gs.dolp.system.service.SysEnumItemService;
 import gs.dolp.system.service.SysEnumService;
 
@@ -27,15 +29,14 @@ public class SysEnumModule {
 	}
 
 	@At
-	public ResponseData editSysEnum(@Param("oper") String oper, @Param("id") String id, @Param("name") String name,
-			@Param("description") String description) {
-		return sysEnumService.CUDSysEnum(oper, id, name, description);
+	public ResponseData editSysEnum(@Param("oper") String oper, @Param("ids") String ids, @Param("..") SysEnum sysEnum) {
+		return sysEnumService.CUDSysEnum(oper, ids, sysEnum);
 	}
 
-	@At("/editSysEnumItem/*")
-	public ResponseData editSysEnumItem(int sysEnumID, @Param("oper") String oper, @Param("id") String id,
-			@Param("text") String text, @Param("value") String value) {
-		return sysEnumItemService.CUDSysEnumItem(oper, id, text, value, sysEnumID);
+	@At
+	public ResponseData editSysEnumItem(@Param("oper") String oper, @Param("ids") String ids,
+			@Param("..") SysEnumItem sysEnumItem) {
+		return sysEnumItemService.CUDSysEnumItem(oper, ids, sysEnumItem);
 	}
 
 	@At("/getSysEnumItemMap/*")

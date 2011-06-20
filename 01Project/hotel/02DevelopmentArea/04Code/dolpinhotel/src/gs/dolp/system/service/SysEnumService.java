@@ -28,10 +28,10 @@ public class SysEnumService extends DolpBaseService<SysEnum> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDSysEnum(String oper, String id, String name, String description) {
+	public AjaxResData CUDSysEnum(String oper, String ids, SysEnum sysEnum) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<SysEnum> sysEnums = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -42,21 +42,14 @@ public class SysEnumService extends DolpBaseService<SysEnum> {
 				}
 			});
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			SysEnum sysEnum = new SysEnum();
-			sysEnum.setName(name);
-			sysEnum.setDescription(description);
+		} else if ("add".equals(oper)) {
 			dao().insert(sysEnum);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			SysEnum sysEnum = new SysEnum();
-			sysEnum.setId(Integer.parseInt(id));
-			sysEnum.setName(name);
-			sysEnum.setDescription(description);
+		} else if ("edit".equals(oper)) {
 			dao().update(sysEnum);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}

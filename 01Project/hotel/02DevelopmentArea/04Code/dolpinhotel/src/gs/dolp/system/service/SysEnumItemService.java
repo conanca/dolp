@@ -30,29 +30,20 @@ public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDSysEnumItem(String oper, String id, String text, String value, int sysEnumId) {
+	public AjaxResData CUDSysEnumItem(String oper, String ids, SysEnumItem sysEnumItem) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.where("ID", "IN", id.split(","));
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
-			SysEnumItem item = new SysEnumItem();
-			item.setText(text);
-			item.setValue(value);
-			item.setSysEnumId(sysEnumId);
-			dao().insert(item);
+		} else if ("add".equals(oper)) {
+			dao().insert(sysEnumItem);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
-			SysEnumItem item = new SysEnumItem();
-			item.setId(Integer.parseInt(id));
-			item.setText(text);
-			item.setValue(value);
-			item.setSysEnumId(sysEnumId);
-			dao().update(item);
+		} else if ("edit".equals(oper)) {
+			dao().update(sysEnumItem);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}
