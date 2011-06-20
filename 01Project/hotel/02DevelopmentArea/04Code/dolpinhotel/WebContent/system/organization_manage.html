@@ -11,7 +11,7 @@ $(function(){
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId="+treeNode.id,page:1});
-				$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId="+treeNode.id});
+				$("#organizationList").setColProp('parentOrgId',{editoptions:{defaultValue:treeNode.id}});
 				$("#organizationList").trigger('reloadGrid');
 			}
 		}
@@ -22,7 +22,7 @@ $(function(){
 	$("#organizationTreeRefreshBtn").click(function() {
 		organizationTree.reAsyncChildNodes(null, "refresh");
 		$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId=0",page:1});
-		$("#organizationList").setGridParam({editurl:"system/organization/editRow?parentOrgId=0"});
+		$("#organizationList").setColProp('parentOrgId',{editoptions:{defaultValue:0}});
 		$("#organizationList").trigger('reloadGrid');
 	});
 
@@ -32,14 +32,14 @@ $(function(){
 		},
 		caption:"机构列表",
 		url:'system/organization/getGridData?parentOrgId=0',
-		editurl:"system/organization/editRow?parentOrgId=0",
+		editurl:"system/organization/editRow",
 		colNames:['id','代码','名称','描述','父节点Id'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
 			{name:'code',index:'code', width:100,editable:true,editrules:{required:true}},
 			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
 			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
-			{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true}
+			{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true,editable:true}
 		],
 		pager: '#organizationPager',
 		sortname: 'id',

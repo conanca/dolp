@@ -11,7 +11,7 @@ $(function() {
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
-				$("#privilegeList").setGridParam({editurl:"system/privilege/editRow?menuId="+treeNode.id});
+				$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:treeNode.id}});
 				$("#privilegeList").trigger('reloadGrid');
 			}
 		}
@@ -22,7 +22,7 @@ $(function() {
 	$("#privilegeMenuTreeRefreshBtn").click(function() {
 		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
 		$("#privilegeList").setGridParam({url:"system/privilege/getGridData/0",page:1});
-		$("#privilegeList").setGridParam({editurl:"system/privilege/editRow"});
+		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:0}});
 		$("#privilegeList").trigger('reloadGrid');
 	});
 
@@ -39,7 +39,7 @@ $(function() {
 			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
 			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true}},
 			{name: "description",index:'description',width:200,editable:true},
-			{name: "menuId",index:'menuId',width:0,hidden:true}
+			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true}
 		],
 		pager: '#privilegePager',
 		sortname: 'id',
