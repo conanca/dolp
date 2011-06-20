@@ -48,7 +48,7 @@ public class SystemService extends DolpBaseService<Object> {
 		dao().execute(fm.createCombo(fm.keys()));
 		fm = new FileSqlManager("init_hotel.sql");
 		dao().execute(fm.createCombo(fm.keys()));
-		respData.setSystemMessage("初始化数据库完成！", null, null);
+		respData.setSystemMessage("初始化数据库完成!", null, null);
 		return respData;
 	}
 

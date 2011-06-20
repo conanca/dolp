@@ -50,9 +50,9 @@ public class ClientService extends DolpBaseService<Client> {
 			for (String sessionId : sessionIds) {
 				DolpSessionContext.getSession(sessionId).invalidate();
 			}
-			resData.setSystemMessage("已踢出用户！", null, null);
+			resData.setSystemMessage("已踢出用户!", null, null);
 		} else {
-			resData.setSystemMessage(null, "未踢出任何用户！", null);
+			resData.setSystemMessage(null, "未踢出任何用户!", null);
 		}
 		return resData;
 	}

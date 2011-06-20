@@ -39,7 +39,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 			final Customer[] customers) throws ParseException {
 		AjaxResData respData = new AjaxResData();
 		if (Strings.isBlank(enterDate) || roomId == 0) {
-			respData.setSystemMessage(null, null, "登记失败！");
+			respData.setSystemMessage(null, null, "登记失败!");
 		} else {
 			final RoomOccupancy roomOccupancy = new RoomOccupancy();
 			roomOccupancy.setRoomId(roomId);
@@ -69,7 +69,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 					}
 				}
 			});
-			respData.setSystemMessage("登记成功！", null, null);
+			respData.setSystemMessage("登记成功!", null, null);
 		}
 		return respData;
 	}
@@ -129,7 +129,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 	public AjaxResData checkOut(final int[] ids, String leaveDate) throws ParseException {
 		AjaxResData respData = new AjaxResData();
 		if (Strings.isBlank(leaveDate) || ids == null) {
-			respData.setSystemMessage(null, null, "结帐失败！");
+			respData.setSystemMessage(null, null, "结帐失败!");
 		} else {
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -172,7 +172,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 					dao().update(bill);
 				}
 			});
-			respData.setSystemMessage("结帐成功！", null, null);
+			respData.setSystemMessage("结帐成功!", null, null);
 		}
 		return respData;
 	}

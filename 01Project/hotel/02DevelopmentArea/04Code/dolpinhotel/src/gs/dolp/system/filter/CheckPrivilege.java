@@ -35,7 +35,7 @@ public class CheckPrivilege implements ActionFilter {
 		}
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 		AjaxResData respData = new AjaxResData();
-		respData.setSystemMessage(null, null, "用户没有此权限");
+		respData.setSystemMessage(null, null, "用户没有此权限!");
 		jsonView.setData(respData);
 		return jsonView;
 	}

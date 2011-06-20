@@ -21,9 +21,9 @@ public class CheckLogon implements ActionFilter {
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, "请先登录系统"));
+			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, "请先登录系统!"));
 			AjaxResData userdata = new AjaxResData();
-			userdata.setSystemMessage(null, null, "请先登录系统");
+			userdata.setSystemMessage(null, null, "请先登录系统!");
 			excpAjaxResData.setUserdata(userdata);
 			jsonView.setData(excpAjaxResData);
 			return jsonView;

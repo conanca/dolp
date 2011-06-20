@@ -104,7 +104,7 @@ public class UserService extends DolpBaseService<User> {
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
 			if (isUserNumberDuplicate(user.getNumber())) {
-				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号！");
+				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
 				return respData;
 			}
 			user.setPassword(getSysParaValue("DefaultPassword"));
@@ -223,11 +223,11 @@ public class UserService extends DolpBaseService<User> {
 		AjaxResData respData = new AjaxResData();
 		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
-			respData.setSystemMessage(null, "原密码错误！", null);
+			respData.setSystemMessage(null, "原密码错误!", null);
 		} else {
 			user.setPassword(newPassword);
 			dao().update(user);
-			respData.setSystemMessage("密码修改成功！", null, null);
+			respData.setSystemMessage("密码修改成功!", null, null);
 		}
 		return respData;
 	}
@@ -239,7 +239,7 @@ public class UserService extends DolpBaseService<User> {
 			User user = this.fetch(userId);
 			user.setPassword(newPassword);
 			dao().update(user);
-			respData.setSystemMessage("密码修改成功！", null, null);
+			respData.setSystemMessage("密码修改成功!", null, null);
 		} else {
 			respData.setSystemMessage(null, "未正确选择用户", null);
 		}

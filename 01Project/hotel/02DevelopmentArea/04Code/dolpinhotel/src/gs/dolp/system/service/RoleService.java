@@ -55,14 +55,14 @@ public class RoleService extends DolpBaseService<Role> {
 				}
 			});
 			respData.setSystemMessage("删除成功!", null, null);
-		}
-		if ("add".equals(oper)) {
+		} else if ("add".equals(oper)) {
 			dao().insert(role);
 			respData.setSystemMessage("添加成功!", null, null);
-		}
-		if ("edit".equals(oper)) {
+		} else if ("edit".equals(oper)) {
 			dao().update(role);
 			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
 		return respData;
 	}
