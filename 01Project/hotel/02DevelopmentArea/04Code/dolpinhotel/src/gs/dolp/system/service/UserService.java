@@ -111,8 +111,8 @@ public class UserService extends DolpBaseService<User> {
 			respData.setSystemMessage("添加成功!", null, null);
 			dao().insert(user);
 		} else if ("edit".equals(oper)) {
-			// TODO 这个地方把密码清空了
-			dao().update(user);
+			// 忽略“密码”字段
+			dao().updateIgnoreNull(user);
 			respData.setSystemMessage("修改成功!", null, null);
 		} else {
 			respData.setSystemMessage(null, "未操作数据", null);
