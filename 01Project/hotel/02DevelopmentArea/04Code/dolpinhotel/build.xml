@@ -1,0 +1,68 @@
+<project name="dolpinhotel" default="dist" basedir=".">
+    <description>
+        dolpinhotel 的 build 文件
+    </description>
+  <!-- 设置全局变量 -->
+  <property name="src" location="src"/>
+  <property name="config" location="config"/>
+  <property name="webcontent" location="WebContent"/>
+  <property name="build" location="build"/>
+  <property name="classes" location="${build}/classes"/>
+  <property name="dist"  location="dist"/>
+
+  <property environment="env" />
+  <property name="TOMCAT_HOME" value="${env.TOMCAT_HOME}" />
+  <property name="JAVA_HOME" value="${env.JAVA_HOME}" />
+  <property name="DEPHOME" value="./WebContent/WEB-INF/lib" />
+
+ <!-- 设置编译时用到的 CLASSPATH  -->
+  <path id="CLASSPATH">
+    <fileset dir="${TOMCAT_HOME}/lib" casesensitive="no">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${DEPHOME}" casesensitive="no">
+     <include name="*.jar" />
+    </fileset>
+    <pathelement location="${JAVA_HOME}/lib/rt.jar" />
+  </path>
+
+  <target name="init" depends="clean">
+    <!-- 建立时间戳 -->
+    <tstamp/>
+    <!-- 创建编译时所用到的 build 目录 -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${classes}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- 编译 java 代码——从 ${src} 到 ${build} -->
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8">
+      <compilerarg value="-Xlint:all" />
+      <classpath refid="CLASSPATH" />
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- 将所有的 config 文件拷贝至 build 目录下的 classes 目录-->
+    <copy todir="${classes}">
+      <fileset dir="${config}"/>
+    </copy>
+    <!-- 创建分发物的目录 -->
+    <mkdir dir="${dist}"/>
+    <!-- 将 ${webcontent} 下面所有的东西打包成 dolpinhotel.war 文件 -->
+    <war warfile="${dist}/dolpinhotel.war" webxml="${webcontent}/WEB-INF/web.xml">
+      <classes dir = "${classes}"/>
+        <fileset dir="${webcontent}">
+      </fileset>
+    </war>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- 删除 ${build} 和 ${dist} 这两个目录 -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
