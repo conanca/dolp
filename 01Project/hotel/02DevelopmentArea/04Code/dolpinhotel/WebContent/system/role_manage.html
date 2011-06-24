@@ -85,6 +85,11 @@ $(function(){
 		var url = "system/role/assignPrivilege";
 		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges});
 		$.unblockUI();
+		$("#privilegeInfoCancelbtn").click();
+	});
+	
+	$("#privilegeInfoCancelbtn").click(function() {
+		$('#privilegeInfo').dialog( "close" );
 	});
 });
 </script>
@@ -93,7 +98,11 @@ $(function(){
 <div id="rolePager"></div>
 
 <div id="privilegeInfo" title="权限信息">
-	<input type="button" value="分配" id="privilegeAssignBtn"/>
+	<p align="center">
+		<input type="button" value="分配" id="privilegeAssignBtn"/>
+		&nbsp;&nbsp;&nbsp;
+		<input type="button" value="取消" id='privilegeInfoCancelbtn'/>
+	</p>
 	<div>
 		<ul id="privilegeTreeUl" class="tree"></ul>
 	</div>
