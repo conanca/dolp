@@ -197,17 +197,12 @@ public class MenuService extends DolpBaseService<Menu> {
 			}
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
-			// TODO 此处SQL待优化，应考虑从parentId直接获取lft,rgt值
-			//获取父菜单;
-			Menu parentMenu = fetch(parentId);
-			int parentLft = parentMenu.getLft();
-			int parentRight = parentMenu.getRgt();
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
-			Sql sql = Sqls.fetchEntity("SELECT * FROM SYSTEM_MENU M1 WHERE"
-					+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
-					+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
-			sql.vars().set("parentLft", parentLft);
-			sql.vars().set("parentRight", parentRight);
+			Sql sql = Sqls.fetchEntity("SELECT * FROM SYSTEM_MENU M1 WHERE NOT EXISTS"
+					+ " (SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1)"
+					+ " AND LFT>(SELECT LFT FROM SYSTEM_MENU WHERE id=$parentId)"
+					+ " AND RGT<(SELECT RGT FROM SYSTEM_MENU WHERE id=$parentId)-2 ORDER BY LFT");
+			sql.vars().set("parentId", parentId);
 			// 获取单个实体的回调
 			sql.setEntity(dao().getEntity(Menu.class));
 			dao().execute(sql);
