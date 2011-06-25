@@ -10,20 +10,19 @@
   <property name="classes" location="${build}/classes"/>
   <property name="dist"  location="dist"/>
 
-  <property environment="env" />
-  <property name="TOMCAT_HOME" value="${env.TOMCAT_HOME}" />
-  <property name="JAVA_HOME" value="${env.JAVA_HOME}" />
   <property name="DEPHOME" value="./WebContent/WEB-INF/lib" />
+  <property environment="env" />
 
  <!-- 设置编译时用到的 CLASSPATH  -->
   <path id="CLASSPATH">
-    <fileset dir="${TOMCAT_HOME}/lib" casesensitive="no">
+  	<!-- 注意：如果本地的容器不是TOMCAT,请修改下面的环境变量  -->
+    <fileset dir="${env.TOMCAT_HOME}/lib" casesensitive="no">
       <include name="*.jar" />
     </fileset>
     <fileset dir="${DEPHOME}" casesensitive="no">
      <include name="*.jar" />
     </fileset>
-    <pathelement location="${JAVA_HOME}/lib/rt.jar" />
+    <pathelement location="${env.JAVA_HOME}/lib/rt.jar" />
   </path>
 
   <target name="init" depends="clean">
