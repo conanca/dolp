@@ -29,7 +29,7 @@ public class SchedulerRunner {
 		JobDetail job = JobBuilder.newJob(CountClientJob.class).withIdentity("job1", "group1").build();
 		// 设置开始时间(找个整的分钟)
 		Date startTime = DateBuilder.evenMinuteDate(new Date());
-		// 设置触发器：每30秒运行一次，无限运行
+		// 设置触发器：每1小时运行一次，无限次运行
 		SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger_1", "group1").startAt(startTime)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(1).repeatForever()).build();
 		// job和trigger不存在于Scheduler，才加入调度
