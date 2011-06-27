@@ -20,7 +20,7 @@ public class ExcelHandler {
 	 * @param sheetName
 	 * @param list
 	 */
-	public static void CreatSheet(HSSFWorkbook wb, String sheetName, List list) {
+	public static void creatSheet(HSSFWorkbook wb, String sheetName, List list) {
 		if (list == null || list.size() == 0 || wb == null) {
 			return;
 		}
@@ -65,8 +65,8 @@ public class ExcelHandler {
 	 * @param pojoClass
 	 * @return
 	 */
-	public static List readSheet(HSSFSheet sheet, Class pojoClass) {
-		List list = new ArrayList();
+	public static List<Object> readSheet(HSSFSheet sheet, Class<?> pojoClass) {
+		List<Object> list = new ArrayList<Object>();
 		try {
 			Field[] fieldArr = pojoClass.getDeclaredFields();
 			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
