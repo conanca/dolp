@@ -1,24 +1,31 @@
 //使用jquery.form.js时的一个公用方法，用于提交获得Respons后显示系统消息
 function showResponse(responseText, statusText, xhr, $form)  {
-	$.addMessage($.parseJSON(responseText).userdata);
+	$.addMessage($.parseJSON(responseText).systemMessage);
 }
 
-//jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
-var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
-var opts = {
-	pnotify_addclass: "stack-bottomright",
-	pnotify_stack: stack_bottomright
+// zTree异步获取到数据后，在添加到 zTree 之前利用此方法进行数据预处理，以显示系统消息
+function ajaxDataFilter(treeId, parentNode, response) {
+	if (response) {
+		if(response.systemMessage){
+			$.addMessage(response.systemMessage);
+		}
+		if(response.returnData){
+			return response.returnData;
+		}else{
+			return null;
+		}
+	}
 };
 
 $.extend({
-	//显示系统消息的函数
-	addMessage : function(userData) {
-		if(!userData){
+	//显示系统消息的函数(消息对象systemMessage)
+	addMessage : function(systemMessage) {
+		if(!systemMessage){
 			return;
 		}
-		var infoMessages = userData.infoMessages;
-		var warnMessages = userData.warnMessages;
-		var errorMessages = userData.errorMessages;
+		var infoMessages = systemMessage.infoMessages;
+		var warnMessages = systemMessage.warnMessages;
+		var errorMessages = systemMessage.errorMessages;
 		if (infoMessages) {
 			opts.pnotify_title = "消息";
 			opts.pnotify_type = "notice";
@@ -45,6 +52,7 @@ $.extend({
 	        });
 		}
 	},
+	//显示系统消息的函数(消息内容infoMessage,warnMessage,errorMessage)
 	addMessageStr : function(infoMessage,warnMessage,errorMessage) {
 		if (infoMessage) {
 			opts.pnotify_title = "消息";
@@ -66,31 +74,46 @@ $.extend({
 			$.pnotify(opts);
 		}
 	},
-	//根据url提交给后台查询Item信息，获得的是JSON格式的map数据
-	getItem: function(url) {
-		var Items = {};
-		$.getJSON(url,function(response){
-			if(response.userdata){
-				$.addMessage(response.userdata);
-				return;
-			}
-			Items = response;
-		});
-		return Items;
-	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
-		var url = 'system/sysEnum/getSysEnumItems/'+SysEnumName;
+		var url = 'system/sysEnum/getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
-			if(response.userdata){
-				$.addMessage(response.userdata);
-				return;
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
 			}
-			Items = response;
+			if(response.returnData){
+				Items = response.returnData;
+			}
 		});
 		return Items;
     },
+	//$.getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
+	dolpGet: function(url, data) {
+		var returnData = {};
+		$.getJSON(url,data,function(response){
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
+			}
+			if(response.returnData){
+				returnData = response.returnData;
+			}
+		});
+		return returnData;
+	},
+    //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
+	dolpPost : function(url, data){
+		var returnData = {};
+		$.post(url,data,function(response){
+			if(response.systemMessage){
+				$.addMessage(response.systemMessage);
+			}
+			if(response.returnData){
+				returnData = response.returnData;
+			}
+		},"json");
+		return returnData;
+	},
 	//为JSON格式的map数据做键值互换
     swapJSON: function(json) {
         var o = {};
@@ -99,24 +122,6 @@ $.extend({
         });
         return o;
     }
-});
-
-//post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-$.extend({
-	dolpPost : function(url, data){
-		var returnData;
-		$.post(url,data,function(response){
-			if(response.returnData){
-				returnData = response.returnData;
-			}else{
-				returnData = response;
-			}
-			if(response.userdata){
-				$.addMessage(response.userdata);
-			}
-		},"json");
-		return returnData;
-	}
 });
 
 (function($) {
@@ -159,32 +164,57 @@ $.extend({
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	};
-	//设置jqgrid的改增删功能，并增加系统消息的显示
+	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr)
 	$.fn.setJqGridCUD = function(pager,para) {
 		var selectorid=this.selector;
 		$(selectorid).navGrid(pager,para,
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					$.addMessage($.parseJSON(xhr.responseText).userdata);
+					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
+				},
+				serializeDelData : function(postData) {
+					var id = postData['id'];
+					if(id){
+						if(parseInt(id) != id){
+							postData['ids'] = postData['id'];
+							postData['id'] = 0;
+						}else{
+							postData['ids'] = postData['id'];
+						}
+					}
+					return postData;
 				}
 			},
 			{},{}
 		);
+	};
+	//为grid添加自定义按钮——导出Excel
+	$.fn.export2Excel = function(pager) {
+		var selectorid=this.selector;
+		$(selectorid).navButtonAdd(pager,{caption:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
+			onClickButton:function(){
+				var colNames = $(selectorid).getGridParam("colNames");
+				var rowDatas = $.toJSON($(selectorid).getRowData());
+				$("#GridExportFormColNames").val(colNames);
+				$("#GridExportFormRowDatas").val(rowDatas);
+				$("#GridExportForm").submit();
+			}
+		});
 	};
 })(jQuery);

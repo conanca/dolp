@@ -1,12 +1,16 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.DolpBaseService;
+import gs.dolp.common.util.DolpCollectionHandler;
 import gs.dolp.system.domain.Menu;
 import gs.dolp.system.domain.MenuEntity;
+import gs.dolp.system.domain.Privilege;
+import gs.dolp.system.domain.PrivilegeEntity;
 import gs.dolp.system.domain.Role;
+import gs.dolp.system.domain.TreeNode;
 import gs.dolp.system.domain.User;
 
 import java.util.ArrayList;
@@ -18,9 +22,8 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
-import org.nutz.service.IdEntityService;
 
-public class MenuService extends IdEntityService<Menu> {
+public class MenuService extends DolpBaseService<Menu> {
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -75,9 +78,11 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @param nLevel
 	 * @param logonUser
 	 * @return
+	 * @throws Exception 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser) {
+	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser)
+			throws Exception {
 		if (logonUser == null) {
 			throw new RuntimeException("用户未登录!");
 		}
@@ -86,17 +91,12 @@ public class MenuService extends IdEntityService<Menu> {
 		if (null == roles || roles.size() == 0) {
 			throw new RuntimeException("当前用户未被分配角色!");
 		}
-		StringBuilder roleIdsSB = new StringBuilder();
-		for (Role r : roles) {
-			roleIdsSB.append(r.getId());
-			roleIdsSB.append(",");
-		}
-		roleIdsSB.deleteCharAt(roleIdsSB.length() - 1);
+		String roleIds = DolpCollectionHandler.getIdsString(roles, ",");
 		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIdsSB.toString());
+		List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
 		jq.setRows(rows);
 		return jq;
 	}
@@ -110,12 +110,18 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public List<MenuEntity> getNodes(int nodeId) {
+	public AjaxResData getTreeNodes(int nodeId) {
+		AjaxResData resData = new AjaxResData();
 		int parentLft;
-		int parentRgt;
+		int parentRgt = 0;
 		if (nodeId == 0) {
 			parentLft = 0;
-			parentRgt = 1000;
+			// 取系统参数:"菜单节点最大Rigth值"
+			int rootRgt = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			if (rootRgt <= 0) {
+				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
+			}
+			parentRgt = rootRgt;
 		} else {
 			Menu parentNode = fetch(nodeId);
 			parentLft = parentNode.getLft();
@@ -132,7 +138,8 @@ public class MenuService extends IdEntityService<Menu> {
 		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
 		dao().execute(sql.setCondition(cnd));
 		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		return rs;
+		resData.setReturnData(rs);
+		return resData;
 	}
 
 	/**
@@ -144,10 +151,15 @@ public class MenuService extends IdEntityService<Menu> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, int parentId) {
 		int parentLft;
-		int parentRgt;
+		int parentRgt = 0;
 		if (parentId == 0) {
 			parentLft = 0;
-			parentRgt = 1000;
+			// 取系统参数:"菜单节点最大Rigth值"
+			int rootRgt = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			if (rootRgt <= 0) {
+				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
+			}
+			parentRgt = rootRgt;
 		} else {
 			Menu parentNode = fetch(parentId);
 			parentLft = parentNode.getLft();
@@ -158,109 +170,59 @@ public class MenuService extends IdEntityService<Menu> {
 				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRgt", parentRgt);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(Menu.class));
 		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
-		dao().execute(sql.setCondition(cnd));
-		List<Menu> rs = sql.getList(Menu.class);
-		// TODO 不支持分页和排序...
-
 		// 开始封装jqGrid的json格式数据类
-		AdvancedJqgridResData<Menu> jq = new AdvancedJqgridResData<Menu>();
-		jq.setTotal(0);
-		jq.setPage(1);
-		jq.setRecords(0);
-		jq.setRows(rs);
+		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, cnd, jqReq);
 		return jq;
 	}
 
 	/**
-	 * 角色可见分配菜单页面中的菜单显示调用到的方法
-	 * @param roleId
-	 * @return
-	 */
-	public List<MenuEntity> getMenuNodesByRoleId(int roleId) {
-		Sql sql = Sqls
-				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-						+ "NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS VISIBLE,"
-						+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF "
-						+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-						+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
-		sql.vars().set("roleId", roleId);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
-		dao().execute(sql);
-		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		return rs;
-	}
-
-	/**
-	 * 角色可见分配菜单页面中的菜单显示
-	 * @param roleId
+	 * 菜单管理页面，右侧菜单grid的增删改
+	 * @param oper
+	 * @param id
+	 * @param name
+	 * @param url
+	 * @param description
+	 * @param parentId
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
-		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
-		jq.setPage(1);
-		jq.setTotal(1);
-		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodesByRoleId(roleId);
-		jq.setRows(rows);
-		return jq;
-	}
-
-	@Aop(value = "log")
-	public AjaxResData CUDMenu(String oper, String id, String name, String url, String description, int parentId) {
-		AjaxResData reData = new AjaxResData();
+	public AjaxResData CUDMenu(String oper, String ids, Menu menu, int parentId) {
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			for (String aId : id.split(",")) {
-				Menu menu = fetch(Long.parseLong(aId));
-				Cnd cnd = Cnd.where("LFT", ">=", menu.getLft()).and("RGT", "<=", menu.getRgt());
+			for (String aId : ids.split(",")) {
+				Menu aMenu = fetch(Long.parseLong(aId));
+				Cnd cnd = Cnd.where("LFT", ">=", aMenu.getLft()).and("RGT", "<=", aMenu.getRgt());
 				clear(cnd);
 			}
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
-		}
-		if ("add".equals(oper)) {
-			//获取父菜单;
-			Menu parentMenu = fetch(parentId);
-			int parentLft = parentMenu.getLft();
-			int parentRight = parentMenu.getRgt();
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
-			Sql sql = Sqls.fetchEntity("SELECT * FROM SYSTEM_MENU M1 WHERE"
-					+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
-					+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
-			sql.vars().set("parentLft", parentLft);
-			sql.vars().set("parentRight", parentRight);
+			Sql sql = Sqls.fetchEntity("SELECT * FROM SYSTEM_MENU M1 WHERE NOT EXISTS"
+					+ " (SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1)"
+					+ " AND LFT>(SELECT LFT FROM SYSTEM_MENU WHERE id=$parentId)"
+					+ " AND RGT<(SELECT RGT FROM SYSTEM_MENU WHERE id=$parentId)-2 ORDER BY LFT");
+			sql.vars().set("parentId", parentId);
 			// 获取单个实体的回调
 			sql.setEntity(dao().getEntity(Menu.class));
 			dao().execute(sql);
 			Menu brotherOfnewMenu = sql.getObject(Menu.class);
 			if (brotherOfnewMenu == null) {
-				reData.setUserdata(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
+				respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 			} else {
-				// 新建菜单
-				Menu menu = new Menu();
-				menu.setName(name);
-				menu.setUrl(url);
-				menu.setDescription(description);
+				// 设置左右值
 				menu.setLft(brotherOfnewMenu.getLft() + 2);
 				menu.setRgt(brotherOfnewMenu.getRgt() + 2);
 				dao().insert(menu);
-				reData.setUserdata(new SystemMessage("添加成功!", null, null));
+				respData.setSystemMessage("添加成功!", null, null);
 			}
-		}
-		if ("edit".equals(oper)) {
-			Menu menu = fetch(Long.parseLong(id));
-			menu.setName(name);
-			menu.setUrl(url);
-			menu.setDescription(description);
+		} else if ("edit".equals(oper)) {
 			dao().update(menu);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
-		return reData;
+		return respData;
 	}
 
 	/**
@@ -271,9 +233,9 @@ public class MenuService extends IdEntityService<Menu> {
 	 * @param parentLevel
 	 * @return
 	 */
+	@Aop(value = "log")
 	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
-		AjaxResData reData = new AjaxResData();
-
+		AjaxResData respData = new AjaxResData();
 		//获取父菜单;
 		Menu parentMenu = fetch(parentId);
 		int parentLft = parentMenu.getLft();
@@ -290,7 +252,7 @@ public class MenuService extends IdEntityService<Menu> {
 		dao().execute(sql);
 		List<Menu> brotherOfnewMenus = sql.getList(Menu.class);
 		if (brotherOfnewMenus == null) {
-			reData.setUserdata(new SystemMessage(null, "该菜单节点已满,添加失败!", null));
+			respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 		} else {
 			// 新建菜单
 			Menu menu = new Menu();
@@ -299,9 +261,70 @@ public class MenuService extends IdEntityService<Menu> {
 			menu.setLft(brotherOfnewMenus.get(0).getRgt() + 1);
 			menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
 			dao().insert(menu);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
+			respData.setSystemMessage("添加成功!", null, null);
 		}
 
-		return reData;
+		return respData;
+	}
+
+	/**
+	 * 角色管理页面中的权限分配菜单树显示
+	 * @param roleId
+	 * @param nodeId
+	 * @param nLeft
+	 * @param nRight
+	 * @param nLevel
+	 * @return
+	 */
+	@Aop(value = "log")
+	public AjaxResData getPrivilegeTreeNodesByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
+		AjaxResData respData = new AjaxResData();
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+
+		StringBuilder addWhere = new StringBuilder();
+		if (nodeId != 0) {
+			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
+			nLevel++;
+		} else {
+			nLevel = 0;
+		}
+		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.LFT,NODE.RGT,"
+				+ "NODE.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS CHECKED,"
+				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.RGT<>NODE.LFT+1 AS ISPARENT"
+				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
+				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT " + addWhere
+				+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
+		sql.vars().set("roleId", roleId);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(MenuEntity.class));
+		dao().execute(sql);
+		List<MenuEntity> menuEntites = sql.getList(MenuEntity.class);
+		for (MenuEntity menuEntity : menuEntites) {
+			if (menuEntity.getLevel() == nLevel) {
+				// 如果该菜单含操作权限数据，则将其设为父节点
+				int privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
+				if (privilegesCount > 0) {
+					menuEntity.setParent(true);
+				}
+				nodes.add(menuEntity);
+			}
+		}
+
+		sql = Sqls
+				.create("SELECT ID,NAME,"
+						+ "ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = $roleId) AS CHECKED"
+						+ " FROM SYSTEM_PRIVILEGE WHERE MENUID=$nodeId");
+		sql.vars().set("roleId", roleId);
+		sql.vars().set("nodeId", nodeId);
+		// 查询实体的回调
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(PrivilegeEntity.class));
+		dao().execute(sql);
+		List<PrivilegeEntity> privileges = sql.getList(PrivilegeEntity.class);
+
+		nodes.addAll(privileges);
+		respData.setReturnData(nodes);
+		return respData;
 	}
 }

@@ -9,7 +9,7 @@ import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_ROLE")
-public class Role {
+public class Role implements TreeNode {
 	@Id
 	private int id;
 	@Column
@@ -26,6 +26,8 @@ public class Role {
 	private List<User> users;
 	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_MENU", from = "ROLEID", to = "MENUID")
 	private List<Menu> menus;
+	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "ROLEID", to = "PRIVILEGEID")
+	private List<Privilege> privileges;
 
 	public int getId() {
 		return id;
@@ -89,6 +91,14 @@ public class Role {
 
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
+	}
+
+	public List<Privilege> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(List<Privilege> privileges) {
+		this.privileges = privileges;
 	}
 
 }

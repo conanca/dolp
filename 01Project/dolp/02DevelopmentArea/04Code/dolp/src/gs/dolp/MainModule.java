@@ -15,7 +15,7 @@ import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.ioc.provider.JsonIocProvider;
 
 @Modules(scanPackage = true)
-@IocBy(type = JsonIocProvider.class, args = { "dao.js", "ioc.js" })
+@IocBy(type = JsonIocProvider.class, args = { "dao.js", "ioc.system.js" })
 @Encoding(input = "UTF-8", output = "UTF-8")
 @SetupBy(MvcSetup.class)
 @Ok("json")

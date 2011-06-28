@@ -1,13 +1,9 @@
 package gs.dolp.system.module;
 
 import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
 import gs.dolp.system.domain.Menu;
-import gs.dolp.system.domain.MenuEntity;
 import gs.dolp.system.service.MenuService;
-
-import java.util.List;
 
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
@@ -20,13 +16,14 @@ public class MenuModule {
 	private MenuService menuService;
 
 	/**
-	 * 角色可见分配菜单页面中的菜单显示
+	 * 角色管理页面中的权限分配菜单树显示
 	 * @param roleId
 	 * @return
 	 */
-	@At("/getMenuByRoleId/*")
-	public AdvancedJqgridResData<MenuEntity> getMenuByRoleId(int roleId) {
-		return menuService.getMenuByRoleId(roleId);
+	@At("/getPrivilegeNodesByRoleId/*")
+	public ResponseData getPrivilegeNodesByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
+			@Param("rgt") int rgt, @Param("level") int level) {
+		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt, level);
 	}
 
 	/**
@@ -38,8 +35,8 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public List<MenuEntity> getNodes(@Param("id") int id, @Param("name") String name) {
-		return menuService.getNodes(id);
+	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
+		return menuService.getTreeNodes(id);
 	}
 
 	/**
@@ -49,7 +46,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getGridData/*")
-	public AdvancedJqgridResData<Menu> getGridData(int parentId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(int parentId, @Param("..") JqgridReqData jqReq) {
 		return menuService.getGridData(jqReq, parentId);
 	}
 
@@ -64,9 +61,9 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/editRow/*")
-	public ResponseData editRow(int parentId, @Param("oper") String oper, @Param("id") String id,
-			@Param("name") String name, @Param("url") String url, @Param("description") String description) {
-		return menuService.CUDMenu(oper, id, name, url, description, parentId);
+	public ResponseData editRow(int parentId, @Param("oper") String oper, @Param("ids") String ids,
+			@Param("..") Menu menu) {
+		return menuService.CUDMenu(oper, ids, menu, parentId);
 	}
 
 	/**

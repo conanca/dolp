@@ -1,35 +1,109 @@
 <script type="text/javascript">
 $(function(){
+	$("input:button,input:submit,input:reset").button();
+	var roleId=0;
 	$("#roleList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
-	    caption:"角色列表",
-	   	url:'system/role/getGridData?isOrgaRela=0',
-	    editurl:"system/role/editRow",
-	   	colNames:['id','名称','描述'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:100,editable:true},
-	   		{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}	//设置弹出窗口中字段类型
-	   	],
-	   	pager: '#rolePager',
-	   	sortname: 'id',
-	    sortorder: "asc",
-	    multiselect: true
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"角色列表",
+		url:'system/role/getGridData?isOrgaRela=0',
+		editurl:"system/role/editRow",
+		colNames:['id','名称','描述'],
+		colModel:[
+			{name:'id',index:'id', width:0,editable:true,hidden:true},
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"}
+		],
+		pager: '#rolePager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
 	});
 	$("#roleList").setJqGridCUD('#rolePager',{edit:true,add:true,del:true,search:false});
+	//添加自定义按钮——权限分配
+	$("#roleList").navButtonAdd('#rolePager',{caption:"权限分配",buttonicon:"ui-icon-key",
+		onClickButton:function(){
+			var id = $(this).getGridParam('selrow');
+			if (id) {
+				roleId = id;
+				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
+				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
+				$("#privilegeInfo").dialog( "open" );
+			} else {
+				$.addMessageStr(null,"请选择角色",null);
+			}
+		}
+	});
+	//添加自定义按钮——导出Excel
+	$("#roleList").export2Excel('#rolePager');
+
+	//初始化权限信息界面
+	$("#privilegeInfo").dialog({ width: 200 , hide: 'slide' , modal: true , autoOpen: false});
+
+	var privilegeTreeSetting = {
+		checkable: true,
+		async: true,
+		asyncDataFilter: ajaxDataFilter,
+		asyncUrl: "system/menu/getPrivilegeNodesByRoleId/0",
+		asyncParam: ["name", "id","lft","rgt","level"]
+	};
+	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
+	$("#privilegeAssignBtn").click(function() {
+		$.blockUI();
+
+		var checkedTreeNodes = privilegeTree.getCheckedNodes();
+		var checkedMenus = [];
+		var checkedPrivileges = [];
+		var i = 0;
+		var j = 0;
+		$.each(checkedTreeNodes,function(index,value){
+			if(value.lft){
+				checkedMenus[i] = value.id;
+				i++;
+			}else{
+				checkedPrivileges[j] = value.id;
+				j++;
+			}
+		});
+
+		var unCheckedTreeNodes = privilegeTree.getCheckedNodes(false);
+		var unCheckedMenus = [];
+		var unCheckedPrivileges = [];
+		i = 0;
+		j = 0;
+		$.each(unCheckedTreeNodes,function(index,value){
+			if(value.lft){
+				unCheckedMenus[i] = value.id;
+				i++;
+			}else{
+				unCheckedPrivileges[j] = value.id;
+				j++;
+			}
+		});
+
+		var url = "system/role/assignPrivilege";
+		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges});
+		$.unblockUI();
+		$("#privilegeInfoCancelbtn").click();
+	});
+	
+	$("#privilegeInfoCancelbtn").click(function() {
+		$('#privilegeInfo').dialog( "close" );
+	});
 });
 </script>
 
 <table id="roleList"></table>
 <div id="rolePager"></div>
+
+<div id="privilegeInfo" title="权限信息">
+	<p align="center">
+		<input type="button" value="分配" id="privilegeAssignBtn"/>
+		&nbsp;&nbsp;&nbsp;
+		<input type="button" value="取消" id='privilegeInfoCancelbtn'/>
+	</p>
+	<div>
+		<ul id="privilegeTreeUl" class="tree"></ul>
+	</div>
+</div>

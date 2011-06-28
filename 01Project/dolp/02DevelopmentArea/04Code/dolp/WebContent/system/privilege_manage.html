@@ -1,0 +1,66 @@
+<script type="text/javascript">
+$(function() {
+	$("input:button,input:submit,input:reset").button();
+
+	var privilegeMenuTreeSetting = {
+		checkable: false,
+		async: true,
+		asyncDataFilter: ajaxDataFilter,
+		asyncUrl: "system/menu/getNodes",
+		asyncParam: ["name", "id"],
+		callback:{
+			beforeClick: function(treeId, treeNode){
+				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
+				$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:treeNode.id}});
+				$("#privilegeList").trigger('reloadGrid');
+			}
+		}
+	};
+	var privilegeMenuTree = $("#privilegeMenuTreeUl").zTree(privilegeMenuTreeSetting);
+
+	//点击刷新按钮
+	$("#privilegeMenuTreeRefreshBtn").click(function() {
+		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
+		$("#privilegeList").setGridParam({url:"system/privilege/getGridData/0",page:1});
+		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:0}});
+		$("#privilegeList").trigger('reloadGrid');
+	});
+
+	$("#privilegeList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"权限列表",
+		url:'system/privilege/getGridData/0',
+		editurl:"system/privilege/editRow",
+		colNames: ["id","权限名","方法路径","描述","menuId"],
+		colModel: [
+			{name: "id",index:'id',width:0,hidden:true,editable:true},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
+			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true}},
+			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
+			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true}
+		],
+		pager: '#privilegePager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#privilegeList").setJqGridCUD('#privilegePager',{edit:true,add:true,del:true,search:false});
+});
+</script>
+<table width='100%'>
+	<tr>
+		<td valign="top" width="15%">
+			<input type="button" value="刷新" id="privilegeMenuTreeRefreshBtn"/>
+			<div>
+				<ul id="privilegeMenuTreeUl" class="tree"></ul>
+			</div>
+		</td>
+		<td class="linebetween">&nbsp;</td>
+		<td valign="top">
+			<table id="privilegeList"></table>
+			<div id="privilegePager"></div>
+		</td>
+	</tr>
+</table>

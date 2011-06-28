@@ -14,9 +14,19 @@ public class AjaxResData implements ResponseData {
 	private Object returnData;
 
 	/**
-	 * 系统消息,之所以名叫userdata,是为了便于自定义的视图—— DolpJsonView 统一处理 ajax提交或请求 和 jqGrid的请求 的异常
+	 * 系统消息
 	 */
-	private SystemMessage userdata;
+	private SystemMessage systemMessage;
+
+	public AjaxResData() {
+		super();
+	}
+
+	public AjaxResData(Object returnData, SystemMessage systemMessage) {
+		super();
+		this.returnData = returnData;
+		this.systemMessage = systemMessage;
+	}
 
 	public Object getReturnData() {
 		return returnData;
@@ -26,12 +36,22 @@ public class AjaxResData implements ResponseData {
 		this.returnData = returnData;
 	}
 
-	public SystemMessage getUserdata() {
-		return userdata;
+	public SystemMessage getSystemMessage() {
+		return systemMessage;
 	}
 
-	public void setUserdata(SystemMessage userdata) {
-		this.userdata = userdata;
+	public void setSystemMessage(SystemMessage systemMessage) {
+		this.systemMessage = systemMessage;
+	}
+
+	/**
+	 * 用于简化 设置systemMessage 的帮助函数
+	 * @param infoMessage
+	 * @param warnMessage
+	 * @param errorMessage
+	 */
+	public void setSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
+		setSystemMessage(new SystemMessage(infoMessage, warnMessage, errorMessage));
 	}
 
 	public String toString() {

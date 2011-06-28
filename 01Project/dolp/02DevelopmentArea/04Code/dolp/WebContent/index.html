@@ -2,11 +2,97 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="refresh" content="0; url=login.html" />
-<title>Hello</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Login page</title>
+<script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui-1.8.12.custom.min.js" type="text/javascript"></script>
+<script src="js/jquery.pnotify.min.js" type="text/javascript"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="js/i18n/messages_cn.js" type="text/javascript"></script>
+<script src="js/system.common.js" type="text/javascript"></script>
+<link href="themes/redmond/jquery-ui-1.8.12.custom.css" rel="stylesheet" type="text/css"/>
+<link href="css/jquery.pnotify.default.css" rel="stylesheet" type="text/css"/>
+<link href="css/jquery.validate.css" rel="stylesheet" type="text/css"/>
+<link href="css/system.main.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+
+//登录界面的默认提示信息
+var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
+var opts = {
+	pnotify_addclass: "stack-bottomright",
+	pnotify_stack: stack_bottomright,
+	pnotify_title: "消息",
+	pnotify_type: "notice",
+	pnotify_text: "欢迎~\n这是一个演示程序,如有任何问题,请联系conanca2006@gmail.com"
+};
+
+$(function() {
+	$("#login").dialog( {width:330, draggable: false } );
+	$("input:button,input:submit,input:reset").button();
+
+	$.pnotify(opts);
+
+	// 验证
+	$("#logonForm").validate({
+		rules: {
+			num: {
+				required: true,
+				number: true,
+				minlength: 4,
+				maxlength: 4
+			},
+			pwd: {
+				required: true,
+				minlength: 3
+			}
+		}
+	});
+
+	$("#logonForm").submit(function() {
+		if($(this).valid()){
+			var logonFormInfo = $(this).serializeObject();
+			$.post('logon',logonFormInfo,function(response){
+				if(null==response){
+					window.location="main";
+				}else{
+					$('#logonForm')[0].reset();
+					$.addMessage(response.systemMessage);
+				}
+			},"json");
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
+		return false;
+	});
+
+	$("#initDatabaseBtn").click(function(){
+		$.dolpPost('initDatabase');
+	});
+});
+</script>
 </head>
 <body>
-
+<div id="login" title="请登录">
+	<form id="logonForm" action="#">
+		<p><font color="#FF0000">(用户编号：1000/密码：123)</font></p>
+		<table>
+			<tr>
+				<td>用户编号：</td>
+				<td><input type="text" name="num"/></td>
+			</tr>
+			<tr>
+				<td>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+				<td><input type="password" name="pwd"/></td>
+			</tr>
+		</table>
+		<p>
+			<input type="submit" value="登录"/>
+			&nbsp;&nbsp;&nbsp;
+			<input type="reset" value="重置"/>
+			&nbsp;&nbsp;&nbsp;
+			<input type="button" value="初始化数据库" id="initDatabaseBtn"/>
+		</p>
+	</form>
+</div>
 </body>
 </html>

@@ -1,10 +1,9 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.Organization;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class OrganizationService extends AdvJqgridIdEntityService<Organization> {
+public class OrganizationService extends DolpBaseService<Organization> {
 
 	public OrganizationService(Dao dao) {
 		super(dao);
@@ -24,16 +23,15 @@ public class OrganizationService extends AdvJqgridIdEntityService<Organization> 
 
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, int parentOrgId) {
-		Condition cnd = null;
-		cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
+		Condition cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
 		AdvancedJqgridResData<Organization> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
 	@Aop(value = "log")
-	public List<Organization> getNodes(int id, String name) {
-		Condition cnd = null;
-		cnd = Cnd.where("PARENTORGID", "=", id);
+	public AjaxResData getNodes(int id, String name) {
+		AjaxResData respData = new AjaxResData();
+		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {
 			dao().fetchLinks(orgNode, "childrenOrgs");
@@ -42,15 +40,15 @@ public class OrganizationService extends AdvJqgridIdEntityService<Organization> 
 				orgNode.setChildrenOrgs(null);
 			}
 		}
-		return orgNodes;
+		respData.setReturnData(orgNodes);
+		return respData;
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDOrganization(String oper, String id, String code, String name, String description,
-			int parentOrgId) {
-		AjaxResData reData = new AjaxResData();
+	public AjaxResData CUDOrganization(String oper, String ids, Organization organization) {
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<Organization> organizations = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -60,27 +58,17 @@ public class OrganizationService extends AdvJqgridIdEntityService<Organization> 
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
-		}
-		if ("add".equals(oper)) {
-			Organization organization = new Organization();
-			organization.setCode(code);
-			organization.setName(name);
-			organization.setDescription(description);
-			organization.setParentOrgId(parentOrgId);
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
+
 			dao().insert(organization);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
-		}
-		if ("edit".equals(oper)) {
-			Organization organization = new Organization();
-			organization.setId(Integer.parseInt(id));
-			organization.setCode(code);
-			organization.setName(name);
-			organization.setDescription(description);
-			organization.setParentOrgId(parentOrgId);
+			respData.setSystemMessage("添加成功!", null, null);
+		} else if ("edit".equals(oper)) {
 			dao().update(organization);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
-		return reData;
+		return respData;
 	}
 }

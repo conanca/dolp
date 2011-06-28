@@ -10,7 +10,7 @@ import org.nutz.dao.entity.annotation.Table;
 import org.nutz.json.Json;
 
 @Table("SYSTEM_ORGANIZATION")
-public class Organization {
+public class Organization implements TreeNode {
 	@Id
 	private int id;
 	@Column
@@ -25,8 +25,6 @@ public class Organization {
 	private Organization parentOrg;
 	@Many(target = Organization.class, field = "parentOrgId")
 	private List<Organization> childrenOrgs;
-	@Many(target = User.class, field = "organizationId")
-	private List<User> users;
 	@Many(target = Role.class, field = "organizationId")
 	private List<Role> roles;
 	private boolean open;
@@ -86,14 +84,6 @@ public class Organization {
 
 	public void setChildrenOrgs(List<Organization> childrenOrgs) {
 		this.childrenOrgs = childrenOrgs;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 	public List<Role> getRoles() {

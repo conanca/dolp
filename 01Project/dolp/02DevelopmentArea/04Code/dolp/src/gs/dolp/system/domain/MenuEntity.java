@@ -1,6 +1,8 @@
 package gs.dolp.system.domain;
 
-public class MenuEntity {
+import org.nutz.json.Json;
+
+public class MenuEntity implements TreeNode {
 	private int id;
 	private String name;
 	private String url;
@@ -10,7 +12,7 @@ public class MenuEntity {
 	private int level;
 	private boolean isLeaf;
 	private boolean expanded;
-	private boolean visible;
+	private boolean checked;
 	private boolean open;
 	private boolean isParent;
 
@@ -86,12 +88,12 @@ public class MenuEntity {
 		this.expanded = expanded;
 	}
 
-	public boolean isVisible() {
-		return visible;
+	public boolean isChecked() {
+		return checked;
 	}
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	public boolean isOpen() {
@@ -108,5 +110,9 @@ public class MenuEntity {
 
 	public void setParent(boolean isParent) {
 		this.isParent = isParent;
+	}
+
+	public String toString() {
+		return Json.toJson(this);
 	}
 }

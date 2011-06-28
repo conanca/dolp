@@ -1,38 +1,28 @@
 <script type="text/javascript">
-
 $(function(){
 	$(".datepicker").datepicker();
 	$("input:button,input:submit,input:reset").button();
-	
+
 	$("#sysenumList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
-	   	datatype: "json",
-	   	jsonReader:{
-	   		repeatitems: false
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
-	    caption: "系统枚举列表",
-	   	url:'system/sysEnum/getSysEnumGridData',
-	    editurl: "system/sysEnum/editSysEnum",
-	   	colNames:['id','名称', '描述'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'name',index:'name', width:100, editable:true},
-	   		{name:'description',index:'description', width:300, editable:true, edittype:"textarea"}
-	   	],
-	   	pager: '#sysenumPager',
-	   	sortname: 'id',
-	    sortorder: "asc",
-	    multiselect: false,
+		jsonReader:{
+			repeatitems: false
+		},
+		caption: "系统枚举列表",
+		url:'system/sysEnum/getSysEnumGridData',
+		editurl: "system/sysEnum/editSysEnum",
+		colNames:['id','名称', '描述'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true,editable:true},
+			{name:'name',index:'name', width:100, editable:true,editrules:{required:true}},
+			{name:'description',index:'description', width:300, editable:true, edittype:"textarea"}
+		],
+		pager: '#sysenumPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: false,
 		onSelectRow: function(id) {
 			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+id,page:1});
-			$("#sysenumSubList").setGridParam({editurl:"system/sysEnum/editSysEnumItem/"+id});
+			$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:id}});
 			$("#sysenumSubList").trigger('reloadGrid');
 		}
 	});
@@ -41,14 +31,14 @@ $(function(){
 		{
 			reloadAfterSubmit:true,
 			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
 			}
 		},
 		{
 			reloadAfterSubmit:true,
 			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
 			}
 		},
@@ -57,38 +47,42 @@ $(function(){
 			afterSubmit: function(xhr, postdata) {
 				//刷新表格billSubList
 				$('#sysenumSubList').trigger("reloadGrid");
-				$.addMessage($.parseJSON(xhr.responseText).userdata);
+				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 				return [true];
+			},
+			serializeDelData : function(postData) {
+				var id = postData['id'];
+				if(id){
+					if(parseInt(id) != id){
+						postData['ids'] = postData['id'];
+						postData['id'] = 0;
+					}else{
+						postData['ids'] = postData['id'];
+					}
+				}
+				return postData;
 			}
 		},
 		{},{}
 	);
-	
+
 	$("#sysenumSubList").jqGrid({
-		rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: true,
-	   	height: "100%", //自动调整高度(无滚动条)
 		jsonReader:{
-	   		repeatitems: false
+			repeatitems: false
 		},
-		viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
 		caption: "枚举项列表",
-	   	url:'system/sysEnum/getSysEnumItemGridData',
+		url:'system/sysEnum/getSysEnumItemGridData',
 		editurl: "system/sysEnum/editSysEnumItem",
 		datatype: "json",
-	   	colNames:['id','文本', '值','sysEnumId'],
-	   	colModel:[
-	   		{name:'id',index:'id', width:0,hidden:true},
-	   		{name:'text',index:'text', width:100, editable:true},
-	   		{name:'value',index:'value', width:100, editable:true},
-	   		{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true}
-	   	],
-	   	pager: '#sysenumSubPager',
-	   	sortname: 'id',
+		colNames:['id','文本', '值','sysEnumId'],
+		colModel:[
+			{name:'id',index:'id', width:0,hidden:true,editable:true},
+			{name:'text',index:'text', width:100, editable:true,editrules:{required:true}},
+			{name:'value',index:'value', width:100, editable:true,editrules:{required:true}},
+			{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true,editable:true}
+		],
+		pager: '#sysenumSubPager',
+		sortname: 'id',
 		sortorder: "asc",
 		multiselect: false
 	});

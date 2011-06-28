@@ -1,10 +1,9 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.SysPara;
 
 import org.nutz.dao.Cnd;
@@ -12,7 +11,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-public class SysParaService extends AdvJqgridIdEntityService<SysPara> {
+public class SysParaService extends DolpBaseService<SysPara> {
 
 	public SysParaService(Dao dao) {
 		super(dao);
@@ -25,37 +24,21 @@ public class SysParaService extends AdvJqgridIdEntityService<SysPara> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDSysPara(String oper, String id, String name, String value, String description) {
-		AjaxResData reData = new AjaxResData();
+	public AjaxResData CUDSysPara(String oper, String ids, SysPara sysPara) {
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
-		}
-		if ("add".equals(oper)) {
-			SysPara sysPara = new SysPara();
-			sysPara.setName(name);
-			sysPara.setValue(value);
-			sysPara.setDescription(description);
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
 			dao().insert(sysPara);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
-		}
-		if ("edit".equals(oper)) {
-			SysPara sysPara = new SysPara();
-			sysPara.setId(Integer.parseInt(id));
-			sysPara.setName(name);
-			sysPara.setValue(value);
-			sysPara.setDescription(description);
+			respData.setSystemMessage("添加成功!", null, null);
+		} else if ("edit".equals(oper)) {
 			dao().update(sysPara);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
-		return reData;
+		return respData;
 	}
-
-	@Aop(value = "log")
-	public static String getSysParaValue(String name, Dao dao) {
-		SysPara sysPara = dao.fetch(SysPara.class, Cnd.where("NAME", "=", name));
-		return sysPara.getValue();
-	}
-
 }

@@ -1,10 +1,9 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.DolpBaseService;
 import gs.dolp.system.domain.SysEnum;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
+public class SysEnumService extends DolpBaseService<SysEnum> {
 
 	public SysEnumService(Dao dao) {
 		super(dao);
@@ -29,10 +28,10 @@ public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData CUDSysEnum(String oper, String id, String name, String description) {
-		AjaxResData reData = new AjaxResData();
+	public AjaxResData CUDSysEnum(String oper, String ids, SysEnum sysEnum) {
+		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(id).append(")").toString());
+			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			final List<SysEnum> sysEnums = query(cnd, null);
 			Trans.exec(new Atom() {
 				public void run() {
@@ -42,23 +41,16 @@ public class SysEnumService extends AdvJqgridIdEntityService<SysEnum> {
 					clear(cnd);
 				}
 			});
-			reData.setUserdata(new SystemMessage("删除成功!", null, null));
-		}
-		if ("add".equals(oper)) {
-			SysEnum sysEnum = new SysEnum();
-			sysEnum.setName(name);
-			sysEnum.setDescription(description);
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
 			dao().insert(sysEnum);
-			reData.setUserdata(new SystemMessage("添加成功!", null, null));
-		}
-		if ("edit".equals(oper)) {
-			SysEnum sysEnum = new SysEnum();
-			sysEnum.setId(Integer.parseInt(id));
-			sysEnum.setName(name);
-			sysEnum.setDescription(description);
+			respData.setSystemMessage("添加成功!", null, null);
+		} else if ("edit".equals(oper)) {
 			dao().update(sysEnum);
-			reData.setUserdata(new SystemMessage("修改成功!", null, null));
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未知操作!", null);
 		}
-		return reData;
+		return respData;
 	}
 }

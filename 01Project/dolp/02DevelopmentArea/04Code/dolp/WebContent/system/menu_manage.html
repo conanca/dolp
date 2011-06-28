@@ -2,10 +2,11 @@
 $(function() {
 
 	$("input:button,input:submit,input:reset").button();
-	
+
 	var menuTreeSetting = {
 		checkable: false,
 		async: true,
+		asyncDataFilter: ajaxDataFilter,
 		asyncUrl: "system/menu/getNodes",
 		asyncParam: ["name", "id"],
 		callback:{
@@ -14,12 +15,10 @@ $(function() {
 				$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+treeNode.id});
 				$("#menuEditList").trigger('reloadGrid');
 				$("#parentMenuInfoParentId").val(treeNode.id);
-				var row=$("#menuTree").getRowData(treeNode.id);
 			}
 		}
 	};
-	var zNodes =[];
-	var menuTree = $("#menuTreeUl").zTree(menuTreeSetting, zNodes);
+	var menuTree = $("#menuTreeUl").zTree(menuTreeSetting);
 
 	//点击刷新按钮
 	$("#menuTreeRefreshBtn").click(function() {
@@ -30,32 +29,25 @@ $(function() {
 	});
 
 	$("#menuEditList").jqGrid({
-	   	rowNum:10,
-	   	rowList:[10,20,30],
-	   	autowidth: false,
-	   	height: "100%",
-	   	datatype: "json",
-	    jsonReader:{
-	   		repeatitems: false
-        },
-	    viewrecords: true,
-	    loadComplete: function(){
-			$.addMessage($(this).getUserData());
-    	},
-	    caption:"菜单列表",
-	   	url:'system/menu/getGridData/0',
-	    editurl:"system/menu/editRow/0",
-	    colNames: ["id","菜单名","url","描述"],
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"菜单列表",
+		url:'system/menu/getGridData/0',
+		editurl:"system/menu/editRow/0",
+		colNames: ["id","菜单名","url","描述","lft","rgt"],
 		colModel: [
-			{name: "id",index:'id',width:0,hidden:true,key:true},
-			{name: "name",index:'name', width:100,editable:true},
-			{name: "url",index:'url',width:300,editable:true},
-			{name: "description",index:'description',width:200,editable:true}
+			{name: "id",index:'id',width:0,hidden:true,editable:true},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
+			{name: "url",index:'url',width:300,editable:true,editrules:{required:true}},
+			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
+			{name: "lft",index:'lft',width:0,hidden:true,editable:true},
+			{name: "rgt",index:'rgt',width:0,hidden:true,editable:true}
 		],
-	   	pager: '#menuEditPager',
-	   	sortname: 'lft',
-	    sortorder: "asc",
-	    multiselect: true
+		pager: '#menuEditPager',
+		sortname: 'lft',
+		sortorder: "asc",
+		multiselect: true
 	});
 	$("#menuEditList").setJqGridCUD('#menuEditPager',{edit:true,add:true,del:true,search:false});
 	// 添加父菜单按钮
@@ -64,7 +56,7 @@ $(function() {
 			$("#parentMenuInfo").dialog( "open" );
 		}
 	});
-	//初始化用户信息界面
+	//初始化添加父菜单信息界面
 	$("#parentMenuInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
 			$("#parentMenuInfoId").attr("value",'');	//清空隐藏域的值
 			$('#parentMenuInfoForm')[0].reset();	//清空表单的值
@@ -107,14 +99,15 @@ $(function() {
 	});
 });
 </script>
-<table>
+<table width='100%'>
 	<tr>
-		<td valign="top" width="200">
+		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="menuTreeRefreshBtn"/>
 			<div>
 				<ul id="menuTreeUl" class="tree"></ul>
 			</div>
 		</td>
+		<td class="linebetween">&nbsp;</td>
 		<td valign="top">
 			<table id="menuEditList"></table>
 			<div id="menuEditPager"></div>

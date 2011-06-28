@@ -1,10 +1,10 @@
 package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.SystemMessage;
-import gs.dolp.common.jqgrid.domain.AdvancedJqgridResData;
-import gs.dolp.common.jqgrid.domain.JqgridReqData;
-import gs.dolp.common.jqgrid.service.AdvJqgridIdEntityService;
+import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
+import gs.dolp.common.domain.jqgrid.JqgridReqData;
+import gs.dolp.common.service.DolpBaseService;
+import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.Role;
 import gs.dolp.system.domain.User;
 
@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -25,19 +26,15 @@ import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
-public class UserService extends AdvJqgridIdEntityService<User> {
+public class UserService extends DolpBaseService<User> {
 
 	public UserService(Dao dao) {
 		super(dao);
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String organizationId, String number,
-			String name) {
+	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String number, String name) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		if (!Strings.isEmpty(organizationId)) {
-			cnd = cnd.and("ORGANIZATIONID", "=", Strings.trim(organizationId));
-		}
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
@@ -59,8 +56,8 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 	}
 
 	@Aop(value = "log")
-	public String getNewUserNumber() {
-		String newUserNumber = "";
+	public AjaxResData getNewUserNumber() {
+		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -72,59 +69,72 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 			}
 		});
 		dao().execute(sql);
-		newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4, '0');
-		return newUserNumber;
+		String newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4,
+				'0');
+		respData.setReturnData(newUserNumber);
+		return respData;
 	}
 
 	@Aop(value = "log")
-	public boolean userNumberIsDuplicate(String userNumber) {
+	public boolean isUserNumberDuplicate(String userNumber) {
 		int count = count(Cnd.where("NUMBER", "=", userNumber));
 		if (count > 0) {
 			return true;
-		}
-		return false;
-	}
-
-	@Aop(value = "log")
-	public void save(User user) {
-		if (user.getId() == 0) {
-			dao().insert(user);
 		} else {
-			dao().update(user);
+			return false;
 		}
 	}
 
 	@Aop(value = "log")
-	public void deleteUsers(String ids) {
-		if (!Strings.isEmpty(ids)) {
-			final Condition cnd = Cnd.wrap(new StringBuilder("ID IN (").append(ids).append(")").toString());
-			final List<User> users = query(cnd, null);
-			Trans.exec(new Atom() {
-				public void run() {
-					for (User user : users) {
-						dao().clearLinks(user, "roles");
+	public AjaxResData CUDUser(String oper, String ids, User user) {
+		AjaxResData respData = new AjaxResData();
+		if ("del".equals(oper)) {
+			if (!Strings.isEmpty(ids)) {
+				final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
+				final List<User> users = query(cnd, null);
+				Trans.exec(new Atom() {
+					public void run() {
+						for (User user : users) {
+							dao().clearLinks(user, "roles");
+						}
+						clear(cnd);
 					}
-					clear(cnd);
-				}
-			});
+				});
+			}
+			respData.setSystemMessage("删除成功!", null, null);
+		} else if ("add".equals(oper)) {
+			if (isUserNumberDuplicate(user.getNumber())) {
+				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
+				return respData;
+			}
+			user.setPassword(getSysParaValue("DefaultPassword"));
+			respData.setSystemMessage("添加成功!", null, null);
+			dao().insert(user);
+		} else if ("edit".equals(oper)) {
+			// 忽略“密码”字段
+			dao().updateIgnoreNull(user);
+			respData.setSystemMessage("修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未操作数据", null);
 		}
+		return respData;
 	}
 
 	@Aop(value = "log")
 	public AjaxResData updateRole(String userId, String[] roleIds) {
-		AjaxResData reData = new AjaxResData();
+		AjaxResData respData = new AjaxResData();
 		final String userID;
 		if (Strings.isEmpty(userId)) {
-			reData.setUserdata(new SystemMessage(null, "未选择用户!", null));
-			return reData;
+			respData.setSystemMessage(null, "未选择用户!", null);
+			return respData;
 		} else {
 			userID = userId;
 		}
 		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
-			reData.setUserdata(new SystemMessage(null, "该用户未分配任何角色!", null));
-			return reData;
+			respData.setSystemMessage(null, "该用户未分配任何角色!", null);
+			return respData;
 		}
 		List<Role> roles = new ArrayList<Role>();
 		// 取得要更新角色的用户
@@ -144,20 +154,95 @@ public class UserService extends AdvJqgridIdEntityService<User> {
 				dao().insertRelation(user, "roles");
 			}
 		});
-		reData.setUserdata(new SystemMessage("分配成功!", null, null));
-		return reData;
+		respData.setSystemMessage("分配成功!", null, null);
+		return respData;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Aop(value = "log")
+	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
+		AjaxResData respData = new AjaxResData();
+		Sql sql = Sqls
+				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = '0' AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
+		sql.vars().set("userId", userId);
+		sql.setCallback(new SqlCallback() {
+			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
+				List<Integer> currentRoleIDs = new ArrayList<Integer>();
+				while (rs.next()) {
+					currentRoleIDs.add(rs.getInt("ID"));
+				}
+				return currentRoleIDs;
+			}
+		});
+		dao().execute(sql);
+		List<Integer> currentRoleIDs = (List<Integer>) sql.getResult();
+		respData.setReturnData(currentRoleIDs);
+		return respData;
 	}
 
 	@Aop(value = "log")
-	public int[] getCurrentRoleIDs(String userId) {
-		User user = dao().fetchLinks(dao().fetch(User.class, Long.parseLong(userId)), "roles");
-		List<Role> roles = user.getRoles();
-		int[] currentRoleIDs = new int[roles.size()];
-		int i = 0;
-		for (Role r : roles) {
-			currentRoleIDs[i] = r.getId();
-			i++;
+	public List<Privilege> getCurrentPrivileges(int userId) {
+		StringBuilder sb = new StringBuilder(
+				"ID IN (SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID='");
+		sb.append(userId).append("'))");
+		Condition cnd = Cnd.wrap(sb.toString());
+		List<Privilege> privileges = dao().query(Privilege.class, cnd, null);
+		return privileges;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData updatePost(final String userId, String orgId, final String[] postIds) {
+		AjaxResData respData = new AjaxResData();
+		StringBuilder sb = new StringBuilder();
+		sb.append("ROLEID IN (SELECT ID FROM SYSTEM_ROLE WHERE ORGANIZATIONID =");
+		sb.append(orgId);
+		sb.append(") AND USERID = ");
+		sb.append(userId);
+		final Condition cnd = Cnd.wrap(sb.toString());
+		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
+		if (postIds == null || postIds.length == 0) {
+			dao().clear("SYSTEM_USER_ROLE", cnd);
+			respData.setSystemMessage(null, "该机构下未分配任何岗位!", null);
+			return respData;
 		}
-		return currentRoleIDs;
+		// 清除旧岗位关系，插入新的关系
+		Trans.exec(new Atom() {
+			public void run() {
+				dao().clear("SYSTEM_USER_ROLE", cnd);
+				for (String postId : postIds) {
+					dao().insert("SYSTEM_USER_ROLE", Chain.make("ROLEID", postId).add("USERID", userId));
+				}
+			}
+		});
+		respData.setSystemMessage("分配成功!", null, null);
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData changePasswordForCurrentUser(User user, String oldPassword, String newPassword) {
+		AjaxResData respData = new AjaxResData();
+		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
+		if (countAuthenticatedUser == 0) {
+			respData.setSystemMessage(null, "原密码错误!", null);
+		} else {
+			user.setPassword(newPassword);
+			dao().update(user);
+			respData.setSystemMessage("密码修改成功!", null, null);
+		}
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData changePasswordForAUser(int userId, String newPassword) {
+		AjaxResData respData = new AjaxResData();
+		if (userId > 0) {
+			User user = this.fetch(userId);
+			user.setPassword(newPassword);
+			dao().update(user);
+			respData.setSystemMessage("密码修改成功!", null, null);
+		} else {
+			respData.setSystemMessage(null, "未正确选择用户", null);
+		}
+		return respData;
 	}
 }
