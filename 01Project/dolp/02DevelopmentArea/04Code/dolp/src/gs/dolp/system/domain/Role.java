@@ -17,7 +17,7 @@ public class Role implements TreeNode {
 	@Column
 	private String description;
 	@Column
-	private int isOrgaRela;
+	private Boolean isOrgaRela;
 	@Column
 	private int organizationId;
 	@One(target = Organization.class, field = "organizationId")
@@ -53,11 +53,11 @@ public class Role implements TreeNode {
 		this.description = description;
 	}
 
-	public int getIsOrgaRela() {
+	public Boolean getIsOrgaRela() {
 		return isOrgaRela;
 	}
 
-	public void setIsOrgaRela(int isOrgaRela) {
+	public void setIsOrgaRela(Boolean isOrgaRela) {
 		this.isOrgaRela = isOrgaRela;
 	}
 

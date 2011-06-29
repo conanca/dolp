@@ -27,7 +27,7 @@ public class RoleModule {
 	}
 
 	@At("/getAllRoleMap/*")
-	public ResponseData getAllRoleMap(int isOrgaRela) {
+	public ResponseData getAllRoleMap(String isOrgaRela) {
 		return roleService.getAllRoleMap(isOrgaRela);
 	}
 

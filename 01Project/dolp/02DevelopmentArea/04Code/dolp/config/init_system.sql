@@ -6,9 +6,9 @@ INSERT INTO SYSTEM_USER(ID, NUMBER, PASSWORD, NAME, GENDER, AGE, BIRTHDAY, PHONE
 (4,'1003','123','John','01',21,'2010-6-1','1234567890');
 
 INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA,ORGANIZATIONID) VALUES
-(1,'系统管理员','拥有系统管理的权限',0,null),
-(2,'普通用户','拥有个人设置、消息管理等权限',0,null),
-(3,'财务人员',null,1,9);
+(1,'系统管理员','拥有系统管理的权限',false,null),
+(2,'普通用户','拥有个人设置、消息管理等权限',false,null),
+(3,'财务人员',null,true,9);
 
 INSERT INTO SYSTEM_USER_ROLE(ID ,USERID ,ROLEID) VALUES
 (1,1,1),

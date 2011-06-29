@@ -68,7 +68,7 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData getAllRoleMap(int isOrgaRela) {
+	public AjaxResData getAllRoleMap(String isOrgaRela) {
 		AjaxResData respData = new AjaxResData();
 		List<Role> roles = query(Cnd.where("ISORGARELA", "=", isOrgaRela), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
