@@ -13,7 +13,7 @@ import org.nutz.mvc.view.UTF8JsonView;
 
 /**
  * @author Administrator
- *	Module层检测用户是否登录的过滤器
+ *	Module层检测用户操作权限的过滤器
  */
 public class CheckPrivilege implements ActionFilter {
 
@@ -26,7 +26,7 @@ public class CheckPrivilege implements ActionFilter {
 		// 获取session中当前用户的所有权限
 		List<Privilege> currentPrivileges = (List<Privilege>) context.getRequest().getSession()
 				.getAttribute("currPrivs");
-		// 比较该用户有没有入口方法的权限
+		// 比较该用户有没有该入口方法的权限
 		for (Privilege currPriv : currentPrivileges) {
 			String currPrivMethodPath = currPriv.getMethodPath();
 			if (currPrivMethodPath != null && currPrivMethodPath.equals(methodPath)) {
