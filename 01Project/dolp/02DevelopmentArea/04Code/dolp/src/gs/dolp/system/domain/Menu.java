@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_MENU")
 public class Menu {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String name;
 	@Column
@@ -19,19 +19,19 @@ public class Menu {
 	@Column
 	private String description;
 	@Column
-	private int lft;
+	private Integer lft;
 	@Column
-	private int rgt;
+	private Integer rgt;
 	@Many(target = Privilege.class, field = "menuId")
 	private List<Privilege> privileges;
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_MENU", from = "MENUID", to = "ROLEID")
 	private List<Role> roles;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -59,19 +59,19 @@ public class Menu {
 		this.description = description;
 	}
 
-	public int getLft() {
+	public Integer getLft() {
 		return lft;
 	}
 
-	public void setLft(int lft) {
+	public void setLft(Integer lft) {
 		this.lft = lft;
 	}
 
-	public int getRgt() {
+	public Integer getRgt() {
 		return rgt;
 	}
 
-	public void setRgt(int rgt) {
+	public void setRgt(Integer rgt) {
 		this.rgt = rgt;
 	}
 

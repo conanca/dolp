@@ -7,12 +7,11 @@ import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
-import org.nutz.json.Json;
 
 @Table("SYSTEM_ORGANIZATION")
 public class Organization implements TreeNode {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String code;
 	@Column
@@ -20,7 +19,7 @@ public class Organization implements TreeNode {
 	@Column
 	private String description;
 	@Column
-	private int parentOrgId;
+	private Integer parentOrgId;
 	@One(target = Organization.class, field = "parentOrgId")
 	private Organization parentOrg;
 	@Many(target = Organization.class, field = "parentOrgId")
@@ -30,11 +29,11 @@ public class Organization implements TreeNode {
 	private boolean open;
 	private boolean isParent;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -62,11 +61,11 @@ public class Organization implements TreeNode {
 		this.description = description;
 	}
 
-	public int getParentOrgId() {
+	public Integer getParentOrgId() {
 		return parentOrgId;
 	}
 
-	public void setParentOrgId(int parentOrgId) {
+	public void setParentOrgId(Integer parentOrgId) {
 		this.parentOrgId = parentOrgId;
 	}
 
@@ -110,7 +109,4 @@ public class Organization implements TreeNode {
 		this.isParent = isParent;
 	}
 
-	public String toString() {
-		return Json.toJson(this);
-	}
 }

@@ -13,18 +13,18 @@ public class StandardJqgridResDataRow {
 	/**
 	 * 记录的ID
 	 */
-	private int id;
+	private Integer id;
 
 	/**
 	 * 记录的详细信息
 	 */
 	private List<String> cell;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

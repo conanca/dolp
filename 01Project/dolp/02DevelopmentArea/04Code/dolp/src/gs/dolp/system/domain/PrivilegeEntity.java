@@ -1,22 +1,21 @@
 package gs.dolp.system.domain;
 
-import org.nutz.json.Json;
 
 public class PrivilegeEntity implements TreeNode {
-	private int id;
+	private Integer id;
 	private String name;
 	private String description;
-	private int menuId;
+	private Integer menuId;
 	private String methodPath;
 	private boolean checked;
 	private boolean open;
 	private boolean isParent;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -36,11 +35,11 @@ public class PrivilegeEntity implements TreeNode {
 		this.description = description;
 	}
 
-	public int getMenuId() {
+	public Integer getMenuId() {
 		return menuId;
 	}
 
-	public void setMenuId(int menuId) {
+	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
 
@@ -74,9 +73,5 @@ public class PrivilegeEntity implements TreeNode {
 
 	public void setParent(boolean isParent) {
 		this.isParent = isParent;
-	}
-
-	public String toString() {
-		return Json.toJson(this);
 	}
 }

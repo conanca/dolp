@@ -8,21 +8,21 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_SYSENUMITEM")
 public class SysEnumItem {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String text;
 	@Column
 	private String value;
 	@Column
-	private int sysEnumId;
+	private Integer sysEnumId;
 	@One(target = SysEnum.class, field = "sysEnumId")
 	private SysEnum sysEnum;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -42,11 +42,11 @@ public class SysEnumItem {
 		this.value = value;
 	}
 
-	public int getSysEnumId() {
+	public Integer getSysEnumId() {
 		return sysEnumId;
 	}
 
-	public void setSysEnumId(int sysEnumId) {
+	public void setSysEnumId(Integer sysEnumId) {
 		this.sysEnumId = sysEnumId;
 	}
 

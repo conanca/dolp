@@ -7,7 +7,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_SYSPARA")
 public class SysPara {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String name;
 	@Column
@@ -15,11 +15,11 @@ public class SysPara {
 	@Column
 	private String description;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

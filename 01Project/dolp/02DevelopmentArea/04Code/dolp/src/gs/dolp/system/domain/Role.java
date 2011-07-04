@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_ROLE")
 public class Role implements TreeNode {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String name;
 	@Column
@@ -19,7 +19,7 @@ public class Role implements TreeNode {
 	@Column
 	private Boolean isOrgaRela;
 	@Column
-	private int organizationId;
+	private Integer organizationId;
 	@One(target = Organization.class, field = "organizationId")
 	private Organization organization;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
@@ -29,11 +29,11 @@ public class Role implements TreeNode {
 	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "ROLEID", to = "PRIVILEGEID")
 	private List<Privilege> privileges;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -61,11 +61,11 @@ public class Role implements TreeNode {
 		this.isOrgaRela = isOrgaRela;
 	}
 
-	public int getOrganizationId() {
+	public Integer getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(int organizationId) {
+	public void setOrganizationId(Integer organizationId) {
 		this.organizationId = organizationId;
 	}
 
@@ -100,5 +100,4 @@ public class Role implements TreeNode {
 	public void setPrivileges(List<Privilege> privileges) {
 		this.privileges = privileges;
 	}
-
 }

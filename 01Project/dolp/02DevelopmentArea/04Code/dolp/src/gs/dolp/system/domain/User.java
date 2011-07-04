@@ -13,7 +13,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_USER")
 public class User {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String number;
 	@Column
@@ -23,7 +23,7 @@ public class User {
 	@Column
 	private String gender;
 	@Column
-	private int age;
+	private Integer age;
 	@Column
 	private String birthday;
 	@Column
@@ -48,11 +48,11 @@ public class User {
 		return user;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -88,11 +88,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
@@ -135,4 +135,5 @@ public class User {
 	public void setSentMessages(List<Message> sentMessages) {
 		this.sentMessages = sentMessages;
 	}
+
 }

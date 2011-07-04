@@ -1,26 +1,25 @@
 package gs.dolp.system.domain;
 
-import org.nutz.json.Json;
 
 public class MenuEntity implements TreeNode {
-	private int id;
+	private Integer id;
 	private String name;
 	private String url;
 	private String description;
-	private int lft;
-	private int rgt;
-	private int level;
+	private Integer lft;
+	private Integer rgt;
+	private Integer level;
 	private boolean isLeaf;
 	private boolean expanded;
 	private boolean checked;
 	private boolean open;
 	private boolean isParent;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -48,27 +47,27 @@ public class MenuEntity implements TreeNode {
 		this.description = description;
 	}
 
-	public int getLft() {
+	public Integer getLft() {
 		return lft;
 	}
 
-	public void setLft(int lft) {
+	public void setLft(Integer lft) {
 		this.lft = lft;
 	}
 
-	public int getRgt() {
+	public Integer getRgt() {
 		return rgt;
 	}
 
-	public void setRgt(int rgt) {
+	public void setRgt(Integer rgt) {
 		this.rgt = rgt;
 	}
 
-	public int getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
@@ -110,9 +109,5 @@ public class MenuEntity implements TreeNode {
 
 	public void setParent(boolean isParent) {
 		this.isParent = isParent;
-	}
-
-	public String toString() {
-		return Json.toJson(this);
 	}
 }

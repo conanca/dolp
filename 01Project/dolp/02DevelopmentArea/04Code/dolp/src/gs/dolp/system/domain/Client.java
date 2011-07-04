@@ -10,11 +10,11 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_CLIENT")
 public class Client {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String sessionId;
 	@Column
-	private int userId;
+	private Integer userId;
 	@One(target = User.class, field = "userId")
 	private User user;
 	@Column
@@ -24,11 +24,11 @@ public class Client {
 	@Column
 	private String browser;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -40,11 +40,11 @@ public class Client {
 		this.sessionId = sessionId;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -79,5 +79,4 @@ public class Client {
 	public void setBrowser(String browser) {
 		this.browser = browser;
 	}
-
 }

@@ -12,11 +12,11 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_MESSAGE")
 public class Message {
 	@Id
-	private int id;
+	private Integer id;
 	@One(target = User.class, field = "senderUserId")
 	private User sender;
 	@Column
-	private int senderUserId;
+	private Integer senderUserId;
 	@ManyMany(target = User.class, relation = "SYSTEM_MESSAGE_RECEIVERUSER", from = "MESSAGEID", to = "USERID")
 	private List<User> receivers;
 	@Column
@@ -26,15 +26,15 @@ public class Message {
 	@Column
 	private String content;
 	@Column
-	private int state;
+	private Integer state;
 	@Column
-	private int type;
+	private Integer type;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -46,20 +46,20 @@ public class Message {
 		this.sender = sender;
 	}
 
+	public Integer getSenderUserId() {
+		return senderUserId;
+	}
+
+	public void setSenderUserId(Integer senderUserId) {
+		this.senderUserId = senderUserId;
+	}
+
 	public List<User> getReceivers() {
 		return receivers;
 	}
 
 	public void setReceivers(List<User> receivers) {
 		this.receivers = receivers;
-	}
-
-	public int getSenderUserId() {
-		return senderUserId;
-	}
-
-	public void setSenderUserId(int senderUserId) {
-		this.senderUserId = senderUserId;
 	}
 
 	public Timestamp getDate() {
@@ -86,19 +86,19 @@ public class Message {
 		this.content = content;
 	}
 
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 
-	public int getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 }

@@ -19,17 +19,17 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 	/**
 	 * 页码
 	 */
-	private int page;
+	private Integer page;
 
 	/**
 	 * 页数
 	 */
-	private int total;
+	private Integer total;
 
 	/**
 	 * 总记录数
 	 */
-	private int records;
+	private Integer records;
 
 	/**
 	 * 记录
@@ -41,27 +41,27 @@ public class AdvancedJqgridResData<T> implements ResponseData {
 	 */
 	private AjaxResData userdata;
 
-	public int getPage() {
+	public Integer getPage() {
 		return page;
 	}
 
-	public void setPage(int page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
-	public int getTotal() {
+	public Integer getTotal() {
 		return total;
 	}
 
-	public void setTotal(int total) {
+	public void setTotal(Integer total) {
 		this.total = total;
 	}
 
-	public int getRecords() {
+	public Integer getRecords() {
 		return records;
 	}
 
-	public void setRecords(int records) {
+	public void setRecords(Integer records) {
 		this.records = records;
 	}
 

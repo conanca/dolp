@@ -17,13 +17,13 @@ public class DolpCollectionHandler<T> {
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			ids.add(f.getInt(obj));
+			ids.add(((Integer) f.get(obj)).intValue());
 		}
 		return ids;
 	}
 
 	/**
-	 * 将一个实体List中所有实体对象的id取出放入一个集合中
+	 * 将一个实体List中所有实体对象的id取出放入一个数组中
 	 * @param list
 	 * @return
 	 * @throws Exception
@@ -34,14 +34,14 @@ public class DolpCollectionHandler<T> {
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			ids[i] = f.getInt(obj);
+			ids[i] = ((Integer) f.get(obj)).intValue();
 			i++;
 		}
 		return ids;
 	}
 
 	/**
-	 * 将一个实体List中所有实体对象的id取出，用分隔符拼接成一个字符串
+	 * 将一个实体List中所有实体对象的id取出，用指定分隔符拼接成一个字符串
 	 * @param list
 	 * @param separator
 	 * @return
@@ -52,7 +52,7 @@ public class DolpCollectionHandler<T> {
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			sb.append(f.getInt(obj));
+			sb.append(((Integer) f.get(obj)).intValue());
 			sb.append(separator);
 		}
 		sb.deleteCharAt(sb.length() - 1);

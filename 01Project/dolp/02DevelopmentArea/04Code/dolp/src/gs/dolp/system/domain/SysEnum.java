@@ -10,7 +10,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_SYSENUM")
 public class SysEnum {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String name;
 	@Column
@@ -18,11 +18,11 @@ public class SysEnum {
 	@Many(target = SysEnumItem.class, field = "sysEnumId")
 	private List<SysEnumItem> items;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

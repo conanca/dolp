@@ -7,18 +7,17 @@ import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
-import org.nutz.json.Json;
 
 @Table("SYSTEM_PRIVILEGE")
 public class Privilege {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	private String name;
 	@Column
 	private String description;
 	@Column
-	private int menuId;
+	private Integer menuId;
 	@One(target = Menu.class, field = "menuId")
 	private Menu menu;
 	@Column
@@ -26,11 +25,11 @@ public class Privilege {
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "PRIVILEGEID", to = "ROLEID")
 	private List<Role> roles;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -50,11 +49,11 @@ public class Privilege {
 		this.description = description;
 	}
 
-	public int getMenuId() {
+	public Integer getMenuId() {
 		return menuId;
 	}
 
-	public void setMenuId(int menuId) {
+	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
 
@@ -80,9 +79,5 @@ public class Privilege {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
-	}
-
-	public String toString() {
-		return Json.toJson(this);
 	}
 }
