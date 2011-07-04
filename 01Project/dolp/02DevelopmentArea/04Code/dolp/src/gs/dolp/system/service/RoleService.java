@@ -29,9 +29,9 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, int isOrgaRela, int organizationId) {
+	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, boolean isOrgaRela, int organizationId) {
 		Condition cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
-		if (isOrgaRela == 1) {
+		if (isOrgaRela) {
 			cnd = ((Cnd) cnd).and("ORGANIZATIONID", "=", organizationId);
 		}
 		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(cnd, jqReq);
@@ -68,7 +68,7 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData getAllRoleMap(String isOrgaRela) {
+	public AjaxResData getAllRoleMap(boolean isOrgaRela) {
 		AjaxResData respData = new AjaxResData();
 		List<Role> roles = query(Cnd.where("ISORGARELA", "=", isOrgaRela), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();

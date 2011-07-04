@@ -16,7 +16,7 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") int isOrgaRela,
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") boolean isOrgaRela,
 			@Param("organizationId") int organizationId) {
 		return roleService.getGridData(jqReq, isOrgaRela, organizationId);
 	}
@@ -27,7 +27,7 @@ public class RoleModule {
 	}
 
 	@At("/getAllRoleMap/*")
-	public ResponseData getAllRoleMap(String isOrgaRela) {
+	public ResponseData getAllRoleMap(boolean isOrgaRela) {
 		return roleService.getAllRoleMap(isOrgaRela);
 	}
 

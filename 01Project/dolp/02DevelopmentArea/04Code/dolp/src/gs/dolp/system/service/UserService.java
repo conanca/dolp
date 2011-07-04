@@ -163,7 +163,8 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls
-				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = '0' AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
+				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = $isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
+		sql.vars().set("isOrgaRela", false);
 		sql.vars().set("userId", userId);
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

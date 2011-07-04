@@ -10,7 +10,7 @@ $(function(){
 		asyncParam: ["name", "id"],
 		callback:{
 			beforeClick: function(treeId, treeNode){
-				$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=1&organizationId="+treeNode.id,page:1});
+				$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=true&organizationId="+treeNode.id,page:1});
 				$("#postList").setColProp('organizationId',{editoptions:{defaultValue:treeNode.id}});
 				$("#postList").trigger('reloadGrid');
 			}
@@ -21,7 +21,7 @@ $(function(){
 	//点击刷新按钮
 	$("#postOrganizationTreeRefreshBtn").click(function() {
 		postOrganizationTree.reAsyncChildNodes(null, "refresh");
-		$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=1&organizationId=0",page:1});
+		$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=true&organizationId=0",page:1});
 		$("#postList").setColProp('organizationId',{editoptions:{defaultValue:0}});
 		$("#postList").trigger('reloadGrid');
 	});
@@ -31,7 +31,7 @@ $(function(){
 			repeatitems: false
 		},
 		caption:"岗位列表",
-		url:'system/role/getGridData?isOrgaRela=1',
+		url:'system/role/getGridData?isOrgaRela=true',
 		editurl:"system/role/editRow",
 		colNames:['id','名称','描述','isOrgaRela','organizationId'],
 		colModel:[
