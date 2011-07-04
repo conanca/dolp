@@ -37,7 +37,7 @@ $(function(){
 		multiselect: true
 	});
 	//不显示jqgrid自带的增删改查按钮
-	$("#messageDraftboxUserInfoList").navGrid('#messageDraftboxUserInfoPager',{edit:false,add:false,del:false,search:false});
+	$("#messageDraftboxUserInfoList").setJqGridCUD('#messageDraftboxUserInfoPager',{edit:false,add:false,del:false,search:false});
 
 	$("#messageDraftboxList").jqGrid({
 		jsonReader:{

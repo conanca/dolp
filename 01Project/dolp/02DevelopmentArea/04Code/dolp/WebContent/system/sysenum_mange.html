@@ -27,43 +27,9 @@ $(function(){
 		}
 	});
 	//开启jqgrid自带的增删改功能
-	$("#sysenumList").navGrid('#sysenumPager',{edit:true,add:true,del:true,search:false},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
-				return [true];
-			}
-		},
-		{
-			reloadAfterSubmit:true,
-			afterSubmit: function(xhr, postdata) {
-				//刷新表格billSubList
-				$('#sysenumSubList').trigger("reloadGrid");
-				$.addMessage($.parseJSON(xhr.responseText).systemMessage);
-				return [true];
-			},
-			serializeDelData : function(postData) {
-				var id = postData['id'];
-				if(id){
-					if(parseInt(id) != id){
-						postData['ids'] = postData['id'];
-						postData['id'] = 0;
-					}else{
-						postData['ids'] = postData['id'];
-					}
-				}
-				return postData;
-			}
-		},
-		{},{}
+	$("#sysenumList").setJqGridCUD('#sysenumPager',{edit:true,add:true,del:true,search:false},function(){
+			$('#sysenumSubList').trigger("reloadGrid");
+		}
 	);
 
 	$("#sysenumSubList").jqGrid({
