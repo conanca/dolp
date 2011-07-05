@@ -164,15 +164,15 @@ $.extend({
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	};
-	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr)
+	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		var selectorid=this.selector;
 		$(selectorid).navGrid(pager,para,
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					if(afterSubmitTodo){
-						afterSubmitTodo();
+					if(afterSubmitTodo && afterSubmitTodo.edit){
+						afterSubmitTodo.edit();
 					}
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
@@ -181,10 +181,10 @@ $.extend({
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					if(afterSubmitTodo){
-						afterSubmitTodo();
+					if(afterSubmitTodo && afterSubmitTodo.add){
+						afterSubmitTodo.add();
 					}
-					//$(this).resetSelection();
+					$(this.selector).resetSelection();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
@@ -192,8 +192,8 @@ $.extend({
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
-					if(afterSubmitTodo){
-						afterSubmitTodo();
+					if(afterSubmitTodo && afterSubmitTodo.del){
+						afterSubmitTodo.del();
 					}
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];

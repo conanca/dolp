@@ -27,8 +27,17 @@ $(function(){
 		}
 	});
 	//开启jqgrid自带的增删改功能
-	$("#sysenumList").setJqGridCUD('#sysenumPager',{edit:true,add:true,del:true,search:false},function(){
-			$('#sysenumSubList').trigger("reloadGrid");
+	$("#sysenumList").setJqGridCUD('#sysenumPager',{edit:true,add:true,del:true,search:false},{
+			add:function(){
+				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/0",page:1});
+				$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:0}});
+				$('#sysenumSubList').trigger("reloadGrid");
+			},
+			del:function(){
+				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/0",page:1});
+				$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:0}});
+				$('#sysenumSubList').trigger("reloadGrid");
+			}
 		}
 	);
 
@@ -45,14 +54,14 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
 			{name:'text',index:'text', width:100, editable:true,editrules:{required:true}},
 			{name:'value',index:'value', width:100, editable:true,editrules:{required:true}},
-			{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true,editable:true}
+			{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true,editable:true,editrules:{required:true,minValue:1}}
 		],
 		pager: '#sysenumSubPager',
 		sortname: 'id',
 		sortorder: "asc",
 		multiselect: false
 	});
-	//不显示jqgrid自带的增删改查按钮
+	//显示jqgrid自带的增删改查按钮
 	$("#sysenumSubList").setJqGridCUD('#sysenumSubPager',{edit:true,add:true,del:true,search:false});
 });
 </script>
