@@ -20,7 +20,9 @@ import org.nutz.mvc.ioc.provider.JsonIocProvider;
 @SetupBy(MvcSetup.class)
 @Ok("json")
 @Fail("dolpjson")
-@Filters({ @By(type = CheckLogon.class) })
+@Filters({ @By(type = CheckLogon.class)
+//, @By(type = CheckPrivilege.class) 
+})
 @Views(DolpJsonViewMaker.class)
 public class MainModule {
 
