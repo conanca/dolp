@@ -142,9 +142,6 @@ var ioc = {
 			userService : {
 				refer : 'userService'
 			},
-			menuService : {
-				refer : 'menuService'
-			},
 			clientService : {
 				refer : 'clientService'
 			}

@@ -4,7 +4,6 @@ import gs.dolp.common.domain.ResponseData;
 import gs.dolp.system.domain.Privilege;
 import gs.dolp.system.domain.User;
 import gs.dolp.system.service.ClientService;
-import gs.dolp.system.service.MenuService;
 import gs.dolp.system.service.SystemService;
 import gs.dolp.system.service.UserService;
 
@@ -29,7 +28,6 @@ public class SystemModule {
 
 	private SystemService systemService;
 	private UserService userService;
-	private MenuService menuService;
 	private ClientService clientService;
 
 	@At
@@ -81,23 +79,6 @@ public class SystemModule {
 	public ResponseData getCurrentUserName(HttpSession session) {
 		User cUser = (User) session.getAttribute("logonUser");
 		return systemService.getCurrentUserName(cUser);
-	}
-
-	/**
-	 * west布局的菜单显示
-	 * @param nodeId
-	 * @param nLeft
-	 * @param nRight
-	 * @param nLevel
-	 * @param session
-	 * @return
-	 * @throws Exception 
-	 */
-	@At
-	public ResponseData dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft, @Param("n_right") int nRight,
-			@Param("n_level") int nLevel, HttpSession session) throws Exception {
-		User logonUser = (User) session.getAttribute("logonUser");
-		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}
 
 	@At
