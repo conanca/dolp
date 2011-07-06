@@ -21,13 +21,13 @@ public class OrganizationModule {
 	}
 
 	@At
-	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
-		return organizationService.getNodes(id, name);
-	}
-
-	@At
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids,
 			@Param("..") Organization organization) {
 		return organizationService.CUDOrganization(oper, ids, organization);
+	}
+
+	@At
+	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
+		return organizationService.getNodes(id, name);
 	}
 }

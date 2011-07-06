@@ -26,11 +26,6 @@ public class RoleModule {
 		return roleService.CUDRole(oper, ids, role);
 	}
 
-	@At("/getAllRoleMap/*")
-	public ResponseData getAllRoleMap(boolean isOrgaRela) {
-		return roleService.getAllRoleMap(isOrgaRela);
-	}
-
 	@At
 	public ResponseData assignPrivilege(@Param("roleId") String roleId, @Param("checkedMenus[]") String[] checkedMenus,
 			@Param("checkedPrivileges[]") String[] checkedPrivileges,
@@ -38,6 +33,11 @@ public class RoleModule {
 			@Param("unCheckedPrivileges[]") String[] unCheckedPrivileges) {
 		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus,
 				unCheckedPrivileges);
+	}
+
+	@At("/getAllRoleMap/*")
+	public ResponseData getAllRoleMap(boolean isOrgaRela) {
+		return roleService.getAllRoleMap(isOrgaRela);
 	}
 
 	/**
