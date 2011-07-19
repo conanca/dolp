@@ -1,7 +1,6 @@
 <script type="text/javascript">
 $(function(){
 	$("input:button,input:submit,input:reset").button();
-	var userMap;
 
 	$("#messageInboxList").jqGrid({
 		jsonReader:{
@@ -27,7 +26,7 @@ $(function(){
 			$('#messageInboxDetailId').val(row.id);
 			$('#messageInboxDetailTitle').text(row.title);
 			$('#messageInboxDetailDate').text(row.date);
-			$('#messageInboxDetailSender').text(userMap[row.senderUserId]);
+			$('#messageInboxDetailSender').text(row["sender.name"]);
 			$('#messageInboxDetailContent').html(row.content);
 			$(this).setGridState('hidden');
 			$('#messageInboxDetail').show();
