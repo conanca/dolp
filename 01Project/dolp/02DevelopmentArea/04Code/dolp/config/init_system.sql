@@ -10,14 +10,14 @@ INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA,ORGANIZATIONID) VALUES
 (2,'普通用户','拥有个人设置、消息管理等权限',false,null),
 (3,'财务人员',null,true,9);
 
-INSERT INTO SYSTEM_USER_ROLE(ID ,USERID ,ROLEID) VALUES
-(1,1,1),
-(2,1,2),
-(3,1,3),
-(4,2,2),
-(5,2,3),
-(6,3,2),
-(7,4,2);
+INSERT INTO SYSTEM_USER_ROLE(USERID ,ROLEID) VALUES
+(1,1),
+(1,2),
+(1,3),
+(2,2),
+(2,3),
+(3,2),
+(4,2);
 
 INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (1,'系统管理',NULL,NULL,1,200),
@@ -40,26 +40,26 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (18,'演示页面',NULL,NULL,301,400),
 (19,'格式化文本框','demo1.html',NULL,302,303);
 
-INSERT INTO SYSTEM_ROLE_MENU(ID ,ROLEID ,MENUID) VALUES
-(1,1,1),
-(2,1,2),
-(3,1,3),
-(4,1,4),
-(5,1,5),
-(6,1,6),
-(7,1,7),
-(8,1,8),
-(9,1,9),
-(10,1,10),
-(11,2,11),
-(12,2,12),
-(13,2,13),
-(14,2,14),
-(15,2,15),
-(16,2,16),
-(17,2,17),
-(18,2,18),
-(19,2,19);
+INSERT INTO SYSTEM_ROLE_MENU(ROLEID ,MENUID) VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5),
+(1,6),
+(1,7),
+(1,8),
+(1,9),
+(1,10),
+(2,11),
+(2,12),
+(2,13),
+(2,14),
+(2,15),
+(2,16),
+(2,17),
+(2,18),
+(2,19);
 
 INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
 (1,'0100','综合行政部','',0),
@@ -89,7 +89,6 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (14,'删除已收',null,14,'gs.dolp.system.module.MessageModule.deleteReceivedMessage'),
 (15,'删除已发',null,15,'gs.dolp.system.module.MessageModule.deleteSentMessage'),
 (16,'删除草稿',null,16,'gs.dolp.system.module.MessageModule.deleteDraftMessage'),
-(17,'读',null,14,'gs.dolp.system.module.MessageModule.readMessade'),
 (18,'获取收件人账户编号',null,16,'gs.dolp.system.module.MessageModule.getReceiverUserNum'),
 (19,'查询',null,6,'gs.dolp.system.module.OrganizationModule.getGridData'),
 (20,'修改',null,6,'gs.dolp.system.module.OrganizationModule.editRow'),
@@ -117,50 +116,50 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (42,'修改该用户密码',null,17,'gs.dolp.system.module.UserModule.changeCurrentUserPassword'),
 (43,'修改用户密码',null,2,'gs.dolp.system.module.UserModule.changeUserPassword');
 
-INSERT INTO SYSTEM_ROLE_PRIVILEGE(ID,ROLEID,PRIVILEGEID) VALUES
-(1,1,1),
-(2,1,2),
-(3,1,3),
-(4,1,4),
-(5,1,5),
-(6,1,6),
-(7,1,7),
-(8,1,19),
-(9,1,20),
-(10,1,21),
-(11,1,22),
-(12,1,23),
-(13,1,24),
-(14,1,25),
-(15,1,26),
-(16,1,27),
-(17,1,28),
-(18,1,29),
-(19,1,30),
-(20,1,31),
-(21,1,32),
-(22,1,34),
-(23,1,35),
-(24,1,36),
-(25,1,37),
-(26,1,38),
-(27,1,39),
-(28,1,40),
-(29,1,41),
-(30,1,43),
-(31,2,9),
-(32,2,10),
-(33,2,11),
-(34,2,12),
-(35,2,13),
-(36,2,14),
-(37,2,15),
-(38,2,16),
-(39,2,17),
-(40,2,18),
-(41,2,42),
-(42,2,8),
-(43,2,33);
+INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5),
+(1,6),
+(1,7),
+(1,19),
+(1,20),
+(1,21),
+(1,22),
+(1,23),
+(1,24),
+(1,25),
+(1,26),
+(1,27),
+(1,28),
+(1,29),
+(1,30),
+(1,31),
+(1,32),
+(1,34),
+(1,35),
+(1,36),
+(1,37),
+(1,38),
+(1,39),
+(1,40),
+(1,41),
+(1,43),
+(2,9),
+(2,10),
+(2,11),
+(2,12),
+(2,13),
+(2,14),
+(2,15),
+(2,16),
+(2,17),
+(2,18),
+(2,42),
+(2,8),
+(2,33);
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 
@@ -178,10 +177,10 @@ INSERT INTO SYSTEM_MESSAGE(ID,SENDERUSERID,DATE,TITLE,CONTENT,STATE ) VALUES
 (2,2,TIMESTAMP '2011-01-25 00:00:00.0','Test title2','test content','1'),
 (3,2,TIMESTAMP '2011-01-25 00:00:00.0','Test title222','test content','1');
 
-INSERT INTO SYSTEM_MESSAGE_RECEIVERUSER(ID,MESSAGEID,USERID,ISREAD) VALUES
-(1,1,1,1),
-(2,2,1,1),
-(3,3,1,1);
+INSERT INTO SYSTEM_MESSAGE_RECEIVERUSER(MESSAGEID,USERID) VALUES
+(1,1),
+(2,1),
+(3,1);
 
 INSERT INTO SYSTEM_SYSPARA(ID, NAME, VALUE, DESCRIPTION) VALUES
 (1, 'SystemName', 'AAAA', null),

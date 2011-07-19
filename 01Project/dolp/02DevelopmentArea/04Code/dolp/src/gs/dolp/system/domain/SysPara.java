@@ -1,5 +1,7 @@
 package gs.dolp.system.domain;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
@@ -9,10 +11,13 @@ public class SysPara {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String value;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 
 	public Integer getId() {

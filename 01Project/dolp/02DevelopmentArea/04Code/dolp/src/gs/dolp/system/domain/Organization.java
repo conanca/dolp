@@ -2,6 +2,8 @@ package gs.dolp.system.domain;
 
 import java.util.List;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
@@ -13,10 +15,13 @@ public class Organization implements TreeNode {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String code;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Column
 	private Integer parentOrgId;

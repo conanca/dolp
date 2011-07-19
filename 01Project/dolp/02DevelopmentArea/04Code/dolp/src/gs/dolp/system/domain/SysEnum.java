@@ -2,6 +2,8 @@ package gs.dolp.system.domain;
 
 import java.util.List;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
@@ -12,8 +14,10 @@ public class SysEnum {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Many(target = SysEnumItem.class, field = "sysEnumId")
 	private List<SysEnumItem> items;

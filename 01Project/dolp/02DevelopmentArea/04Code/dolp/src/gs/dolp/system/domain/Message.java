@@ -3,6 +3,8 @@ package gs.dolp.system.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.ManyMany;
@@ -22,8 +24,10 @@ public class Message {
 	@Column
 	private Timestamp date;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String title;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 10000)
 	private String content;
 	@Column
 	private Integer state;

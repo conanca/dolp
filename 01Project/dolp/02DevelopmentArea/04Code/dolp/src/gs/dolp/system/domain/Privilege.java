@@ -2,6 +2,8 @@ package gs.dolp.system.domain;
 
 import java.util.List;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.ManyMany;
@@ -13,14 +15,17 @@ public class Privilege {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Column
 	private Integer menuId;
 	@One(target = Menu.class, field = "menuId")
 	private Menu menu;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String methodPath;
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "PRIVILEGEID", to = "ROLEID")
 	private List<Role> roles;

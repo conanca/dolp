@@ -1,5 +1,7 @@
 package gs.dolp.system.domain;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.One;
@@ -10,8 +12,10 @@ public class SysEnumItem {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String text;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String value;
 	@Column
 	private Integer sysEnumId;

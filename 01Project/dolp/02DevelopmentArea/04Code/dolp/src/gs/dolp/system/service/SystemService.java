@@ -2,6 +2,15 @@ package gs.dolp.system.service;
 
 import gs.dolp.common.domain.AjaxResData;
 import gs.dolp.common.service.DolpBaseService;
+import gs.dolp.system.domain.Client;
+import gs.dolp.system.domain.Menu;
+import gs.dolp.system.domain.Message;
+import gs.dolp.system.domain.Organization;
+import gs.dolp.system.domain.Privilege;
+import gs.dolp.system.domain.Role;
+import gs.dolp.system.domain.SysEnum;
+import gs.dolp.system.domain.SysEnumItem;
+import gs.dolp.system.domain.SysPara;
 import gs.dolp.system.domain.User;
 
 import java.io.ByteArrayInputStream;
@@ -16,8 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
-import org.nutz.dao.tools.DTable;
-import org.nutz.dao.tools.Tables;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 
 public class SystemService extends DolpBaseService<Object> {
@@ -39,13 +47,26 @@ public class SystemService extends DolpBaseService<Object> {
 	@Aop(value = "log")
 	public AjaxResData initDatabase() {
 		AjaxResData respData = new AjaxResData();
-		// 初始化表结构
-		List<DTable> dts = Tables.loadFrom("tables_system.dod");
-		Tables.define(dao(), dts);
-		// 初始化记录
+		// 建实体类的表
+		Dao dao = dao();
+		dao().create(Client.class, true);
+		dao.create(Menu.class, true);
+		dao.create(Message.class, true);
+		dao.create(Organization.class, true);
+		dao.create(Privilege.class, true);
+		dao.create(Role.class, true);
+		dao.create(SysEnum.class, true);
+		dao.create(SysEnumItem.class, true);
+		dao.create(SysPara.class, true);
+		dao.create(User.class, true);
+		// 添加默认记录
 		FileSqlManager fm = new FileSqlManager("init_system.sql");
-		dao().execute(fm.createCombo(fm.keys()));
-		respData.setSystemMessage("初始化数据库完成!", null, null);
+		List<Sql> sqlList = fm.createCombo(fm.keys());
+		dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
+		// 初始化quartz的数据表
+		fm = new FileSqlManager("tables_quartz.sql");
+		sqlList = fm.createCombo(fm.keys());
+		dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		return respData;
 	}
 

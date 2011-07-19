@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.nutz.dao.entity.annotation.ColDefine;
+import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
@@ -15,18 +17,23 @@ public class User {
 	@Id
 	private Integer id;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String number;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String password;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
+	@ColDefine(type = ColType.CHAR, width = 2)
 	private String gender;
 	@Column
 	private Integer age;
 	@Column
 	private String birthday;
 	@Column
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String phone;
 	@ManyMany(target = Role.class, relation = "SYSTEM_USER_ROLE", from = "USERID", to = "ROLEID")
 	private List<Role> roles;
