@@ -67,12 +67,6 @@ public class MessageModule {
 		return messageService.deleteDraftMessage(messageId);
 	}
 
-	@At
-	public ResponseData readMessade(@Param("messageId") int messageId, HttpSession session) {
-		User currentUser = (User) session.getAttribute("logonUser");
-		return messageService.readMessade(currentUser, messageId);
-	}
-
 	@At("/getReceiverUserNum/*")
 	public ResponseData getReceiverUserNum(int messageId) {
 		return messageService.getReceiverUserNum(messageId);

@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -152,25 +151,6 @@ public class MessageService extends DolpBaseService<Message> {
 		}
 		delete(Long.valueOf(messageId));
 		respData.setSystemMessage("删除成功!", null, null);
-		return respData;
-	}
-
-	/**
-	 * 读消息(修改已读标志)
-	 * @param readerUser
-	 * @param messageId
-	 * @return
-	 */
-	@Aop(value = "log")
-	public AjaxResData readMessade(User readerUser, int messageId) {
-		AjaxResData respData = new AjaxResData();
-		if (messageId <= 0) {
-			respData.setSystemMessage(null, "未选择消息!", null);
-			return respData;
-		}
-		dao().update("SYSTEM_MESSAGE_RECEIVERUSER", Chain.make("ISREAD", 1),
-				Cnd.where("MESSAGEID", "=", messageId).and("USERID", "=", readerUser.getId()));
-		//respData.setSystemMessage("读取成功!", null, null);
 		return respData;
 	}
 

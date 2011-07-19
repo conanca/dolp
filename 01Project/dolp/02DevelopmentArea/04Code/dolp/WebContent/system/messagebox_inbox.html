@@ -31,8 +31,6 @@ $(function(){
 			$('#messageInboxDetailContent').html(row.content);
 			$(this).setGridState('hidden');
 			$('#messageInboxDetail').show();
-			// 设置该消息的已读标志
-			$.dolpPost('system/message/readMessade',{messageId:row.id});
 		}
 	});
 	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:false,search:false});

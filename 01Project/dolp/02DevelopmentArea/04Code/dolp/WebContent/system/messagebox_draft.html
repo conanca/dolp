@@ -71,8 +71,6 @@ $(function(){
 			$('#messageDraftboxReceiverUserNames').val(usersNum);
 			$(this).setGridState('hidden');
 			$('#messageDraftboxDetail').show();
-			// 设置该消息的已读标志
-			$.dolpPost('system/message/readMessade',{messageId:row.id});
 		}
 	});
 	$("#messageDraftboxList").setJqGridCUD('#messageDraftboxPager',{edit:false,add:false,del:false,search:false});
