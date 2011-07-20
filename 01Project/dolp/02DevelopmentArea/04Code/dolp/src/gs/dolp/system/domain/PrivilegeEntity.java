@@ -1,55 +1,14 @@
 package gs.dolp.system.domain;
 
+import org.nutz.dao.entity.annotation.Column;
 
-public class PrivilegeEntity implements TreeNode {
-	private Integer id;
-	private String name;
-	private String description;
-	private Integer menuId;
-	private String methodPath;
+public class PrivilegeEntity extends Privilege implements TreeNode {
+	@Column
 	private boolean checked;
+	@Column
 	private boolean open;
+	@Column
 	private boolean isParent;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getMenuId() {
-		return menuId;
-	}
-
-	public void setMenuId(Integer menuId) {
-		this.menuId = menuId;
-	}
-
-	public String getMethodPath() {
-		return methodPath;
-	}
-
-	public void setMethodPath(String methodPath) {
-		this.methodPath = methodPath;
-	}
 
 	public boolean isChecked() {
 		return checked;
