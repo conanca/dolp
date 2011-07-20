@@ -11,6 +11,7 @@ import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.ManyMany;
 import org.nutz.dao.entity.annotation.Table;
+import org.nutz.json.JsonField;
 
 @Table("SYSTEM_USER")
 public class User {
@@ -21,6 +22,7 @@ public class User {
 	private String number;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
+	@JsonField(ignore = true)
 	private String password;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
