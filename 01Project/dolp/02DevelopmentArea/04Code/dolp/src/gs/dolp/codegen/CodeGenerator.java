@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.lang.Files;
+
 public class CodeGenerator {
 
 	final static private Class<?> domainClass = User.class;
@@ -64,22 +66,17 @@ public class CodeGenerator {
 	}
 
 	private void tempToFile(String tempFileName, String filePath) throws IOException, TemplateException {
-		Template temp = cfg.getTemplate(tempFileName);
-		File f = new File(filePath);
-		File dir = new File(f.getParent());
-		if (!dir.exists()) {
-			dir.mkdir();
-		}
-		if (f.exists()) {
-			System.out.println(f.getPath() + "已存在！");
-			return;
+		boolean isCreat = Files.createNewFile(new File(filePath));
+		if (isCreat) {
+			File f = new File(filePath);
+			Writer out = new BufferedWriter(new FileWriter(f, true));
+			Template temp = cfg.getTemplate(tempFileName);
+			temp.process(root, out);
+			out.flush();
+			System.out.println("写入完成！");
 		} else {
-			f.createNewFile();
+			System.out.println("文件已存在！" + filePath);
 		}
-		Writer out = new BufferedWriter(new FileWriter(f, true));
-		temp.process(root, out);
-		out.flush();
-		System.out.println("写入完成！");
 	}
 
 	private void tempPrint(String tempFileName) throws IOException, TemplateException {
