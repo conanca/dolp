@@ -19,14 +19,14 @@ import com.dolplay.dolpbase.system.job.CountClientJob;
 
 public class SchedulerRunner {
 
-	private static Logger log = LoggerFactory.getLogger(SchedulerRunner.class);
+	private static Logger Logger = LoggerFactory.getLogger(SchedulerRunner.class);
 
 	public void run() throws Exception {
-		log.info("------- scheduler初始化 ----------------------");
+		Logger.info("------- scheduler初始化 ----------------------");
 		// 获取scheduler的引用
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
-		log.info("------- scheduler初始化完成 ------------------");
+		Logger.info("------- scheduler初始化完成 ------------------");
 
 		// 设置Job：CountClientJob
 		JobDetail job = JobBuilder.newJob(CountClientJob.class).withIdentity("job1", "group1").build();
@@ -39,20 +39,20 @@ public class SchedulerRunner {
 		if (!sched.checkExists(job.getKey()) && !sched.checkExists(trigger.getKey())) {
 			sched.scheduleJob(job, trigger);
 		}
-		log.info(job.getKey() + " 将会重复: " + trigger.getRepeatCount() + " 次, 每 " + trigger.getRepeatInterval() / 1000
+		Logger.info(job.getKey() + " 将会重复: " + trigger.getRepeatCount() + " 次, 每 " + trigger.getRepeatInterval() / 1000
 				+ " 秒重复一次");
 
-		log.info("------- 正在启动 Scheduler -------------------");
+		Logger.info("------- 正在启动 Scheduler -------------------");
 		sched.start();
-		log.info("------- 已启动 Scheduler ---------------------");
+		Logger.info("------- 已启动 Scheduler ---------------------");
 	}
 
 	public void stop() throws Exception {
-		log.info("------- scheduler初始化 ----------------------");
+		Logger.info("------- scheduler初始化 ----------------------");
 		// 获取scheduler的引用
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
-		log.info("------- scheduler初始化完成 ------------------");
+		Logger.info("------- scheduler初始化完成 ------------------");
 		sched.shutdown();
 	}
 }

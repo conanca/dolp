@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.common.view;
 
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ import com.dolplay.dolpbase.common.util.ExceptionHandler;
  * 用于处理异常的JSON自定义视图
  */
 public class DolpJsonView implements View {
-	final static Logger logger = LoggerFactory.getLogger("ROOT");
+	final static Logger logger = LoggerFactory.getLogger(DolpJsonView.class);
 
 	private JsonFormat format;
 

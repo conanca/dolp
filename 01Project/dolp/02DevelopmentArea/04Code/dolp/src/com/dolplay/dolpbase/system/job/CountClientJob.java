@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.job;
 
-
 import java.util.Date;
 
 import org.quartz.Job;
@@ -14,14 +13,14 @@ import com.dolplay.dolpbase.common.util.DaoHandler;
 
 public class CountClientJob implements Job {
 
-	private static Logger log = LoggerFactory.getLogger(CountClientJob.class);
+	private static Logger logger = LoggerFactory.getLogger(CountClientJob.class);
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobKey jobKey = context.getJobDetail().getKey();
-		log.debug(jobKey + " executing at " + new Date());
+		logger.debug(jobKey + " executing at " + new Date());
 		int clientCount = DaoHandler.getDao().count("SYSTEM_CLIENT");
-		log.info(new Date() + " 当前在线终端数目：" + clientCount);
+		logger.info(new Date() + " 当前在线终端数目：" + clientCount);
 	}
 
 }

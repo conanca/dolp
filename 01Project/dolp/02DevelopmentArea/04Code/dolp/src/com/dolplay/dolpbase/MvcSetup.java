@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase;
 
-
 import java.util.List;
 
 import org.nutz.dao.Dao;
@@ -8,6 +7,8 @@ import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoHandler;
 import com.dolplay.dolpbase.schedule.SchedulerRunner;
@@ -23,6 +24,7 @@ import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
 
 public class MvcSetup implements Setup {
+	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
 
 	/**
 	 * 当应用系统启动的时候，自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
@@ -51,7 +53,6 @@ public class MvcSetup implements Setup {
 			List<Sql> sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
-
 		// 初始化quartz的数据表
 		if (!dao.exists("QRTZ_JOB_DETAILS")) {
 			FileSqlManager fm = new FileSqlManager("tables_quartz.sql");
@@ -60,15 +61,14 @@ public class MvcSetup implements Setup {
 		}
 
 		// 清空在线用户表
-		DaoHandler.getDao().clear("SYSTEM_CLIENT");
-
-		//		// 启动Scheduler
-		//		SchedulerRunner runner = new SchedulerRunner();
-		//		try {
-		//			runner.run();
-		//		} catch (Exception e) {
-		//			e.printStackTrace();
-		//		}
+		dao.clear("SYSTEM_CLIENT");
+		// 启动Scheduler
+		SchedulerRunner runner = new SchedulerRunner();
+		try {
+			runner.run();
+		} catch (Exception e) {
+			logger.error("Start SchedulerRunner exception", e);
+		}
 	}
 
 	/**
@@ -84,9 +84,8 @@ public class MvcSetup implements Setup {
 		SchedulerRunner runner = new SchedulerRunner();
 		try {
 			runner.stop();
-			DaoHandler.getDataSource().getConnection().close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Stop SchedulerRunner exception", e);
 		}
 	}
 

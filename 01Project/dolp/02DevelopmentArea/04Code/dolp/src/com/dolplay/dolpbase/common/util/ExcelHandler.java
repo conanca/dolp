@@ -11,8 +11,11 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExcelHandler {
+	private static Logger logger = LoggerFactory.getLogger(ExcelHandler.class);
 
 	/**
 	 * 将一个List中的元素写入一个EXCEL文档中指定sheet中
@@ -48,10 +51,8 @@ public class ExcelHandler {
 					filed.setAccessible(true);
 					String fieldValueStr = filed.get(obj).toString();
 					row.createCell(j).setCellValue(fieldValueStr);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					logger.error("取字段值发生异常", e);
 				}
 				j++;
 			}
@@ -87,26 +88,19 @@ public class ExcelHandler {
 							float intvalue = (float) value;
 							field.setFloat(obj, intvalue);
 						} else {
-							System.out.println("未知类型");
+							logger.error("未知类型");
 						}
 					} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 						String value = cell.getRichStringCellValue().getString();
 						field.set(obj, value);
 					} else {
-						System.out.println("单元格类型未知");
+						logger.error("单元格类型未知");
 					}
 				}
 				list.add(obj);
-
 			}
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("字段读取或赋值异常", e);
 		}
 		return list;
 	}
