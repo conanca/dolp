@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +14,8 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
@@ -48,26 +49,31 @@ public class SystemService extends DolpBaseService<Object> {
 	@Aop(value = "log")
 	public AjaxResData initDatabase() {
 		AjaxResData respData = new AjaxResData();
-		// 建实体类的表
-		Dao dao = dao();
-		dao().create(Client.class, true);
-		dao.create(Menu.class, true);
-		dao.create(Message.class, true);
-		dao.create(Organization.class, true);
-		dao.create(Privilege.class, true);
-		dao.create(Role.class, true);
-		dao.create(SysEnum.class, true);
-		dao.create(SysEnumItem.class, true);
-		dao.create(SysPara.class, true);
-		dao.create(User.class, true);
-		// 添加默认记录
-		FileSqlManager fm = new FileSqlManager("init_system.sql");
-		List<Sql> sqlList = fm.createCombo(fm.keys());
-		dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
-		// 初始化quartz的数据表
-		fm = new FileSqlManager("tables_quartz.sql");
-		sqlList = fm.createCombo(fm.keys());
-		dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
+		final Dao dao = dao();
+		Trans.exec(new Atom() {
+			public void run() {
+				// 建实体类的表
+				dao.create(Client.class, true);
+				dao.create(Menu.class, true);
+				dao.create(Message.class, true);
+				dao.create(Organization.class, true);
+				dao.create(Privilege.class, true);
+				dao.create(Role.class, true);
+				dao.create(SysEnum.class, true);
+				dao.create(SysEnumItem.class, true);
+				dao.create(SysPara.class, true);
+				dao.create(User.class, true);
+				// 添加默认记录
+				FileSqlManager fm = new FileSqlManager("init_system.sql");
+				List<Sql> sqlList = fm.createCombo(fm.keys());
+				dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
+				// 初始化quartz的数据表
+				fm = new FileSqlManager("tables_quartz.sql");
+				sqlList = fm.createCombo(fm.keys());
+				dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
+			}
+		});
+		respData.setSystemMessage("初始化数据库成功!", null, null);
 		return respData;
 	}
 

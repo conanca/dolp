@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +13,8 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.lang.Strings;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -37,19 +38,24 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData saveMessage(int messageId, User senderUser, String[] receiverUsers, String title, String content) {
+	public AjaxResData saveMessage(final int messageId, User senderUser, String[] receiverUsers, String title,
+			String content) {
 		AjaxResData respData = new AjaxResData();
 		dao().clearLinks(fetch(messageId), "receivers");
-		Message message = getNewMessage(senderUser, receiverUsers, title, content);
+		final Message message = getNewMessage(senderUser, receiverUsers, title, content);
 		message.setState(0);
-		// 如果指定messageId,则只是更新该消息的内容；否则新增记录
-		if (messageId > 0) {
-			message.setId(messageId);
-			dao().update(message);
-		} else {
-			dao().insert(message);
-		}
-		dao().insertRelation(message, "receivers");
+		Trans.exec(new Atom() {
+			public void run() {
+				// 如果指定messageId,则只是更新该消息的内容；否则新增记录
+				if (messageId > 0) {
+					message.setId(messageId);
+					dao().update(message);
+				} else {
+					dao().insert(message);
+				}
+				dao().insertRelation(message, "receivers");
+			}
+		});
 		respData.setSystemMessage("保存草稿成功!", null, null);
 		return respData;
 	}
@@ -63,42 +69,27 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData sendMessage(int messageId, User senderUser, String[] receiverUsers, String title, String content) {
+	public AjaxResData sendMessage(final int messageId, User senderUser, String[] receiverUsers, String title,
+			String content) {
 		AjaxResData respData = new AjaxResData();
 		dao().clearLinks(fetch(messageId), "receivers");
-		Message message = getNewMessage(senderUser, receiverUsers, title, content);
+		final Message message = getNewMessage(senderUser, receiverUsers, title, content);
 		message.setState(1);
-		// 如果指定messageId,则只是更新该消息的内容；否则新增记录
-		if (messageId > 0) {
-			message.setId(messageId);
-			dao().update(message);
-		} else {
-			dao().insert(message);
-		}
-		dao().insertRelation(message, "receivers");
+		Trans.exec(new Atom() {
+			public void run() {
+				// 如果指定messageId,则只是更新该消息的内容；否则新增记录
+				if (messageId > 0) {
+					message.setId(messageId);
+					dao().update(message);
+				} else {
+					dao().insert(message);
+				}
+				dao().insertRelation(message, "receivers");
+			}
+		});
 		respData.setSystemMessage("发送成功!", null, null);
 		return respData;
 	}
-
-	//	/**
-	//	 * 将指定Id的草稿消息发送出去
-	//	 * @param messageId
-	//	 * @return
-	//	 */
-	//	@Aop(value = "log")
-	//	public AjaxResData sendDraftMessage(String messageId) {
-	//		AjaxResData respData = new AjaxResData();
-	//		if (Strings.isEmpty(messageId)) {
-	//			respData.setSystemMessage(null, "未选择消息!", null);
-	//			return respData;
-	//		}
-	//		int messId = Integer.valueOf(messageId);
-	//		Message message = fetch(messId);
-	//		message.setState(1);
-	//		dao().update(message);
-	//		respData.setSystemMessage("发送成功!", null, null);
-	//		return respData;
-	//	}
 
 	/**
 	 * 删除已接收消息
