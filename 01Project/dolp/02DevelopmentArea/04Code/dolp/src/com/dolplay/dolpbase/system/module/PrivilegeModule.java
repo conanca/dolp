@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.module;
 
-
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
@@ -21,7 +20,7 @@ public class PrivilegeModule {
 		return privilegeService.getGridData(menuId, jqReq);
 	}
 
-	@At()
+	@At
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Privilege privilege) {
 		return privilegeService.CUDPrivilege(oper, ids, privilege);
 	}

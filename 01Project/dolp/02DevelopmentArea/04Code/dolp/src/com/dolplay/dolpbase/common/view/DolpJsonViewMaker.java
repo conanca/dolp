@@ -24,5 +24,4 @@ public class DolpJsonViewMaker implements ViewMaker {
 				return new DolpJsonView(Json.fromJson(JsonFormat.class, value));
 		return null;
 	}
-
 }

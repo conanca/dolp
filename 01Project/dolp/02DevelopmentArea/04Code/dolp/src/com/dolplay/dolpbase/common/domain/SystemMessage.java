@@ -110,5 +110,4 @@ public class SystemMessage {
 	public String toString() {
 		return Json.toJson(this);
 	}
-
 }

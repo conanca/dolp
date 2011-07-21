@@ -57,5 +57,4 @@ public class AjaxResData implements ResponseData {
 	public String toString() {
 		return Json.toJson(this);
 	}
-
 }

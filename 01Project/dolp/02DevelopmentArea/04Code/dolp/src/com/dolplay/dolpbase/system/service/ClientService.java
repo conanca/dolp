@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;

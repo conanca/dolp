@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.dolplay.dolpbase.common.util.DaoHandler;
 
 public class CountClientJob implements Job {
-
 	private static Logger logger = LoggerFactory.getLogger(CountClientJob.class);
 
 	@Override
@@ -22,5 +21,4 @@ public class CountClientJob implements Job {
 		int clientCount = DaoHandler.getDao().count("SYSTEM_CLIENT");
 		logger.info(new Date() + " 当前在线终端数目：" + clientCount);
 	}
-
 }

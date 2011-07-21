@@ -24,7 +24,7 @@ public class MVCHandler {
 		String Agent = request.getHeader("User-Agent");
 		StringTokenizer st = new StringTokenizer(Agent, ";");
 		st.nextToken();
-		//得到用户的浏览器名
+		//得到用户的浏览器类型
 		String userbrowser = st.nextToken();
 		return userbrowser;
 	}

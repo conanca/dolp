@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.schedule;
 
-
 import java.util.Date;
 
 import org.quartz.DateBuilder;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.dolplay.dolpbase.system.job.CountClientJob;
 
 public class SchedulerRunner {
-
 	private static Logger Logger = LoggerFactory.getLogger(SchedulerRunner.class);
 
 	public void run() throws Exception {

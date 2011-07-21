@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.common.domain.jqgrid;
 
-
 import java.lang.reflect.Field;
 import java.util.List;
 

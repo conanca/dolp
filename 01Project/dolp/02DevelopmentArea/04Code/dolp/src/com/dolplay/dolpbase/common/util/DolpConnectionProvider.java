@@ -21,5 +21,4 @@ public class DolpConnectionProvider implements ConnectionProvider {
 		logger.info("Close connection");
 		this.getConnection().close();
 	}
-
 }

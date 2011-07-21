@@ -57,5 +57,4 @@ public class JqgridReqData {
 	public void setSord(String sord) {
 		this.sord = sord;
 	}
-
 }

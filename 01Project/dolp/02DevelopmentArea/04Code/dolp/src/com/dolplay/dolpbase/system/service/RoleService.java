@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,7 +95,6 @@ public class RoleService extends DolpBaseService<Role> {
 					dao().clear("SYSTEM_ROLE_PRIVILEGE",
 							Cnd.where("ROLEID", "=", roleId).and("PRIVILEGEID", "in", unCheckedPrivileges));
 				}
-
 				// 添加该角色选中的菜单项和操作权限，如果已存在则不添加
 				if (checkedMenus != null) {
 					for (String checkedMenu : checkedMenus) {

@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-
 import java.util.List;
 
 import org.nutz.dao.Cnd;
@@ -61,7 +60,6 @@ public class OrganizationService extends DolpBaseService<Organization> {
 			});
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
-
 			dao().insert(organization);
 			respData.setSystemMessage("添加成功!", null, null);
 		} else if ("edit".equals(oper)) {

@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.module;
 
-
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.annotation.InjectName;

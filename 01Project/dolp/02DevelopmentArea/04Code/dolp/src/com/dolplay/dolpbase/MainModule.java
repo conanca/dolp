@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase;
 
-
 import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;

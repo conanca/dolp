@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.common.domain.jqgrid;
 
-
 import java.util.List;
 
 import org.nutz.json.Json;

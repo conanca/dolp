@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.listener;
 
-
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -24,5 +23,4 @@ public class DolpSessionListener implements HttpSessionListener {
 		// 将相应的记录从在线用户表中删除
 		DaoHandler.getDao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
 	}
-
 }

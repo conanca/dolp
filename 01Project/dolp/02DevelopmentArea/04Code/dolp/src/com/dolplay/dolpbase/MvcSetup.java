@@ -88,5 +88,4 @@ public class MvcSetup implements Setup {
 			logger.error("Stop SchedulerRunner exception", e);
 		}
 	}
-
 }

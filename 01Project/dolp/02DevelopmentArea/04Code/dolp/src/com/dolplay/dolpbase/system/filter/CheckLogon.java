@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.filter;
 
-
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
