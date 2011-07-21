@@ -5,7 +5,7 @@ var ioc = {
 	},
 
 	userService : {
-		type : "gs.dolp.system.service.UserService",
+		type : "com.dolplay.dolpbase.system.service.UserService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -14,7 +14,7 @@ var ioc = {
 	},
 
 	userModule : {
-		type : "gs.dolp.system.module.UserModule",
+		type : "com.dolplay.dolpbase.system.module.UserModule",
 		fields : {
 			userService : {
 				refer : 'userService'
@@ -23,7 +23,7 @@ var ioc = {
 	},
 
 	roleService : {
-		type : "gs.dolp.system.service.RoleService",
+		type : "com.dolplay.dolpbase.system.service.RoleService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -32,7 +32,7 @@ var ioc = {
 	},
 
 	roleModule : {
-		type : "gs.dolp.system.module.RoleModule",
+		type : "com.dolplay.dolpbase.system.module.RoleModule",
 		fields : {
 			roleService : {
 				refer : 'roleService'
@@ -41,7 +41,7 @@ var ioc = {
 	},
 
 	menuService : {
-		type : "gs.dolp.system.service.MenuService",
+		type : "com.dolplay.dolpbase.system.service.MenuService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -50,7 +50,7 @@ var ioc = {
 	},
 
 	menuModule : {
-		type : "gs.dolp.system.module.MenuModule",
+		type : "com.dolplay.dolpbase.system.module.MenuModule",
 		fields : {
 			menuService : {
 				refer : 'menuService'
@@ -59,7 +59,7 @@ var ioc = {
 	},
 	
 	organizationService : {
-		type : "gs.dolp.system.service.OrganizationService",
+		type : "com.dolplay.dolpbase.system.service.OrganizationService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -68,7 +68,7 @@ var ioc = {
 	},
 
 	organizationModule : {
-		type : "gs.dolp.system.module.OrganizationModule",
+		type : "com.dolplay.dolpbase.system.module.OrganizationModule",
 		fields : {
 			organizationService : {
 				refer : 'organizationService'
@@ -77,7 +77,7 @@ var ioc = {
 	},
 	
 	sysEnumService : {
-		type : "gs.dolp.system.service.SysEnumService",
+		type : "com.dolplay.dolpbase.system.service.SysEnumService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -86,7 +86,7 @@ var ioc = {
 	},
 
 	sysEnumItemService : {
-		type : "gs.dolp.system.service.SysEnumItemService",
+		type : "com.dolplay.dolpbase.system.service.SysEnumItemService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -95,7 +95,7 @@ var ioc = {
 	},
 
 	sysEnumModule : {
-		type : "gs.dolp.system.module.SysEnumModule",
+		type : "com.dolplay.dolpbase.system.module.SysEnumModule",
 		fields : {
 			sysEnumService : {
 				refer : 'sysEnumService'
@@ -107,7 +107,7 @@ var ioc = {
 	},
 	
 	sysParaService : {
-		type : "gs.dolp.system.service.SysParaService",
+		type : "com.dolplay.dolpbase.system.service.SysParaService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -116,7 +116,7 @@ var ioc = {
 	},
 
 	sysParaModule : {
-		type : "gs.dolp.system.module.SysParaModule",
+		type : "com.dolplay.dolpbase.system.module.SysParaModule",
 		fields : {
 			sysParaService : {
 				refer : 'sysParaService'
@@ -125,7 +125,7 @@ var ioc = {
 	},
 	
 	systemService : {
-		type : "gs.dolp.system.service.SystemService",
+		type : "com.dolplay.dolpbase.system.service.SystemService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -134,7 +134,7 @@ var ioc = {
 	},
 
 	systemModule : {
-		type : "gs.dolp.system.module.SystemModule",
+		type : "com.dolplay.dolpbase.system.module.SystemModule",
 		fields : {
 			systemService : {
 				refer : 'systemService'
@@ -149,7 +149,7 @@ var ioc = {
 	},
 	
 	privilegeService : {
-		type : "gs.dolp.system.service.PrivilegeService",
+		type : "com.dolplay.dolpbase.system.service.PrivilegeService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -158,7 +158,7 @@ var ioc = {
 	},
 
 	privilegeModule : {
-		type : "gs.dolp.system.module.PrivilegeModule",
+		type : "com.dolplay.dolpbase.system.module.PrivilegeModule",
 		fields : {
 			privilegeService : {
 				refer : 'privilegeService'
@@ -167,7 +167,7 @@ var ioc = {
 	},
 	
 	messageService : {
-		type : "gs.dolp.system.service.MessageService",
+		type : "com.dolplay.dolpbase.system.service.MessageService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -176,7 +176,7 @@ var ioc = {
 	},
 
 	messageModule : {
-		type : "gs.dolp.system.module.MessageModule",
+		type : "com.dolplay.dolpbase.system.module.MessageModule",
 		fields : {
 			messageService : {
 				refer : 'messageService'
@@ -185,7 +185,7 @@ var ioc = {
 	},
 	
 	clientService : {
-		type : "gs.dolp.system.service.ClientService",
+		type : "com.dolplay.dolpbase.system.service.ClientService",
 		args : {
 			dao : {
 				refer : 'dao'
@@ -194,7 +194,7 @@ var ioc = {
 	},
 
 	clientModule : {
-		type : "gs.dolp.system.module.ClientModule",
+		type : "com.dolplay.dolpbase.system.module.ClientModule",
 		fields : {
 			clientService : {
 				refer : 'clientService'
