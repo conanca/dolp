@@ -39,6 +39,11 @@ public class SystemModule {
 		return systemService.getSystemName();
 	}
 
+	@At("/getSysEnumItemMap/*")
+	public ResponseData getSysEnumItemMap(String sysEnumName) {
+		return systemService.getSysEnumItemMap(sysEnumName);
+	}
+
 	/**
 	 * dummy existing url, 用于 jqGrid 的 CRUD on Local Data
 	 */

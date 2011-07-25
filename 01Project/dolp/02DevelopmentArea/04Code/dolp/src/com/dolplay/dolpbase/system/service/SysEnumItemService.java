@@ -1,9 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
@@ -14,7 +10,6 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
-import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 
 @IocBean(args = { "refer:dao" })
@@ -47,19 +42,6 @@ public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 		} else {
 			respData.setSystemMessage(null, "未知操作!", null);
 		}
-		return respData;
-	}
-
-	@Aop(value = "log")
-	public AjaxResData getSysEnumItemMap(String sysEnumName) {
-		AjaxResData respData = new AjaxResData();
-		SysEnum sysEnum = dao().fetch(SysEnum.class, Cnd.where("NAME", "=", sysEnumName));
-		List<SysEnumItem> items = dao().query(SysEnumItem.class, Cnd.where("SYSENUMID", "=", sysEnum.getId()), null);
-		Map<String, String> options = new LinkedHashMap<String, String>();
-		for (SysEnumItem item : items) {
-			options.put(item.getText(), item.getValue());
-		}
-		respData.setReturnData(options);
 		return respData;
 	}
 }

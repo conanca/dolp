@@ -4,12 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
@@ -38,9 +40,29 @@ public class SystemService extends DolpBaseService<Object> {
 		super(dao);
 	}
 
+	@Aop(value = "log")
 	public AjaxResData getSystemName() {
 		AjaxResData respData = new AjaxResData();
 		respData.setReturnData(getSysParaValue("SystemName"));
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData getSysEnumItemMap(String sysEnumName) {
+		AjaxResData respData = new AjaxResData();
+		SysEnum sysEnum = dao().fetch(SysEnum.class, Cnd.where("NAME", "=", sysEnumName));
+		if (sysEnum == null) {
+			StringBuilder message = new StringBuilder("系统枚举:\"");
+			message.append(sysEnumName);
+			message.append("\"不存在!");
+			throw new RuntimeException(message.toString());
+		}
+		List<SysEnumItem> items = dao().query(SysEnumItem.class, Cnd.where("SYSENUMID", "=", sysEnum.getId()), null);
+		Map<String, String> options = new LinkedHashMap<String, String>();
+		for (SysEnumItem item : items) {
+			options.put(item.getText(), item.getValue());
+		}
+		respData.setReturnData(options);
 		return respData;
 	}
 

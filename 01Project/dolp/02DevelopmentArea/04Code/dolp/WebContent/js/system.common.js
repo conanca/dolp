@@ -76,7 +76,7 @@ $.extend({
 	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
-		var url = 'system/sysEnum/getSysEnumItemMap/'+SysEnumName;
+		var url = 'getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
 			if(response.systemMessage){
