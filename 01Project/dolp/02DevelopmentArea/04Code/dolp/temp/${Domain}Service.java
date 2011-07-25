@@ -1,16 +1,18 @@
 package ${package}.service;
 
-import gs.dolp.common.domain.AjaxResData;
-import gs.dolp.common.domain.jqgrid.AdvancedJqgridResData;
-import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import gs.dolp.common.service.DolpBaseService;
-import ${package}.domain.${Domain};
+import com.dolplay.dolpbase.common.domain.AjaxResData;
+import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
+import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
+import com.dolplay.dolpbase.common.service.DolpBaseService;
+import ${domainPackage}.${Domain};
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 
+@IocBean(args = { "refer:dao" })
 public class ${Domain}Service extends DolpBaseService<${Domain}> {
 
 	public ${Domain}Service(Dao dao) {

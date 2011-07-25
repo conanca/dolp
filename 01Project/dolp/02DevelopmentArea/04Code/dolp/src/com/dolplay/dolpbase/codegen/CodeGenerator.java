@@ -1,10 +1,5 @@
 package com.dolplay.dolpbase.codegen;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,10 +17,15 @@ import org.nutz.lang.Files;
 
 import com.dolplay.dolpbase.system.domain.User;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 public class CodeGenerator {
 
 	final static private Class<?> domainClass = User.class;
-	final static private String PACKAGE = "gs.dolp.hotel";
+	final static private String PACKAGE = "com.dolplay.dolpbase.hotel";
 	final static private String REQUESTPATH = "hotel";
 	final static private String HTMLPATH = "hotel";
 
@@ -53,6 +53,7 @@ public class CodeGenerator {
 		/* 创建数据模型 */
 		root = new HashMap<String, Object>();
 		root.put("package", PACKAGE);
+		root.put("domainPackage", domainClass.getPackage().getName());
 		root.put("Domain", domainClass.getSimpleName());
 		root.put("requestPath", REQUESTPATH);
 		root.put("domainFields", getDomainFields());
@@ -62,7 +63,6 @@ public class CodeGenerator {
 		tempToFile("${Domain}Service.java", getServiceSrcPath());
 		tempToFile("${Domain}Module.java", getModuleSrcPath());
 		tempToFile("${Domain}_manger.html", getHtmlPath());
-		tempPrint("ico.js.ftl");
 		tempPrint("sql.ftl");
 	}
 

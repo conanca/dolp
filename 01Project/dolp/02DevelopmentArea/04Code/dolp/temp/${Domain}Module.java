@@ -1,17 +1,20 @@
 package ${package}.module;
 
-import gs.dolp.common.domain.ResponseData;
-import gs.dolp.common.domain.jqgrid.JqgridReqData;
-import ${package}.domain.${Domain};
+import com.dolplay.dolpbase.common.domain.ResponseData;
+import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
+import ${domainPackage}.${Domain};
 import ${package}.service.${Domain}Service;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
-@InjectName("${Domain?uncap_first}Module")
+@IocBean
 @At("/${requestPath}/${Domain?uncap_first}")
 public class ${Domain}Module {
+	
+	@Inject
 	private ${Domain}Service ${Domain?uncap_first}Service;
 
 	@At
