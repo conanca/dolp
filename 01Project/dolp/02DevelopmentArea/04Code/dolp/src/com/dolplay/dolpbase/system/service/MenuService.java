@@ -9,6 +9,7 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -23,6 +24,7 @@ import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.TreeNode;
 import com.dolplay.dolpbase.system.domain.User;
 
+@IocBean(args = { "refer:dao" })
 public class MenuService extends DolpBaseService<Menu> {
 
 	public MenuService(Dao dao) {

@@ -12,6 +12,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
@@ -23,6 +24,7 @@ import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.User;
 
+@IocBean(args = { "refer:dao" })
 public class MessageService extends DolpBaseService<Message> {
 
 	public MessageService(Dao dao) {

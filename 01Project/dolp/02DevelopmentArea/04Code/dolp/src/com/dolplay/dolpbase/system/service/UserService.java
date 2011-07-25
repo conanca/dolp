@@ -14,6 +14,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
@@ -26,6 +27,7 @@ import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
 
+@IocBean(args = { "refer:dao" })
 public class UserService extends DolpBaseService<User> {
 
 	public UserService(Dao dao) {

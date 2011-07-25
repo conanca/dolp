@@ -14,6 +14,7 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -30,6 +31,7 @@ import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
 
+@IocBean(args = { "refer:dao" })
 public class SystemService extends DolpBaseService<Object> {
 
 	public SystemService(Dao dao) {

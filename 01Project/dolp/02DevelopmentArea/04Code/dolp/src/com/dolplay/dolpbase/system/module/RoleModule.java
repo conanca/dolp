@@ -1,6 +1,7 @@
 package com.dolplay.dolpbase.system.module;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
@@ -9,10 +10,11 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.service.RoleService;
 
-@InjectName("roleModule")
+@IocBean
 @At("/system/role")
 public class RoleModule {
 
+	@Inject
 	private RoleService roleService;
 
 	@At

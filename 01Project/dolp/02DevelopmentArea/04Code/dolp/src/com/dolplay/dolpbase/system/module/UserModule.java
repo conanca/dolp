@@ -4,7 +4,8 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpSession;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
@@ -13,10 +14,11 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.service.UserService;
 
-@InjectName("userModule")
+@IocBean
 @At("/system/user")
 public class UserModule {
 
+	@Inject
 	private UserService userService;
 
 	@At

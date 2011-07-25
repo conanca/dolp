@@ -12,6 +12,7 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -22,6 +23,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.Role;
 
+@IocBean(args = { "refer:dao" })
 public class RoleService extends DolpBaseService<Role> {
 
 	public RoleService(Dao dao) {

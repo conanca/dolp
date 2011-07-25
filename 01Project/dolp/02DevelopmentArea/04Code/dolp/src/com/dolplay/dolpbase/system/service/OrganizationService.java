@@ -6,6 +6,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -15,6 +16,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.Organization;
 
+@IocBean(args = { "refer:dao" })
 public class OrganizationService extends DolpBaseService<Organization> {
 
 	public OrganizationService(Dao dao) {

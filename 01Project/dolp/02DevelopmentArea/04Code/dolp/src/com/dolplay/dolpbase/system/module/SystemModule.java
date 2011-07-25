@@ -8,7 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
@@ -22,12 +23,15 @@ import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
 
-@InjectName("systemModule")
+@IocBean
 @Filters
 public class SystemModule {
 
+	@Inject
 	private SystemService systemService;
+	@Inject
 	private UserService userService;
+	@Inject
 	private ClientService clientService;
 
 	@At

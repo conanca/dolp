@@ -2,7 +2,8 @@ package com.dolplay.dolpbase.system.module;
 
 import javax.servlet.http.HttpSession;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
@@ -12,10 +13,11 @@ import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.service.MenuService;
 
-@InjectName("menuModule")
+@IocBean
 @At("/system/menu")
 public class MenuModule {
 
+	@Inject
 	private MenuService menuService;
 
 	/**

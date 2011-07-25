@@ -1,6 +1,7 @@
 package com.dolplay.dolpbase.system.module;
 
-import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
@@ -11,11 +12,13 @@ import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.service.SysEnumItemService;
 import com.dolplay.dolpbase.system.service.SysEnumService;
 
-@InjectName("sysEnumModule")
+@IocBean
 @At("/system/sysEnum")
 public class SysEnumModule {
 
+	@Inject
 	private SysEnumService sysEnumService;
+	@Inject
 	private SysEnumItemService sysEnumItemService;
 
 	@At

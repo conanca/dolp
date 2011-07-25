@@ -4,6 +4,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -11,6 +12,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.SysPara;
 
+@IocBean(args = { "refer:dao" })
 public class SysParaService extends DolpBaseService<SysPara> {
 
 	public SysParaService(Dao dao) {
