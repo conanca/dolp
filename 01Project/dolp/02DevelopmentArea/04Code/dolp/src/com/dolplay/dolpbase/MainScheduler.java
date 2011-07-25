@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.schedule;
+package com.dolplay.dolpbase;
 
 import java.util.Date;
 
@@ -16,15 +16,20 @@ import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.system.job.CountClientJob;
 
-public class SchedulerRunner {
-	private static Logger Logger = LoggerFactory.getLogger(SchedulerRunner.class);
+/**
+ * 随服务一起运行的Scheduler
+ * @author Administrator
+ *
+ */
+public class MainScheduler {
+	private static Logger logger = LoggerFactory.getLogger(MainScheduler.class);
 
 	public void run() throws Exception {
-		Logger.info("------- scheduler初始化 ----------------------");
+		logger.info("------- scheduler初始化 ----------------------");
 		// 获取scheduler的引用
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
-		Logger.info("------- scheduler初始化完成 ------------------");
+		logger.info("------- scheduler初始化完成 ------------------");
 
 		// 设置Job：CountClientJob
 		JobDetail job = JobBuilder.newJob(CountClientJob.class).withIdentity("job1", "group1").build();
@@ -37,20 +42,20 @@ public class SchedulerRunner {
 		if (!sched.checkExists(job.getKey()) && !sched.checkExists(trigger.getKey())) {
 			sched.scheduleJob(job, trigger);
 		}
-		Logger.info(job.getKey() + " 将会重复: " + trigger.getRepeatCount() + " 次, 每 " + trigger.getRepeatInterval() / 1000
+		logger.info(job.getKey() + " 将会重复: " + trigger.getRepeatCount() + " 次, 每 " + trigger.getRepeatInterval() / 1000
 				+ " 秒重复一次");
 
-		Logger.info("------- 正在启动 Scheduler -------------------");
+		logger.info("------- 正在启动 Scheduler -------------------");
 		sched.start();
-		Logger.info("------- 已启动 Scheduler ---------------------");
+		logger.info("------- 已启动 Scheduler ---------------------");
 	}
 
 	public void stop() throws Exception {
-		Logger.info("------- scheduler初始化 ----------------------");
+		logger.info("------- scheduler初始化 ----------------------");
 		// 获取scheduler的引用
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
-		Logger.info("------- scheduler初始化完成 ------------------");
+		logger.info("------- scheduler初始化完成 ------------------");
 		sched.shutdown();
 	}
 }

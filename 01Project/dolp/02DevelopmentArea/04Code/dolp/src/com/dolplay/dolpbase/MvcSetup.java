@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoHandler;
-import com.dolplay.dolpbase.schedule.SchedulerRunner;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
@@ -63,9 +62,9 @@ public class MvcSetup implements Setup {
 		// 清空在线用户表
 		dao.clear("SYSTEM_CLIENT");
 		// 启动Scheduler
-		SchedulerRunner runner = new SchedulerRunner();
+		MainScheduler runner = new MainScheduler();
 		try {
-			runner.run();
+			//runner.run();
 		} catch (Exception e) {
 			logger.error("Start SchedulerRunner exception", e);
 		}
@@ -81,9 +80,9 @@ public class MvcSetup implements Setup {
 		// 清空在线用户表
 		DaoHandler.getDao().clear("SYSTEM_CLIENT");
 		// 停止Scheduler
-		SchedulerRunner runner = new SchedulerRunner();
+		MainScheduler runner = new MainScheduler();
 		try {
-			runner.stop();
+			//runner.stop();
 		} catch (Exception e) {
 			logger.error("Stop SchedulerRunner exception", e);
 		}
