@@ -27,7 +27,8 @@ public class CheckLogon implements ActionFilter {
 			excpAjaxResData.setUserdata(userdata);
 			jsonView.setData(excpAjaxResData);
 			return jsonView;
+		} else {
+			return null;
 		}
-		return null;
 	}
 }
