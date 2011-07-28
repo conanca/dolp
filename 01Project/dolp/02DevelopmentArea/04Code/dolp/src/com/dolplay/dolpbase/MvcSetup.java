@@ -21,6 +21,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.util.MethodListHandler;
 
 public class MvcSetup implements Setup {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
@@ -61,6 +62,10 @@ public class MvcSetup implements Setup {
 
 		// 清空在线用户表
 		dao.clear("SYSTEM_CLIENT");
+
+		// 获取权限表中所有的方法列表
+		MethodListHandler.updateMethodList();
+
 		// 启动Scheduler
 		MainScheduler runner = new MainScheduler();
 		try {
