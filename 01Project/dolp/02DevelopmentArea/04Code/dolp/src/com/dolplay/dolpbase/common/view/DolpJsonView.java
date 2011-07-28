@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
 import com.dolplay.dolpbase.common.domain.SystemMessage;
-import com.dolplay.dolpbase.common.util.ExceptionHandler;
 
 /**
  * @author Administrator
@@ -41,13 +40,21 @@ public class DolpJsonView implements View {
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			Throwable exception = (Throwable) obj;
 			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, exception.getMessage()));
+			String exceptionMessage = exception.getMessage();
+			if (null == exceptionMessage) {
+				if (exception instanceof NullPointerException) {
+					exceptionMessage = "java.lang.NullPointerException: null";
+				} else {
+					exceptionMessage = "未知异常信息";
+				}
+			}
+			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, exceptionMessage));
 			AjaxResData userdata = new AjaxResData();
-			userdata.setSystemMessage(null, null, exception.getMessage());
+			userdata.setSystemMessage(null, null, exceptionMessage);
 			excpAjaxResData.setUserdata(userdata);
 			jsonWritedStr = excpAjaxResData;
 			// 输出日志
-			logger.error(ExceptionHandler.packageException(exception));
+			logger.error("异常发生:", exception);
 		}
 		Mvcs.write(resp, null == jsonWritedStr ? data : jsonWritedStr, format);
 	}
