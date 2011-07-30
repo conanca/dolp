@@ -1,8 +1,10 @@
 
 syntax: glob
-.settings
-syntax: glob
 build
+syntax: glob
+dist
+syntax: glob
+.settings
 syntax: glob
 .classpath
 syntax: glob

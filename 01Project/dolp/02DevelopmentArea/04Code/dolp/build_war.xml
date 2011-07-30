@@ -1,6 +1,6 @@
 <project name="dolp" default="dist" basedir=".">
     <description>
-        dolp 的 build 文件
+        请修改上面的 project name 和此处的 description
     </description>
   <!-- 设置全局变量 -->
   <property name="src" location="src"/>
@@ -50,16 +50,12 @@
     </copy>
     <!-- 创建分发物的目录 -->
     <mkdir dir="${dist}"/>
-    <!-- 将 ${webcontent} 下面所有的东西打包成 dolp.war 文件 -->
-    <war warfile="${dist}/dolp.war" webxml="${webcontent}/WEB-INF/web.xml">
+    <!-- 将 ${webcontent} 下面所有的东西打包成war文件 -->
+    <war warfile="${dist}/${ant.project.name}.war" webxml="${webcontent}/WEB-INF/web.xml">
       <classes dir = "${classes}"/>
         <fileset dir="${webcontent}">
       </fileset>
     </war>
-  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,MainModule.class,MainScheduler.class,MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
-  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="dao.js,MainModule.java,MainScheduler.java,MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
-  	<copy tofile="CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
-  	<zip destfile="${dist}/project.zip" basedir="." includes="WebContent/,temp/,CodeGenerator.java,build_war.xml"/>
   	<delete file="CodeGenerator.java"/>
   </target>
 
