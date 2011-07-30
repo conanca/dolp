@@ -36,7 +36,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- 编译 java 代码——从 ${src} 到 ${build} -->
-    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8">
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8" excludes="com/dolplay/dolpbase/codegen/">
       <compilerarg value="-Xlint:all" />
       <classpath refid="CLASSPATH" />
     </javac>
@@ -56,6 +56,11 @@
         <fileset dir="${webcontent}">
       </fileset>
     </war>
+  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,MainModule.class,MainScheduler.class,MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
+  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="dao.js,MainModule.java,MainScheduler.java,MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
+  	<copy tofile="CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
+  	<zip destfile="${dist}/project.zip" basedir="." includes="WebContent/,temp/,CodeGenerator.java"/>
+  	<delete file="CodeGenerator.java"/>
   </target>
 
   <target name="clean"
