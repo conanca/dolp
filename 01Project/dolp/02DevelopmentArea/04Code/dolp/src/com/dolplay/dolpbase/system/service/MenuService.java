@@ -173,8 +173,9 @@ public class MenuService extends DolpBaseService<Menu> {
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRgt", parentRgt);
 		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
+		sql.setCondition(cnd);
 		// 开始封装jqGrid的json格式数据类
-		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, cnd, jqReq);
+		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, jqReq);
 		return jq;
 	}
 

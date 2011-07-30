@@ -35,7 +35,8 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	}
 
 	/**
-	 * 通过 查询条件cnd和排序分页信息jqReq，从数据库查询数据，并封装为AdvancedJqgridResData格式。
+	 * 通过指定查询条件cnd和排序分页信息jqReq，从数据库查询数据，并封装为当前Service实体类型的AdvancedJqgridResData格式。
+	 * 支持分页和排序
 	 * @param cnd
 	 * @param jqReq
 	 * @return
@@ -85,7 +86,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	}
 
 	/**
-	 * 通过 Class、自定义Sql语句、查询条件cnd和排序分页信息jqReq，从数据库查询数据，并封装为AdvancedJqgridResData格式。
+	 * 通过指定实体的 Class、自定义Sql语句、查询条件cnd和排序分页信息jqReq，从数据库查询数据，并封装为指定实体类型的AdvancedJqgridResData格式。
 	 * 注：目前不支持分页和排序功能
 	 * @param tClass
 	 * @param sql
@@ -93,13 +94,11 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	 * @param jqReq
 	 * @return
 	 */
-	public AdvancedJqgridResData<T> getAdvancedJqgridRespData(Class<T> tClass, Sql sql, Condition cnd,
-			JqgridReqData jqReq) {
+	public AdvancedJqgridResData<T> getAdvancedJqgridRespData(Class<T> tClass, Sql sql, JqgridReqData jqReq) {
 		// 设置rows
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(tClass));
-		sql.setCondition(cnd);
-		// TODO 如果Sql支持setPager就好了。
+		// TODO 如果Sql支持setPager就好了。目前不支持分页
 		dao().execute(sql);
 		List<T> rows = sql.getList(tClass);
 		// 设置总记录数
@@ -107,6 +106,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 		// 设置开始页数
 		int page = jqReq.getPage();
 		int pageNumber = page == 0 ? 1 : page;
+		// TODO 目前不支持排序
 		// 开始封装jqGrid的json格式数据类
 		AdvancedJqgridResData<T> jq = new AdvancedJqgridResData<T>();
 		jq.setTotal(0);
@@ -119,13 +119,14 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 
 	/**
 	 * 通过自定义Sql语句、查询条件cnd和排序分页信息jqReq，从数据库查询数据，将各条记录和分页信息封装为StandardJqgridResData格式。
+	 * 注：目前不支持分页和排序功能
 	 * @param sql
 	 * @param cnd
 	 * @param jqReq
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public StandardJqgridResData getStandardJqgridResData(Sql sql, Condition cnd, JqgridReqData jqReq) {
+	public StandardJqgridResData getStandardJqgridResData(Sql sql, JqgridReqData jqReq) {
 		// 设置rows
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
@@ -146,6 +147,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 		});
 		dao().execute(sql);
 		List<StandardJqgridResDataRow> rows = (List<StandardJqgridResDataRow>) sql.getResult();
+		// TODO 目前不支持分页和排序
 		// 设置开始页数
 		int page = jqReq.getPage();
 		int pageNumber = page == 0 ? 1 : page;

@@ -124,6 +124,14 @@ public class RoleService extends DolpBaseService<Role> {
 		return respData;
 	}
 
+	/**
+	 * 获取指定用户的岗位列表
+	 * @param jqReq
+	 * @param organizationId
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
 	@Aop(value = "log")
 	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId)
 			throws SQLException {
@@ -132,7 +140,7 @@ public class RoleService extends DolpBaseService<Role> {
 				+ "FROM SYSTEM_ROLE WHERE ORGANIZATIONID = $organizationId");
 		sql.vars().set("userId", userId);
 		sql.vars().set("organizationId", organizationId);
-		StandardJqgridResData jq = getStandardJqgridResData(sql, null, jqReq);
+		StandardJqgridResData jq = getStandardJqgridResData(sql, jqReq);
 		return jq;
 	}
 }
