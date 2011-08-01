@@ -11,6 +11,7 @@
 		<filter-class>org.nutz.mvc.NutFilter</filter-class>
 		<init-param>
 				<param-name>modules</param-name>
+				<!--  请修改下面的主模块  --> 
 				<param-value>com.dolplay.dolpbase.MainModule</param-value>
 		</init-param>
 	</filter>
