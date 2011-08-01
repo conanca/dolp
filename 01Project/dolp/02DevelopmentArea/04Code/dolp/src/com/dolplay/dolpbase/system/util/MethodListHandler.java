@@ -13,6 +13,7 @@ import com.dolplay.dolpbase.system.domain.Privilege;
  * @author Administrator
  *
  */
+// TODO 等AtMap问题修正后，就废弃这个类
 public class MethodListHandler {
 	private static List<String> methodList;
 

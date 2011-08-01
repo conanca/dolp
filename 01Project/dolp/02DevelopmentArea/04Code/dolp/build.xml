@@ -56,11 +56,26 @@
         <fileset dir="${webcontent}">
       </fileset>
     </war>
-  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,MainModule.class,MainScheduler.class,MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
-  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="dao.js,MainModule.java,MainScheduler.java,MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
-  	<copy tofile="CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
-  	<zip destfile="${dist}/project.zip" basedir="." includes="WebContent/,temp/,CodeGenerator.java,build_war.xml"/>
-  	<delete file="CodeGenerator.java"/>
+  	<!-- 将 ${classes} 下面所有的东西打包成 dolp.jar 文件 -->
+  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,com/dolplay/dolpbase/MainModule.class,com/dolplay/dolpbase/MainScheduler.class,com/dolplay/dolpbase/MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
+  	<!-- 将 ${src} 下面所有的东西打包成 dolp-source.jar 文件 -->
+  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="dao.js,com/dolplay/dolpbase/MainModule.java,com/dolplay/dolpbase/MainScheduler.java,com/dolplay/dolpbase/MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
+  	<!-- 将 CodeGenerator.java,build_war.xml,WebContent和temp 打包成 project.zip文件 -->
+  	<mkdir dir="project"/>
+  	<copy tofile="project/CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
+  	<copy tofile="project/build.xml" file="build_war.xml"/>
+  	<copy todir="project/WebContent">
+  	    <fileset dir="WebContent"/>
+  	</copy>
+  	<copy todir="project/temp">
+  	    <fileset dir="temp"/>
+  	</copy>
+  	<copy tofile="project/build.xml" file="build_war.xml"/>
+  	<copy tofile="project/src/com/dolplay/dolpbase/MainModule.java" file="src/com/dolplay/dolpbase/MainModule.java"/>
+  	<copy tofile="project/src/com/dolplay/dolpbase/MainScheduler.java" file="src/com/dolplay/dolpbase/MainScheduler.java"/>
+  	<copy tofile="project/src/com/dolplay/dolpbase/MvcSetup.java" file="src/com/dolplay/dolpbase/MvcSetup.java"/>
+  	<zip destfile="${dist}/project.zip" basedir="project/"/>
+  	<delete dir="project"/>
   </target>
 
   <target name="clean"
