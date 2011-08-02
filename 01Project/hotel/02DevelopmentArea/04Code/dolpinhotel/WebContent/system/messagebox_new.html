@@ -36,7 +36,7 @@ $(function(){
 		multiselect: true
 	});
 	//不显示jqgrid自带的增删改查按钮
-	$("#messageNewUserInfoList").navGrid('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
+	$("#messageNewUserInfoList").setJqGridCUD('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
 
 	//查询按钮点击事件
 	$("#messageNewUserInfo_search_btn").click(function () { 

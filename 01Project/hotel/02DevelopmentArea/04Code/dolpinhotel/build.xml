@@ -1,6 +1,6 @@
-<project name="dolpinhotel" default="dist" basedir=".">
+<project name="dolp" default="dist" basedir=".">
     <description>
-        dolpinhotel 的 build 文件
+        请修改上面的 project name 和此处的 description
     </description>
   <!-- 设置全局变量 -->
   <property name="src" location="src"/>
@@ -36,7 +36,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- 编译 java 代码——从 ${src} 到 ${build} -->
-    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8">
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8" excludes="com/dolplay/dolpbase/codegen/">
       <compilerarg value="-Xlint:all" />
       <classpath refid="CLASSPATH" />
     </javac>
@@ -50,12 +50,13 @@
     </copy>
     <!-- 创建分发物的目录 -->
     <mkdir dir="${dist}"/>
-    <!-- 将 ${webcontent} 下面所有的东西打包成 dolpinhotel.war 文件 -->
-    <war warfile="${dist}/dolpinhotel.war" webxml="${webcontent}/WEB-INF/web.xml">
+    <!-- 将 ${webcontent} 下面所有的东西打包成war文件 -->
+    <war warfile="${dist}/${ant.project.name}.war" webxml="${webcontent}/WEB-INF/web.xml">
       <classes dir = "${classes}"/>
         <fileset dir="${webcontent}">
       </fileset>
     </war>
+  	<delete file="CodeGenerator.java"/>
   </target>
 
   <target name="clean"

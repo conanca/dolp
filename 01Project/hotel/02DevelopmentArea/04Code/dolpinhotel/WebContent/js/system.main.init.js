@@ -19,6 +19,9 @@ $.extend($.jgrid.defaults, {
 	viewrecords: true,
 	loadComplete: function(){
 		$.addMessage($(this).getGridParam('userData').systemMessage);
+	},
+	loadError: function(xhr,status,error){
+		$.addMessageStr(null,null,$(this).attr("id")+":"+status+"{"+error+"}");
 	}
 });
 

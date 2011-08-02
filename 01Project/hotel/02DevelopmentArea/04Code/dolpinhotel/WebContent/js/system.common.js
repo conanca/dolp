@@ -76,7 +76,7 @@ $.extend({
 	},
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName) {
-		var url = 'system/sysEnum/getSysEnumItemMap/'+SysEnumName;
+		var url = 'getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
 			if(response.systemMessage){
@@ -164,13 +164,16 @@ $.extend({
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	};
-	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr)
-	$.fn.setJqGridCUD = function(pager,para) {
+	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法
+	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		var selectorid=this.selector;
 		$(selectorid).navGrid(pager,para,
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					if(afterSubmitTodo && afterSubmitTodo.edit){
+						afterSubmitTodo.edit();
+					}
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
@@ -178,6 +181,10 @@ $.extend({
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					if(afterSubmitTodo && afterSubmitTodo.add){
+						afterSubmitTodo.add();
+					}
+					$(this.selector).resetSelection();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
@@ -185,20 +192,23 @@ $.extend({
 			{
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					if(afterSubmitTodo && afterSubmitTodo.del){
+						afterSubmitTodo.del();
+					}
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				},
-				serializeDelData : function(postData) {
-					var id = postData['id'];
+				serializeDelData : function(postdata) {
+					var id = postdata['id'];
 					if(id){
 						if(parseInt(id) != id){
-							postData['ids'] = postData['id'];
-							postData['id'] = 0;
+							postdata['ids'] = postdata['id'];
+							postdata['id'] = 0;
 						}else{
-							postData['ids'] = postData['id'];
+							postdata['ids'] = postdata['id'];
 						}
 					}
-					return postData;
+					return postdata;
 				}
 			},
 			{},{}
