@@ -53,7 +53,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 			}
 			//获取入住的房间，并修改其状态
 			final Room room = dao().fetch(Room.class, (long) roomId);
-			room.setIsOccupancy(1);
+			room.setIsOccupancy(true);
 
 			//插入房间入住表和顾客信息表这两个操作放到一个事务中
 			Trans.exec(new Atom() {
@@ -152,7 +152,7 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 						RoomOccupancy roomOccupancy = dao().fetchLinks(fetch((long) id), "room");
 						// 获取房间并更新其状态
 						Room room = roomOccupancy.getRoom();
-						room.setIsOccupancy(0);
+						room.setIsOccupancy(false);
 						roomOccupancy.setRoom(room);
 						roomOccupancy.setStatus(1);
 						// 设置离开日期

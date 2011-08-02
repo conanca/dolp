@@ -12,24 +12,24 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("DOLPINHOTEL_ROOMTYPE")
 public class RoomType {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
 	@Column
 	@ColDefine(type = ColType.FLOAT, width = 10, precision = 2)
-	private double price;
+	private Double price;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Many(target = Room.class, field = "roomTypeId")
 	private List<Room> rooms;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -41,11 +41,11 @@ public class RoomType {
 		this.name = name;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -64,5 +64,4 @@ public class RoomType {
 	public void setRooms(List<Room> rooms) {
 		this.rooms = rooms;
 	}
-
 }

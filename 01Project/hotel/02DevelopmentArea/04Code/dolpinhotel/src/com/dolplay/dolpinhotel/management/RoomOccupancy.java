@@ -16,9 +16,9 @@ import com.dolplay.dolpinhotel.setup.Room;
 @Table("DOLPINHOTEL_ROOM_OCCUPANCY")
 public class RoomOccupancy {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
-	private int roomId;
+	private Integer roomId;
 	@One(target = Room.class, field = "roomId")
 	private Room room;
 	@Column("ENTER_DATE")
@@ -28,32 +28,32 @@ public class RoomOccupancy {
 	@Column("LEAVE_DATE")
 	private Timestamp leaveDate;
 	@Column("OCCUPANCY_DAYS")
-	private int occupancyDays;
+	private Integer occupancyDays;
 	@Column
 	@ColDefine(type = ColType.FLOAT, width = 10, precision = 2)
-	private double amount;
+	private Double amount;
 	@Column
-	private int status;
+	private Integer status;
 	@Column
-	private int billId;
+	private Integer billId;
 	@One(target = Bill.class, field = "billId")
 	private Bill bill;
 	@Many(target = Customer.class, field = "roomOccupancyId")
 	private List<Customer> customer;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getRoomId() {
+	public Integer getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
 	}
 
@@ -89,35 +89,35 @@ public class RoomOccupancy {
 		this.leaveDate = leaveDate;
 	}
 
-	public int getOccupancyDays() {
+	public Integer getOccupancyDays() {
 		return occupancyDays;
 	}
 
-	public void setOccupancyDays(int occupancyDays) {
+	public void setOccupancyDays(Integer occupancyDays) {
 		this.occupancyDays = occupancyDays;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
-	public int getBillId() {
+	public Integer getBillId() {
 		return billId;
 	}
 
-	public void setBillId(int billId) {
+	public void setBillId(Integer billId) {
 		this.billId = billId;
 	}
 
@@ -136,5 +136,4 @@ public class RoomOccupancy {
 	public void setCustomer(List<Customer> customer) {
 		this.customer = customer;
 	}
-
 }

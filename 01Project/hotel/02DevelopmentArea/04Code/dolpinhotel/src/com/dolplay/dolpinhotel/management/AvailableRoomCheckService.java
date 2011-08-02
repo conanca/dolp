@@ -23,7 +23,7 @@ public class AvailableRoomCheckService extends DolpBaseService<Object> {
 	public StandardJqgridResData getGridData(JqgridReqData jqReq) throws SQLException {
 		Sql sql = Sqls.create("SELECT (SELECT NAME FROM DOLPINHOTEL_ROOMTYPE WHERE ID = ROOMTYPEID) AS ROOMTYPENAME,"
 				+ "COUNT(ROOMTYPEID) AS AVAILABLEROOMCOUNT FROM DOLPINHOTEL_ROOM "
-				+ "WHERE ISOCCUPANCY = 0 GROUP BY ROOMTYPEID");
+				+ "WHERE ISOCCUPANCY = false GROUP BY ROOMTYPEID");
 		StandardJqgridResData jqGrid = getStandardJqgridResData(sql, jqReq);
 		return jqGrid;
 	}

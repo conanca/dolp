@@ -24,7 +24,7 @@ $(function(){
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
 			{name:'number',index:'number', width:100, editable:true,editrules:{required:true}},
 			{name:'roomTypeId',index:'roomTypeId', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:allRoomTypes1}},
-			{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"0:否;1:是"}},
+			{name:'isOccupancy',index:'isOccupancy', width:100, editable:true, edittype:'select', formatter:'select', editoptions:{value:"false:否;true:是"}},
 		],
 		pager: '#roomPager',
 		sortname: 'number',
@@ -63,9 +63,9 @@ $(function(){
 		</td>
 		<td>
 			<select name="isOccupancy" id="room_manage_isOccupancy">
-				<option value="-1" selected="selected"></option>
-				<option value="0">否</option>
-				<option value="1">是</option>
+				<option value="" selected="selected"></option>
+				<option value="false">否</option>
+				<option value="true">是</option>
 			</select>
 		</td>
 		<td>

@@ -10,22 +10,22 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("DOLPINHOTEL_ROOM")
 public class Room {
 	@Id
-	private int id;
+	private Integer id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String number;
 	@Column
-	private int roomTypeId;
+	private Integer roomTypeId;
 	@One(target = RoomType.class, field = "roomTypeId")
 	private RoomType roomType;
 	@Column
-	private int isOccupancy;
+	private Boolean isOccupancy;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -37,11 +37,11 @@ public class Room {
 		this.number = number;
 	}
 
-	public int getRoomTypeId() {
+	public Integer getRoomTypeId() {
 		return roomTypeId;
 	}
 
-	public void setRoomTypeId(int roomTypeId) {
+	public void setRoomTypeId(Integer roomTypeId) {
 		this.roomTypeId = roomTypeId;
 	}
 
@@ -53,12 +53,11 @@ public class Room {
 		this.roomType = roomType;
 	}
 
-	public int getIsOccupancy() {
+	public Boolean getIsOccupancy() {
 		return isOccupancy;
 	}
 
-	public void setIsOccupancy(int isOccupancy) {
+	public void setIsOccupancy(Boolean isOccupancy) {
 		this.isOccupancy = isOccupancy;
 	}
-
 }

@@ -30,7 +30,7 @@ public class RoomService extends DolpBaseService<Room> {
 		if (!Strings.isBlank(number)) {
 			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
 		}
-		if (!Strings.isBlank(isOccupancy) && !"-1".equals(isOccupancy)) {
+		if (!Strings.isBlank(isOccupancy) && !"".equals(isOccupancy)) {
 			cnd = cnd.and("ISOCCUPANCY", "=", isOccupancy);
 		}
 		if (!Strings.isBlank(roomTypeId) && !"-1".equals(roomTypeId)) {
@@ -62,7 +62,7 @@ public class RoomService extends DolpBaseService<Room> {
 	@Aop(value = "log")
 	public Map<String, String> getAllAvailableRoomForSelectOption(int roomTypeId) {
 		Map<String, String> roomOptions = new LinkedHashMap<String, String>();
-		Condition cnd = Cnd.where("ISOCCUPANCY", "=", 0).and("ROOMTYPEID", "=", roomTypeId);
+		Condition cnd = Cnd.where("ISOCCUPANCY", "=", false).and("ROOMTYPEID", "=", roomTypeId);
 		List<Room> rooms = query(cnd, null);
 		for (Room room : rooms) {
 			roomOptions.put(room.getNumber(), String.valueOf(room.getId()));
