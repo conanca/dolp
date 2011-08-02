@@ -16,6 +16,7 @@
   <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
     <Append>true</Append>
+    <!--  请修改下面的log存放目录  -->
     <File>/dolpbase/log/rolling.log</File>
     <encoder>
       <pattern>%d [%t] %-5p %c - %m%n</pattern>
@@ -25,6 +26,7 @@
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <maxIndex>1</maxIndex>
+      <!--  请修改下面的log存放目录  -->
       <FileNamePattern>/dolpbase/log/rolling.log.%i</FileNamePattern>
     </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">

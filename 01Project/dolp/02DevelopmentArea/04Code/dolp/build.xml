@@ -57,23 +57,27 @@
       </fileset>
     </war>
   	<!-- 将 ${classes} 下面所有的东西打包成 dolp.jar 文件 -->
-  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,com/dolplay/dolpbase/MainModule.class,com/dolplay/dolpbase/MainScheduler.class,com/dolplay/dolpbase/MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
+  	<jar destfile="${dist}/dolp.jar" basedir="${classes}" excludes="dao.js,logback.xml,com/dolplay/dolpbase/MainModule.class,com/dolplay/dolpbase/MainScheduler.class,com/dolplay/dolpbase/MvcSetup.class,com/dolplay/dolpbase/codegen/"/>
   	<!-- 将 ${src} 下面所有的东西打包成 dolp-source.jar 文件 -->
-  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="dao.js,com/dolplay/dolpbase/MainModule.java,com/dolplay/dolpbase/MainScheduler.java,com/dolplay/dolpbase/MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
-  	<!-- 将 CodeGenerator.java,build_war.xml,WebContent和temp 打包成 project.zip文件 -->
+  	<jar destfile="${dist}/dolp-source.jar" basedir="${src}" excludes="com/dolplay/dolpbase/MainModule.java,com/dolplay/dolpbase/MainScheduler.java,com/dolplay/dolpbase/MvcSetup.java,com/dolplay/dolpbase/codegen/"/>
+  	<!-- 将 CodeGenerator.java,MainModule.java,MainScheduler.java,MvcSetup.java,build_war.xml,WebContent和temp 打包成 project.zip文件 -->
   	<mkdir dir="project"/>
-  	<copy tofile="project/CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
+  	<mkdir dir="project/src"/>
+  	<copy tofile="project/src/CodeGenerator.java" file="src/com/dolplay/dolpbase/codegen/CodeGenerator.java"/>
+  	<copy tofile="project/src/MainModule.java" file="src/com/dolplay/dolpbase/MainModule.java"/>
+  	<copy tofile="project/src/MainScheduler.java" file="src/com/dolplay/dolpbase/MainScheduler.java"/>
+  	<copy tofile="project/src/MvcSetup.java" file="src/com/dolplay/dolpbase/MvcSetup.java"/>
+  	<mkdir dir="project/config"/>
+  	<copy tofile="project/config/dao.js" file="config/dao.js"/>
+  	<copy tofile="project/config/logback.xml" file="config/logback.xml"/>
   	<copy tofile="project/build.xml" file="build_war.xml"/>
   	<copy todir="project/WebContent">
   	    <fileset dir="WebContent"/>
   	</copy>
+  	<copy tofile="project/WebContent/WEB-INF/lib/dolp.jar" file="${dist}/dolp.jar"/>
   	<copy todir="project/temp">
   	    <fileset dir="temp"/>
   	</copy>
-  	<copy tofile="project/build.xml" file="build_war.xml"/>
-  	<copy tofile="project/src/com/dolplay/dolpbase/MainModule.java" file="src/com/dolplay/dolpbase/MainModule.java"/>
-  	<copy tofile="project/src/com/dolplay/dolpbase/MainScheduler.java" file="src/com/dolplay/dolpbase/MainScheduler.java"/>
-  	<copy tofile="project/src/com/dolplay/dolpbase/MvcSetup.java" file="src/com/dolplay/dolpbase/MvcSetup.java"/>
   	<zip destfile="${dist}/project.zip" basedir="project/"/>
   	<delete dir="project"/>
   </target>
