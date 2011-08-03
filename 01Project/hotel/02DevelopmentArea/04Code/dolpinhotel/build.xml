@@ -1,6 +1,6 @@
-<project name="dolp" default="dist" basedir=".">
+<project name="dolpinhotel" default="dist" basedir=".">
     <description>
-        请修改上面的 project name 和此处的 description
+    	dolpinhotel
     </description>
   <!-- 设置全局变量 -->
   <property name="src" location="src"/>
