@@ -239,9 +239,10 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData changePasswordForAUser(int userId, String newPassword) {
 		AjaxResData respData = new AjaxResData();
 		if (userId > 0) {
-			User user = this.fetch(userId);
+			User user = new User();
+			user.setId(userId);
 			user.setPassword(newPassword);
-			dao().update(user);
+			dao().updateIgnoreNull(user);
 			respData.setSystemMessage("密码修改成功!", null, null);
 		} else {
 			respData.setSystemMessage(null, "未正确选择用户", null);
