@@ -6,7 +6,7 @@ $(function(){
 		},
 		caption:"${Domain}列表",
 		url:'${requestPath}/${Domain?uncap_first}/getGridData',
-		editurl:"${requestPath};/${Domain?uncap_first}/editRow",
+		editurl:"${requestPath}/${Domain?uncap_first}/editRow",
 		colNames:[<#list domainFields as field>'${field}'<#if field_has_next>,</#if></#list>],
 		colModel:[
 			<#list domainFields as field>
