@@ -9,6 +9,11 @@ $.blockUI.defaults.message='<h1>请稍候...</h1>';
 $.blockUI.defaults.fadeOut = 200;
 //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 
+// ajax请求失败时报错
+$(document).ajaxError(function(e,xhr,opt){
+	$.addMessageStr(null,null,"Error requesting " + opt.url + ": " + xhr.status + " " + xhr.statusText);
+});
+
 //覆盖jqGrid的全局参数，以设置默认值
 $.extend($.jgrid.defaults, {
 	rowNum:10,
@@ -21,7 +26,7 @@ $.extend($.jgrid.defaults, {
 		$.addMessage($(this).getGridParam('userData').systemMessage);
 	},
 	loadError: function(xhr,status,error){
-		$.addMessageStr(null,null,$(this).attr("id")+":"+status+"{"+error+"}");
+		$.addMessageStr(null,null,"Error loading grid "+$(this).attr("id")+":"+status+"{"+error+"}");
 	}
 });
 
