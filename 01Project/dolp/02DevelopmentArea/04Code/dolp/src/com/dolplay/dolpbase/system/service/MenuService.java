@@ -240,9 +240,15 @@ public class MenuService extends DolpBaseService<Menu> {
 	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
 		AjaxResData respData = new AjaxResData();
 		//获取父菜单;
-		Menu parentMenu = fetch(parentId);
-		int parentLft = parentMenu.getLft();
-		int parentRight = parentMenu.getRgt();
+		int parentLft = 0;
+		int parentRight = 0;
+		if (parentId > 0) {
+			Menu parentMenu = fetch(parentId);
+			parentLft = parentMenu.getLft();
+			parentRight = parentMenu.getRgt();
+		} else {
+			parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
+		}
 		//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
 		Sql sql = Sqls.create("SELECT * FROM SYSTEM_MENU M1 WHERE"
 				+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
@@ -254,7 +260,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		sql.setEntity(dao().getEntity(Menu.class));
 		dao().execute(sql);
 		List<Menu> brotherOfnewMenus = sql.getList(Menu.class);
-		if (brotherOfnewMenus == null) {
+		if (brotherOfnewMenus == null || brotherOfnewMenus.size() == 0) {
 			respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
 		} else {
 			// 新建菜单
@@ -262,7 +268,11 @@ public class MenuService extends DolpBaseService<Menu> {
 			menu.setName(name);
 			menu.setDescription(description);
 			menu.setLft(brotherOfnewMenus.get(0).getRgt() + 1);
-			menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
+			if (brotherOfnewMenus.size() == 1) {
+				menu.setRgt(parentRight - 1);
+			} else if (brotherOfnewMenus.size() >= 2) {
+				menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
+			}
 			dao().insert(menu);
 			respData.setSystemMessage("添加成功!", null, null);
 		}
