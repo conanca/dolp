@@ -75,7 +75,7 @@ $.extend({
 		}
 	},
 	//根据系统枚举名称，获得它所有的枚举值
-	getSysEmnuItem: function(SysEnumName) {
+	getSysEmnuItem: function(SysEnumName, afterRequest) {
 		var url = 'getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
@@ -85,11 +85,14 @@ $.extend({
 			if(response.returnData){
 				Items = response.returnData;
 			}
+			if($.isFunction(afterRequest)){
+				afterRequest(returnData);
+			}
 		});
 		return Items;
     },
 	//$.getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-	dolpGet: function(url, data) {
+	dolpGet: function(url, data, afterRequest) {
 		var returnData = {};
 		$.getJSON(url,data,function(response){
 			if(response.systemMessage){
@@ -98,11 +101,14 @@ $.extend({
 			if(response.returnData){
 				returnData = response.returnData;
 			}
+			if($.isFunction(afterRequest)){
+				afterRequest(returnData);
+			}
 		});
 		return returnData;
 	},
     //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-	dolpPost : function(url, data){
+	dolpPost : function(url, data, afterRequest){
 		var returnData = {};
 		$.post(url,data,function(response){
 			if(response.systemMessage){
@@ -110,6 +116,9 @@ $.extend({
 			}
 			if(response.returnData){
 				returnData = response.returnData;
+			}
+			if($.isFunction(afterRequest)){
+				afterRequest(returnData);
 			}
 		},"json");
 		return returnData;
