@@ -5,14 +5,6 @@ $(function(){
 	//初始化用户信息界面
 	$("#messageDraftboxUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
 
-	//------------------设为同步模式------------------
-	$.ajaxSetup({ async: false});
-	//初始化性别下拉列表框
-	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders);
-	$.ajaxSetup({ async: true});
-	//------------------设回异步模式------------------
-
 	//设置Grid
 	$("#messageDraftboxUserInfoList").jqGrid({
 		jsonReader:{
@@ -25,7 +17,7 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'number',index:'number', width:100},
 			{name:'name',index:'name', width:100},
-			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}},//不可调整宽度
+			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}},
 			{name:'age',index:'age', width:100, editable:true,hidden:true},
 			{name:'birthday',index:'birthday', width:100,hidden:true},
 			{name:'phone',index:'phone', width:150}
@@ -62,12 +54,9 @@ $(function(){
 			$('#messageDraftboxMessageId').val(row.id);
 			$('#messageDraftboxTitle').val(row.title);
 			$('#messageDraftboxContent').val(row.content);
-			//------------------设为同步模式------------------
-			$.ajaxSetup({ async: false});
-			var usersNum = $.dolpGet('system/message/getReceiverUserNum/'+row.id);
-			$.ajaxSetup({ async: true});
-			//------------------设回异步模式------------------
-			$('#messageDraftboxReceiverUserNames').val(usersNum);
+			$.dolpGet('system/message/getReceiverUserNum/'+row.id,null,function(returnData){
+				$('#messageDraftboxReceiverUserNames').val(returnData);
+			});
 			$(this).setGridState('hidden');
 			$('#messageDraftboxDetail').show();
 		}

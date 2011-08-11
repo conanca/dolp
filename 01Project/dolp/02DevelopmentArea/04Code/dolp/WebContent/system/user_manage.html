@@ -4,11 +4,10 @@
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 
-	//------------------设为同步模式------------------
-	$.ajaxSetup({ async: false});
-	$("#roleIds").addItems($.dolpGet("system/role/getAllRoleMap/false"));
-	$.ajaxSetup({ async: true});
-	//------------------设回异步模式------------------
+	// 填充选择框roleIds的值
+	$.dolpGet("system/role/getAllRoleMap/false",null,function(returnData){
+		$("#roleIds").addItems(returnData);
+	});
 	
 	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
 	$(".multiselect").multiselect();
@@ -37,14 +36,6 @@ $(function(){
 		}
 	});
 
-	//------------------设为同步模式------------------
-	$.ajaxSetup({ async: false});
-	//初始化性别下拉列表框
-	var genders = $.getSysEmnuItem("gender");
-	var genders1 = $.swapJSON(genders);
-	$.ajaxSetup({ async: true});
-	//------------------设回异步模式------------------
-
 	//设置Grid
 	$("#userInfoList").jqGrid({
 		jsonReader:{
@@ -57,15 +48,13 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
 			{name:'number',index:'number', width:100,editable:true,editrules:{required:true,minValue:1000,maxValue:9999},
+				// 新增时，自动填充number的值为新的用户号
 				editoptions:{dataInit:function (elem) {
 						$(elem).focus(function(){
 							if($(elem).val()==''){
-								//------------------设为同步模式------------------
-								$.ajaxSetup({ async: false});
-								var newUserNumber = $.dolpGet("system/user/getNewUserNumber");
-								$(elem).val(newUserNumber);
-								$.ajaxSetup({ async: true});
-								//------------------设回异步模式------------------
+								$.dolpGet("system/user/getNewUserNumber",null,function(returnData){
+									$(elem).val(returnData);
+								});
 							}
 						});
 					}
@@ -96,25 +85,24 @@ $(function(){
 			var id = $(this).getGridParam('selrow');
 			if (id) {
 				$("#assigningUserID").val(id);
-
+				
+				// 全部取消选中 选择框roleIds的值
 				$("#roleIds option").each(function(){
 					if($(this).attr("selected") == true){
 						$(this).removeAttr("selected");
 					}
 				});
 
-				//------------------设为同步模式------------------
-				$.ajaxSetup({ async: false});
-				var currentRole = $.dolpGet("system/user/getCurrentRoleIDs/"+id);
-				$.each(currentRole,function(index,value){
-					$("#roleIds option[value='"+value+"']").attr("selected","selected");
+				// 指定选中的选择框roleIds的值
+				$.dolpGet("system/user/getCurrentRoleIDs/"+id,null,function(returnData){
+					var currentRole = returnData;
+					$.each(currentRole,function(index,value){
+						$("#roleIds option[value='"+value+"']").attr("selected","selected");
+						// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
+						$("#roleIds").multiselect("destroy");
+						$("#roleIds").multiselect();
+					});
 				});
-				$.ajaxSetup({ async: true});
-				//------------------设回异步模式------------------
-
-				// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
-				$("#roleIds").multiselect("destroy");
-				$("#roleIds").multiselect();
 
 				$("#roleAssignInfo").dialog( "open" );
 			} else {
