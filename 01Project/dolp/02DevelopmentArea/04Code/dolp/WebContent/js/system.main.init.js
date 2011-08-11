@@ -5,8 +5,8 @@ var opts = {
 	pnotify_stack: stack_bottomright
 };
 
-$.blockUI.defaults.message='<h1>请稍候...</h1>';
-$.blockUI.defaults.fadeOut = 200;
+$.blockUI.defaults.fadeOut = 500;
+$.blockUI.defaults.message = '<img src="images/commons/busy.gif" />';
 //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 
 // ajax请求失败时报错
@@ -34,3 +34,11 @@ $.extend($.jgrid.defaults, {
 $(window).unload(function(){
 	$.dolpPost("logout");
 });
+
+//定义用到的全局变量
+//------------------设为同步模式------------------
+$.ajaxSetup({ async: false});
+var genders = $.getSysEmnuItem("gender");
+var genders1 = $.swapJSON(genders);
+$.ajaxSetup({ async: true});
+//------------------设回异步模式------------------
