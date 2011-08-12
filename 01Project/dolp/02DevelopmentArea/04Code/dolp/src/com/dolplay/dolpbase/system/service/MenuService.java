@@ -200,13 +200,24 @@ public class MenuService extends DolpBaseService<Menu> {
 			}
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
+			//获取父菜单;
+			int parentLft = 0;
+			int parentRight = 0;
+			if (parentId > 0) {
+				Menu parentMenu = fetch(parentId);
+				parentLft = parentMenu.getLft();
+				parentRight = parentMenu.getRgt();
+			} else {
+				parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			}
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
-			Sql sql = Sqls.fetchEntity("SELECT * FROM SYSTEM_MENU M1 WHERE NOT EXISTS"
-					+ " (SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1)"
-					+ " AND LFT>(SELECT LFT FROM SYSTEM_MENU WHERE id=$parentId)"
-					+ " AND RGT<(SELECT RGT FROM SYSTEM_MENU WHERE id=$parentId)-2 ORDER BY LFT");
-			sql.vars().set("parentId", parentId);
+			Sql sql = Sqls.create("SELECT * FROM SYSTEM_MENU M1 WHERE"
+					+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
+					+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
+			sql.vars().set("parentLft", parentLft);
+			sql.vars().set("parentRight", parentRight);
 			// 获取单个实体的回调
+			sql.setCallback(Sqls.callback.entity());
 			sql.setEntity(dao().getEntity(Menu.class));
 			dao().execute(sql);
 			Menu brotherOfnewMenu = sql.getObject(Menu.class);
@@ -255,7 +266,7 @@ public class MenuService extends DolpBaseService<Menu> {
 				+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRight", parentRight);
-		// 获取单个实体的回调
+		// 获取实体列表的回调
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(Menu.class));
 		dao().execute(sql);
