@@ -12,13 +12,13 @@ public class DolpConnectionProvider implements ConnectionProvider {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		logger.info("Get connection");
+		logger.debug("Get connection");
 		return DaoHandler.getDataSource().getConnection();
 	}
 
 	@Override
 	public void shutdown() throws SQLException {
-		logger.info("Close connection");
+		logger.debug("Close connection");
 		this.getConnection().close();
 	}
 }
