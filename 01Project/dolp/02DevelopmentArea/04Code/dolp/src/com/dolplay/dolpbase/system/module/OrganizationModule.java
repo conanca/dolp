@@ -17,8 +17,8 @@ public class OrganizationModule {
 	@Inject
 	private OrganizationService organizationService;
 
-	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("parentOrgId") int parentOrgId) {
+	@At("/getGridData/*")
+	public ResponseData getGridData(int parentOrgId, @Param("..") JqgridReqData jqReq) {
 		return organizationService.getGridData(jqReq, parentOrgId);
 	}
 
