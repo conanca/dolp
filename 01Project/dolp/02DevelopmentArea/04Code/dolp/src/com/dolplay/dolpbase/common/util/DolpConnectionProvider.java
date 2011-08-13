@@ -18,7 +18,6 @@ public class DolpConnectionProvider implements ConnectionProvider {
 
 	@Override
 	public void shutdown() throws SQLException {
-		logger.debug("Close connection");
-		this.getConnection().close();
+		logger.debug("shutdown");
 	}
 }
