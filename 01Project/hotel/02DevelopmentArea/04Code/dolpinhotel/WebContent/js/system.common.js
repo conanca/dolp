@@ -1,8 +1,3 @@
-//使用jquery.form.js时的一个公用方法，用于提交获得Respons后显示系统消息
-function showResponse(responseText, statusText, xhr, $form)  {
-	$.addMessage($.parseJSON(responseText).systemMessage);
-}
-
 // zTree异步获取到数据后，在添加到 zTree 之前利用此方法进行数据预处理，以显示系统消息
 function ajaxDataFilter(treeId, parentNode, response) {
 	if (response) {
@@ -75,43 +70,66 @@ $.extend({
 		}
 	},
 	//根据系统枚举名称，获得它所有的枚举值
-	getSysEmnuItem: function(SysEnumName) {
+	getSysEmnuItem: function(SysEnumName, afterRequest) {
 		var url = 'getSysEnumItemMap/'+SysEnumName;
 		var Items = {};
 		$.getJSON(url,function(response){
-			if(response.systemMessage){
-				$.addMessage(response.systemMessage);
-			}
-			if(response.returnData){
-				Items = response.returnData;
+			if(response){
+				if(response.systemMessage){
+					$.addMessage(response.systemMessage);
+				}
+				if(response.returnData){
+					Items = response.returnData;
+				}
+				if($.isFunction(afterRequest)){
+					afterRequest(returnData);
+				}
+			}else{
+				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
 			}
 		});
 		return Items;
     },
 	//$.getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-	dolpGet: function(url, data) {
+	dolpGet: function(url, data, afterRequest) {
 		var returnData = {};
 		$.getJSON(url,data,function(response){
-			if(response.systemMessage){
-				$.addMessage(response.systemMessage);
-			}
-			if(response.returnData){
-				returnData = response.returnData;
+			if(response){
+				if(response.systemMessage){
+					$.addMessage(response.systemMessage);
+				}
+				if(response.returnData){
+					returnData = response.returnData;
+				}
+				if($.isFunction(afterRequest)){
+					afterRequest(returnData);
+				}
+			}else{
+				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
 			}
 		});
 		return returnData;
 	},
-    //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示
-	dolpPost : function(url, data){
+    //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示;ajax请求时显示阴影遮罩
+	dolpPost : function(url, data, afterRequest){
 		var returnData = {};
+		$.blockUI();
 		$.post(url,data,function(response){
-			if(response.systemMessage){
-				$.addMessage(response.systemMessage);
-			}
-			if(response.returnData){
-				returnData = response.returnData;
+			if(response){
+				if(response.systemMessage){
+					$.addMessage(response.systemMessage);
+				}
+				if(response.returnData){
+					returnData = response.returnData;
+				}
+				if($.isFunction(afterRequest)){
+					afterRequest(returnData);
+				}
+			}else{
+				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
 			}
 		},"json");
+		$.unblockUI();
 		return returnData;
 	},
 	//为JSON格式的map数据做键值互换
@@ -164,37 +182,52 @@ $.extend({
 		$.ajaxSetup({ async: true});
 		//------------------设回异步模式------------------
 	};
-	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法
+	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法;4.ajax请求时显示阴影遮罩
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		var selectorid=this.selector;
 		$(selectorid).navGrid(pager,para,
 			{
+				beforeSubmit : function(postdata, formid) { 
+					$.blockUI();
+					return[true]; 
+				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
 					if(afterSubmitTodo && afterSubmitTodo.edit){
 						afterSubmitTodo.edit();
 					}
+					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
+				beforeSubmit : function(postdata, formid) { 
+					$.blockUI();
+					return[true]; 
+				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
 					if(afterSubmitTodo && afterSubmitTodo.add){
 						afterSubmitTodo.add();
 					}
 					$(this.selector).resetSelection();
+					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
 			},
 			{
+				beforeSubmit : function(postdata, formid) { 
+					$.blockUI();
+					return[true]; 
+				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
 					if(afterSubmitTodo && afterSubmitTodo.del){
 						afterSubmitTodo.del();
 					}
+					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				},

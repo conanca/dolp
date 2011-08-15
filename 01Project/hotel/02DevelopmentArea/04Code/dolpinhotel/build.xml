@@ -53,7 +53,7 @@
     <!-- 将 ${webcontent} 下面所有的东西打包成war文件 -->
     <war warfile="${dist}/${ant.project.name}.war" webxml="${webcontent}/WEB-INF/web.xml">
       <classes dir = "${classes}"/>
-        <fileset dir="${webcontent}">
+      <fileset dir="${webcontent}" excludes="**/*sources.jar">
       </fileset>
     </war>
   	<delete file="CodeGenerator.java"/>

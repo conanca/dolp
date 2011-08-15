@@ -22,7 +22,7 @@ $(function(){
 	$("#postOrganizationTreeRefreshBtn").click(function() {
 		postOrganizationTree.reAsyncChildNodes(null, "refresh");
 		$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=true&organizationId=0",page:1});
-		$("#postList").setColProp('organizationId',{editoptions:{defaultValue:0}});
+		$("#postList").setColProp('organizationId',{editoptions:{defaultValue:"0"}});
 		$("#postList").trigger('reloadGrid');
 	});
 

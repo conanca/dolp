@@ -22,7 +22,7 @@ $(function() {
 	$("#privilegeMenuTreeRefreshBtn").click(function() {
 		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
 		$("#privilegeList").setGridParam({url:"system/privilege/getGridData/0",page:1});
-		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:0}});
+		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:"0"}});
 		$("#privilegeList").trigger('reloadGrid');
 	});
 
@@ -31,7 +31,7 @@ $(function() {
 			repeatitems: false
 		},
 		caption:"权限列表",
-		url:'system/privilege/getGridData/0',
+		url:'system/privilege/getGridData',
 		editurl:"system/privilege/editRow",
 		colNames: ["id","权限名","方法路径","描述","menuId"],
 		colModel: [
@@ -39,7 +39,7 @@ $(function() {
 			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
 			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true}},
 			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
-			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true}
+			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true,editrules:{required:true}}
 		],
 		pager: '#privilegePager',
 		sortname: 'id',

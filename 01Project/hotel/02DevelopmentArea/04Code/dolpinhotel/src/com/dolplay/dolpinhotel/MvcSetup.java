@@ -10,7 +10,7 @@ import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.util.DaoHandler;
+import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
@@ -38,7 +38,7 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void init(NutConfig config) {
-		Dao dao = DaoHandler.getDao();
+		Dao dao = DaoProvider.getDao();
 		// 初始化系统基本的数据表
 		if (!dao.exists("SYSTEM_USER")) {
 			// 建实体类的表
@@ -97,7 +97,7 @@ public class MvcSetup implements Setup {
 	@Override
 	public void destroy(NutConfig config) {
 		// 清空在线用户表
-		DaoHandler.getDao().clear("SYSTEM_CLIENT");
+		DaoProvider.getDao().clear("SYSTEM_CLIENT");
 		// 停止Scheduler
 		MainScheduler runner = new MainScheduler();
 		try {
