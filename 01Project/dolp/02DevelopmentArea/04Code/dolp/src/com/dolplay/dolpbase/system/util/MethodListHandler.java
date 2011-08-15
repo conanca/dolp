@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nutz.dao.Dao;
 
-import com.dolplay.dolpbase.common.util.DaoHandler;
+import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.system.domain.Privilege;
 
 /**
@@ -25,7 +25,7 @@ public class MethodListHandler {
 	}
 
 	public static void updateMethodList() {
-		Dao dao = DaoHandler.getDao();
+		Dao dao = DaoProvider.getDao();
 		List<Privilege> privilegeList = dao.query(Privilege.class, null, null);
 		methodList = new ArrayList<String>();
 		for (Privilege privilege : privilegeList) {

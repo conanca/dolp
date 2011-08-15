@@ -9,7 +9,7 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.util.DaoHandler;
+import com.dolplay.dolpbase.common.util.DaoProvider;
 
 public class CountClientJob implements Job {
 	private static Logger logger = LoggerFactory.getLogger(CountClientJob.class);
@@ -18,7 +18,7 @@ public class CountClientJob implements Job {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobKey jobKey = context.getJobDetail().getKey();
 		logger.debug(jobKey + " executing at " + new Date());
-		int clientCount = DaoHandler.getDao().count("SYSTEM_CLIENT");
+		int clientCount = DaoProvider.getDao().count("SYSTEM_CLIENT");
 		logger.info(new Date() + " 当前在线终端数目：" + clientCount);
 	}
 }

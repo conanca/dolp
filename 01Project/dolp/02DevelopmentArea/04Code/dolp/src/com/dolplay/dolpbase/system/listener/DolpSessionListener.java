@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.nutz.dao.Cnd;
 
-import com.dolplay.dolpbase.common.util.DaoHandler;
+import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.common.util.DolpSessionContext;
 
 public class DolpSessionListener implements HttpSessionListener {
@@ -21,6 +21,6 @@ public class DolpSessionListener implements HttpSessionListener {
 		HttpSession session = event.getSession();
 		DolpSessionContext.DelSession(session);
 		// 将相应的记录从在线用户表中删除
-		DaoHandler.getDao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
+		DaoProvider.getDao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
 	}
 }

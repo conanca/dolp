@@ -10,7 +10,7 @@ import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 
-public class DaoHandler {
+public class DaoProvider {
 
 	private static BoneCPDataSource dataSource;
 
