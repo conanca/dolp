@@ -7,19 +7,19 @@ $(function(){
 
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
-
-	//初始化性别下拉列表框
-	var genders = $.swapJSON($.getSysEmnuItem("gender"));
+	// 获取证件类型
 	var certificateTypes = $.swapJSON($.getSysEmnuItem("certificateType"));
-	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
-	$("#roomTypeSelector").addItems($.dolpGet("dolpinhotel/setup/roomtype/getAllRoomTypeMap"));
-	$("#roomTypeSelector").selectSubcategory({
-		url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
-		subcategoryid: 'roomSelector'
-	});
-
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
+	
+	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
+	$.dolpGet("dolpinhotel/setup/roomtype/getAllRoomTypeMap",null,function(returnData){
+		$("#roomTypeSelector").addItems(returnData);
+		$("#roomTypeSelector").selectSubcategory({
+			url: 'dolpinhotel/setup/room/getAllAvailableRoomForSelectOption',
+			subcategoryid: 'roomSelector'
+		});
+	});
 
 	$("#customerList").jqGrid({
 		datatype: "local",
@@ -29,7 +29,7 @@ $(function(){
 		colNames:['姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
 			{name:'name',index:'name', width:80,editable:true,editrules:{required:true}},
-			{name:'gender',index:'gender', width:80, editable:true, edittype:'select', formatter:'select', editoptions:{value:genders}},
+			{name:'gender',index:'gender', width:80, editable:true, edittype:'select', formatter:'select', editoptions:{value:genders1}},
 			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},
 			{name:'credentialNumber',index:'credentialNumber', width:150,editable:true,editrules:{required:true}},
 			{name:'address',index:'address', width:300,editable:true}
