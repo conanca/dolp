@@ -52,11 +52,6 @@ public class SystemModule {
 	}
 
 	@At
-	public ResponseData initDatabase() {
-		return systemService.initDatabase();
-	}
-
-	@At
 	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session,
 			HttpServletRequest request) {
 		User logonUser = userService.userAuthenticate(number, password);

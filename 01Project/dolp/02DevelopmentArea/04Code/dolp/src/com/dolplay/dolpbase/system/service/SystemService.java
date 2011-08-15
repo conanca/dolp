@@ -13,24 +13,13 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
-import org.nutz.dao.impl.FileSqlManager;
-import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.trans.Atom;
-import org.nutz.trans.Trans;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
-import com.dolplay.dolpbase.system.domain.Client;
-import com.dolplay.dolpbase.system.domain.Menu;
-import com.dolplay.dolpbase.system.domain.Message;
-import com.dolplay.dolpbase.system.domain.Organization;
-import com.dolplay.dolpbase.system.domain.Privilege;
-import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
-import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
 
 @IocBean(args = { "refer:dao" })
@@ -63,41 +52,6 @@ public class SystemService extends DolpBaseService<Object> {
 			options.put(item.getText(), item.getValue());
 		}
 		respData.setReturnData(options);
-		return respData;
-	}
-
-	/**
-	 * 根据数据库脚本，初始化数据库
-	 * @return
-	 */
-	@Aop(value = "log")
-	public AjaxResData initDatabase() {
-		AjaxResData respData = new AjaxResData();
-		final Dao dao = dao();
-		Trans.exec(new Atom() {
-			public void run() {
-				// 建实体类的表
-				dao.create(Client.class, true);
-				dao.create(Menu.class, true);
-				dao.create(Message.class, true);
-				dao.create(Organization.class, true);
-				dao.create(Privilege.class, true);
-				dao.create(Role.class, true);
-				dao.create(SysEnum.class, true);
-				dao.create(SysEnumItem.class, true);
-				dao.create(SysPara.class, true);
-				dao.create(User.class, true);
-				// 添加默认记录
-				FileSqlManager fm = new FileSqlManager("init_system.sql");
-				List<Sql> sqlList = fm.createCombo(fm.keys());
-				dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
-				// 初始化quartz的数据表
-				fm = new FileSqlManager("tables_quartz.sql");
-				sqlList = fm.createCombo(fm.keys());
-				dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
-			}
-		});
-		respData.setSystemMessage("初始化数据库成功!", null, null);
 		return respData;
 	}
 

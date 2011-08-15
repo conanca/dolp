@@ -64,10 +64,6 @@ $(function() {
 		}
 		return false;
 	});
-
-	$("#initDatabaseBtn").click(function(){
-		$.dolpPost('initDatabase');
-	});
 });
 </script>
 </head>
@@ -84,14 +80,17 @@ $(function() {
 				<td>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
 				<td><input type="password" name="pwd"/></td>
 			</tr>
+			<tr>
+				<td colspan="2">
+					<p align="center">
+						<input type="submit" value="登录"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="reset" value="重置"/>
+					</p>
+				</td>
+			</tr>
 		</table>
-		<p>
-			<input type="submit" value="登录"/>
-			&nbsp;&nbsp;&nbsp;
-			<input type="reset" value="重置"/>
-			&nbsp;&nbsp;&nbsp;
-			<input type="button" value="初始化数据库" id="initDatabaseBtn"/>
-		</p>
+
 	</form>
 </div>
 </body>
