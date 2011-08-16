@@ -36,7 +36,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- 编译 java 代码——从 ${src} 到 ${build} -->
-    <javac srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8" excludes="com/dolplay/dolpbase/codegen/">
+    <javac debug="true" srcdir="${src}" destdir="${classes}" includeantruntime="on" encoding="UTF-8" excludes="com/dolplay/dolpbase/codegen/">
       <compilerarg value="-Xlint:all" />
       <classpath refid="CLASSPATH" />
     </javac>
