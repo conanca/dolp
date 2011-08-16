@@ -9,7 +9,10 @@ $.blockUI.defaults.fadeOut = 500;
 $.blockUI.defaults.message = '<img src="images/commons/busy.gif" />';
 //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 
-// ajax请求失败时报错
+// 设置ajax请求的超时时限
+$.ajaxSetup({timeout:5000});
+
+// 设置ajax请求失败时报错
 $(document).ajaxError(function(e,xhr,opt){
 	$.addMessageStr(null,null,"Error requesting " + opt.url + ": " + xhr.status + " " + xhr.statusText);
 });
