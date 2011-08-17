@@ -115,6 +115,7 @@ $.extend({
 		var returnData = {};
 		$.blockUI();
 		$.post(url,data,function(response){
+			$.unblockUI();
 			if(response){
 				if(response.systemMessage){
 					$.addMessage(response.systemMessage);
@@ -129,7 +130,6 @@ $.extend({
 				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
 			}
 		},"json");
-		$.unblockUI();
 		return returnData;
 	},
 	//为JSON格式的map数据做键值互换
