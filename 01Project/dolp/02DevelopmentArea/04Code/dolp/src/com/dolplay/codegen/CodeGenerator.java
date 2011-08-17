@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.codegen;
+package com.dolplay.codegen;
 
 import java.io.BufferedWriter;
 import java.io.File;
