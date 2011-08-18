@@ -14,6 +14,7 @@ $.ajaxSetup({timeout:5000});
 
 // 设置ajax请求失败时报错
 $(document).ajaxError(function(e,xhr,opt){
+	$.unblockUI();
 	$.addMessageStr(null,null,"Error requesting " + opt.url + ": " + xhr.status + " " + xhr.statusText);
 });
 
