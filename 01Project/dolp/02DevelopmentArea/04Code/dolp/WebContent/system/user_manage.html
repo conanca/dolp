@@ -143,13 +143,11 @@ $(function(){
 	});
 
 	$('#roleAssignForm').submit(function() {
-		$.blockUI();
 		//关闭用户角色分配界面
 		$("#roleAssignInfo").dialog( "close" );
 		var url = 'system/user/assignRole';
 		var roleAssignFormInfo = $(this).serializeObject();
 		$.dolpPost(url,roleAssignFormInfo);
-		$.unblockUI();
 		return false;
 	});
 	
@@ -234,14 +232,12 @@ $(function(){
 	
 	//点击保存时提交
 	$('#userMangeChangePwdForm').submit(function() {
-		$.blockUI();
 		if($(this).valid()){
 			var changePwdInfo = $(this).serializeObject();
 			$.dolpPost('system/user/changeUserPassword',changePwdInfo);
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}
-		$.unblockUI();
 		$("#userPasswordChangeInfoCancelbtn").click();
 		return false;
 	});
