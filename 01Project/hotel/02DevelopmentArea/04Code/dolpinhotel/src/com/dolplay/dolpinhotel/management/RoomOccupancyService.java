@@ -20,7 +20,7 @@ import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpinhotel.setup.Room;
 import com.dolplay.dolpinhotel.setup.RoomType;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 
 	public RoomOccupancyService(Dao dao) {

@@ -20,7 +20,8 @@ import com.dolplay.dolpbase.system.module.UserModule;
 @Modules(value = { UserModule.class, CodeGenerator.class }, scanPackage = true)
 // 如果在其他包下还有类交予ico容器管理，需要在"com.dolplay.dolpbase"的后面加上
 @IocBy(type = ComboIocProvider.class, args = { "*org.nutz.ioc.loader.json.JsonLoader", "dao.js", "ioc.system.js",
-		"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.dolplay.dolpbase","com.dolplay.dolpinhotel" })
+		"properties.js", "*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.dolplay.dolpbase",
+		"com.dolplay.dolpinhotel" })
 @Encoding(input = "UTF-8", output = "UTF-8")
 @SetupBy(MvcSetup.class)
 @Ok("json")

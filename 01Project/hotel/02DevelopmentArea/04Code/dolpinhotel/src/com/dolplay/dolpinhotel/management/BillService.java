@@ -26,7 +26,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class BillService extends DolpBaseService<Bill> {
 
 	public BillService(Dao dao) {
