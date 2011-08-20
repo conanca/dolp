@@ -4,6 +4,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
+import com.dolplay.dolpbase.common.util.DolpProperties;
 import com.dolplay.dolpbase.system.domain.SysPara;
 
 /**
@@ -14,8 +15,18 @@ import com.dolplay.dolpbase.system.domain.SysPara;
  */
 public abstract class DolpBaseService<T> extends JqgridService<T> {
 
+	private DolpProperties prop;
+
 	public DolpBaseService(Dao dao) {
 		super(dao);
+	}
+
+	public DolpProperties getProp() {
+		return prop;
+	}
+
+	public void setProp(DolpProperties prop) {
+		this.prop = prop;
 	}
 
 	/**

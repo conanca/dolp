@@ -24,7 +24,7 @@ import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class MessageService extends DolpBaseService<Message> {
 
 	public MessageService(Dao dao) {

@@ -12,7 +12,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 
 	public SysEnumItemService(Dao dao) {

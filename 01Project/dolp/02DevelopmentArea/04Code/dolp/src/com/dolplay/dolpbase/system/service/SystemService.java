@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
@@ -22,7 +23,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class SystemService extends DolpBaseService<Object> {
 
 	public SystemService(Dao dao) {
@@ -32,7 +33,12 @@ public class SystemService extends DolpBaseService<Object> {
 	@Aop(value = "log")
 	public AjaxResData getSystemName() {
 		AjaxResData respData = new AjaxResData();
-		respData.setReturnData(getSysParaValue("SystemName"));
+		String systemName = (String) getProp().get("SystemName");
+		if (Strings.isEmpty(systemName)) {
+			respData.setSystemMessage(null, "配置文件中SystemName为配置或为空", null);
+		} else {
+			respData.setReturnData(systemName);
+		}
 		return respData;
 	}
 
@@ -60,7 +66,7 @@ public class SystemService extends DolpBaseService<Object> {
 		AjaxResData respData = new AjaxResData();
 		if (cUser != null) {
 			respData.setReturnData(cUser.getName());
-			respData.setSystemMessage("登录成功!", null, null);
+			respData.setSystemMessage("用户" + cUser.getName() + "登录成功!", null, null);
 		}
 		return respData;
 	}

@@ -23,7 +23,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.system.domain.Role;
 
-@IocBean(args = { "refer:dao" })
+@IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class RoleService extends DolpBaseService<Role> {
 
 	public RoleService(Dao dao) {
