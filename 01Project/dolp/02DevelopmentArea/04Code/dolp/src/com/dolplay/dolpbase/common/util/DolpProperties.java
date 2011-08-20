@@ -13,7 +13,6 @@ public class DolpProperties {
 
 	public DolpProperties(Map<String, Object> propMap) {
 		super();
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~born~~~~~~~~~~~");
 		this.propMap = propMap;
 	}
 
