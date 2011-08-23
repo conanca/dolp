@@ -72,7 +72,7 @@ public class SystemService extends DolpBaseService<Object> {
 	}
 
 	@Aop(value = "log")
-	public InputStream genExcel(String[] colNames, Map<String, String>[] rowDatas) throws IOException {
+	public InputStream genExcel(String[] colNames, Map<String, String>[] rowDatas) {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sh = wb.createSheet();
 		HSSFRow firstRow = sh.createRow(0);
@@ -95,7 +95,11 @@ public class SystemService extends DolpBaseService<Object> {
 			i++;
 		}
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		wb.write(os);
+		try {
+			wb.write(os);
+		} catch (IOException e) {
+			throw new RuntimeException("写入工作薄时异常!");
+		}
 		InputStream is = new ByteArrayInputStream(os.toByteArray());
 		return is;
 	}

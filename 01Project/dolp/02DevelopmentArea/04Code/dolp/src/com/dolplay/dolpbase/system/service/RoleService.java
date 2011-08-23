@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,11 +129,9 @@ public class RoleService extends DolpBaseService<Role> {
 	 * @param organizationId
 	 * @param userId
 	 * @return
-	 * @throws SQLException
 	 */
 	@Aop(value = "log")
-	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId)
-			throws SQLException {
+	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId) {
 		Sql sql = Sqls.create("SELECT ID,NAME,DESCRIPTION,ID IN "
 				+ "(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId) AS ISSET "
 				+ "FROM SYSTEM_ROLE WHERE ORGANIZATIONID = $organizationId");

@@ -20,22 +20,19 @@ public class MessageModule {
 	private MessageService messageService;
 
 	@At
-	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
-			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getReceivedMessageGridData(jqReq, currentUser);
 	}
 
 	@At
-	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
-			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, 1);
 	}
 
 	@At
-	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session)
-			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, 0);
 	}

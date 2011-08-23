@@ -80,11 +80,9 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @param nLevel
 	 * @param logonUser
 	 * @return
-	 * @throws Exception 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser)
-			throws Exception {
+	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser) {
 		if (logonUser == null) {
 			throw new RuntimeException("用户未登录!");
 		}
@@ -93,13 +91,18 @@ public class MenuService extends DolpBaseService<Menu> {
 		if (null == roles || roles.size() == 0) {
 			throw new RuntimeException("当前用户未被分配角色!");
 		}
-		String roleIds = DolpCollectionHandler.getIdsString(roles, ",");
+		String roleIds;
 		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(0);
-		List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
-		jq.setRows(rows);
+		try {
+			roleIds = DolpCollectionHandler.getIdsString(roles, ",");
+			List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
+			jq.setRows(rows);
+		} catch (Exception e) {
+			throw new RuntimeException("获取角色ID异常!");
+		}
 		return jq;
 	}
 

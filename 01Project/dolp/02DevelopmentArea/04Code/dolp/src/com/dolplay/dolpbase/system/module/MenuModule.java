@@ -93,11 +93,10 @@ public class MenuModule {
 	 * @param nLevel
 	 * @param session
 	 * @return
-	 * @throws Exception 
 	 */
 	@At
 	public ResponseData dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft, @Param("n_right") int nRight,
-			@Param("n_level") int nLevel, HttpSession session) throws Exception {
+			@Param("n_level") int nLevel, HttpSession session) {
 		User logonUser = (User) session.getAttribute("logonUser");
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}

@@ -1,7 +1,5 @@
 package com.dolplay.dolpbase.system.module;
 
-import java.sql.SQLException;
-
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
@@ -43,13 +41,13 @@ public class UserModule {
 	}
 
 	@At("/getCurrentRoleIDs/*")
-	public ResponseData getCurrentRoleIDs(String userId) throws Exception {
+	public ResponseData getCurrentRoleIDs(String userId) {
 		return userService.getCurrentRoleIdArr(userId);
 	}
 
 	@At
 	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
-			@Param("selectedPostIds[]") String[] postIds) throws SQLException {
+			@Param("selectedPostIds[]") String[] postIds) {
 		return userService.updatePost(userId, orgId, postIds);
 	}
 

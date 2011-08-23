@@ -153,14 +153,9 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @param jqReq
 	 * @param readerUser
 	 * @return
-	 * @throws IllegalAccessException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalArgumentException 
-	 * @throws SecurityException 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser)
-			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser) {
 		Condition cnd = null;
 		List<Record> recList = dao().query("SYSTEM_MESSAGE_RECEIVERUSER", Cnd.where("USERID", "=", readerUser.getId()),
 				null);
@@ -189,14 +184,9 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @param senderUser
 	 * @param state
 	 * @return
-	 * @throws IllegalAccessException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalArgumentException 
-	 * @throws SecurityException 
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state)
-			throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state) {
 		Condition cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		List<Message> messages = jq.getRows();

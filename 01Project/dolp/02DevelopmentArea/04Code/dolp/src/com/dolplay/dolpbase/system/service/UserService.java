@@ -162,7 +162,7 @@ public class UserService extends DolpBaseService<User> {
 
 	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
-	public AjaxResData getCurrentRoleIdArr(String userId) throws Exception {
+	public AjaxResData getCurrentRoleIdArr(String userId) {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls
 				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = $isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");

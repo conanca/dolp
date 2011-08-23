@@ -48,11 +48,10 @@ public class RoleModule {
 	 * @param organizationId
 	 * @param userId
 	 * @return
-	 * @throws Exception
 	 */
 	@At
 	public ResponseData getUserPostGridData(@Param("..") JqgridReqData jqReq,
-			@Param("organizationId") int organizationId, @Param("userId") int userId) throws Exception {
+			@Param("organizationId") int organizationId, @Param("userId") int userId) {
 		return roleService.getUserPostGridData(jqReq, organizationId, userId);
 	}
 }

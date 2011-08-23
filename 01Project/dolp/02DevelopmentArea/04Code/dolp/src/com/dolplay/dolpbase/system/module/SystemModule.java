@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.module;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -88,7 +87,7 @@ public class SystemModule {
 	@At
 	@Ok("raw")
 	public InputStream export(@Param("colNames") String[] colNames,
-			@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) throws IOException {
+			@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) {
 		InputStream is = systemService.genExcel(colNames, rowDatas);
 		return is;
 	}
