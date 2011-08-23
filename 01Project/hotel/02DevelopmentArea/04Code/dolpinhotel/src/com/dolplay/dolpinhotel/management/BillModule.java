@@ -1,7 +1,5 @@
 package com.dolplay.dolpinhotel.management;
 
-import java.text.ParseException;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -24,8 +22,7 @@ public class BillModule {
 	}
 
 	@At
-	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Bill bill)
-			throws ParseException {
+	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Bill bill) {
 		return billService.UDBill(oper, ids, bill);
 	}
 

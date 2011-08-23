@@ -1,7 +1,5 @@
 package com.dolplay.dolpinhotel.management;
 
-import java.sql.SQLException;
-
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -20,7 +18,7 @@ public class AvailableRoomCheckService extends DolpBaseService<Object> {
 	}
 
 	@Aop(value = "log")
-	public StandardJqgridResData getGridData(JqgridReqData jqReq) throws SQLException {
+	public StandardJqgridResData getGridData(JqgridReqData jqReq) {
 		Sql sql = Sqls.create("SELECT (SELECT NAME FROM DOLPINHOTEL_ROOMTYPE WHERE ID = ROOMTYPEID) AS ROOMTYPENAME,"
 				+ "COUNT(ROOMTYPEID) AS AVAILABLEROOMCOUNT FROM DOLPINHOTEL_ROOM "
 				+ "WHERE ISOCCUPANCY = false GROUP BY ROOMTYPEID");

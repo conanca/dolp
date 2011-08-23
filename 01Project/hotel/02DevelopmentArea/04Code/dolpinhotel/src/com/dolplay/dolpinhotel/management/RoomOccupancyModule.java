@@ -1,7 +1,5 @@
 package com.dolplay.dolpinhotel.management;
 
-import java.text.ParseException;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -20,7 +18,7 @@ public class RoomOccupancyModule {
 	@At
 	public ResponseData saveRoomOccupancy(@Param("enterDate") String enterDate,
 			@Param("expectedCheckOutDate") String expectedCheckOutDate, @Param("roomId") int roomId,
-			@Param("customers") Customer[] customers) throws ParseException {
+			@Param("customers") Customer[] customers) {
 		return roomOccupancyService.saveRoomOccupancy(enterDate, expectedCheckOutDate, roomId, customers);
 	}
 
@@ -37,8 +35,7 @@ public class RoomOccupancyModule {
 	}
 
 	@At
-	public ResponseData checkOut(@Param("checkOutIdArr[]") int[] ids, @Param("leaveDate") String leaveDate)
-			throws ParseException {
+	public ResponseData checkOut(@Param("checkOutIdArr[]") int[] ids, @Param("leaveDate") String leaveDate) {
 		return roomOccupancyService.checkOut(ids, leaveDate);
 	}
 }

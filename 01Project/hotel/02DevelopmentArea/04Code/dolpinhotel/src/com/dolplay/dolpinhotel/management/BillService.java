@@ -3,7 +3,6 @@ package com.dolplay.dolpinhotel.management;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class BillService extends DolpBaseService<Bill> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData UDBill(String oper, String ids, Bill bill) throws ParseException {
+	public AjaxResData UDBill(String oper, String ids, Bill bill) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));

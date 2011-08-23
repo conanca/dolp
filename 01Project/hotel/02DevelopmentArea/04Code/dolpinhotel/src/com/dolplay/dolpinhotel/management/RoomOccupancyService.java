@@ -33,11 +33,10 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 	 * @param expectedCheckOutDate
 	 * @param roomId
 	 * @param customers
-	 * @throws ParseException
 	 */
 	@Aop(value = "log")
 	public AjaxResData saveRoomOccupancy(String enterDate, String expectedCheckOutDate, final int roomId,
-			final Customer[] customers) throws ParseException {
+			final Customer[] customers) {
 		AjaxResData respData = new AjaxResData();
 		if (Strings.isBlank(enterDate) || roomId == 0) {
 			respData.setSystemMessage(null, null, "登记失败!");
@@ -45,11 +44,15 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 			final RoomOccupancy roomOccupancy = new RoomOccupancy();
 			roomOccupancy.setRoomId(roomId);
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			Timestamp enterDateTime = new Timestamp(dateFormat.parse(enterDate).getTime());
-			roomOccupancy.setEnterDate(enterDateTime);
-			if (null != expectedCheckOutDate && !"".equals(expectedCheckOutDate)) {
-				Timestamp expectedCheckOutDateTime = new Timestamp(dateFormat.parse(expectedCheckOutDate).getTime());
-				roomOccupancy.setExpectedCheckOutDate(expectedCheckOutDateTime);
+			try {
+				Timestamp enterDateTime = new Timestamp(dateFormat.parse(enterDate).getTime());
+				roomOccupancy.setEnterDate(enterDateTime);
+				if (null != expectedCheckOutDate && !"".equals(expectedCheckOutDate)) {
+					Timestamp expectedCheckOutDateTime = new Timestamp(dateFormat.parse(expectedCheckOutDate).getTime());
+					roomOccupancy.setExpectedCheckOutDate(expectedCheckOutDateTime);
+				}
+			} catch (ParseException e) {
+				throw new RuntimeException("日期格式转换时异常!");
 			}
 			//获取入住的房间，并修改其状态
 			final Room room = dao().fetch(Room.class, (long) roomId);
@@ -123,19 +126,24 @@ public class RoomOccupancyService extends DolpBaseService<RoomOccupancy> {
 	 * 结帐——涉及新建账单，更新房间入住的离开时间、入住天数和消费金额，更新房间状态 等操作
 	 * @param ids
 	 * @param leaveDate
-	 * @throws ParseException
 	 */
 	@Aop(value = "log")
-	public AjaxResData checkOut(final int[] ids, String leaveDate) throws ParseException {
+	public AjaxResData checkOut(final int[] ids, String leaveDate) {
 		AjaxResData respData = new AjaxResData();
 		if (Strings.isBlank(leaveDate) || ids == null) {
 			respData.setSystemMessage(null, null, "结帐失败!");
 		} else {
+			final Bill bill = new Bill();
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			final Timestamp leaveDateTime = new Timestamp(dateFormat.parse(leaveDate).getTime());
-			final Bill bill = new Bill();
-			bill.setDate(leaveDateTime);
+			final Timestamp leaveDateTime;
+			try {
+				leaveDateTime = new Timestamp(dateFormat.parse(leaveDate).getTime());
+				bill.setDate(leaveDateTime);
+			} catch (ParseException e) {
+				throw new RuntimeException("日期格式转换时异常!");
+			}
+
 			final StringBuilder BillNoSb = new StringBuilder("DH");
 			BillNoSb.append(new SimpleDateFormat("yyyyMMdd").format(leaveDateTime));
 			Trans.exec(new Atom() {
