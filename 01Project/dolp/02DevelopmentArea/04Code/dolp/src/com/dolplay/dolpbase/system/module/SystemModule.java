@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.module;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,12 +10,15 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.User;
@@ -85,10 +89,21 @@ public class SystemModule {
 	}
 
 	@At
-	@Ok("raw")
+	@Ok("raw:stream")
 	public InputStream export(@Param("colNames") String[] colNames,
 			@Param("rowDatas") LinkedHashMap<String, String>[] rowDatas) {
 		InputStream is = systemService.genExcel(colNames, rowDatas);
 		return is;
+	}
+
+	@At
+	@Filters
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	@Ok("raw:html")
+	public ResponseData uploadPhoto(@Param("id") int id, @Param("file") File f) {
+		AjaxResData respData = new AjaxResData();
+		respData.setReturnData(id);
+		respData.setSystemMessage("文件上传成功\nFile name:" + f.getName() + "\nSize:" + f.getUsableSpace(), null, null);
+		return respData;
 	}
 }

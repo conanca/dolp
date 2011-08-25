@@ -260,4 +260,21 @@ $.extend({
 			}
 		});
 	};
+	// 上传文件
+	$.fn.dolpUpload = function(url,data,afterRequest){
+		$.blockUI();
+		$(this).upload(url,data,function(response) {
+			$.unblockUI();
+			if(response){
+				if(response.systemMessage){
+					$.addMessage(response.systemMessage);
+				}
+				if($.isFunction(afterRequest)){
+					afterRequest(response.returnData);
+				}
+			}else{
+				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
+			}
+	    }, "json");
+	};
 })(jQuery);
