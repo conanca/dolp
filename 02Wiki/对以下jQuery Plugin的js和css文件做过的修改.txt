@@ -45,3 +45,6 @@ jquery.selectsubcategory.js 82-84ÐÐ
 					}
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+jquery.upload-1.0.2.js  116ÐÐ
+data = $.parseJSON(data.substring(5,data.length-6));
