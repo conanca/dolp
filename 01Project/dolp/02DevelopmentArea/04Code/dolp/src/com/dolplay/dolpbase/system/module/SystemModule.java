@@ -99,7 +99,6 @@ public class SystemModule {
 	@At
 	@Filters
 	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
-	@Ok("raw:html")
 	public ResponseData uploadPhoto(@Param("id") int id, @Param("file") File f) {
 		AjaxResData respData = new AjaxResData();
 		respData.setReturnData(id);
