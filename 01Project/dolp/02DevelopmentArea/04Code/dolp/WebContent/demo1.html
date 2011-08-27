@@ -2,12 +2,6 @@
 <script type="text/javascript" >
 $(function() {
 	$('input:text').setMask();
-	
-	$("#uploadBtn").click(function(){
-		$("#file1").dolpUpload('uploadPhoto',{id:$("#fileId").val()}, function(res) {
-	        alert(res);
-	    });
-	});
 });
 </script>
 演示自动格式化文本框的输入值<BR>
@@ -16,9 +10,3 @@ $(function() {
 时间：<input type="text" id="time_example" alt="time"/><BR>
 金额:<input type="text" id="decimal1" name="some_name" alt="decimal-us"/><BR>
 日期：<input type="text" id="date_example" alt="date-cn"/><BR>
-
-演示文件上传<BR>
-
-<input type="text" name="fileId" id="fileId"/>
-<input type="file" name="file" id="file1"/>
-<button id="uploadBtn">upload</button>
