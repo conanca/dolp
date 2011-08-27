@@ -1,11 +1,15 @@
 package com.dolplay.dolpbase.system.module;
 
+import java.io.File;
+
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
@@ -61,5 +65,11 @@ public class UserModule {
 	@At
 	public ResponseData changeUserPassword(@Param("userId") int userId, @Param("newPassword") String newPassword) {
 		return userService.changePasswordForAUser(userId, newPassword);
+	}
+
+	@At
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public ResponseData importUsers(@Param("userImportFile") File f) {
+		return userService.importUsers(f);
 	}
 }

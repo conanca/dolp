@@ -1,11 +1,15 @@
 package com.dolplay.dolpbase.system.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -23,6 +27,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.ExcelHandler;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
@@ -247,6 +252,29 @@ public class UserService extends DolpBaseService<User> {
 		} else {
 			respData.setSystemMessage(null, "未正确选择用户", null);
 		}
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData importUsers(File f) {
+		AjaxResData respData = new AjaxResData();
+
+		HSSFWorkbook wb;
+		List<Object> userList;
+		try {
+			wb = new HSSFWorkbook(new FileInputStream(f));
+			HSSFSheet sheet = wb.getSheetAt(0);
+			userList = ExcelHandler.readSheet(sheet, User.class);
+		} catch (Exception e) {
+			throw new RuntimeException("读取EXCEL文档出错!");
+		}
+		for (Object obj : userList) {
+			User user = (User) obj;
+			dao().insert(user);
+		}
+		f.delete();
+
+		respData.setSystemMessage("新增" + userList.size() + "位用户", null, null);
 		return respData;
 	}
 }
