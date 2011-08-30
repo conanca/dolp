@@ -184,8 +184,7 @@ $.extend({
 	};
 	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法;4.ajax请求时显示阴影遮罩
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
-		var selectorid=this.selector;
-		$(selectorid).navGrid(pager,para,
+		$(this).navGrid(pager,para,
 			{
 				beforeSubmit : function(postdata, formid) { 
 					$.blockUI();
@@ -193,10 +192,10 @@ $.extend({
 				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					$.unblockUI();
 					if(afterSubmitTodo && afterSubmitTodo.edit){
 						afterSubmitTodo.edit();
 					}
-					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
@@ -208,11 +207,11 @@ $.extend({
 				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					$.unblockUI();
 					if(afterSubmitTodo && afterSubmitTodo.add){
 						afterSubmitTodo.add();
 					}
 					$(this.selector).resetSelection();
-					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				}
@@ -224,10 +223,10 @@ $.extend({
 				},
 				reloadAfterSubmit:true,
 				afterSubmit: function(xhr, postdata) {
+					$.unblockUI();
 					if(afterSubmitTodo && afterSubmitTodo.del){
 						afterSubmitTodo.del();
 					}
-					$.unblockUI();
 					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
 					return [true];
 				},
@@ -249,11 +248,10 @@ $.extend({
 	};
 	//为grid添加自定义按钮——导出Excel
 	$.fn.export2Excel = function(pager) {
-		var selectorid=this.selector;
-		$(selectorid).navButtonAdd(pager,{caption:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
+		$(this).navButtonAdd(pager,{caption:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
 			onClickButton:function(){
-				var colNames = $(selectorid).getGridParam("colNames");
-				var rowDatas = $.toJSON($(selectorid).getRowData());
+				var colNames = $(this).getGridParam("colNames");
+				var rowDatas = $.toJSON($(this).getRowData());
 				$("#GridExportFormColNames").val(colNames);
 				$("#GridExportFormRowDatas").val(rowDatas);
 				$("#GridExportForm").submit();
