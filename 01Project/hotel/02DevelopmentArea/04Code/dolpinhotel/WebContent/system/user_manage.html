@@ -132,6 +132,8 @@ $(function(){
 			}
 		}
 	});
+	//添加自定义按钮——导出Excel
+	$("#userInfoList").export2Excel('#userInfoPager');
 
 	//查询按钮点击事件
 	$("#userInfoSerchForm").submit(function() {
@@ -245,6 +247,10 @@ $(function(){
 	$("#userPasswordChangeInfoCancelbtn").click(function() {
 		$('#userPasswordChangeInfo').dialog( "close" );
 	});
+	
+	$("#userImportFileUploadBtn").click(function() {
+		$("#userImportFile").dolpUpload('system/user/importUsers');
+	});
 });
 </script>
 
@@ -275,6 +281,14 @@ $(function(){
 </form>
 </fieldset>
 <br/>
+
+<fieldset>
+<legend>用户导入</legend>
+	<input type="file" name="userImportFile" id="userImportFile"/><br/>
+	<button id="userImportFileUploadBtn">上传导入</button>
+</fieldset>
+<br/>
+
 <table id="userInfoList"></table>
 <div id="userInfoPager"></div>
 
