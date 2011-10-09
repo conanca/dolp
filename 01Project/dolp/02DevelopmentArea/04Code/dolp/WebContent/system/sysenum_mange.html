@@ -12,7 +12,7 @@ $(function(){
 		colNames:['id','名称', '描述'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
-			{name:'name',index:'name', width:100, editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:100, editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'description',index:'description', width:300, editable:true, edittype:"textarea"}
 		],
 		pager: '#sysenumPager',
@@ -51,9 +51,9 @@ $(function(){
 		colNames:['id','文本', '值','sysEnumId'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
-			{name:'text',index:'text', width:100, editable:true,editrules:{required:true}},
-			{name:'value',index:'value', width:100, editable:true,editrules:{required:true}},
-			{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true,editable:true,editrules:{required:true}}
+			{name:'text',index:'text', width:100, editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'value',index:'value', width:100, editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'sysEnumId',index:'sysEnumId', width:0,hidden:true,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
 		],
 		pager: '#sysenumSubPager',
 		sortname: 'id',

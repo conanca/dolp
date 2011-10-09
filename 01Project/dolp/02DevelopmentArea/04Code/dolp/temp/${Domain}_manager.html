@@ -13,7 +13,7 @@ $(function(){
 				<#if field == 'id'>
 					{name:'id',index:'id', width:0,editable:true,hidden:true}<#if field_has_next>,</#if>
 				<#else>
-					{name:'${field}',index:'${field}', width:100,editable:true,editrules:{required:true}}<#if field_has_next>,</#if>
+					{name:'${field}',index:'${field}', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}<#if field_has_next>,</#if>
 				</#if>
 			</#list>
 		],

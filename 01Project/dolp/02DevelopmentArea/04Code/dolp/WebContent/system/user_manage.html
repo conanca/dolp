@@ -47,7 +47,7 @@ $(function(){
 		colNames:['id','用户编号', '姓名','性别','年龄','生日','电话号码','organizationId'],
 		colModel:[
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
-			{name:'number',index:'number', width:100,editable:true,editrules:{required:true,minValue:1000,maxValue:9999},
+			{name:'number',index:'number', width:100,editable:true,editrules:{required:true,minValue:1000,maxValue:9999},formoptions:{elmsuffix:' <font color="red">*</font>'},
 				// 新增时，自动填充number的值为新的用户号
 				editoptions:{dataInit:function (elem) {
 						$(elem).focus(function(){
@@ -60,9 +60,9 @@ $(function(){
 					}
 				}
 			},
-			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}},
-			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true}},
+			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'birthday',index:'birthday', width:100,editable:true,sorttype:'date',
 				editoptions:{size:12, dataInit:function(el){
 						$(el).datepicker({dateFormat:'yy-mm-dd'});

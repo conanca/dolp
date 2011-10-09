@@ -36,8 +36,8 @@ $(function(){
 		colNames:['id','代码','名称','描述','父节点Id'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
-			{name:'code',index:'code', width:100,editable:true,editrules:{required:true}},
-			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'code',index:'code', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
 			{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true,editable:true,editoptions:{defaultValue:"0"}}
 		],
