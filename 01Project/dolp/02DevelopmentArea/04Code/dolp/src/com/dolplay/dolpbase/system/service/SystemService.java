@@ -35,7 +35,7 @@ public class SystemService extends DolpBaseService<Object> {
 		AjaxResData respData = new AjaxResData();
 		String systemName = (String) getProp().get("SystemName");
 		if (Strings.isEmpty(systemName)) {
-			respData.setSystemMessage(null, "配置文件中SystemName为配置或为空", null);
+			respData.setSystemMessage(null, "配置文件中SystemName未配置或为空", null);
 		} else {
 			respData.setReturnData(systemName);
 		}
