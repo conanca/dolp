@@ -13,11 +13,13 @@ import com.jolbox.bonecp.BoneCPDataSource;
 public class DaoProvider {
 
 	private static BoneCPDataSource dataSource;
+	private static Dao dao;
 
 	static {
-		if (dataSource == null) {
+		if (dataSource == null || dao == null) {
 			Ioc ioc = new NutIoc(new JsonLoader("dao.js"));
 			dataSource = ioc.get(BoneCPDataSource.class, "dataSource");
+			dao = new NutDao(dataSource);
 		}
 	}
 
@@ -26,7 +28,6 @@ public class DaoProvider {
 	}
 
 	public static Dao getDao() {
-		Dao dao = new NutDao(dataSource);
 		return dao;
 	}
 }
