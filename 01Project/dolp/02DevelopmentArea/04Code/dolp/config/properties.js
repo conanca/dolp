@@ -1,7 +1,7 @@
 var ioc = {
 
 	prop : {
-		type : "com.dolplay.dolpbase.common.util.DolpProperties",
+		type : "com.dolplay.dolpbase.common.domain.DolpProperties",
 		args : [
 			{
 				"TestProp":"123",

@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.common.util;
+package com.dolplay.dolpbase.common.domain;
 
 import java.util.Map;
 

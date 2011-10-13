@@ -15,9 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
+import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
 import com.dolplay.dolpbase.common.domain.SystemMessage;
-import com.dolplay.dolpbase.common.util.DolpProperties;
 import com.dolplay.dolpbase.common.util.PropertiesProvider;
 
 /**

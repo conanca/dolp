@@ -4,7 +4,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 
-import com.dolplay.dolpbase.common.util.DolpProperties;
+import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.system.domain.SysPara;
 
 /**
