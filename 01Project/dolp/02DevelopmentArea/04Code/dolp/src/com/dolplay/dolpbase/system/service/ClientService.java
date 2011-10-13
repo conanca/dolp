@@ -41,7 +41,7 @@ public class ClientService extends DolpBaseService<Client> {
 		client.setSessionId(session.getId());
 		client.setLogonTime(new Timestamp((new Date()).getTime()));
 		client.setIpAddr(MVCHandler.getIpAddr(request));
-		client.setBrowser(MVCHandler.getBrowser(request));
+		client.setUserAgent(MVCHandler.getUserAgent(request));
 		dao().insert(client);
 	}
 

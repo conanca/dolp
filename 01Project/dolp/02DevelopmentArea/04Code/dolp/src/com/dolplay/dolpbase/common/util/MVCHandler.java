@@ -1,7 +1,5 @@
 package com.dolplay.dolpbase.common.util;
 
-import java.util.StringTokenizer;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class MVCHandler {
@@ -20,17 +18,7 @@ public class MVCHandler {
 		return ip;
 	}
 
-	public static String getBrowser(HttpServletRequest request) {
-		String Agent = request.getHeader("User-Agent");
-		StringTokenizer st = new StringTokenizer(Agent, ";");
-		String userbrowser = "unknown";
-		//得到用户的浏览器类型
-		if (st.hasMoreTokens()) {
-			userbrowser = st.nextToken();
-		}
-		if (st.hasMoreTokens()) {
-			userbrowser = st.nextToken();
-		}
-		return userbrowser;
+	public static String getUserAgent(HttpServletRequest request) {
+		return request.getHeader("User-Agent");
 	}
 }

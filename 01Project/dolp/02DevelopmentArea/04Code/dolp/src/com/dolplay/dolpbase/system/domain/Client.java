@@ -23,11 +23,11 @@ public class Client {
 	@Column
 	private Timestamp logonTime;
 	@Column
-	@ColDefine(type = ColType.VARCHAR, width = 500)
+	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String ipAddr;
 	@Column
-	@ColDefine(type = ColType.VARCHAR, width = 500)
-	private String browser;
+	@ColDefine(type = ColType.VARCHAR, width = 200)
+	private String userAgent;
 
 	public Integer getId() {
 		return id;
@@ -77,11 +77,11 @@ public class Client {
 		this.ipAddr = ipAddr;
 	}
 
-	public String getBrowser() {
-		return browser;
+	public String getUserAgent() {
+		return userAgent;
 	}
 
-	public void setBrowser(String browser) {
-		this.browser = browser;
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 }

@@ -6,15 +6,15 @@ $(function(){
 		},
 		caption:"在线用户列表",
 		url:'system/client/getGridData',
-		colNames:['id','sessionId','userId','用户','登录时间','IP地址','浏览器'],
+		colNames:['id','sessionId','userId','用户','登录时间','IP地址','User-Agent'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'sessionId',index:'sessionId', width:0,hidden:true},
 			{name:'userId',index:'userId', width:0,hidden:true},
 			{name:'user.name',index:'user.name', width:100},
-			{name:'logonTime',index:'logonTime', width:100},
-			{name:'ipAddr',index:'ipAddr', width:100},
-			{name:'browser',index:'browser', width:200}
+			{name:'logonTime',index:'logonTime', width:200},
+			{name:'ipAddr',index:'ipAddr', width:200},
+			{name:'userAgent',index:'userAgent', width:500}
 		],
 		pager: '#clientPager',
 		sortname: 'id',
