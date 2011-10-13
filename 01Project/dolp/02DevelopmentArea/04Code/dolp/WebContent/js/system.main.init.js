@@ -34,9 +34,9 @@ $.extend($.jgrid.defaults, {
 	}
 });
 
-//用户关闭浏览器时，自动登出
+//用户关闭浏览器或重定向到其他页面时，自动登出
 $(window).unload(function(){
-	$.dolpPost("logout");
+	$.dolpGet("logout");
 });
 
 //定义用到的全局变量
