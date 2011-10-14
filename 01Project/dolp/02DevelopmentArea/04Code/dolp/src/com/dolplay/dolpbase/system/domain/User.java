@@ -21,7 +21,7 @@ public class User {
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String number;
 	@Column
-	@ColDefine(type = ColType.VARCHAR, width = 20)
+	@ColDefine(type = ColType.CHAR, width = 24)
 	@JsonField(ignore = true)
 	private String password;
 	@Column

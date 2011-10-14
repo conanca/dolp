@@ -28,6 +28,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.ExcelHandler;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
@@ -54,6 +55,12 @@ public class UserService extends DolpBaseService<User> {
 
 	@Aop(value = "log")
 	public User userAuthenticate(String number, String password) {
+		// 对输入的登录密码进行MD5加密
+		try {
+			password = StringUtils.encoderByMd5(password);
+		} catch (Exception e) {
+			throw new RuntimeException("用户密码加密失败!");
+		}
 		Condition cnd = Cnd.where("NUMBER", "=", number).and("PASSWORD", "=", password);
 		User user = fetch(cnd);
 		if (null == user) {
@@ -114,7 +121,14 @@ public class UserService extends DolpBaseService<User> {
 				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
 				return respData;
 			}
-			user.setPassword(getSysParaValue("DefaultPassword"));
+			String defaultPass = getSysParaValue("DefaultPassword");
+			// 对默认密码进行MD5加密
+			try {
+				defaultPass = StringUtils.encoderByMd5(defaultPass);
+			} catch (Exception e) {
+				throw new RuntimeException("用户密码加密失败!");
+			}
+			user.setPassword(defaultPass);
 			respData.setSystemMessage("添加成功!", null, null);
 			dao().insert(user);
 		} else if ("edit".equals(oper)) {
@@ -229,10 +243,23 @@ public class UserService extends DolpBaseService<User> {
 	@Aop(value = "log")
 	public AjaxResData changePasswordForCurrentUser(User user, String oldPassword, String newPassword) {
 		AjaxResData respData = new AjaxResData();
+		// 对输入的原密码进行MD5加密
+		try {
+			oldPassword = StringUtils.encoderByMd5(oldPassword);
+		} catch (Exception e) {
+			throw new RuntimeException("用户密码加密失败!");
+		}
+		// 比较输入的原密码和数据库中的原密码
 		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
 			respData.setSystemMessage(null, "原密码错误!", null);
 		} else {
+			// 对输入的新密码进行MD5加密
+			try {
+				newPassword = StringUtils.encoderByMd5(newPassword);
+			} catch (Exception e) {
+				throw new RuntimeException("用户密码加密失败!");
+			}
 			user.setPassword(newPassword);
 			dao().update(user);
 			respData.setSystemMessage("密码修改成功!", null, null);
@@ -246,6 +273,11 @@ public class UserService extends DolpBaseService<User> {
 		if (userId > 0) {
 			User user = new User();
 			user.setId(userId);
+			try {
+				newPassword = StringUtils.encoderByMd5(newPassword);
+			} catch (Exception e) {
+				throw new RuntimeException("用户密码加密失败!");
+			}
 			user.setPassword(newPassword);
 			dao().updateIgnoreNull(user);
 			respData.setSystemMessage("密码修改成功!", null, null);
