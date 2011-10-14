@@ -49,10 +49,7 @@ public class CheckPrivilege implements ActionFilter {
 					return null;
 				}
 			}
-			excpAjaxResData.setSystemMessage(new SystemMessage(null, "用户没有此权限!", null));
-			AjaxResData userdata = new AjaxResData();
-			userdata.setSystemMessage(null, "用户没有此权限!", null);
-			excpAjaxResData.setUserdata(userdata);
+			excpAjaxResData.setSystemMessage(null, "用户没有此权限!", null);
 			logger.warn("用户没有此权限!" + methodPath);
 		}
 		UTF8JsonView jsonView = new UTF8JsonView(null);

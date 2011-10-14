@@ -5,9 +5,7 @@ import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
 import org.nutz.mvc.view.UTF8JsonView;
 
-import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
-import com.dolplay.dolpbase.common.domain.SystemMessage;
 
 /**
  * @author Administrator
@@ -21,10 +19,7 @@ public class CheckLogon implements ActionFilter {
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, "请先登录系统!"));
-			AjaxResData userdata = new AjaxResData();
-			userdata.setSystemMessage(null, null, "请先登录系统!");
-			excpAjaxResData.setUserdata(userdata);
+			excpAjaxResData.setSystemMessage(null, null, "请先登录系统!");
 			jsonView.setData(excpAjaxResData);
 			return jsonView;
 		} else {

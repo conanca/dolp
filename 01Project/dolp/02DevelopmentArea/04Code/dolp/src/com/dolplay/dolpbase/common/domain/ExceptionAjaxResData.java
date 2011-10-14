@@ -26,4 +26,17 @@ public class ExceptionAjaxResData implements ResponseData {
 	public void setUserdata(AjaxResData userdata) {
 		this.userdata = userdata;
 	}
+
+	/**
+	 * 用于简化 设置systemMessage 的帮助函数
+	 * @param infoMessage
+	 * @param warnMessage
+	 * @param errorMessage
+	 */
+	public void setSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
+		setSystemMessage(new SystemMessage(infoMessage, warnMessage, errorMessage));
+		AjaxResData userdata = new AjaxResData();
+		userdata.setSystemMessage(infoMessage, warnMessage, errorMessage);
+		setUserdata(userdata);
+	}
 }

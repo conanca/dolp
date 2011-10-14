@@ -14,10 +14,8 @@ import org.nutz.mvc.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
-import com.dolplay.dolpbase.common.domain.SystemMessage;
 import com.dolplay.dolpbase.common.util.PropertiesProvider;
 
 /**
@@ -72,10 +70,7 @@ public class DolpJsonView implements View {
 			}
 			// 为了前台显示之用封装异常信息
 			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(new SystemMessage(null, null, exceptionMessage));
-			AjaxResData userdata = new AjaxResData();
-			userdata.setSystemMessage(null, null, exceptionMessage);
-			excpAjaxResData.setUserdata(userdata);
+			excpAjaxResData.setSystemMessage(null, null, exceptionMessage);
 			jsonWritedStr = excpAjaxResData;
 		}
 		Mvcs.write(resp, null == jsonWritedStr ? data : jsonWritedStr, format);
