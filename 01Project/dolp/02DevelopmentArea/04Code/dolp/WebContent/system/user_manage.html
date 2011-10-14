@@ -158,11 +158,12 @@ $(function(){
 	});
 
 	var userPostOrganizationTreeSetting = {
-			checkable: false,
-			async: true,
-			asyncDataFilter: ajaxDataFilter,
-			asyncUrl: "system/organization/getNodes",
-			asyncParam: ["name", "id"],
+			async: {
+				enable: true,
+				url: "system/organization/getNodes",
+				dataFilter: ajaxDataFilter,
+				autoParam:["name", "id"]
+			},
 			callback:{
 				beforeClick: function(treeId, treeNode){
 					var userId = $("#userInfoList").getGridParam('selrow');
@@ -171,7 +172,8 @@ $(function(){
 				}
 			}
 		};
-	var userPostOrganizationTree = $("#userPostOrganizationTreeUl").zTree(userPostOrganizationTreeSetting);
+	$.fn.zTree.init($("#userPostOrganizationTreeUl"), userPostOrganizationTreeSetting);
+	var userPostOrganizationTree = $.fn.zTree.getZTreeObj("userPostOrganizationTreeUl");
 
 	$("#userPostList").jqGrid({
 		caption:"岗位列表",
@@ -310,7 +312,7 @@ $(function(){
 		<tr>
 			<td valign="top" width="15%">
 				<div>
-					<ul id="userPostOrganizationTreeUl" class="tree"></ul>
+					<ul id="userPostOrganizationTreeUl" class="ztree"></ul>
 				</div>
 			</td>
 			<td style="border-left: 1px dashed #CCCCCC;">&nbsp;</td>

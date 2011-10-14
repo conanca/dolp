@@ -28,8 +28,8 @@ $(function(){
 			var id = $(this).getGridParam('selrow');
 			if (id) {
 				roleId = id;
-				privilegeTreeSetting.asyncUrl = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
-				privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
+				privilegeTree.setting.async.url = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
+				privilegeTree.reAsyncChildNodes(null, "refresh");
 				$("#privilegeInfo").dialog( "open" );
 			} else {
 				$.addMessageStr(null,"请选择角色",null);
@@ -40,16 +40,23 @@ $(function(){
 	$("#roleList").export2Excel('#rolePager');
 
 	//初始化权限信息界面
-	$("#privilegeInfo").dialog({ width: 200 , hide: 'slide' , modal: true , autoOpen: false});
-
+	$("#privilegeInfo").dialog({ width: 250 , hide: 'slide' , modal: true , autoOpen: false});
+	//定义权限树
 	var privilegeTreeSetting = {
-		checkable: true,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/menu/getPrivilegeNodesByRoleId",
-		asyncParam: ["name", "id","lft","rgt","level"]
+		check: {
+			enable: true,
+			chkboxType: { Y : "ps", N : "s" }	// 父子关联关系：被勾选时—关联父，关联子;取消勾选时—不关联父，关联子
+		},
+		async: {
+			enable: true,
+			url: "system/menu/getPrivilegeNodesByRoleId",
+			dataFilter: ajaxDataFilter,
+			autoParam: ["name", "id","lft","rgt","level"]
+		}
 	};
-	var privilegeTree = $("#privilegeTreeUl").zTree(privilegeTreeSetting);
+	$.fn.zTree.init($("#privilegeTreeUl"), privilegeTreeSetting);
+	var privilegeTree = $.fn.zTree.getZTreeObj("privilegeTreeUl");
+	//分配权限
 	$("#privilegeAssignBtn").click(function() {
 		var checkedTreeNodes = privilegeTree.getCheckedNodes();
 		var checkedMenus = [];
@@ -102,6 +109,6 @@ $(function(){
 		<input type="button" value="取消" id='privilegeInfoCancelbtn'/>
 	</p>
 	<div>
-		<ul id="privilegeTreeUl" class="tree"></ul>
+		<ul id="privilegeTreeUl" class="ztree"></ul>
 	</div>
 </div>

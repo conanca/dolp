@@ -3,11 +3,12 @@ $(function() {
 	$("input:button,input:submit,input:reset").button();
 
 	var privilegeMenuTreeSetting = {
-		checkable: false,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/menu/getNodes",
-		asyncParam: ["name", "id"],
+		async: {
+			enable: true,
+			url: "system/menu/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
@@ -16,7 +17,8 @@ $(function() {
 			}
 		}
 	};
-	var privilegeMenuTree = $("#privilegeMenuTreeUl").zTree(privilegeMenuTreeSetting);
+	$.fn.zTree.init($("#privilegeMenuTreeUl"), privilegeMenuTreeSetting);
+	var privilegeMenuTree = $.fn.zTree.getZTreeObj("privilegeMenuTreeUl");
 
 	//点击刷新按钮
 	$("#privilegeMenuTreeRefreshBtn").click(function() {
@@ -54,7 +56,7 @@ $(function() {
 		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="privilegeMenuTreeRefreshBtn"/>
 			<div>
-				<ul id="privilegeMenuTreeUl" class="tree"></ul>
+				<ul id="privilegeMenuTreeUl" class="ztree"></ul>
 			</div>
 		</td>
 		<td class="linebetween">&nbsp;</td>
