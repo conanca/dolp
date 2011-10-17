@@ -28,9 +28,10 @@ public class MvcSetup implements Setup {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
 
 	/**
-	 * 当应用系统启动的时候，自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
-	 * 清空在线用户表;
-	 * 启动调度程序
+	 * 当应用系统启动的时候:
+	 * 1.自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
+	 * 2.清空在线用户表;
+	 * 3.启动调度程序
 	 */
 	@Override
 	public void init(NutConfig config) {
@@ -80,9 +81,10 @@ public class MvcSetup implements Setup {
 	}
 
 	/**
-	 * 当应用系统停止的时候，清空在线用户表;
-	 * 停止调度程序;
-	 * 关闭 DaoHandler的数据库连接
+	 * 当应用系统停止的时候:
+	 * 1.清空在线用户表;
+	 * 2.停止调度程序;
+	 * 3.关闭 DaoHandler的数据库连接
 	 */
 	@Override
 	public void destroy(NutConfig config) {
