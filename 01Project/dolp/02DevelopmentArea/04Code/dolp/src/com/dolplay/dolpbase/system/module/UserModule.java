@@ -2,12 +2,16 @@ package com.dolplay.dolpbase.system.module;
 
 import java.io.File;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
@@ -71,5 +75,11 @@ public class UserModule {
 	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
 	public ResponseData importUsers(@Param("userImportFile") File f) {
 		return userService.importUsers(f);
+	}
+
+	@At
+	@Ok("jasper")
+	public JRHtmlExporter export(ServletContext context) {
+		return userService.exportUsers(context);
 	}
 }

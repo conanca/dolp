@@ -24,6 +24,15 @@
 	<listener> 
 		<listener-class>com.dolplay.dolpbase.system.listener.DolpSessionListener</listener-class> 
 	</listener>
+	
+	<servlet>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.ImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageServlet</servlet-name>
+		<url-pattern>/image</url-pattern>
+	</servlet-mapping>
 
 	<session-config>
 		<session-timeout>300</session-timeout>  

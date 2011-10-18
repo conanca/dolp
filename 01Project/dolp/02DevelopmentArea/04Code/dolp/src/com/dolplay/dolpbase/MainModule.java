@@ -11,7 +11,7 @@ import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
-import com.dolplay.dolpbase.common.view.DolpJsonViewMaker;
+import com.dolplay.dolpbase.common.view.DolpViewMaker;
 import com.dolplay.dolpbase.system.filter.CheckLogon;
 import com.dolplay.dolpbase.system.filter.CheckPrivilege;
 
@@ -25,7 +25,7 @@ import com.dolplay.dolpbase.system.filter.CheckPrivilege;
 @Ok("json")
 @Fail("dolpjson")
 @Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class) })
-@Views(DolpJsonViewMaker.class)
+@Views(DolpViewMaker.class)
 public class MainModule {
 
 }

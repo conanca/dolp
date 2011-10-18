@@ -2,11 +2,19 @@ package com.dolplay.dolpbase.system.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,6 +34,8 @@ import org.nutz.trans.Trans;
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
+import com.dolplay.dolpbase.common.report.ReportHandler;
+import com.dolplay.dolpbase.common.report.WebappDataSource;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.ExcelHandler;
 import com.dolplay.dolpbase.common.util.StringUtils;
@@ -308,5 +318,38 @@ public class UserService extends DolpBaseService<User> {
 
 		respData.setSystemMessage("新增" + userList.size() + "位用户", null, null);
 		return respData;
+	}
+
+	@Aop(value = "log")
+	public JRHtmlExporter exportUsers(ServletContext context) {
+
+		WebappDataSource dataSource = new WebappDataSource();
+
+		List<User> list = this.query(null, null);
+		int count = list.size();
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < count; i++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("name", list.get(i).getName());
+			map.put("number", list.get(i).getNumber());
+			map.put("age", list.get(i).getAge());
+			data.add(map);
+		}
+		dataSource.setData(data);
+
+		String reportFilePath = "/reports/users.jasper";
+		reportFilePath = context.getRealPath(reportFilePath);
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("ReportTitle", "Users Report");
+		JRHtmlExporter exporter = null;
+		try {
+			exporter = ReportHandler.export(reportFilePath, parameters, dataSource);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+		return exporter;
 	}
 }

@@ -115,7 +115,8 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (41,'分配岗位',null,2,'com.dolplay.dolpbase.system.module.UserModule.assignPost'),
 (42,'修改该用户密码',null,17,'com.dolplay.dolpbase.system.module.UserModule.changeCurrentUserPassword'),
 (43,'修改用户密码',null,2,'com.dolplay.dolpbase.system.module.UserModule.changeUserPassword'),
-(44,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.importUsers');
+(44,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.importUsers'),
+(45,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export');
 
 INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
 (1,1),
@@ -149,6 +150,7 @@ INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
 (1,41),
 (1,43),
 (1,44),
+(1,45),
 (2,9),
 (2,10),
 (2,11),
