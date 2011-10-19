@@ -11,8 +11,6 @@ import org.nutz.json.JsonFormat;
 import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
@@ -23,7 +21,6 @@ import com.dolplay.dolpbase.common.util.PropertiesProvider;
  * 用于处理异常的JSON自定义视图
  */
 public class DolpJsonView implements View {
-	final static Logger logger = LoggerFactory.getLogger(DolpJsonView.class);
 
 	private JsonFormat format;
 
