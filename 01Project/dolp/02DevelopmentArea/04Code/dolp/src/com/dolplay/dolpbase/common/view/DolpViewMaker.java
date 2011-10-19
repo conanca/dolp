@@ -15,6 +15,7 @@ public class DolpViewMaker implements ViewMaker {
 
 	public static final String VIEW_JSON = "dolpjson";
 	public static final String VIEW_JASPER = "jasper";
+	public static final String VIEW_JASPER2 = "jasper2";
 
 	@Override
 	public View make(Ioc ioc, String type, String value) {
@@ -25,6 +26,8 @@ public class DolpViewMaker implements ViewMaker {
 				return new DolpJsonView(Json.fromJson(JsonFormat.class, value));
 		if (VIEW_JASPER.equals(type))
 			return new HtmlReportView();
+		if (VIEW_JASPER2.equals(type))
+			return new HtmlReport2View(value);
 		return null;
 	}
 }

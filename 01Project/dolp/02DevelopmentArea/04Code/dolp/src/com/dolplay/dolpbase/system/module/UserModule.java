@@ -82,4 +82,10 @@ public class UserModule {
 	public JRHtmlExporter export(ServletContext context) {
 		return userService.exportUsers(context);
 	}
+
+	@At
+	@Ok("jasper2:/reports/users.jasper")
+	public Object[] export2() {
+		return userService.exportUsers2();
+	}
 }
