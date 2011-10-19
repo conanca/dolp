@@ -15,7 +15,8 @@ public class HtmlReportView implements View {
 
 	public void render(HttpServletRequest req, HttpServletResponse resp, Object obj) throws Throwable {
 		if (obj == null || !JRHtmlExporter.class.isAssignableFrom(obj.getClass())) {
-			resp.setStatus(500);
+			resp.getWriter().print("报表导出失败!");
+			return;
 		}
 		JRHtmlExporter exporter = (JRHtmlExporter) obj;
 		resp.setContentType("text/html");
