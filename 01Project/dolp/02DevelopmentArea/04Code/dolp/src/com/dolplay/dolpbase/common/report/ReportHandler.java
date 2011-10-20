@@ -14,6 +14,10 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+/**
+ * jasperreport的操作帮助类
+ * @author Administrator
+ */
 public class ReportHandler {
 
 	/**

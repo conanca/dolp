@@ -7,7 +7,7 @@ import org.nutz.json.Json;
 
 /**
  * @author Administrator
- * 标准格式的jqGrid所需的后台响应数据的rows的格式定义
+ * 标准格式的jqGrid所需的后台响应数据的rows属性的格式定义
  */
 public class StandardJqgridResDataRow {
 	/**

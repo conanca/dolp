@@ -11,7 +11,7 @@ import com.dolplay.dolpbase.common.domain.SystemMessage;
 
 /**
  * @author Administrator
- *	扩展了格式的jqGrid所需的response数据，需设置jsonReader:{ repeatitems: false }
+ *	扩展了格式的jqGrid所需的response数据，jqgrid需设置jsonReader:{ repeatitems: false }
  *	rows中为自定义的T型实体数据的集合
  * @param <T>
  */

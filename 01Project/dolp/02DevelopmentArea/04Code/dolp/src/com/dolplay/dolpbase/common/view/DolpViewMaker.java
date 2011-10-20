@@ -9,7 +9,7 @@ import org.nutz.mvc.ViewMaker;
 
 /**
  * @author Administrator
- * 用于处理异常的JSON自定义视图
+ * Dolp所用的自定义视图ViewMaker
  */
 public class DolpViewMaker implements ViewMaker {
 

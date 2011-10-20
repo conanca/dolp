@@ -5,6 +5,7 @@ import org.nutz.json.Json;
 /**
  * @author Administrator
  * 包含业务数据和系统消息的后台响应数据
+ * 用于$dolpGet、$dolpPost、zTree的ajaxDataFilter以及jqgrid的form edit 这几种Ajax请求方法获取返回值
  */
 public class AjaxResData implements ResponseData {
 

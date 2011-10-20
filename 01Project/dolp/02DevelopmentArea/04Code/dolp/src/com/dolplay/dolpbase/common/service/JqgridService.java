@@ -23,7 +23,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResDataRow;
 
 /**
  * @author Administrator
- * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData格式。
+ * 该服务类用于：通过 WHERE 条件和分页信息，从数据库查询数据，并封装为AdvancedJqgridResData或StandardJqgridResData格式。
  * 使用时可以继承该类。
  * 注：实体的主键是数值型的。
  * @param <T>

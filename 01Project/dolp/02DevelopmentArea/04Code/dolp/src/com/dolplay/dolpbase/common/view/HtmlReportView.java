@@ -11,6 +11,10 @@ import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 
 import org.nutz.mvc.View;
 
+/**
+ * jasper报表(HTML)的视图
+ * @author Administrator
+ */
 public class HtmlReportView implements View {
 
 	public void render(HttpServletRequest req, HttpServletResponse resp, Object obj) throws Throwable {

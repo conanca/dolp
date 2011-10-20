@@ -32,8 +32,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 /**
- * @author Teodor Danciu (teodord@users.sourceforge.net)
- * @version $Id: WebappDataSource.java 4595 2011-09-08 15:55:10Z teodord $
+ * 为empty database的报表 提供的数据源，可以用它来设置报表数据
+ * @author Administrator
  */
 public class WebappDataSource implements JRDataSource {
 

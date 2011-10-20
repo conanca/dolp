@@ -20,6 +20,10 @@ import org.slf4j.LoggerFactory;
 import com.dolplay.dolpbase.common.report.ReportHandler;
 import com.dolplay.dolpbase.common.report.WebappDataSource;
 
+/**
+ * jasper报表(HTML)的视图:可以在注解中指定报表文件
+ * @author Administrator
+ */
 public class HtmlReport2View extends AbstractPathView {
 	final static Logger logger = LoggerFactory.getLogger(HtmlReport2View.class);
 
