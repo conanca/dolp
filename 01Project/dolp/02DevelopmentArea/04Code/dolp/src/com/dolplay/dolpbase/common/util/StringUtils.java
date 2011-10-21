@@ -10,7 +10,6 @@ import sun.misc.BASE64Encoder;
  * 字符串MD5加密的帮助类
  * @author Administrator
  */
-// TODO 考虑利用表达式方式来实现该需求
 public class StringUtils {
 
 	public static String encoderByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -24,7 +23,7 @@ public class StringUtils {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(StringUtils.encoderByMd5("ab32132132133ddddddddddcd1"));
+			System.out.println(StringUtils.encoderByMd5("abc123"));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
