@@ -13,8 +13,8 @@ $(function(){
 		colNames:['id','房间类型', '价格','描述'],
 		colModel:[
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
-			{name:'name',index:'name', width:100, editable:true,editrules:{required:true}},
-			{name:'price',index:'price', width:100, editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:100, editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'price',index:'price', width:100, editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'description',index:'description', width:300, editable:true, edittype:'textarea'}
 		],
 		pager: '#roomTypePager',

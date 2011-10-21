@@ -28,10 +28,10 @@ $(function(){
 		editurl: 'doNothing',	// 存在的但是不作任何事情的url,用于 CRUD on Local Data
 		colNames:['姓名','性别','证件类型','证件号码','籍贯地址'],
 		colModel:[
-			{name:'name',index:'name', width:80,editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:80,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'gender',index:'gender', width:80, editable:true, edittype:'select', formatter:'select', editoptions:{value:genders1}},
-			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes}},
-			{name:'credentialNumber',index:'credentialNumber', width:150,editable:true,editrules:{required:true}},
+			{name:'certificateType',index:'certificateType', width:120, editable:true, edittype:'select', formatter:'select', editoptions:{value:certificateTypes},editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'credentialNumber',index:'credentialNumber', width:150,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'address',index:'address', width:300,editable:true}
 		],
 		pager: '#customerPager'
@@ -86,7 +86,7 @@ $(function(){
 					入住日期：
 				</td>
 				<td>
-					<input type="text" name="enterDate" class="datepicker"/>
+					<input type="text" name="enterDate" class="datepicker"/> <font color="red">*</font>
 				</td>
 				<td>
 					预离日期：
@@ -101,16 +101,16 @@ $(function(){
 				</td>
 				<td>
 					<select name="roomType" id="roomTypeSelector">
-						<option value="">请选择</option>
-					</select>
+						<option value=""></option>
+					</select> <font color="red">*</font>
 				</td>
 				<td>
 					房间号：
 				</td>
 				<td>
 					<select name="roomId" id="roomSelector">
-						<option value="">请先选择房间类型</option>
-					</select>
+						<option value=""></option>
+					</select> <font color="red">*</font>
 				</td>
 			</tr>
 		</table>
