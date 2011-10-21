@@ -51,6 +51,7 @@ public class HtmlReport2View extends AbstractPathView {
 		path = req.getSession().getServletContext().getRealPath(path);
 		// 设置报表的参数和字段
 		Object[] reportContent = (Object[]) obj;
+		@SuppressWarnings("unchecked")
 		Map<String, Object> parameters = (Map<String, Object>) reportContent[0];
 		WebappDataSource dataSource = (WebappDataSource) reportContent[1];
 		JRHtmlExporter exporter = null;
