@@ -3,11 +3,12 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 
 	var postOrganizationTreeSetting = {
-		checkable: false,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/organization/getNodes",
-		asyncParam: ["name", "id"],
+		async: {
+			enable: true,
+			url: "system/organization/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#postList").setGridParam({url:"system/role/getGridData?isOrgaRela=true&organizationId="+treeNode.id,page:1});
@@ -16,7 +17,8 @@ $(function(){
 			}
 		}
 	};
-	var postOrganizationTree = $("#postOrganizationTreeUl").zTree(postOrganizationTreeSetting);
+	$.fn.zTree.init($("#postOrganizationTreeUl"), postOrganizationTreeSetting);
+	var postOrganizationTree = $.fn.zTree.getZTreeObj("postOrganizationTreeUl");
 
 	//点击刷新按钮
 	$("#postOrganizationTreeRefreshBtn").click(function() {
@@ -36,7 +38,7 @@ $(function(){
 		colNames:['id','名称','描述','isOrgaRela','organizationId'],
 		colModel:[
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
-			{name:'name',index:'name', width:150,editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:150,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
 			{name:'isOrgaRela',index:'isOrgaRela', width:0,hidden:true,editable:true,editoptions:{defaultValue:true}},
 			{name:'organizationId',index:'organizationId', width:0,hidden:true,editable:true}
@@ -56,7 +58,7 @@ $(function(){
 		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="postOrganizationTreeRefreshBtn"/>
 			<div>
-				<ul id="postOrganizationTreeUl" class="tree"></ul>
+				<ul id="postOrganizationTreeUl" class="ztree"></ul>
 			</div>
 		</td>
 		<td class="linebetween">&nbsp;</td>

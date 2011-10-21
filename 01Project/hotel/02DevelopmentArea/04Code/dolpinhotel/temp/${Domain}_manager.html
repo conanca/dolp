@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+	$("#${Domain?uncap_first}List").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"${Domain}列表",
+		url:'${requestPath}/${Domain?uncap_first}/getGridData',
+		editurl:"${requestPath}/${Domain?uncap_first}/editRow",
+		colNames:[<#list domainFields as field>'${field}'<#if field_has_next>,</#if></#list>],
+		colModel:[
+			<#list domainFields as field>
+				<#if field == 'id'>
+					{name:'id',index:'id', width:0,editable:true,hidden:true}<#if field_has_next>,</#if>
+				<#else>
+					{name:'${field}',index:'${field}', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}<#if field_has_next>,</#if>
+				</#if>
+			</#list>
+		],
+		pager: '#${Domain?uncap_first}Pager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#${Domain?uncap_first}List").setJqGridCUD('#${Domain?uncap_first}Pager',{edit:true,add:true,del:true,search:false});
+});
+</script>
+
+<table id="${Domain?uncap_first}List"></table>
+<div id="${Domain?uncap_first}Pager"></div>

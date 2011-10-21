@@ -3,11 +3,12 @@ $(function() {
 	$("input:button,input:submit,input:reset").button();
 
 	var privilegeMenuTreeSetting = {
-		checkable: false,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/menu/getNodes",
-		asyncParam: ["name", "id"],
+		async: {
+			enable: true,
+			url: "system/menu/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
@@ -16,7 +17,8 @@ $(function() {
 			}
 		}
 	};
-	var privilegeMenuTree = $("#privilegeMenuTreeUl").zTree(privilegeMenuTreeSetting);
+	$.fn.zTree.init($("#privilegeMenuTreeUl"), privilegeMenuTreeSetting);
+	var privilegeMenuTree = $.fn.zTree.getZTreeObj("privilegeMenuTreeUl");
 
 	//点击刷新按钮
 	$("#privilegeMenuTreeRefreshBtn").click(function() {
@@ -36,10 +38,10 @@ $(function() {
 		colNames: ["id","权限名","方法路径","描述","menuId"],
 		colModel: [
 			{name: "id",index:'id',width:0,hidden:true,editable:true},
-			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
-			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true}},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
-			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true,editrules:{required:true}}
+			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
 		],
 		pager: '#privilegePager',
 		sortname: 'id',
@@ -54,7 +56,7 @@ $(function() {
 		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="privilegeMenuTreeRefreshBtn"/>
 			<div>
-				<ul id="privilegeMenuTreeUl" class="tree"></ul>
+				<ul id="privilegeMenuTreeUl" class="ztree"></ul>
 			</div>
 		</td>
 		<td class="linebetween">&nbsp;</td>

@@ -19,11 +19,11 @@ import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
-import com.dolplay.dolpbase.common.domain.highcharts.ChartReturnData;
-import com.dolplay.dolpbase.common.domain.highcharts.SeriesItem;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpinhotel.common.domain.highcharts.ChartReturnData;
+import com.dolplay.dolpinhotel.common.domain.highcharts.SeriesItem;
 
 @IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class BillService extends DolpBaseService<Bill> {

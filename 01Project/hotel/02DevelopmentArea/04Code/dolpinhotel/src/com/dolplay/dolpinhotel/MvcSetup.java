@@ -1,6 +1,10 @@
 package com.dolplay.dolpinhotel;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
@@ -11,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
+import com.dolplay.dolpbase.common.util.PropertiesProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
@@ -21,7 +26,6 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.util.MethodListHandler;
 import com.dolplay.dolpinhotel.management.Bill;
 import com.dolplay.dolpinhotel.management.Customer;
 import com.dolplay.dolpinhotel.management.RoomOccupancy;
@@ -32,13 +36,17 @@ public class MvcSetup implements Setup {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
 
 	/**
-	 * 当应用系统启动的时候，自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
-	 * 清空在线用户表;
-	 * 启动调度程序
+	 * 当应用系统启动的时候:
+	 * 1.自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
+	 * 2.清空在线用户表;
+	 * 3.启动调度程序
 	 */
 	@Override
 	public void init(NutConfig config) {
+		// 初始化dao,datasource及properties
+		DaoProvider.init(config.getIoc());
 		Dao dao = DaoProvider.getDao();
+		PropertiesProvider.init(config.getIoc());
 		// 初始化系统基本的数据表
 		if (!dao.exists("SYSTEM_USER")) {
 			// 建实体类的表
@@ -78,9 +86,25 @@ public class MvcSetup implements Setup {
 		dao.clear("SYSTEM_CLIENT");
 
 		// 获取权限表中所有的方法列表
-		MethodListHandler.updateMethodList();
+		List<Privilege> privilegeList = dao.query(Privilege.class, null, null);
+		Set<String> dbMethodPaths = new HashSet<String>();
+		for (Privilege privilege : privilegeList) {
+			dbMethodPaths.add(privilege.getMethodPath());
+		}
+		// 获取系统所有的入口方法
+		Map<String, Method> map = config.getAtMap().getMethodMapping();
+		// 如果有一个入口方法不属于SystemModule类的并且不存在于权限表中，则抛出异常
+		for (String reqPath : map.keySet()) {
+			Method method = map.get(reqPath);
+			String methodpath = method.getDeclaringClass().getName() + "." + method.getName();
+			if (!methodpath.contains("com.dolplay.dolpbase.system.module.SystemModule")
+					&& !dbMethodPaths.contains(methodpath)) {
+				RuntimeException e = new RuntimeException("权限表中无该方法:" + methodpath);
+				throw e;
+			}
+		}
 
-		// 启动Scheduler
+		// 启动调度任务
 		MainScheduler runner = new MainScheduler();
 		try {
 			//runner.run();
@@ -90,9 +114,10 @@ public class MvcSetup implements Setup {
 	}
 
 	/**
-	 * 当应用系统停止的时候，清空在线用户表;
-	 * 停止调度程序;
-	 * 关闭 DaoHandler的数据库连接
+	 * 当应用系统停止的时候:
+	 * 1.清空在线用户表;
+	 * 2.停止调度程序;
+	 * 3.关闭 DaoHandler的数据库连接
 	 */
 	@Override
 	public void destroy(NutConfig config) {

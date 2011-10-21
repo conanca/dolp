@@ -8,7 +8,7 @@ $(function(){
 	$.dolpGet("system/role/getAllRoleMap/false",null,function(returnData){
 		$("#roleIds").addItems(returnData);
 	});
-	
+
 	$.localise('ui-multiselect', {language: 'zh', path: 'js/i18n/'});
 	$(".multiselect").multiselect();
 
@@ -47,7 +47,7 @@ $(function(){
 		colNames:['id','用户编号', '姓名','性别','年龄','生日','电话号码','organizationId'],
 		colModel:[
 			{name:'id',index:'id', width:0,editable:true,hidden:true},
-			{name:'number',index:'number', width:100,editable:true,editrules:{required:true,minValue:1000,maxValue:9999},
+			{name:'number',index:'number', width:100,editable:true,editrules:{required:true,minValue:1000,maxValue:9999},formoptions:{elmsuffix:' <font color="red">*</font>'},
 				// 新增时，自动填充number的值为新的用户号
 				editoptions:{dataInit:function (elem) {
 						$(elem).focus(function(){
@@ -60,9 +60,9 @@ $(function(){
 					}
 				}
 			},
-			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}},
-			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true}},
+			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'birthday',index:'birthday', width:100,editable:true,sorttype:'date',
 				editoptions:{size:12, dataInit:function(el){
 						$(el).datepicker({dateFormat:'yy-mm-dd'});
@@ -85,7 +85,7 @@ $(function(){
 			var id = $(this).getGridParam('selrow');
 			if (id) {
 				$("#assigningUserID").val(id);
-				
+
 				// 全部取消选中 选择框roleIds的值
 				$("#roleIds option").each(function(){
 					if($(this).attr("selected") == true){
@@ -152,17 +152,18 @@ $(function(){
 		$.dolpPost(url,roleAssignFormInfo);
 		return false;
 	});
-	
+
 	$("#roleAssignInfoCancelbtn").click(function() {
 		$('#roleAssignInfo').dialog( "close" );
 	});
 
 	var userPostOrganizationTreeSetting = {
-			checkable: false,
-			async: true,
-			asyncDataFilter: ajaxDataFilter,
-			asyncUrl: "system/organization/getNodes",
-			asyncParam: ["name", "id"],
+			async: {
+				enable: true,
+				url: "system/organization/getNodes",
+				dataFilter: ajaxDataFilter,
+				autoParam:["name", "id"]
+			},
 			callback:{
 				beforeClick: function(treeId, treeNode){
 					var userId = $("#userInfoList").getGridParam('selrow');
@@ -171,7 +172,8 @@ $(function(){
 				}
 			}
 		};
-	var userPostOrganizationTree = $("#userPostOrganizationTreeUl").zTree(userPostOrganizationTreeSetting);
+	$.fn.zTree.init($("#userPostOrganizationTreeUl"), userPostOrganizationTreeSetting);
+	var userPostOrganizationTree = $.fn.zTree.getZTreeObj("userPostOrganizationTreeUl");
 
 	$("#userPostList").jqGrid({
 		caption:"岗位列表",
@@ -206,7 +208,7 @@ $(function(){
 		var orgId = userPostOrganizationTree.getSelectedNode().id;
 		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
 	});
-	
+
 	$("#postAssignInfoCancelbtn").click(function() {
 		$('#postAssignInfo').dialog( "close" );
 	});
@@ -231,7 +233,7 @@ $(function(){
 			error.appendTo(element.parent());
 		}
 	});
-	
+
 	//点击保存时提交
 	$('#userMangeChangePwdForm').submit(function() {
 		if($(this).valid()){
@@ -243,11 +245,11 @@ $(function(){
 		$("#userPasswordChangeInfoCancelbtn").click();
 		return false;
 	});
-	
+
 	$("#userPasswordChangeInfoCancelbtn").click(function() {
 		$('#userPasswordChangeInfo').dialog( "close" );
 	});
-	
+
 	$("#userImportFileUploadBtn").click(function() {
 		$("#userImportFile").dolpUpload('system/user/importUsers');
 	});
@@ -283,9 +285,12 @@ $(function(){
 <br/>
 
 <fieldset>
-<legend>用户导入</legend>
+<legend>用户导入导出</legend>
 	<input type="file" name="userImportFile" id="userImportFile"/><br/>
 	<button id="userImportFileUploadBtn">上传导入</button>
+	<br/>
+	<a target="_blank" href="system/user/export">导出</a>
+	<a target="_blank" href="system/user/export2">导出2</a>
 </fieldset>
 <br/>
 
@@ -310,7 +315,7 @@ $(function(){
 		<tr>
 			<td valign="top" width="15%">
 				<div>
-					<ul id="userPostOrganizationTreeUl" class="tree"></ul>
+					<ul id="userPostOrganizationTreeUl" class="ztree"></ul>
 				</div>
 			</td>
 			<td style="border-left: 1px dashed #CCCCCC;">&nbsp;</td>

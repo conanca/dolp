@@ -62,8 +62,8 @@ public class CodeGenerator {
 		/* 分别根据模板，写入文件或输出 */
 		tempToFile("${Domain}Service.java", getServiceSrcPath());
 		tempToFile("${Domain}Module.java", getModuleSrcPath());
-		tempToFile("${Domain}_manger.html", getHtmlPath());
-		tempPrint("sql.ftl");
+		tempToFile("${Domain}_manager.html", getHtmlPath());
+		tempPrint("others.ftl");
 	}
 
 	private void tempToFile(String tempFileName, String filePath) throws IOException, TemplateException {
@@ -108,7 +108,7 @@ public class CodeGenerator {
 	}
 
 	private String getHtmlPath() {
-		return "WebContent\\" + HTMLPATH + "\\" + domainClass.getSimpleName() + "_manager.html";
+		return "WebContent\\" + HTMLPATH + "\\" + domainClass.getSimpleName().toLowerCase() + "_manager.html";
 	}
 
 	public static void str2File(File f, String str) {

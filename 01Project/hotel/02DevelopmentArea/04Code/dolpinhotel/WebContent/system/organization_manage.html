@@ -3,11 +3,12 @@ $(function(){
 	$("input:button,input:submit,input:reset").button();
 
 	var organizationTreeSetting = {
-		checkable: false,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/organization/getNodes",
-		asyncParam: ["name", "id"],
+		async: {
+			enable: true,
+			url: "system/organization/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#organizationList").setGridParam({url:"system/organization/getGridData/"+treeNode.id,page:1});
@@ -16,7 +17,8 @@ $(function(){
 			}
 		}
 	};
-	var organizationTree = $("#organizationTreeUl").zTree(organizationTreeSetting);
+	$.fn.zTree.init($("#organizationTreeUl"), organizationTreeSetting);
+	var organizationTree = $.fn.zTree.getZTreeObj("organizationTreeUl");
 
 	//点击刷新按钮
 	$("#organizationTreeRefreshBtn").click(function() {
@@ -36,8 +38,8 @@ $(function(){
 		colNames:['id','代码','名称','描述','父节点Id'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true,editable:true},
-			{name:'code',index:'code', width:100,editable:true,editrules:{required:true}},
-			{name:'name',index:'name', width:100,editable:true,editrules:{required:true}},
+			{name:'code',index:'code', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'description',index:'description', width:300,editable:true,edittype:"textarea"},
 			{name:'parentOrgId',index:'parentOrgId', width:0,hidden:true,editable:true,editoptions:{defaultValue:"0"}}
 		],
@@ -56,7 +58,7 @@ $(function(){
 		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="organizationTreeRefreshBtn"/>
 			<div>
-				<ul id="organizationTreeUl" class="tree"></ul>
+				<ul id="organizationTreeUl" class="ztree"></ul>
 			</div>
 		</td>
 		<td class="linebetween">&nbsp;</td>

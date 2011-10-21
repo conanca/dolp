@@ -2,15 +2,16 @@
 $(function() {
 
 	$("input:button,input:submit,input:reset").button();
-	
+
 	var parentId=0;
 
 	var menuTreeSetting = {
-		checkable: false,
-		async: true,
-		asyncDataFilter: ajaxDataFilter,
-		asyncUrl: "system/menu/getNodes",
-		asyncParam: ["name", "id"],
+		async: {
+			enable: true,
+			url: "system/menu/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
 				$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+treeNode.id,page:1});
@@ -20,7 +21,8 @@ $(function() {
 			}
 		}
 	};
-	var menuTree = $("#menuTreeUl").zTree(menuTreeSetting);
+	$.fn.zTree.init($("#menuTreeUl"), menuTreeSetting);
+	var menuTree = $.fn.zTree.getZTreeObj("menuTreeUl");
 
 	//点击刷新按钮
 	$("#menuTreeRefreshBtn").click(function() {
@@ -40,8 +42,8 @@ $(function() {
 		colNames: ["id","菜单名","url","描述","lft","rgt"],
 		colModel: [
 			{name: "id",index:'id',width:0,hidden:true,editable:true},
-			{name: "name",index:'name', width:100,editable:true,editrules:{required:true}},
-			{name: "url",index:'url',width:300,editable:true,editrules:{required:true}},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name: "url",index:'url',width:300,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
 			{name: "lft",index:'lft',width:0,hidden:true,editable:true},
 			{name: "rgt",index:'rgt',width:0,hidden:true,editable:true}
@@ -103,7 +105,7 @@ $(function() {
 		<td valign="top" width="15%">
 			<input type="button" value="刷新" id="menuTreeRefreshBtn"/>
 			<div>
-				<ul id="menuTreeUl" class="tree"></ul>
+				<ul id="menuTreeUl" class="ztree"></ul>
 			</div>
 		</td>
 		<td class="linebetween">&nbsp;</td>
