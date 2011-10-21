@@ -1,6 +1,10 @@
 package com.dolplay.dolpbase;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
@@ -22,7 +26,6 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.util.MethodListHandler;
 
 public class MvcSetup implements Setup {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
@@ -69,9 +72,25 @@ public class MvcSetup implements Setup {
 		dao.clear("SYSTEM_CLIENT");
 
 		// 获取权限表中所有的方法列表
-		MethodListHandler.updateMethodList();
+		List<Privilege> privilegeList = dao.query(Privilege.class, null, null);
+		Set<String> dbMethodPaths = new HashSet<String>();
+		for (Privilege privilege : privilegeList) {
+			dbMethodPaths.add(privilege.getMethodPath());
+		}
+		// 获取系统所有的入口方法
+		Map<String, Method> map = config.getAtMap().getMethodMapping();
+		// 如果有一个入口方法不属于SystemModule类的并且不存在于权限表中，则抛出异常
+		for (String reqPath : map.keySet()) {
+			Method method = map.get(reqPath);
+			String methodpath = method.getDeclaringClass().getName() + "." + method.getName();
+			if (!methodpath.contains("com.dolplay.dolpbase.system.module.SystemModule")
+					&& !dbMethodPaths.contains(methodpath)) {
+				RuntimeException e = new RuntimeException("权限表中无该方法:" + methodpath);
+				throw e;
+			}
+		}
 
-		// 启动Scheduler
+		// 启动调度任务
 		MainScheduler runner = new MainScheduler();
 		try {
 			//runner.run();
