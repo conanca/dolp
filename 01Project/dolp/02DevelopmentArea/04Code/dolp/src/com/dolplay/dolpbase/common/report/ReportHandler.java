@@ -10,9 +10,7 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * jasperreport的操作帮助类
@@ -51,8 +49,8 @@ public class ReportHandler {
 			ReportHandler.compile(srcReportFilePath);
 		}
 		// 填充报表数据
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(reportFile.getPath());
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(), parameters, dataSource);
+
 		return jasperPrint;
 	}
 

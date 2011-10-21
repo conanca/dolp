@@ -344,7 +344,7 @@ public class UserService extends DolpBaseService<User> {
 		try {
 			exporter = ReportHandler.export(reportFilePath, parameters, dataSource);
 		} catch (Exception e) {
-			throw new RuntimeException("报表导出失败!");
+			throw new RuntimeException("报表导出失败!", e);
 		}
 		return exporter;
 	}
