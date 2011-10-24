@@ -11,7 +11,7 @@ $(function(){
 	var certificateTypes = $.swapJSON($.getSysEmnuItem("certificateType"));
 	$.ajaxSetup({ async: true});
 	//------------------设回异步模式------------------
-	
+
 	// 通过插件jquery.selectsubcategory.js实现下拉框二级联动
 	$.dolpGet("dolpinhotel/setup/roomtype/getAllRoomTypeMap",null,function(returnData){
 		$("#roomTypeSelector").addItems(returnData);
