@@ -15,7 +15,7 @@ $.ajaxSetup({timeout:5000});
 // 设置ajax请求失败时报错
 $(document).ajaxError(function(e,xhr,opt){
 	$.unblockUI();
-	$.addMessageStr(null,null,"Error requesting " + opt.url + ": " + xhr.status + " " + xhr.statusText);
+	$.addMessageStr(null,null,xhr.statusText + " requesting " + opt.url);
 });
 
 //覆盖jqGrid的全局参数，以设置默认值
@@ -28,9 +28,6 @@ $.extend($.jgrid.defaults, {
 	viewrecords: true,
 	loadComplete: function(){
 		$.addMessage($(this).getGridParam('userData').systemMessage);
-	},
-	loadError: function(xhr,status,error){
-		$.addMessageStr(null,null,"Error loading grid "+$(this).attr("id")+":"+status+"{"+error+"}");
 	}
 });
 
@@ -40,9 +37,9 @@ $(window).unload(function(){
 });
 
 //定义用到的全局变量
-//------------------设为同步模式------------------
-$.ajaxSetup({ async: false});
-var genders = $.getSysEmnuItem("gender");
-var genders1 = $.swapJSON(genders);
-$.ajaxSetup({ async: true});
-//------------------设回异步模式------------------
+var genders;
+var genders1;
+$.getSysEmnuItem("gender",function(returnData){
+	genders = returnData;
+	genders1 = $.swapJSON(genders);
+});

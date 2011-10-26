@@ -82,7 +82,7 @@ $.extend({
 					Items = response.returnData;
 				}
 				if($.isFunction(afterRequest)){
-					afterRequest(returnData);
+					afterRequest(Items);
 				}
 			}else{
 				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
@@ -163,30 +163,24 @@ $.extend({
 	//为该下拉列表框添加指定的Items作为option，此处的Items为JSON格式的map数据
 	$.fn.addItems = function(Items) {
 		var selectorid=this.selector;
-		   $.each(Items,function(text,value){
-				var newopt='<option value="'+value+'">'+text+'</option>';					
-				$(selectorid).append(newopt);
+		$.each(Items,function(text,value){
+			var newopt='<option value="'+value+'">'+text+'</option>';
+			$(selectorid).append(newopt);
 		});
 	};
 	//为该下拉列表框添加指定系统枚举值作为option
 	$.fn.addSysEmnuItems = function(SysEnumName) {
 		var selectorid=this.selector;
-		//------------------设为同步模式------------------
-		$.ajaxSetup({ async: false});
-		var SysEnumItems = $.getSysEmnuItem(SysEnumName);
-		$(selectorid).find('option').remove().end();
-		   $.each(SysEnumItems,function(text,value){
-				var newopt='<option value="'+value+'">'+text+'</option>';					
-				$(selectorid).append(newopt);
+		$.getSysEmnuItem(SysEnumName,function(returnData){
+			var SysEnumItems = returnData;
+			$(selectorid).addItems(SysEnumItems);
 		});
-		$.ajaxSetup({ async: true});
-		//------------------设回异步模式------------------
 	};
 	//增强jqgrid的form edit 设置:1.增加系统消息的显示;2.处理删除时的id(将id设置0，增加idArr);3.执行指定的方法;4.ajax请求时显示阴影遮罩
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		$(this).navGrid(pager,para,
 			{
-				beforeSubmit : function(postdata, formid) { 
+				beforeSubmit : function(postdata, formid) {
 					$.blockUI();
 					return[true]; 
 				},
