@@ -15,7 +15,7 @@ $.ajaxSetup({timeout:5000});
 // 设置ajax请求失败时报错
 $(document).ajaxError(function(e,xhr,opt){
 	$.unblockUI();
-	$.addMessageStr(null,null,xhr.statusText + " requesting " + opt.url);
+	$.addMessageStr(null,null,xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
 });
 
 //覆盖jqGrid的全局参数，以设置默认值
