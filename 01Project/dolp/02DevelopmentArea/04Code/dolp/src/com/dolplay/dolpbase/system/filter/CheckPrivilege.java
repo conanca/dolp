@@ -3,6 +3,8 @@ package com.dolplay.dolpbase.system.filter;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.json.Json;
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
 import com.dolplay.dolpbase.system.domain.Privilege;
+import com.dolplay.dolpbase.system.domain.User;
 
 /**
  * @author Administrator
@@ -28,9 +31,9 @@ public class CheckPrivilege implements ActionFilter {
 		Method method = context.getMethod();
 		String methodPath = method.getDeclaringClass().getName() + "." + method.getName();
 		// 获取session中当前用户的所有权限
+		HttpSession session = context.getRequest().getSession();
 		@SuppressWarnings("unchecked")
-		List<Privilege> currentPrivileges = (List<Privilege>) context.getRequest().getSession()
-				.getAttribute("currPrivs");
+		List<Privilege> currentPrivileges = (List<Privilege>) session.getAttribute("currPrivs");
 		// 比较该用户的权限list中有没有该入口方法的权限，如果有直接返回null
 		for (Privilege currPriv : currentPrivileges) {
 			String currPrivMethodPath = currPriv.getMethodPath();
@@ -38,10 +41,14 @@ public class CheckPrivilege implements ActionFilter {
 				return null;
 			}
 		}
-		// 将提示信息返回给前台
-		excpAjaxResData.setSystemMessage(null, "用户没有此权限!", null);
-		logger.warn("用户没有此权限:" + methodPath);
+		// 将提示信息记入log并返回给前台
+		StringBuilder sb = new StringBuilder("用户");
+		sb.append(((User) session.getAttribute("logonUser")).getNumber());
+		sb.append(" 无此权限: ");
+		sb.append(methodPath);
+		logger.warn(sb.toString());
 		UTF8JsonView jsonView = new UTF8JsonView(null);
+		excpAjaxResData.setSystemMessage(null, "用户没有此权限: " + context.getPath(), null);
 		jsonView.setData(excpAjaxResData);
 		logger.debug(Json.toJson(excpAjaxResData));
 		return jsonView;
