@@ -34,6 +34,7 @@ $.extend($.jgrid.defaults, {
 //用户关闭浏览器或重定向到其他页面时，自动登出
 $(window).unload(function(){
 	$.dolpGet("logout");
+	window.location = "index.html";
 });
 
 //定义用到的全局变量
