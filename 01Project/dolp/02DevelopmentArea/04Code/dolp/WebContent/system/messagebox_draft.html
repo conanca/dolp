@@ -1,7 +1,12 @@
+<link href="wysiwygeditor/jquery.wysiwyg.css" rel="stylesheet" type="text/css"/>
+<script charset="utf-8" src="wysiwygeditor/jquery.wysiwyg.js"></script>
 <script type="text/javascript">
 $(function(){
 	$("input:button,input:submit,input:reset").button();
 
+	// 初始化编辑器
+	$('#messageDraftboxEditor').wysiwyg();
+	
 	//初始化用户信息界面
 	$("#messageDraftboxUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
 
@@ -53,7 +58,7 @@ $(function(){
 			// 显示消息详细内容，隐藏Grid
 			$('#messageDraftboxMessageId').val(row.id);
 			$('#messageDraftboxTitle').val(row.title);
-			$('#messageDraftboxContent').val(row.content);
+			$('#messageDraftboxEditor').wysiwyg('setContent', row.content);
 			$.dolpGet('system/message/getReceiverUserNum/'+row.id,null,function(returnData){
 				$('#messageDraftboxReceiverUserNames').val(returnData);
 			});
@@ -165,7 +170,7 @@ function messageDraftboxSaveOrSendMessage(url){
 <table id="messageDraftboxList"></table>
 <div id="messageDraftboxPager"></div>
 <div id="messageDraftboxDetail">
-	<input type="button" value="返回收件箱" id="messageDraftboxBack"/>
+	<input type="button" value="返回草稿箱" id="messageDraftboxBack"/>
 	<input type="button" value="删除" id="messageDraftboxDelete"/>
 	<input type="button" value="发送" id="messageDraftboxSend"/>
 	<input type="button" value="保存" id="messageDraftboxSave"/>
@@ -173,8 +178,8 @@ function messageDraftboxSaveOrSendMessage(url){
 	<form id="messageDraftboxForm" action="#">
 		<input type="hidden" name="messageId" id="messageDraftboxMessageId"/>
 		<p><a href="#" id="messageDraftboxReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;主题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
-		<p><textarea name="content" rows="8" style="width:98%;" id="messageDraftboxContent"></textarea></p>
+		<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
+		<p><textarea name="content" style="width:94.5%;height:100%;" id="messageDraftboxEditor"></textarea></p>
 	</form>
 </div>
 

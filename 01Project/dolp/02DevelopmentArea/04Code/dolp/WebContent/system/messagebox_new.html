@@ -1,6 +1,11 @@
+<link href="wysiwygeditor/jquery.wysiwyg.css" rel="stylesheet" type="text/css"/>
+<script charset="utf-8" src="wysiwygeditor/jquery.wysiwyg.js"></script>
 <script type="text/javascript">
 $(function(){
 	$("input:button,input:submit,input:reset").button();
+	
+	// 初始化编辑器
+	$('#messageNewEditor').wysiwyg();
 
 	//初始化用户信息界面
 	$("#messageNewUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
@@ -115,7 +120,7 @@ function messageNewSaveOrSendMessage(url){
 <form id="messageNewForm" action="#">
 	<p><a href="#" id="messageNewReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageNewReceiverUsers"/></textarea></p>
 	<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;"/></p>
-	<p><textarea name="content" rows="8" style="width:95.4%;"></textarea></p>
+	<p><textarea name="content" style="width:94.5%;height:100%;" id="messageNewEditor"> </textarea></p>
 </form>
 
 <div id="messageNewUserSelect" title="用户列表">
