@@ -1,6 +1,7 @@
 //jquery.pnotify.min.js插件的自定义扩展，实现将后台返回的response消息数据显示在前台(右下角显示)
 var stack_bottomright = {"dir1": "up", "dir2": "left", "firstpos1": 15, "firstpos2": 15};
 var opts = {
+	pnotify_delay: 5000,
 	pnotify_addclass: "stack-bottomright",
 	pnotify_stack: stack_bottomright
 };
