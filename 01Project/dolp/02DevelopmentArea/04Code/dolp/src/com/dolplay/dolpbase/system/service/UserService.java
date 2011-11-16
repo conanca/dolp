@@ -224,7 +224,7 @@ public class UserService extends DolpBaseService<User> {
 		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
 		if (postIds == null || postIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", cnd);
-			respData.setSystemMessage(null, "该机构下未分配任何岗位!", null);
+			respData.setSystemMessage(null, "该用户未分配任何岗位!", null);
 			return respData;
 		}
 		// 清除旧岗位关系，插入新的关系

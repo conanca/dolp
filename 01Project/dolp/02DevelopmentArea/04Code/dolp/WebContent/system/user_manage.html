@@ -205,7 +205,8 @@ $(function(){
 		});
 		var url = "system/user/assignPost";
 		var userId = $("#userInfoList").getGridParam('selrow');
-		var orgId = userPostOrganizationTree.getSelectedNode().id;
+		var selectNodes = userPostOrganizationTree.getSelectedNodes();
+		var orgId = selectNodes[0].id;
 		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
 	});
 
