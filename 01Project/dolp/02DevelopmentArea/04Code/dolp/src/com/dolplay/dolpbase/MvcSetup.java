@@ -20,6 +20,7 @@ import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.Organization;
+import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.SysEnum;
@@ -55,6 +56,7 @@ public class MvcSetup implements Setup {
 			dao.create(SysEnumItem.class, true);
 			dao.create(SysPara.class, true);
 			dao.create(User.class, true);
+			dao.create(PoolFile.class, true);
 
 			// 添加默认记录
 			FileSqlManager fm = new FileSqlManager("init_system.sql");

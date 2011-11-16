@@ -93,24 +93,54 @@ $(function(){
 		}
 	});
 
+	// 发送按钮点击事件
 	$("#messageNewSend").click(function(){
 		var url = 'system/message/sendMessage';
 		messageNewSaveOrSendMessage(url);
 	});
+	// 保存草稿按钮点击事件
 	$("#messageNewSave").click(function(){
 		var url = 'system/message/saveMessage';
 		messageNewSaveOrSendMessage(url);
 	});
+	// 上传按钮点击事件
+	$("#messageNewAttachmentUploadBtn").click(function() {
+		$("#messageNewAttachmentInput").dolpUpload('system/message/uploadAttachment',{},function(returnData){
+			var id = returnData.id;
+			var name = returnData.name;
+			var nameP = "'" + name + "'";
+			$('#tmpAttachmentLinks').append('<div name="' + id
+					+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id
+					+ '&name=' + name + '">' + name
+					+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
+			var optionId = '"messageNewAttachmentsOption' + id + '"';
+			var optionValue = id + "=" + name;
+			$('#messageNewAttachments').append('<option selected="selected" value="' + optionValue + '">');
+		});
+	});
 });
 
+// 保存草稿或发送消息
 function messageNewSaveOrSendMessage(url){
 	if($("#messageNewForm").valid()){
 		var messageNewFormInfo = $("#messageNewForm").serializeObject();
 		$.dolpPost(url,messageNewFormInfo);
 		$('#messageNewForm')[0].reset();
+		// 删除页面上显示的附件
+		$('#tmpAttachmentLinks').empty();
+		$('#messageNewAttachments').empty();
 	}else{
 		$.addMessageStr(null,"未通过验证",null);
 	}
+}
+
+// 删除附件文件
+function removeAttachment(id,name){
+	var url = 'system/message/removeAttachment?id=' + id + '&name=' + name;
+	$.dolpPost(url);
+	$('div[name="'+id+'"]').remove();
+	var optionValue = id + "=" + name;
+	$('option[value="' + optionValue + '"]').remove();
 }
 </script>
 
@@ -121,7 +151,11 @@ function messageNewSaveOrSendMessage(url){
 	<p><a href="#" id="messageNewReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageNewReceiverUsers"/></textarea></p>
 	<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;"/></p>
 	<p><textarea name="content" style="width:94.5%;height:100%;" id="messageNewEditor"> </textarea></p>
+	<select multiple="multiple" style="display:none" name="attachments[]" id="messageNewAttachments"></select>
 </form>
+附件:<input type="file" name=messageAttachment id="messageNewAttachmentInput"/><button id="messageNewAttachmentUploadBtn">上传</button><br/>
+<div id="tmpAttachmentLinks">
+</div>
 
 <div id="messageNewUserSelect" title="用户列表">
 	<fieldset>

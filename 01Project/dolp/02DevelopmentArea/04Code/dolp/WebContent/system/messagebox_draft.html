@@ -63,7 +63,19 @@ $(function(){
 				$('#messageDraftboxReceiverUserNames').val(returnData);
 			});
 			$(this).setGridState('hidden');
-			$('#messageDraftboxDetail').show();
+			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
+				$.each(returnData,function(id,name){
+					var nameP = "'" + name + "'";
+					$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
+							+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id
+							+ '&name=' + name + '">' + name
+							+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
+					var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+					var optionValue = id + "=" + name;
+					$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
+				});
+				$('#messageDraftboxDetail').show();
+			});
 		}
 	});
 	$("#messageDraftboxList").setJqGridCUD('#messageDraftboxPager',{edit:false,add:false,del:false,search:false});
@@ -72,6 +84,9 @@ $(function(){
 	$('#messageDraftboxUserSelect').hide();
 
 	$('#messageDraftboxBack').click(function(){
+		// 删除页面上显示的附件
+		$('#messageDraftboxDetailTmpAttachmentLinks').empty();
+		$('#messageDraftboxAttachments').empty();
 		// 显示Grid，隐藏消息详细内容
 		$('#messageDraftboxList').trigger("reloadGrid");
 		$("#messageDraftboxList").setGridState('visible');
@@ -79,6 +94,9 @@ $(function(){
 		$('#messageDraftboxUserSelect').hide();
 	});
 	$('#messageDraftboxDelete').click(function(){
+		// 删除页面上显示的附件
+		$('#messageDraftboxDetailTmpAttachmentLinks').empty();
+		$('#messageDraftboxAttachments').empty();
 		var url = 'system/message/deleteDraftMessage';
 		var messageId = $('#messageDraftboxMessageId').val();
 		$.dolpPost(url,{messageId:messageId});
@@ -144,26 +162,56 @@ $(function(){
 		}
 	});
 
+	// 发送按钮点击事件
 	$("#messageDraftboxSend").click(function(){
 		var url = 'system/message/sendMessage';
 		messageDraftboxSaveOrSendMessage(url);
 		$('#messageDraftboxBack').click();
 	});
+	// 保存草稿按钮点击事件
 	$("#messageDraftboxSave").click(function(){
 		var url = 'system/message/saveMessage';
 		messageDraftboxSaveOrSendMessage(url);
 		$('#messageDraftboxBack').click();
 	});
+	// 上传按钮点击事件
+	$("#messageDraftboxAttachmentUploadBtn").click(function() {
+		$("#messageDraftboxAttachmentInput").dolpUpload('system/message/uploadAttachment',{},function(returnData){
+			var id = returnData.id;
+			var name = returnData.name;
+			var nameP = "'" + name + "'";
+			$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
+					+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id
+					+ '&name=' + name + '">' + name
+					+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
+			var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+			var optionValue = id + "=" + name;
+			$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
+		});
+	});
 });
 
+//保存草稿或发送消息
 function messageDraftboxSaveOrSendMessage(url){
 	if($("#messageDraftboxForm").valid()){
 		var messageNewFormInfo = $("#messageDraftboxForm").serializeObject();
 		$.dolpPost(url,messageNewFormInfo);
 		$('#messageDraftboxForm')[0].reset();
+		// 删除页面上显示的附件
+		$('#messageDraftboxDetailTmpAttachmentLinks').empty();
+		$('#messageDraftboxAttachments').empty();
 	}else{
 		$.addMessageStr(null,"未通过验证",null);
 	}
+}
+
+//删除附件文件
+function removeAttachment(id,name){
+	var url = 'system/message/removeAttachment?id=' + id + '&name=' + name;
+	$.dolpPost(url);
+	$('div[name="'+id+'"]').remove();
+	var optionValue = id + "=" + name;
+	$('option[value="' + optionValue + '"]').remove();
 }
 </script>
 
@@ -180,7 +228,11 @@ function messageDraftboxSaveOrSendMessage(url){
 		<p><a href="#" id="messageDraftboxReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
 		<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
 		<p><textarea name="content" style="width:94.5%;height:100%;" id="messageDraftboxEditor"></textarea></p>
+		<select multiple="multiple" style="display:none" name="attachments[]" id="messageDraftboxAttachments"></select>
 	</form>
+	附件:<input type="file" name="messageAttachment" id="messageDraftboxAttachmentInput"/><button id="messageDraftboxAttachmentUploadBtn">上传</button><br/>
+	<div id="messageDraftboxDetailTmpAttachmentLinks">
+	</div>
 </div>
 
 <div id="messageDraftboxUserSelect" title="用户列表">

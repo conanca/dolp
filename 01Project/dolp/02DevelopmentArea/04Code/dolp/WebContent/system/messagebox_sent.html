@@ -29,7 +29,14 @@ $(function(){
 			$('#messageSentboxDetailSender').text(row["sender.name"]);
 			$('#messageSentboxDetailContent').html(row.content);
 			$(this).setGridState('hidden');
-			$('#messageSentboxDetail').show();
+			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
+				$.each(returnData,function(id,name){
+					$('#messageSentboxDetailAttachmentLinks').append('<a target="_blank" href="system/message/downloadAttachment?id=' + id
+							+ '&name=' + name + '">' + name
+							+ '</a></br>');
+				});
+				$('#messageSentboxDetail').show();
+			});
 		}
 	});
 	$("#messageSentboxList").setJqGridCUD('#messageSentboxPager',{edit:false,add:false,del:false,search:false});
@@ -37,11 +44,15 @@ $(function(){
 	$('#messageSentboxDetail').hide();
 
 	$('#messageSentboxBack').click(function(){
+		// 删除页面上显示的附件
+		$('#messageSentboxDetailAttachmentLinks').empty();
 		// 显示Grid，隐藏消息详细内容
 		$("#messageSentboxList").setGridState('visible');
 		$('#messageSentboxDetail').hide();
 	});
 	$('#messageSentboxDelete').click(function(){
+		// 删除页面上显示的附件
+		$('#messageSentboxDetailAttachmentLinks').empty();
 		var url = 'system/message/deleteSentMessage';
 		var messageId = $('#messageSentboxDetailId').val();
 		$.dolpPost(url,{messageId:messageId});
@@ -71,5 +82,7 @@ $(function(){
 			</tr>
 		</table>
 		<div id="messageSentboxDetailContent"></div>
+		附件:<div id="messageSentboxDetailAttachmentLinks">
+		</div>
 	</fieldset>
 </div>

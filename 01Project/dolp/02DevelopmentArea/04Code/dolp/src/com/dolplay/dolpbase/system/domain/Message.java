@@ -21,6 +21,8 @@ public class Message {
 	private Integer senderUserId;
 	@ManyMany(target = User.class, relation = "SYSTEM_MESSAGE_RECEIVERUSER", from = "MESSAGEID", to = "USERID")
 	private List<User> receivers;
+	@ManyMany(target = PoolFile.class, relation = "SYSTEM_MESSAGE_POOLFILE", from = "MESSAGEID", to = "POOLFILEID")
+	private List<PoolFile> attachments;
 	@Column
 	private Timestamp date;
 	@Column
@@ -64,6 +66,14 @@ public class Message {
 
 	public void setReceivers(List<User> receivers) {
 		this.receivers = receivers;
+	}
+
+	public List<PoolFile> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<PoolFile> attachments) {
+		this.attachments = attachments;
 	}
 
 	public Timestamp getDate() {

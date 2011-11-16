@@ -29,7 +29,14 @@ $(function(){
 			$('#messageInboxDetailSender').text(row["sender.name"]);
 			$('#messageInboxDetailContent').html(row.content);
 			$(this).setGridState('hidden');
-			$('#messageInboxDetail').show();
+			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
+				$.each(returnData,function(id,name){
+					$('#messageInboxDetailAttachmentLinks').append('<a target="_blank" href="system/message/downloadAttachment?id=' + id
+							+ '&name=' + name + '">' + name
+							+ '</a></br>');
+				});
+				$('#messageInboxDetail').show();
+			});
 		}
 	});
 	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:false,search:false});
@@ -37,11 +44,15 @@ $(function(){
 	$('#messageInboxDetail').hide();
 
 	$('#messageInboxBack').click(function(){
+		// 删除页面上显示的附件
+		$('#messageInboxDetailAttachmentLinks').empty();
 		// 显示Grid，隐藏消息详细内容
 		$("#messageInboxList").setGridState('visible');
 		$('#messageInboxDetail').hide();
 	});
 	$('#messageInboxDelete').click(function(){
+		// 删除页面上显示的附件
+		$('#messageInboxDetailAttachmentLinks').empty();
 		var url = 'system/message/deleteReceivedMessage';
 		var messageId = $('#messageInboxDetailId').val();
 		$.dolpPost(url,{messageId:messageId});
@@ -71,5 +82,7 @@ $(function(){
 			</tr>
 		</table>
 		<div id="messageInboxDetailContent"></div>
+		附件:<div id="messageInboxDetailAttachmentLinks">
+		</div>
 	</fieldset>
 </div>
