@@ -49,6 +49,14 @@ public class DolpJsonView implements View {
 				// 获取异常信息
 				Throwable exception = (Throwable) obj;
 				exceptionMessage = exception.getMessage();
+				// 异常信息为空时的处理
+				if (null == exceptionMessage) {
+					if (exception instanceof NullPointerException) {
+						exceptionMessage = "java.lang.NullPointerException: null";
+					} else {
+						exceptionMessage = "未知异常";
+					}
+				}
 				// 判断异常信息中是否含中文
 				String regEx = "[\u4e00-\u9fa5]";
 				Pattern pat = Pattern.compile(regEx);
@@ -56,13 +64,6 @@ public class DolpJsonView implements View {
 				// 若当前配置的环境为生产环境,并且异常信息不含中文,则异常信息改为简单提示信息
 				if (env.equals("prd") && !matcher.find()) {
 					exceptionMessage = "异常发生,请联系管理员";
-				} else if (null == exceptionMessage) {
-					// 异常信息为空时的处理
-					if (exception instanceof NullPointerException) {
-						exceptionMessage = "java.lang.NullPointerException: null";
-					} else {
-						exceptionMessage = "未知异常";
-					}
 				}
 			}
 			// 为了前台显示之用封装异常信息
