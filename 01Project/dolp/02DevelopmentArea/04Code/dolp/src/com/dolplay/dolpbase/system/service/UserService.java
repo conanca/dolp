@@ -274,6 +274,10 @@ public class UserService extends DolpBaseService<User> {
 	@Aop(value = "log")
 	public AjaxResData importUsers(File f) {
 		AjaxResData respData = new AjaxResData();
+		if (f == null) {
+			respData.setSystemMessage(null, "请选择正确的文件!", null);
+			return respData;
+		}
 
 		HSSFWorkbook wb;
 		List<Object> userList;

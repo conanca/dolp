@@ -101,6 +101,10 @@ public class MessageModule {
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
 	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc) throws IOException {
 		AjaxResData respData = new AjaxResData();
+		if (tf == null) {
+			respData.setSystemMessage(null, "请选择正确的文件!", null);
+			return respData;
+		}
 		UploadTempFile tmpFile = FileUtils.getUploadTempFile(tf, ioc, "attachmentUpload");
 		respData.setReturnData(tmpFile);
 		respData.setSystemMessage("上传完成!", null, null);
