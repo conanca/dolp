@@ -98,7 +98,7 @@ public class SystemService extends DolpBaseService<Object> {
 		try {
 			wb.write(os);
 		} catch (IOException e) {
-			throw new RuntimeException("写入工作薄时异常!");
+			throw new RuntimeException("写入工作薄时异常!", e);
 		}
 		InputStream is = new ByteArrayInputStream(os.toByteArray());
 		return is;

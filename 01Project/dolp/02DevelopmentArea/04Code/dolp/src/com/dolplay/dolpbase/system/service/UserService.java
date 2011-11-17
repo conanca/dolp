@@ -282,7 +282,7 @@ public class UserService extends DolpBaseService<User> {
 			HSSFSheet sheet = wb.getSheetAt(0);
 			userList = ExcelHandler.readSheet(sheet, User.class);
 		} catch (Exception e) {
-			throw new RuntimeException("读取EXCEL文档出错!");
+			throw new RuntimeException("读取EXCEL文档出错!", e);
 		}
 		for (Object obj : userList) {
 			User user = (User) obj;
