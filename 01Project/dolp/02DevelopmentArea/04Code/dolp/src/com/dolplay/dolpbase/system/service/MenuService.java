@@ -10,8 +10,6 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -28,7 +26,6 @@ import com.dolplay.dolpbase.system.domain.User;
 
 @IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class MenuService extends DolpBaseService<Menu> {
-	private static Logger logger = LoggerFactory.getLogger(MenuService.class);
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -106,8 +103,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
 			jq.setRows(rows);
 		} catch (Exception e) {
-			logger.error("获取角色ID异常!", e);
-			throw new RuntimeException("获取角色ID异常!");
+			throw new RuntimeException("获取角色ID异常!", e);
 		}
 		return jq;
 	}
