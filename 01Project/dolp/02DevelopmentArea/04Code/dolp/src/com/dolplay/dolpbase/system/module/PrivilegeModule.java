@@ -18,7 +18,7 @@ public class PrivilegeModule {
 	private PrivilegeService privilegeService;
 
 	@At("/getGridData/*")
-	public ResponseData getGridData(int menuId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(Long menuId, @Param("..") JqgridReqData jqReq) {
 		return privilegeService.getGridData(menuId, jqReq);
 	}
 

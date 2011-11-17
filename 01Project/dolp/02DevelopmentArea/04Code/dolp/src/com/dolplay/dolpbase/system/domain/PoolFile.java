@@ -12,7 +12,7 @@ import org.nutz.ioc.Ioc;
 @Table("SYSTEM_POOLFILE")
 public class PoolFile {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	private Long idInPool;
 	@Column
@@ -22,11 +22,11 @@ public class PoolFile {
 	@Column
 	private String poolIocName;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

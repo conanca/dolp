@@ -13,7 +13,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_ORGANIZATION")
 public class Organization implements TreeNode {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String code;
@@ -34,11 +34,11 @@ public class Organization implements TreeNode {
 	private boolean open;
 	private boolean isParent;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

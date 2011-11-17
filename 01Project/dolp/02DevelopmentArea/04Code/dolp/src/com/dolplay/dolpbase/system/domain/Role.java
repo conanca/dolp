@@ -13,7 +13,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_ROLE")
 public class Role implements TreeNode {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
@@ -33,11 +33,11 @@ public class Role implements TreeNode {
 	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "ROLEID", to = "PRIVILEGEID")
 	private List<Privilege> privileges;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

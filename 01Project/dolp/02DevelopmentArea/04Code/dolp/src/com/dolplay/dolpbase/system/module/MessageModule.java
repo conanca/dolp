@@ -56,12 +56,12 @@ public class MessageModule {
 	}
 
 	@At("/getAttachments/*")
-	public ResponseData getAttachments(int messageId) {
+	public ResponseData getAttachments(Long messageId) {
 		return messageService.getAttachments(messageId);
 	}
 
 	@At
-	public ResponseData sendMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
+	public ResponseData sendMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc, HttpSession session) throws IOException {
 		User currentUser = (User) session.getAttribute("logonUser");
@@ -69,7 +69,7 @@ public class MessageModule {
 	}
 
 	@At
-	public ResponseData saveMessage(@Param("messageId") int messageId, @Param("receiverUsers") String[] receiverUsers,
+	public ResponseData saveMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc, HttpSession session) throws IOException {
 		User currentUser = (User) session.getAttribute("logonUser");
@@ -77,23 +77,23 @@ public class MessageModule {
 	}
 
 	@At
-	public ResponseData deleteReceivedMessage(@Param("messageId") int messageId, HttpSession session) {
+	public ResponseData deleteReceivedMessage(@Param("messageId") Long messageId, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.deleteReceivedMessage(messageId, currentUser);
 	}
 
 	@At
-	public ResponseData deleteSentMessage(@Param("messageId") int messageId) {
+	public ResponseData deleteSentMessage(@Param("messageId") Long messageId) {
 		return messageService.deleteSentMessage(messageId);
 	}
 
 	@At
-	public ResponseData deleteDraftMessage(@Param("messageId") int messageId) {
+	public ResponseData deleteDraftMessage(@Param("messageId") Long messageId) {
 		return messageService.deleteDraftMessage(messageId);
 	}
 
 	@At("/getReceiverUserNum/*")
-	public ResponseData getReceiverUserNum(int messageId) {
+	public ResponseData getReceiverUserNum(Long messageId) {
 		return messageService.getReceiverUserNum(messageId);
 	}
 
@@ -117,7 +117,7 @@ public class MessageModule {
 
 	@At
 	@Ok("raw:stream")
-	public InputStream downloadAttachment(@Param("id") long id, @Param("name") String name, Ioc ioc,
+	public InputStream downloadAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc,
 			HttpServletResponse response) throws FileNotFoundException, UnsupportedEncodingException {
 		FilePool attachmentPool = ioc.get(NutFilePool.class, "attachmentPool");
 		File f = attachmentPool.getFile(id, name.substring(name.lastIndexOf(".")));

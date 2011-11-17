@@ -12,12 +12,12 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_CLIENT")
 public class Client {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	@ColDefine(type = ColType.CHAR, width = 32)
 	private String sessionId;
 	@Column
-	private Integer userId;
+	private Long userId;
 	@One(target = User.class, field = "userId")
 	private User user;
 	@Column
@@ -29,11 +29,11 @@ public class Client {
 	@ColDefine(type = ColType.VARCHAR, width = 200)
 	private String userAgent;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -45,11 +45,11 @@ public class Client {
 		this.sessionId = sessionId;
 	}
 
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

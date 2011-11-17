@@ -20,7 +20,7 @@ public class PrivilegeService extends DolpBaseService<Privilege> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Privilege> getGridData(int menuId, JqgridReqData jqReq) {
+	public AdvancedJqgridResData<Privilege> getGridData(Long menuId, JqgridReqData jqReq) {
 		Condition cnd = Cnd.where("MENUID", "=", menuId);
 		AdvancedJqgridResData<Privilege> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;

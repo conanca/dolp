@@ -30,7 +30,7 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, boolean isOrgaRela, int organizationId) {
+	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, Boolean isOrgaRela, Long organizationId) {
 		Condition cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
 		if (isOrgaRela) {
 			cnd = ((Cnd) cnd).and("ORGANIZATIONID", "=", organizationId);
@@ -69,7 +69,7 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData getAllRoleMap(boolean isOrgaRela) {
+	public AjaxResData getAllRoleMap(Boolean isOrgaRela) {
 		AjaxResData respData = new AjaxResData();
 		List<Role> roles = query(Cnd.where("ISORGARELA", "=", isOrgaRela), null);
 		Map<String, String> roleOptions = new LinkedHashMap<String, String>();
@@ -124,14 +124,14 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	/**
-	 * 获取指定用户的岗位列表
+	 * 获取指定用户指定机构的岗位列表
 	 * @param jqReq
 	 * @param organizationId
 	 * @param userId
 	 * @return
 	 */
 	@Aop(value = "log")
-	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, int organizationId, int userId) {
+	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, Long organizationId, Long userId) {
 		Sql sql = Sqls.create("SELECT ID,NAME,DESCRIPTION,ID IN "
 				+ "(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId) AS ISSET "
 				+ "FROM SYSTEM_ROLE WHERE ORGANIZATIONID = $organizationId");

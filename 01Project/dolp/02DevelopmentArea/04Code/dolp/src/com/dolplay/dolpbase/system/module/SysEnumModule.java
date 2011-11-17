@@ -27,7 +27,7 @@ public class SysEnumModule {
 	}
 
 	@At("/getSysEnumItemGridData/*")
-	public ResponseData getSysEnumItemGridData(int sysEnumId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getSysEnumItemGridData(Long sysEnumId, @Param("..") JqgridReqData jqReq) {
 		return sysEnumItemService.getGridData(jqReq, sysEnumId);
 	}
 

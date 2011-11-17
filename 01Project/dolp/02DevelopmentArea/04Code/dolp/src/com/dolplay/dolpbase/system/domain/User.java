@@ -16,7 +16,7 @@ import org.nutz.json.JsonField;
 @Table("SYSTEM_USER")
 public class User {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String number;
@@ -46,7 +46,7 @@ public class User {
 
 	public static User getInstance(ResultSet rs) throws SQLException {
 		User user = new User();
-		user.id = rs.getInt("ID");
+		user.id = rs.getLong("ID");
 		user.number = rs.getString("NUMBER");
 		user.password = rs.getString("PASSWORD");
 		user.name = rs.getString("NAME");
@@ -57,11 +57,11 @@ public class User {
 		return user;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

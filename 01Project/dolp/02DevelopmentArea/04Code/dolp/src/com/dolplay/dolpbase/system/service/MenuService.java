@@ -10,6 +10,8 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -26,6 +28,7 @@ import com.dolplay.dolpbase.system.domain.User;
 
 @IocBean(args = { "refer:dao" }, fields = { "prop" })
 public class MenuService extends DolpBaseService<Menu> {
+	private static Logger logger = LoggerFactory.getLogger(MenuService.class);
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -40,8 +43,9 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @param roleIds
 	 * @return
 	 */
-	public List<MenuEntity> getMenuNodes(int nodeId, int nLeft, int nRight, int nLevel, String roleIds) {
+	public List<MenuEntity> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel, String roleIds) {
 		StringBuilder addWhere = new StringBuilder();
+		nodeId = nodeId == null ? 0 : nodeId;
 		if (nodeId != 0) {
 			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
 			nLevel++;
@@ -82,7 +86,8 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridData(int nodeId, int nLeft, int nRight, int nLevel, User logonUser) {
+	public AdvancedJqgridResData<MenuEntity> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
+			User logonUser) {
 		if (logonUser == null) {
 			throw new RuntimeException("用户未登录!");
 		}
@@ -101,6 +106,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
 			jq.setRows(rows);
 		} catch (Exception e) {
+			logger.error("获取角色ID异常!", e);
 			throw new RuntimeException("获取角色ID异常!");
 		}
 		return jq;
@@ -115,14 +121,15 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getTreeNodes(int nodeId) {
+	public AjaxResData getTreeNodes(Long nodeId) {
 		AjaxResData resData = new AjaxResData();
-		int parentLft;
-		int parentRgt = 0;
+		long parentLft;
+		long parentRgt = 0;
+		nodeId = nodeId == null ? 0 : nodeId;
 		if (nodeId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			int rootRgt = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			long rootRgt = Long.valueOf(getSysParaValue("MaxRightValue"));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -154,13 +161,13 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, int parentId) {
-		int parentLft;
-		int parentRgt = 0;
+	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, Long parentId) {
+		long parentLft;
+		long parentRgt = 0;
 		if (parentId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			int rootRgt = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			long rootRgt = Long.valueOf(getSysParaValue("MaxRightValue"));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -193,7 +200,7 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData CUDMenu(String oper, String ids, Menu menu, int parentId) {
+	public AjaxResData CUDMenu(String oper, String ids, Menu menu, Long parentId) {
 		AjaxResData respData = new AjaxResData();
 		if ("del".equals(oper)) {
 			for (String aId : ids.split(",")) {
@@ -204,8 +211,8 @@ public class MenuService extends DolpBaseService<Menu> {
 			respData.setSystemMessage("删除成功!", null, null);
 		} else if ("add".equals(oper)) {
 			//获取父菜单;
-			int parentLft = 0;
-			int parentRight = 0;
+			long parentLft = 0;
+			long parentRight = 0;
 			if (parentId > 0) {
 				Menu parentMenu = fetch(parentId);
 				parentLft = parentMenu.getLft();
@@ -251,11 +258,11 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData addMenuIsNotLeaf(int parentId, String name, String description) {
+	public AjaxResData addMenuIsNotLeaf(Long parentId, String name, String description) {
 		AjaxResData respData = new AjaxResData();
 		//获取父菜单;
-		int parentLft = 0;
-		int parentRight = 0;
+		long parentLft = 0;
+		long parentRight = 0;
 		if (parentId > 0) {
 			Menu parentMenu = fetch(parentId);
 			parentLft = parentMenu.getLft();
@@ -304,11 +311,12 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getPrivilegeTreeNodesByRoleId(int roleId, int nodeId, int nLeft, int nRight, int nLevel) {
+	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
 		AjaxResData respData = new AjaxResData();
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
 
 		StringBuilder addWhere = new StringBuilder();
+		nodeId = nodeId == null ? 0 : nodeId;
 		if (nodeId != 0) {
 			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
 			nLevel++;
@@ -330,7 +338,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		for (MenuEntity menuEntity : menuEntites) {
 			if (menuEntity.getLevel() == nLevel) {
 				// 如果该菜单含操作权限数据，则将其设为父节点
-				int privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
+				long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
 				if (privilegesCount > 0) {
 					menuEntity.setParent(true);
 				}

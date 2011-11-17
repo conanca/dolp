@@ -13,7 +13,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_PRIVILEGE")
 public class Privilege {
 	@Id
-	private Integer id;
+	private Long id;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
@@ -30,11 +30,11 @@ public class Privilege {
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "PRIVILEGEID", to = "ROLEID")
 	private List<Role> roles;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

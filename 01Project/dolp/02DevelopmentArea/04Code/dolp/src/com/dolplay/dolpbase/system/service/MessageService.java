@@ -45,7 +45,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @throws IOException 
 	 */
 	@Aop(value = "log")
-	public AjaxResData saveOrSendMessage(int saveOrSend, final int messageId, User senderUser, String[] receiverUsers,
+	public AjaxResData saveOrSendMessage(int state, final Long messageId, User senderUser, String[] receiverUsers,
 			String title, String content, String[] attachments) throws IOException {
 		// 清除该message的一切相关
 		clearMessageRelation(messageId);
@@ -54,14 +54,14 @@ public class MessageService extends DolpBaseService<Message> {
 		// 获取message对象
 		final Message message = getNewMessage(senderUser, receiverUsers, title, content);
 		// 设置状态为已保存/已发送
-		message.setState(saveOrSend);
+		message.setState(state);
 		// 插入附件文件信息，插入/更新消息，插入(收件人、附件文件)关系数据
 		Trans.exec(new Atom() {
 			public void run() {
 				dao().insert(poolFiles);
 				message.setAttachments(poolFiles);
 				// 如果指定messageId,则只是更新该消息的内容；否则新增记录
-				if (messageId > 0) {
+				if (messageId != null) {
 					message.setId(messageId);
 					dao().update(message);
 				} else {
@@ -73,13 +73,15 @@ public class MessageService extends DolpBaseService<Message> {
 			}
 		});
 		String successMessage = null;
-		switch (saveOrSend) {
+		switch (state) {
 		case 0:
 			successMessage = "保存草稿成功!";
 			break;
 		case 1:
 			successMessage = "发送成功!";
 			break;
+		default:
+			successMessage = "未知操作!";
 		}
 		AjaxResData respData = new AjaxResData();
 		respData.setSystemMessage(successMessage, null, null);
@@ -93,7 +95,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData deleteReceivedMessage(int messageId, User user) {
+	public AjaxResData deleteReceivedMessage(Long messageId, User user) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
 			respData.setSystemMessage(null, "未选择消息!", null);
@@ -111,7 +113,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData deleteSentMessage(int messageId) {
+	public AjaxResData deleteSentMessage(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
 			respData.setSystemMessage(null, "未选择消息!", null);
@@ -130,13 +132,13 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData deleteDraftMessage(int messageId) {
+	public AjaxResData deleteDraftMessage(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
 			respData.setSystemMessage(null, "未选择消息!", null);
 			return respData;
 		}
-		delete(Long.valueOf(messageId));
+		delete(messageId);
 		// 清除该message的一切相关
 		clearMessageRelation(messageId);
 
@@ -175,7 +177,7 @@ public class MessageService extends DolpBaseService<Message> {
 	}
 
 	/**
-	 * 列表显示发送的消息
+	 * 列表显示已发送/草稿箱的消息
 	 * @param jqReq
 	 * @param senderUser
 	 * @param state
@@ -198,7 +200,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getReceiverUserNum(int messageId) {
+	public AjaxResData getReceiverUserNum(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		Message message = dao().fetchLinks(fetch(messageId), "receivers");
 		List<User> receivers = message.getReceivers();
@@ -233,7 +235,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @param messageId
 	 * @return
 	 */
-	public AjaxResData getAttachments(int messageId) {
+	public AjaxResData getAttachments(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		Message m = dao().fetchLinks(fetch(messageId), "attachments");
 		if (null != m) {
@@ -252,9 +254,9 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @param userNumArr
 	 * @return
 	 */
-	private Set<Integer> numArr2IdArr(String[] userNumArr) {
+	private Set<Long> numArr2IdArr(String[] userNumArr) {
 		// 将形如 AA<1234>这样的元素转换成1234
-		Set<Integer> idArr = new HashSet<Integer>();
+		Set<Long> idArr = new HashSet<Long>();
 		for (String receiverUser : userNumArr) {
 			receiverUser = receiverUser.trim();
 			String userNo = null;
@@ -281,11 +283,11 @@ public class MessageService extends DolpBaseService<Message> {
 	 */
 	@Aop(value = "log")
 	private Message getNewMessage(User senderUser, String[] receiverUsers, String title, String content) {
-		Set<Integer> idArr = numArr2IdArr(receiverUsers);
+		Set<Long> idArr = numArr2IdArr(receiverUsers);
 		Message message = new Message();
 		message.setSenderUserId(senderUser.getId());
 		List<User> receivers = new ArrayList<User>();
-		for (int id : idArr) {
+		for (Long id : idArr) {
 			User user = new User();
 			user.setId(id);
 			receivers.add(user);
@@ -313,7 +315,7 @@ public class MessageService extends DolpBaseService<Message> {
 		List<PoolFile> poolFiles = new ArrayList<PoolFile>();
 		for (String attachment : attachments) {
 			String[] arr = attachment.split("=");
-			Long fileId = Long.parseLong(arr[0]);
+			long fileId = Long.parseLong(arr[0]);
 			String fileName = arr[1];
 			String suffix = fileName.substring(fileName.lastIndexOf("."));
 			PoolFile attachmentPoolFile = new PoolFile();
@@ -331,7 +333,8 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @param messageId
 	 * @param ioc
 	 */
-	private void clearMessageRelation(int messageId) {
+	private void clearMessageRelation(Long messageId) {
+		messageId = null == messageId ? 0 : messageId;
 		Message m = dao().fetchLinks(fetch(messageId), "attachments");
 		if (null != m) {
 			List<PoolFile> oldAttachments = m.getAttachments();

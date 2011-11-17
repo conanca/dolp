@@ -14,11 +14,11 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("SYSTEM_MESSAGE")
 public class Message {
 	@Id
-	private Integer id;
+	private Long id;
 	@One(target = User.class, field = "senderUserId")
 	private User sender;
 	@Column
-	private Integer senderUserId;
+	private Long senderUserId;
 	@ManyMany(target = User.class, relation = "SYSTEM_MESSAGE_RECEIVERUSER", from = "MESSAGEID", to = "USERID")
 	private List<User> receivers;
 	@ManyMany(target = PoolFile.class, relation = "SYSTEM_MESSAGE_POOLFILE", from = "MESSAGEID", to = "POOLFILEID")
@@ -31,16 +31,19 @@ public class Message {
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 10000)
 	private String content;
+	/**
+	 * 消息状态 0：草稿；1：已发送；2：已删除(发信人方删除)
+	 */
 	@Column
 	private Integer state;
 	@Column
 	private Integer type;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -52,11 +55,11 @@ public class Message {
 		this.sender = sender;
 	}
 
-	public Integer getSenderUserId() {
+	public Long getSenderUserId() {
 		return senderUserId;
 	}
 
-	public void setSenderUserId(Integer senderUserId) {
+	public void setSenderUserId(Long senderUserId) {
 		this.senderUserId = senderUserId;
 	}
 

@@ -87,8 +87,7 @@ public class UserService extends DolpBaseService<User> {
 			}
 		});
 		dao().execute(sql);
-		String newUserNumber = Strings.alignRight(String.valueOf(Integer.parseInt((String) sql.getResult()) + 1), 4,
-				'0');
+		String newUserNumber = Strings.alignRight(String.valueOf(Long.parseLong((String) sql.getResult()) + 1), 4, '0');
 		respData.setReturnData(newUserNumber);
 		return respData;
 	}
@@ -142,27 +141,24 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData updateRole(String userId, String[] roleIds) {
+	public AjaxResData updateRole(final Long userId, String[] roleIds) {
 		AjaxResData respData = new AjaxResData();
-		final String userID;
-		if (Strings.isEmpty(userId)) {
-			respData.setSystemMessage(null, "未选择用户!", null);
+		if (userId <= 0) {
+			respData.setSystemMessage(null, "未正确选择用户", null);
 			return respData;
-		} else {
-			userID = userId;
 		}
 		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
-			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
+			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userId));
 			respData.setSystemMessage(null, "该用户未分配任何角色!", null);
 			return respData;
 		}
 		List<Role> roles = new ArrayList<Role>();
 		// 取得要更新角色的用户
-		final User user = fetch(Integer.parseInt(userId));
+		final User user = fetch(userId);
 		// 从数据库中获取指定id的角色
 		for (String roleId : roleIds) {
-			Role role = dao().fetch(Role.class, Integer.parseInt(roleId));
+			Role role = dao().fetch(Role.class, Long.parseLong(roleId));
 			roles.add(role);
 		}
 		// 为该用户分配这些角色
@@ -170,7 +166,7 @@ public class UserService extends DolpBaseService<User> {
 		Trans.exec(new Atom() {
 			public void run() {
 				// 清空中间表中该用户原有角色
-				dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userID));
+				dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userId));
 				// 插入中间表记录
 				dao().insertRelation(user, "roles");
 			}
@@ -181,7 +177,7 @@ public class UserService extends DolpBaseService<User> {
 
 	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
-	public AjaxResData getCurrentRoleIdArr(String userId) {
+	public AjaxResData getCurrentRoleIdArr(Long userId) {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls
 				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = $isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
@@ -203,7 +199,7 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public List<Privilege> getCurrentPrivileges(int userId) {
+	public List<Privilege> getCurrentPrivileges(Long userId) {
 		StringBuilder sb = new StringBuilder(
 				"ID IN (SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID='");
 		sb.append(userId).append("'))");
@@ -213,7 +209,7 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData updatePost(final String userId, String orgId, final String[] postIds) {
+	public AjaxResData updatePost(final Long userId, String orgId, final String[] postIds) {
 		AjaxResData respData = new AjaxResData();
 		StringBuilder sb = new StringBuilder();
 		sb.append("ROLEID IN (SELECT ID FROM SYSTEM_ROLE WHERE ORGANIZATIONID =");
@@ -260,7 +256,7 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData changePasswordForAUser(int userId, String newPassword) {
+	public AjaxResData changePasswordForAUser(Long userId, String newPassword) {
 		AjaxResData respData = new AjaxResData();
 		if (userId > 0) {
 			User user = new User();

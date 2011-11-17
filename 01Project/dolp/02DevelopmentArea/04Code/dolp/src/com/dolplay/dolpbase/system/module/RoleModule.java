@@ -18,8 +18,8 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") boolean isOrgaRela,
-			@Param("organizationId") int organizationId) {
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") Boolean isOrgaRela,
+			@Param("organizationId") Long organizationId) {
 		return roleService.getGridData(jqReq, isOrgaRela, organizationId);
 	}
 
@@ -38,7 +38,7 @@ public class RoleModule {
 	}
 
 	@At("/getAllRoleMap/*")
-	public ResponseData getAllRoleMap(boolean isOrgaRela) {
+	public ResponseData getAllRoleMap(Boolean isOrgaRela) {
 		return roleService.getAllRoleMap(isOrgaRela);
 	}
 
@@ -51,7 +51,7 @@ public class RoleModule {
 	 */
 	@At
 	public ResponseData getUserPostGridData(@Param("..") JqgridReqData jqReq,
-			@Param("organizationId") int organizationId, @Param("userId") int userId) {
+			@Param("organizationId") Long organizationId, @Param("userId") Long userId) {
 		return roleService.getUserPostGridData(jqReq, organizationId, userId);
 	}
 }

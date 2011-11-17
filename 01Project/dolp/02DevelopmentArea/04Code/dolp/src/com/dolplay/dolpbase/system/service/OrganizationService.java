@@ -24,15 +24,16 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, int parentOrgId) {
+	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, Long parentOrgId) {
 		Condition cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
 		AdvancedJqgridResData<Organization> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 
 	@Aop(value = "log")
-	public AjaxResData getNodes(int id, String name) {
+	public AjaxResData getNodes(Long id, String name) {
 		AjaxResData respData = new AjaxResData();
+		id = id == null ? 0 : id;
 		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {

@@ -132,7 +132,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
 				List<StandardJqgridResDataRow> rows = new ArrayList<StandardJqgridResDataRow>();
 				int columnCount = rs.getMetaData().getColumnCount();
-				int i = 1;
+				long i = 1;
 				while (rs.next()) {
 					StandardJqgridResDataRow row = new StandardJqgridResDataRow();
 					row.setId(i);

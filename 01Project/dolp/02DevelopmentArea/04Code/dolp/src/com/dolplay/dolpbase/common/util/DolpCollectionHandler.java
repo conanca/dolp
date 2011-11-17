@@ -52,7 +52,7 @@ public class DolpCollectionHandler<T> {
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			sb.append(((Integer) f.get(obj)).intValue());
+			sb.append(((Long) f.get(obj)).longValue());
 			sb.append(separator);
 		}
 		sb.deleteCharAt(sb.length() - 1);

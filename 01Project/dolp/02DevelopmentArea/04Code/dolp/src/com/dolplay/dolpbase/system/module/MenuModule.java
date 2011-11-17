@@ -27,7 +27,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getGridData/*")
-	public ResponseData getGridData(int parentId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(Long parentId, @Param("..") JqgridReqData jqReq) {
 		return menuService.getGridData(jqReq, parentId);
 	}
 
@@ -42,7 +42,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/editRow/*")
-	public ResponseData editRow(int parentId, @Param("oper") String oper, @Param("ids") String ids,
+	public ResponseData editRow(Long parentId, @Param("oper") String oper, @Param("ids") String ids,
 			@Param("..") Menu menu) {
 		return menuService.CUDMenu(oper, ids, menu, parentId);
 	}
@@ -56,7 +56,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public ResponseData addParentMenu(@Param("parentId") int parentId, @Param("name") String name,
+	public ResponseData addParentMenu(@Param("parentId") Long parentId, @Param("name") String name,
 			@Param("description") String description) {
 		return menuService.addMenuIsNotLeaf(parentId, name, description);
 	}
@@ -71,7 +71,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
+	public ResponseData getNodes(@Param("id") Long id, @Param("name") String name) {
 		return menuService.getTreeNodes(id);
 	}
 
@@ -81,8 +81,8 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getPrivilegeNodesByRoleId/*")
-	public ResponseData getPrivilegeNodesByRoleId(int roleId, @Param("id") int id, @Param("lft") int lft,
-			@Param("rgt") int rgt, @Param("level") int level) {
+	public ResponseData getPrivilegeNodesByRoleId(Long roleId, @Param("id") Long id, @Param("lft") Long lft,
+			@Param("rgt") Long rgt, @Param("level") Integer level) {
 		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt, level);
 	}
 
@@ -96,8 +96,8 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	public ResponseData dispMenu(@Param("nodeid") int nodeId, @Param("n_left") int nLeft, @Param("n_right") int nRight,
-			@Param("n_level") int nLevel, HttpSession session) {
+	public ResponseData dispMenu(@Param("nodeid") Long nodeId, @Param("n_left") Long nLeft,
+			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpSession session) {
 		User logonUser = (User) session.getAttribute("logonUser");
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
 	}

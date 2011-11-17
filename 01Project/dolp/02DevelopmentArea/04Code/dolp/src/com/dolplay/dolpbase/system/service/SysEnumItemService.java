@@ -20,7 +20,7 @@ public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, int sysEnumId) {
+	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, Long sysEnumId) {
 		Cnd cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
 		AdvancedJqgridResData<SysEnumItem> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;

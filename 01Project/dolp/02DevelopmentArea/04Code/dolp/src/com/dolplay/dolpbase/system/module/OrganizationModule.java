@@ -18,7 +18,7 @@ public class OrganizationModule {
 	private OrganizationService organizationService;
 
 	@At("/getGridData/*")
-	public ResponseData getGridData(int parentOrgId, @Param("..") JqgridReqData jqReq) {
+	public ResponseData getGridData(Long parentOrgId, @Param("..") JqgridReqData jqReq) {
 		return organizationService.getGridData(jqReq, parentOrgId);
 	}
 
@@ -29,7 +29,7 @@ public class OrganizationModule {
 	}
 
 	@At
-	public ResponseData getNodes(@Param("id") int id, @Param("name") String name) {
+	public ResponseData getNodes(@Param("id") Long id, @Param("name") String name) {
 		return organizationService.getNodes(id, name);
 	}
 }

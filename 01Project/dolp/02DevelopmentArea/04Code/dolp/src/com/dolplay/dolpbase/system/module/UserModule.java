@@ -44,17 +44,17 @@ public class UserModule {
 	}
 
 	@At
-	public ResponseData assignRole(@Param("userId") String userId, @Param("assignedRoleIds[]") String[] roleIds) {
+	public ResponseData assignRole(@Param("userId") Long userId, @Param("assignedRoleIds[]") String[] roleIds) {
 		return userService.updateRole(userId, roleIds);
 	}
 
 	@At("/getCurrentRoleIDs/*")
-	public ResponseData getCurrentRoleIDs(String userId) {
+	public ResponseData getCurrentRoleIDs(Long userId) {
 		return userService.getCurrentRoleIdArr(userId);
 	}
 
 	@At
-	public ResponseData assignPost(@Param("userId") String userId, @Param("orgId") String orgId,
+	public ResponseData assignPost(@Param("userId") Long userId, @Param("orgId") String orgId,
 			@Param("selectedPostIds[]") String[] postIds) {
 		return userService.updatePost(userId, orgId, postIds);
 	}
@@ -67,7 +67,7 @@ public class UserModule {
 	}
 
 	@At
-	public ResponseData changeUserPassword(@Param("userId") int userId, @Param("newPassword") String newPassword) {
+	public ResponseData changeUserPassword(@Param("userId") Long userId, @Param("newPassword") String newPassword) {
 		return userService.changePasswordForAUser(userId, newPassword);
 	}
 
