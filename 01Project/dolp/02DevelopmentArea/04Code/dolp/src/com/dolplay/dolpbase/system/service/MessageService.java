@@ -24,6 +24,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.User;
@@ -317,7 +318,7 @@ public class MessageService extends DolpBaseService<Message> {
 			String[] arr = attachment.split("=");
 			long fileId = Long.parseLong(arr[0]);
 			String fileName = arr[1];
-			String suffix = fileName.substring(fileName.lastIndexOf("."));
+			String suffix = StringUtils.getFileSuffix(fileName);
 			PoolFile attachmentPoolFile = new PoolFile();
 			attachmentPoolFile.setIdInPool(fileId);
 			attachmentPoolFile.setName(fileName);

@@ -17,6 +17,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
@@ -27,7 +29,11 @@ import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.common.domain.UploadTempFile;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.util.FileUtils;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.filter.CheckAttachmentOperation;
+import com.dolplay.dolpbase.system.filter.CheckLogon;
+import com.dolplay.dolpbase.system.filter.CheckPrivilege;
 import com.dolplay.dolpbase.system.service.MessageService;
 
 @IocBean
@@ -112,19 +118,23 @@ public class MessageModule {
 	}
 
 	@At
+	@Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class),
+			@By(type = CheckAttachmentOperation.class) })
 	public ResponseData removeAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc) {
 		FilePool pool = ioc.get(NutFilePool.class, "attachmentPool");
-		pool.removeFile(id, name.substring(name.lastIndexOf(".")));
+		pool.removeFile(id, StringUtils.getFileSuffix(name));
 		//respData.setSystemMessage("删除文件成功!", null, null);
 		return new AjaxResData();
 	}
 
 	@At
 	@Ok("raw:stream")
+	@Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class),
+			@By(type = CheckAttachmentOperation.class) })
 	public InputStream downloadAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc,
 			HttpServletResponse response) throws FileNotFoundException, UnsupportedEncodingException {
 		FilePool attachmentPool = ioc.get(NutFilePool.class, "attachmentPool");
-		File f = attachmentPool.getFile(id, name.substring(name.lastIndexOf(".")));
+		File f = attachmentPool.getFile(id, StringUtils.getFileSuffix(name));
 		InputStream in = new FileInputStream(f);
 		response.setHeader("Content-Disposition", "attachment;filename=" + new String(name.getBytes(), "utf-8"));
 		response.setHeader("Content-Length", "" + f.length());
