@@ -175,7 +175,6 @@ public class UserService extends DolpBaseService<User> {
 		return respData;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public AjaxResData getCurrentRoleIdArr(Long userId) {
 		AjaxResData respData = new AjaxResData();
@@ -193,6 +192,7 @@ public class UserService extends DolpBaseService<User> {
 			}
 		});
 		dao().execute(sql);
+		@SuppressWarnings("unchecked")
 		List<Integer> currentRoleIDs = (List<Integer>) sql.getResult();
 		respData.setReturnData(currentRoleIDs);
 		return respData;

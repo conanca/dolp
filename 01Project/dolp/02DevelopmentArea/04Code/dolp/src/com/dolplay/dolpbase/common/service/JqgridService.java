@@ -125,7 +125,6 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	 * @param jqReq
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public StandardJqgridResData getStandardJqgridResData(Sql sql, JqgridReqData jqReq) {
 		// 设置rows
 		sql.setCallback(new SqlCallback() {
@@ -146,6 +145,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 			}
 		});
 		dao().execute(sql);
+		@SuppressWarnings("unchecked")
 		List<StandardJqgridResDataRow> rows = (List<StandardJqgridResDataRow>) sql.getResult();
 		// TODO 目前不支持分页和排序
 		// 设置开始页数

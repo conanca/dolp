@@ -12,12 +12,12 @@ public class DolpCollectionHandler<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<Integer> getIdsList(List list) throws Exception {
-		List<Integer> ids = new ArrayList<Integer>();
+	public static List<Long> getIdsList(List list) throws Exception {
+		List<Long> ids = new ArrayList<Long>();
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			ids.add(((Integer) f.get(obj)).intValue());
+			ids.add(((Long) f.get(obj)).longValue());
 		}
 		return ids;
 	}
@@ -28,13 +28,13 @@ public class DolpCollectionHandler<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	public static int[] getIdsArr(List list) throws Exception {
-		int[] ids = new int[list.size()];
+	public static long[] getIdsArr(List list) throws Exception {
+		long[] ids = new long[list.size()];
 		int i = 0;
 		for (Object obj : list) {
 			Field f = obj.getClass().getDeclaredField("id");
 			f.setAccessible(true);
-			ids[i] = ((Integer) f.get(obj)).intValue();
+			ids[i] = ((Long) f.get(obj)).longValue();
 			i++;
 		}
 		return ids;
