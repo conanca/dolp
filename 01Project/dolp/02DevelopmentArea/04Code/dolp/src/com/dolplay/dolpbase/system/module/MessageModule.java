@@ -24,11 +24,8 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.ResponseData;
-import com.dolplay.dolpbase.common.domain.UploadTempFile;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
-import com.dolplay.dolpbase.common.util.FileUtils;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.filter.CheckAttachmentOperation;
@@ -94,8 +91,8 @@ public class MessageModule {
 	}
 
 	@At
-	public ResponseData deleteDraftMessage(@Param("messageId") Long messageId) {
-		return messageService.deleteDraftMessage(messageId);
+	public ResponseData deleteDraftMessage(@Param("messageId") Long messageId, Ioc ioc) {
+		return messageService.deleteDraftMessage(messageId, ioc);
 	}
 
 	@At("/getReceiverUserNum/*")
@@ -106,25 +103,7 @@ public class MessageModule {
 	@At
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
 	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc) throws IOException {
-		AjaxResData respData = new AjaxResData();
-		if (tf == null) {
-			respData.setSystemMessage(null, "请选择正确的文件!", null);
-			return respData;
-		}
-		UploadTempFile tmpFile = FileUtils.getUploadTempFile(tf, ioc, "attachmentUpload");
-		respData.setReturnData(tmpFile);
-		respData.setSystemMessage("上传完成!", null, null);
-		return respData;
-	}
-
-	@At
-	@Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class),
-			@By(type = CheckAttachmentOperation.class) })
-	public ResponseData removeAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc) {
-		FilePool pool = ioc.get(NutFilePool.class, "attachmentPool");
-		pool.removeFile(id, StringUtils.getFileSuffix(name));
-		//respData.setSystemMessage("删除文件成功!", null, null);
-		return new AjaxResData();
+		return messageService.saveAttachment(tf, ioc);
 	}
 
 	@At

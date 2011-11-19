@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,9 +15,15 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
+import org.nutz.filepool.FilePool;
+import org.nutz.filepool.NutFilePool;
+import org.nutz.ioc.Ioc;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.mvc.upload.FieldMeta;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -133,16 +140,22 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData deleteDraftMessage(Long messageId) {
+	public AjaxResData deleteDraftMessage(Long messageId, Ioc ioc) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
 			respData.setSystemMessage(null, "未选择消息!", null);
 			return respData;
 		}
-		delete(messageId);
-		// 清除该message的一切相关
+		// 清除该message的相关数据表数据
 		clearMessageRelation(messageId);
-
+		// 删除该message的相关附件文件
+		FilePool pool = ioc.get(NutFilePool.class, "attachmentPool");
+		Map<Long, String> attachmentMap = getAttachmentMap(messageId);
+		for (Long id : attachmentMap.keySet()) {
+			pool.removeFile(id, StringUtils.getFileSuffix(attachmentMap.get(id)));
+		}
+		// 删除该消息
+		delete(messageId);
 		respData.setSystemMessage("删除成功!", null, null);
 		return respData;
 	}
@@ -238,6 +251,16 @@ public class MessageService extends DolpBaseService<Message> {
 	 */
 	public AjaxResData getAttachments(Long messageId) {
 		AjaxResData respData = new AjaxResData();
+		respData.setReturnData(getAttachmentMap(messageId));
+		return respData;
+	}
+
+	/**
+	 * 获取指定消息的附件文件的 fileIdInPoll-fileName 的Map
+	 * @param messageId
+	 * @return
+	 */
+	public Map<Long, String> getAttachmentMap(Long messageId) {
 		Message m = dao().fetchLinks(fetch(messageId), "attachments");
 		if (null != m) {
 			List<PoolFile> attachments = m.getAttachments();
@@ -245,8 +268,33 @@ public class MessageService extends DolpBaseService<Message> {
 			for (PoolFile file : attachments) {
 				attachmentMap.put(file.getIdInPool(), file.getName());
 			}
-			respData.setReturnData(attachmentMap);
+			return attachmentMap;
+		} else {
+			return null;
 		}
+	}
+
+	public AjaxResData saveAttachment(TempFile tf, Ioc ioc) {
+		AjaxResData respData = new AjaxResData();
+		if (tf == null) {
+			respData.setSystemMessage(null, "请选择正确的文件!", null);
+			return respData;
+		}
+
+		File f = tf.getFile();
+		long fileId = ioc.get(UploadAdaptor.class, "attachmentUpload").getContext().getFilePool().getFileId(f);
+		FieldMeta meta = tf.getMeta();
+		PoolFile uploadTempFile = new PoolFile();
+		uploadTempFile.setIdInPool(fileId);
+		uploadTempFile.setName(meta.getFileLocalName());
+		uploadTempFile.setClientLocalPath(meta.getFileLocalPath());
+		uploadTempFile.setContentType(meta.getContentType());
+		uploadTempFile.setSuffix(StringUtils.getFileSuffix(meta.getFileLocalName()));
+		uploadTempFile.setPoolIocName("attachmentPool");
+		dao().insert(uploadTempFile);
+
+		respData.setReturnData(uploadTempFile);
+		respData.setSystemMessage("上传完成!", null, null);
 		return respData;
 	}
 
@@ -330,7 +378,7 @@ public class MessageService extends DolpBaseService<Message> {
 	}
 
 	/**
-	 * 清除旧的(收件人、附件文件)关系数据，附件文件信息，删除文件池中旧的附件文件
+	 * 清除旧的(收件人、附件文件)关系数据，附件文件信息
 	 * @param messageId
 	 * @param ioc
 	 */

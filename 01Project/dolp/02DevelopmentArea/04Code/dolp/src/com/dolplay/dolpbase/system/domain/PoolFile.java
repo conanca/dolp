@@ -8,19 +8,25 @@ import org.nutz.dao.entity.annotation.Table;
 import org.nutz.filepool.FilePool;
 import org.nutz.filepool.NutFilePool;
 import org.nutz.ioc.Ioc;
+import org.nutz.json.JsonField;
 
 @Table("SYSTEM_POOLFILE")
 public class PoolFile {
 	@Id
+	@JsonField(ignore = true)
 	private Long id;
 	@Column
 	private Long idInPool;
 	@Column
 	private String name;
 	@Column
+	@JsonField(ignore = true)
 	private String suffix;
 	@Column
+	@JsonField(ignore = true)
 	private String poolIocName;
+	private String clientLocalPath;
+	private String contentType;
 
 	public Long getId() {
 		return id;
@@ -60,6 +66,22 @@ public class PoolFile {
 
 	public void setPoolIocName(String poolIocName) {
 		this.poolIocName = poolIocName;
+	}
+
+	public String getClientLocalPath() {
+		return clientLocalPath;
+	}
+
+	public void setClientLocalPath(String clientLocalPath) {
+		this.clientLocalPath = clientLocalPath;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	/**
