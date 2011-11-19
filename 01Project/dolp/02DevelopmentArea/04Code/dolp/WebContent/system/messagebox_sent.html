@@ -47,18 +47,16 @@ $(function(){
 		// 删除页面上显示的附件
 		$('#messageSentboxDetailAttachmentLinks').empty();
 		// 显示Grid，隐藏消息详细内容
+		$("#messageSentboxList").trigger('reloadGrid');
 		$("#messageSentboxList").setGridState('visible');
 		$('#messageSentboxDetail').hide();
 	});
 	$('#messageSentboxDelete').click(function(){
-		// 删除页面上显示的附件
-		$('#messageSentboxDetailAttachmentLinks').empty();
 		var url = 'system/message/deleteSentMessage';
 		var messageId = $('#messageSentboxDetailId').val();
-		$.dolpPost(url,{messageId:messageId});
-		$("#messageSentboxList").trigger('reloadGrid');
-		$("#messageSentboxList").setGridState('visible');
-		$('#messageSentboxDetail').hide();
+		$.dolpPost(url,{messageId:messageId},function(returnData){
+			$('#messageSentboxBack').click();
+		});
 	});
 });
 </script>

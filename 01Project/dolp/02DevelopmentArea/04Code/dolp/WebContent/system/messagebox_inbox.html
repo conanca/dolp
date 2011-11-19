@@ -43,22 +43,21 @@ $(function(){
 
 	$('#messageInboxDetail').hide();
 
+	// 返回按钮点击事件
 	$('#messageInboxBack').click(function(){
 		// 删除页面上显示的附件
 		$('#messageInboxDetailAttachmentLinks').empty();
 		// 显示Grid，隐藏消息详细内容
+		$("#messageInboxList").trigger('reloadGrid');
 		$("#messageInboxList").setGridState('visible');
 		$('#messageInboxDetail').hide();
 	});
 	$('#messageInboxDelete').click(function(){
-		// 删除页面上显示的附件
-		$('#messageInboxDetailAttachmentLinks').empty();
 		var url = 'system/message/deleteReceivedMessage';
 		var messageId = $('#messageInboxDetailId').val();
-		$.dolpPost(url,{messageId:messageId});
-		$("#messageInboxList").trigger('reloadGrid');
-		$("#messageInboxList").setGridState('visible');
-		$('#messageInboxDetail').hide();
+		$.dolpPost(url,{messageId:messageId},function(returnData){
+			$('#messageInboxBack').click();
+		});
 	});
 });
 </script>

@@ -145,11 +145,12 @@ $(function(){
 	});
 
 	$('#roleAssignForm').submit(function() {
-		//关闭用户角色分配界面
-		$("#roleAssignInfo").dialog( "close" );
 		var url = 'system/user/assignRole';
 		var roleAssignFormInfo = $(this).serializeObject();
-		$.dolpPost(url,roleAssignFormInfo);
+		$.dolpPost(url,roleAssignFormInfo,function(returnData){
+			//关闭用户角色分配界面
+			$("#roleAssignInfo").dialog( "close" );
+		});
 		return false;
 	});
 
@@ -207,7 +208,9 @@ $(function(){
 		var userId = $("#userInfoList").getGridParam('selrow');
 		var selectNodes = userPostOrganizationTree.getSelectedNodes();
 		var orgId = selectNodes[0].id;
-		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
+		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds},function(returnData){
+			$("#postAssignInfo").dialog( "close" );
+		})
 	});
 
 	$("#postAssignInfoCancelbtn").click(function() {
@@ -239,11 +242,12 @@ $(function(){
 	$('#userMangeChangePwdForm').submit(function() {
 		if($(this).valid()){
 			var changePwdInfo = $(this).serializeObject();
-			$.dolpPost('system/user/changeUserPassword',changePwdInfo);
+			$.dolpPost('system/user/changeUserPassword',changePwdInfo,function(returnData){
+				$("#userPasswordChangeInfoCancelbtn").click();
+			});
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}
-		$("#userPasswordChangeInfoCancelbtn").click();
 		return false;
 	});
 
