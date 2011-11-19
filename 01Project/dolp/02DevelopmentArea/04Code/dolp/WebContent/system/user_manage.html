@@ -2,8 +2,6 @@
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	// 填充选择框roleIds的值
 	$.dolpGet("system/role/getAllRoleMap/false",null,function(returnData){
 		$("#roleIds").addItems(returnData);

@@ -32,7 +32,10 @@ $(function() {
 					maintab.tabs('select',st);
 				} else {
 					maintab.tabs('add',st, treedata.name);
-					$(st,"#tabs").load(treedata.url);
+					$(st,"#tabs").load(treedata.url,function(){
+						// 载入网页后要执行的语句:
+						$("input:button,input:submit,input:reset").button();
+					});
 				}
 			}
 		}
