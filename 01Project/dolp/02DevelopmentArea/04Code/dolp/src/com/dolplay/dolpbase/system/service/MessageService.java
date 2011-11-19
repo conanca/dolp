@@ -291,6 +291,7 @@ public class MessageService extends DolpBaseService<Message> {
 		uploadTempFile.setContentType(meta.getContentType());
 		uploadTempFile.setSuffix(StringUtils.getFileSuffix(meta.getFileLocalName()));
 		uploadTempFile.setPoolIocName("attachmentPool");
+		uploadTempFile.setUploadDate(new Timestamp((new Date()).getTime()));
 		dao().insert(uploadTempFile);
 
 		respData.setReturnData(uploadTempFile);

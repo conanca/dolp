@@ -1,6 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
 import java.io.File;
+import java.sql.Timestamp;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
@@ -25,6 +26,9 @@ public class PoolFile {
 	@Column
 	@JsonField(ignore = true)
 	private String poolIocName;
+	@Column
+	@JsonField(ignore = true)
+	private Timestamp uploadDate;
 	private String clientLocalPath;
 	private String contentType;
 
@@ -82,6 +86,14 @@ public class PoolFile {
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	public Timestamp getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Timestamp uploadDate) {
+		this.uploadDate = uploadDate;
 	}
 
 	/**
