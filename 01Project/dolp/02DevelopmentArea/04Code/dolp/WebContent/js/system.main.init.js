@@ -6,6 +6,7 @@ var opts = {
 	pnotify_stack: stack_bottomright
 };
 
+// 设置遮罩
 $.blockUI.defaults.fadeOut = 500;
 $.blockUI.defaults.message = '<img src="images/commons/busy.gif" />';
 //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
@@ -19,7 +20,7 @@ $(document).ajaxError(function(e,xhr,opt){
 	$.addMessageStr(null,null,xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
 });
 
-//覆盖jqGrid的全局参数，以设置默认值
+// 覆盖jqGrid的全局参数，以设置默认值
 $.extend($.jgrid.defaults, {
 	rowNum:10,
    	rowList:[10,20,50],
@@ -32,13 +33,13 @@ $.extend($.jgrid.defaults, {
 	}
 });
 
-//用户关闭浏览器或重定向到其他页面时，自动登出
+// 用户关闭浏览器或重定向到其他页面时，自动登出
 $(window).unload(function(){
 	$.dolpGet("logout");
 	window.location = "index.html";
 });
 
-//定义用到的全局变量
+// 定义用到的全局变量
 var genders;
 var genders1;
 $.getSysEmnuItem("gender",function(returnData){

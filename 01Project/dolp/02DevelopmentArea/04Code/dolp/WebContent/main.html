@@ -31,15 +31,15 @@
 <script type="text/javascript">
 var maintab;
 $(function() {
+	// 设置布局
 	var myLayout = $("body").layout( { applyDefaultStyles: true } );
 	myLayout.sizePane("north", 112);
-
+	// 上方和左方布局 载入网页
 	$("#UpPane").load("header.html");
 	$("#LeftPane").load("menu.html");
-	$("#tabs-home").load("home.html");
-
-	//在menu.html中触发maintab的add事件时，需要激活这个新增的tab
+	// 右方布局初始化为一个tab
 	maintab =$('#tabs', '#RightPane').tabs({
+		// 在menu.html中触发maintab的add事件时，需要激活这个新增的tab
 		add: function(e, ui) {
 			// append close thingy
 			$(ui.tab).parents('li:first')
@@ -52,6 +52,8 @@ $(function() {
 			maintab.tabs('select', '#' + ui.panel.id);
 		}
 	});
+	// 默认页tab载入网页
+	$("#tabs-home").load("home.html");
 });
 </script>
 </head>
