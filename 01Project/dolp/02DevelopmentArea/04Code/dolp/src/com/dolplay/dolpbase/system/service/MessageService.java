@@ -1,6 +1,5 @@
 package com.dolplay.dolpbase.system.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,9 +20,7 @@ import org.nutz.ioc.Ioc;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
-import org.nutz.mvc.upload.FieldMeta;
 import org.nutz.mvc.upload.TempFile;
-import org.nutz.mvc.upload.UploadAdaptor;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -274,28 +271,15 @@ public class MessageService extends DolpBaseService<Message> {
 		}
 	}
 
-	public AjaxResData saveAttachment(TempFile tf, Ioc ioc) {
+	public AjaxResData saveAttachment(TempFile tf, Ioc ioc, User owner) {
 		AjaxResData respData = new AjaxResData();
-		if (tf == null) {
-			respData.setSystemMessage(null, "请选择正确的文件!", null);
-			return respData;
+		PoolFile uploadTempFile = saveUploadFileInfo(tf, ioc, owner);
+		if (uploadTempFile != null) {
+			//respData.setSystemMessage("上传完成!", null, null);
+		} else {
+			respData.setSystemMessage(null, "请勿上传空文件!", null);
 		}
-
-		File f = tf.getFile();
-		long fileId = ioc.get(UploadAdaptor.class, "attachmentUpload").getContext().getFilePool().getFileId(f);
-		FieldMeta meta = tf.getMeta();
-		PoolFile uploadTempFile = new PoolFile();
-		uploadTempFile.setIdInPool(fileId);
-		uploadTempFile.setName(meta.getFileLocalName());
-		uploadTempFile.setClientLocalPath(meta.getFileLocalPath());
-		uploadTempFile.setContentType(meta.getContentType());
-		uploadTempFile.setSuffix(StringUtils.getFileSuffix(meta.getFileLocalName()));
-		uploadTempFile.setPoolIocName("attachmentPool");
-		uploadTempFile.setUploadDate(new Timestamp((new Date()).getTime()));
-		dao().insert(uploadTempFile);
-
 		respData.setReturnData(uploadTempFile);
-		respData.setSystemMessage("上传完成!", null, null);
 		return respData;
 	}
 

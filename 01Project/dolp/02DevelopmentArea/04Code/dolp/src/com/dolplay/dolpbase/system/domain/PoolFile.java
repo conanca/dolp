@@ -29,6 +29,9 @@ public class PoolFile {
 	@Column
 	@JsonField(ignore = true)
 	private Timestamp uploadDate;
+	@Column
+	@JsonField(ignore = true)
+	private Long ownerUserId;
 	private String clientLocalPath;
 	private String contentType;
 
@@ -94,6 +97,14 @@ public class PoolFile {
 
 	public void setUploadDate(Timestamp uploadDate) {
 		this.uploadDate = uploadDate;
+	}
+
+	public Long getOwnerUserId() {
+		return ownerUserId;
+	}
+
+	public void setOwnerUserId(Long ownerUserId) {
+		this.ownerUserId = ownerUserId;
 	}
 
 	/**

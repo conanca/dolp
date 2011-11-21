@@ -102,8 +102,10 @@ public class MessageModule {
 
 	@At
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
-	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc) throws IOException {
-		return messageService.saveAttachment(tf, ioc);
+	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc, HttpSession session)
+			throws IOException {
+		User cUser = (User) session.getAttribute("logonUser");
+		return messageService.saveAttachment(tf, ioc, cUser);
 	}
 
 	@At

@@ -111,6 +111,9 @@ $(function(){
 	// 上传按钮点击事件
 	$("#messageNewAttachmentUploadBtn").click(function() {
 		$("#messageNewAttachmentInput").dolpUpload('system/message/uploadAttachment',{},function(returnData){
+			if(returnData == null){
+				return;
+			}
 			var id = returnData.idInPool;
 			var name = returnData.name;
 			var nameP = "'" + name + "'";
