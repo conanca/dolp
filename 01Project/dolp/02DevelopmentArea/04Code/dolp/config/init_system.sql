@@ -90,7 +90,7 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (14,'删除已收',null,14,'com.dolplay.dolpbase.system.module.MessageModule.deleteReceivedMessage'),
 (15,'删除已发',null,15,'com.dolplay.dolpbase.system.module.MessageModule.deleteSentMessage'),
 (16,'删除草稿',null,16,'com.dolplay.dolpbase.system.module.MessageModule.deleteDraftMessage'),
-(18,'获取收件人账户编号',null,16,'com.dolplay.dolpbase.system.module.MessageModule.getReceiverUserNum'),
+(18,'获取收件人',null,16,'com.dolplay.dolpbase.system.module.MessageModule.getReceiver'),
 (19,'查询',null,6,'com.dolplay.dolpbase.system.module.OrganizationModule.getGridData'),
 (20,'修改',null,6,'com.dolplay.dolpbase.system.module.OrganizationModule.editRow'),
 (21,'获取树节点',null,6,'com.dolplay.dolpbase.system.module.OrganizationModule.getNodes'),

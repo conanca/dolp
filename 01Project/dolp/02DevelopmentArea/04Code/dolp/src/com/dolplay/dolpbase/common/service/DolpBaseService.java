@@ -1,8 +1,11 @@
 package com.dolplay.dolpbase.common.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
@@ -74,8 +77,26 @@ public abstract class DolpBaseService<T> extends JqgridService<T> {
 		uploadTempFile.setPoolIocName("attachmentPool");
 		uploadTempFile.setUploadDate(new Timestamp((new Date()).getTime()));
 		uploadTempFile.setOwnerUserId(owner.getId());
-		dao().insert(uploadTempFile);
-
 		return uploadTempFile;
+	}
+
+	/**
+	 * 根据临时文件的在临时文件池的ID及文件名，查询数据库，获取PoolFile列表。
+	 * @param attachments
+	 * @param ioc
+	 * @return
+	 * @throws IOException
+	 */
+	public List<PoolFile> getUploadFileInfoList(long[] idsInPool, String poolIocName) {
+		if (null == idsInPool) {
+			return null;
+		}
+		List<PoolFile> poolFiles = new ArrayList<PoolFile>();
+		for (long idInPool : idsInPool) {
+			PoolFile attachmentPoolFile = dao().fetch(PoolFile.class,
+					Cnd.where("POOLIOCNAME", "=", poolIocName).and("IDINPOOL", "=", idInPool));
+			poolFiles.add(attachmentPoolFile);
+		}
+		return poolFiles;
 	}
 }

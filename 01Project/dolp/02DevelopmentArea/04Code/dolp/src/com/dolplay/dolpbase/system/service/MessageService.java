@@ -54,8 +54,16 @@ public class MessageService extends DolpBaseService<Message> {
 			String title, String content, String[] attachments) throws IOException {
 		// 清除该message的一切相关
 		clearMessageRelation(messageId);
-		// 获取附件文件列表
-		final List<PoolFile> poolFiles = getAttachments(attachments);
+		// 获取附件文件信息列表
+		long[] idsInPool = null;
+		if (attachments != null) {
+			idsInPool = new long[attachments.length];
+			for (int i = 0; i < attachments.length; i++) {
+				String[] arr = attachments[i].split("=");
+				idsInPool[i] = Long.parseLong(arr[0]);
+			}
+		}
+		final List<PoolFile> poolFiles = getUploadFileInfoList(idsInPool, "attachmentPool");
 		// 获取message对象
 		final Message message = getNewMessage(senderUser, receiverUsers, title, content);
 		// 设置状态为已保存/已发送
@@ -63,7 +71,6 @@ public class MessageService extends DolpBaseService<Message> {
 		// 插入附件文件信息，插入/更新消息，插入(收件人、附件文件)关系数据
 		Trans.exec(new Atom() {
 			public void run() {
-				dao().insert(poolFiles);
 				message.setAttachments(poolFiles);
 				// 如果指定messageId,则只是更新该消息的内容；否则新增记录
 				if (messageId != null) {
@@ -206,18 +213,21 @@ public class MessageService extends DolpBaseService<Message> {
 	}
 
 	/**
-	 * 根据指定消息Id，获取收件人的number，以“,”分隔
+	 * 根据指定消息Id，获取收件人的name和number，并组合成一定的格式
 	 * @param messageId
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getReceiverUserNum(Long messageId) {
+	public AjaxResData getReceiverUserNameNum(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		Message message = dao().fetchLinks(fetch(messageId), "receivers");
 		List<User> receivers = message.getReceivers();
 		StringBuilder sb = new StringBuilder();
 		for (User user : receivers) {
+			sb.append(user.getName());
+			sb.append("<");
 			sb.append(user.getNumber());
+			sb.append(">");
 			sb.append(",");
 		}
 		String receiverUserNums = sb.toString();
@@ -274,6 +284,7 @@ public class MessageService extends DolpBaseService<Message> {
 	public AjaxResData saveAttachment(TempFile tf, Ioc ioc, User owner) {
 		AjaxResData respData = new AjaxResData();
 		PoolFile uploadTempFile = saveUploadFileInfo(tf, ioc, owner);
+		dao().insert(uploadTempFile);
 		if (uploadTempFile != null) {
 			//respData.setSystemMessage("上传完成!", null, null);
 		} else {
@@ -335,34 +346,6 @@ public class MessageService extends DolpBaseService<Message> {
 	}
 
 	/**
-	 * 根据临时文件的在临时文件池的ID及文件名，获取该文件，并存入附件文件池中；
-	 * 并将各个附件文件的信息组成列表。
-	 * @param attachments
-	 * @param ioc
-	 * @return
-	 * @throws IOException
-	 */
-	private List<PoolFile> getAttachments(String[] attachments) throws IOException {
-		if (null == attachments) {
-			return null;
-		}
-		List<PoolFile> poolFiles = new ArrayList<PoolFile>();
-		for (String attachment : attachments) {
-			String[] arr = attachment.split("=");
-			long fileId = Long.parseLong(arr[0]);
-			String fileName = arr[1];
-			String suffix = StringUtils.getFileSuffix(fileName);
-			PoolFile attachmentPoolFile = new PoolFile();
-			attachmentPoolFile.setIdInPool(fileId);
-			attachmentPoolFile.setName(fileName);
-			attachmentPoolFile.setSuffix(suffix);
-			attachmentPoolFile.setPoolIocName("attachmentPool");
-			poolFiles.add(attachmentPoolFile);
-		}
-		return poolFiles;
-	}
-
-	/**
 	 * 清除旧的(收件人、附件文件)关系数据，附件文件信息
 	 * @param messageId
 	 * @param ioc
@@ -371,8 +354,6 @@ public class MessageService extends DolpBaseService<Message> {
 		messageId = null == messageId ? 0 : messageId;
 		Message m = dao().fetchLinks(fetch(messageId), "attachments");
 		if (null != m) {
-			List<PoolFile> oldAttachments = m.getAttachments();
-			dao().delete(oldAttachments);
 			dao().clearLinks(m, "receivers");
 			dao().clearLinks(m, "attachments");
 		}

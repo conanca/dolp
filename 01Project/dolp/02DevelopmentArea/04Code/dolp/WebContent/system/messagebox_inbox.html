@@ -26,6 +26,9 @@ $(function(){
 			$('#messageInboxDetailDate').text(row.date);
 			$('#messageInboxDetailSender').text(row["sender.name"]);
 			$('#messageInboxDetailContent').html(row.content);
+			$.dolpGet('system/message/getReceiver/'+row.id,null,function(returnData){
+				$('#messageInboxDetailReceiverUserNames').text(returnData);
+			});
 			$(this).setGridState('hidden');
 			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
 				$.each(returnData,function(id,name){
@@ -76,6 +79,9 @@ $(function(){
 				<td align="right">
 					<label id="messageInboxDetailDate"></label>
 				</td>
+			</tr>
+			<tr>
+				<td colspan="2">收件人:<label id="messageInboxDetailReceiverUserNames"></label></td>
 			</tr>
 		</table>
 		<div id="messageInboxDetailContent"></div>

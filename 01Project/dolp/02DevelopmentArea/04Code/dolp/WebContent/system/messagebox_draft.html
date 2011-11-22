@@ -57,7 +57,7 @@ $(function(){
 			$('#messageDraftboxMessageId').val(row.id);
 			$('#messageDraftboxTitle').val(row.title);
 			$('#messageDraftboxEditor').wysiwyg('setContent', row.content);
-			$.dolpGet('system/message/getReceiverUserNum/'+row.id,null,function(returnData){
+			$.dolpGet('system/message/getReceiver/'+row.id,null,function(returnData){
 				$('#messageDraftboxReceiverUserNames').val(returnData);
 			});
 			$(this).setGridState('hidden');
@@ -128,7 +128,7 @@ $(function(){
 				var row = $("#messageDraftboxUserInfoList").getRowData(selId)
 				var number = row.number;
 				var name = row.name;
-				receiverUserNames+=name+"<"+number+">,";
+				receiverUserNames += name + "<" + number + ">,";
 			});
 			$('#messageDraftboxReceiverUserNames').val(receiverUserNames);
 			$("#messageDraftboxUserCloseBtn").click();
@@ -223,7 +223,7 @@ function removeAttachment(id,name){
 	<br/>
 	<form id="messageDraftboxForm" action="#">
 		<input type="hidden" name="messageId" id="messageDraftboxMessageId"/>
-		<p><a href="#" id="messageDraftboxReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
+		<p><a href="#" id="messageDraftboxReceiver">收件人</a>：<textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
 		<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
 		<p><textarea name="content" style="width:94.5%;height:100%;" id="messageDraftboxEditor"></textarea></p>
 		<select multiple="multiple" style="display:none" name="attachments[]" id="messageDraftboxAttachments"></select>

@@ -95,9 +95,9 @@ public class MessageModule {
 		return messageService.deleteDraftMessage(messageId, ioc);
 	}
 
-	@At("/getReceiverUserNum/*")
-	public ResponseData getReceiverUserNum(Long messageId) {
-		return messageService.getReceiverUserNum(messageId);
+	@At("/getReceiver/*")
+	public ResponseData getReceiver(Long messageId) {
+		return messageService.getReceiverUserNameNum(messageId);
 	}
 
 	@At

@@ -26,6 +26,9 @@ $(function(){
 			$('#messageSentboxDetailDate').text(row.date);
 			$('#messageSentboxDetailSender').text(row["sender.name"]);
 			$('#messageSentboxDetailContent').html(row.content);
+			$.dolpGet('system/message/getReceiver/'+row.id,null,function(returnData){
+				$('#messageSentboxDetailReceiverUserNames').text(returnData);
+			});
 			$(this).setGridState('hidden');
 			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
 				$.each(returnData,function(id,name){
@@ -75,6 +78,9 @@ $(function(){
 				<td align="right">
 					<label id="messageSentboxDetailDate"></label>
 				</td>
+			</tr>
+			<tr>
+				<td colspan="2">收件人:<label id="messageSentboxDetailReceiverUserNames"></label></td>
 			</tr>
 		</table>
 		<div id="messageSentboxDetailContent"></div>
