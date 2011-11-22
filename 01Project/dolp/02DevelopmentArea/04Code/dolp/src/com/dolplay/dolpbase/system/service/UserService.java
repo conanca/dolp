@@ -2,9 +2,6 @@ package com.dolplay.dolpbase.system.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +19,9 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.impl.sql.callback.FetchStringCallback;
+import org.nutz.dao.impl.sql.callback.QueryLongCallback;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -77,17 +75,9 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData getNewUserNumber() {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
-		sql.setCallback(new SqlCallback() {
-			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				String maxNumber = null;
-				while (rs.next()) {
-					maxNumber = rs.getString("MAXNUMBER");
-				}
-				return maxNumber;
-			}
-		});
+		sql.setCallback(new FetchStringCallback());
 		dao().execute(sql);
-		String newUserNumber = Strings.alignRight(String.valueOf(Long.parseLong((String) sql.getResult()) + 1), 4, '0');
+		String newUserNumber = Strings.alignRight(String.valueOf(Long.parseLong(sql.getString()) + 1), 4, '0');
 		respData.setReturnData(newUserNumber);
 		return respData;
 	}
@@ -182,18 +172,9 @@ public class UserService extends DolpBaseService<User> {
 				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = $isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
 		sql.vars().set("isOrgaRela", false);
 		sql.vars().set("userId", userId);
-		sql.setCallback(new SqlCallback() {
-			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				List<Integer> currentRoleIDs = new ArrayList<Integer>();
-				while (rs.next()) {
-					currentRoleIDs.add(rs.getInt("ID"));
-				}
-				return currentRoleIDs;
-			}
-		});
+		sql.setCallback(new QueryLongCallback());
 		dao().execute(sql);
-		@SuppressWarnings("unchecked")
-		List<Integer> currentRoleIDs = (List<Integer>) sql.getResult();
+		long[] currentRoleIDs = (long[]) sql.getResult();
 		respData.setReturnData(currentRoleIDs);
 		return respData;
 	}

@@ -86,11 +86,10 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	}
 
 	/**
-	 * 通过指定实体的 Class、自定义Sql语句、查询条件cnd和排序分页信息jqReq，从数据库查询数据，并封装为指定实体类型的AdvancedJqgridResData格式。
+	 * 通过指定实体的 Class、自定义Sql语句和排序分页信息jqReq，从数据库查询数据，并封装为指定实体类型的AdvancedJqgridResData格式。
 	 * 注：目前不支持分页和排序功能
 	 * @param tClass
 	 * @param sql
-	 * @param cnd
 	 * @param jqReq
 	 * @return
 	 */
@@ -118,10 +117,9 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 	}
 
 	/**
-	 * 通过自定义Sql语句、查询条件cnd和排序分页信息jqReq，从数据库查询数据，将各条记录和分页信息封装为StandardJqgridResData格式。
+	 * 通过自定义Sql语句和排序分页信息jqReq，从数据库查询数据，将各条记录和分页信息封装为StandardJqgridResData格式。
 	 * 注：目前不支持分页和排序功能
 	 * @param sql
-	 * @param cnd
 	 * @param jqReq
 	 * @return
 	 */
@@ -145,8 +143,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 			}
 		});
 		dao().execute(sql);
-		@SuppressWarnings("unchecked")
-		List<StandardJqgridResDataRow> rows = (List<StandardJqgridResDataRow>) sql.getResult();
+		List<StandardJqgridResDataRow> rows = sql.getList(StandardJqgridResDataRow.class);
 		// TODO 目前不支持分页和排序
 		// 设置开始页数
 		int page = jqReq.getPage();
