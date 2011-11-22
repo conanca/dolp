@@ -23,7 +23,7 @@ public class Role implements TreeNode {
 	@Column
 	private Boolean isOrgaRela;
 	@Column
-	private Integer organizationId;
+	private Long organizationId;
 	@One(target = Organization.class, field = "organizationId")
 	private Organization organization;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
@@ -65,11 +65,11 @@ public class Role implements TreeNode {
 		this.isOrgaRela = isOrgaRela;
 	}
 
-	public Integer getOrganizationId() {
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(Integer organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 

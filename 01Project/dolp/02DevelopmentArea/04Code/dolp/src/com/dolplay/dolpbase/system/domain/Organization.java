@@ -24,7 +24,7 @@ public class Organization implements TreeNode {
 	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Column
-	private Integer parentOrgId;
+	private Long parentOrgId;
 	@One(target = Organization.class, field = "parentOrgId")
 	private Organization parentOrg;
 	@Many(target = Organization.class, field = "parentOrgId")
@@ -66,11 +66,11 @@ public class Organization implements TreeNode {
 		this.description = description;
 	}
 
-	public Integer getParentOrgId() {
+	public Long getParentOrgId() {
 		return parentOrgId;
 	}
 
-	public void setParentOrgId(Integer parentOrgId) {
+	public void setParentOrgId(Long parentOrgId) {
 		this.parentOrgId = parentOrgId;
 	}
 

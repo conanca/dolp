@@ -21,7 +21,7 @@ public class Privilege {
 	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
 	@Column
-	private Integer menuId;
+	private Long menuId;
 	@One(target = Menu.class, field = "menuId")
 	private Menu menu;
 	@Column
@@ -54,11 +54,11 @@ public class Privilege {
 		this.description = description;
 	}
 
-	public Integer getMenuId() {
+	public Long getMenuId() {
 		return menuId;
 	}
 
-	public void setMenuId(Integer menuId) {
+	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
 	}
 

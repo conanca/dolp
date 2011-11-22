@@ -18,7 +18,7 @@ public class SysEnumItem {
 	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String value;
 	@Column
-	private Integer sysEnumId;
+	private Long sysEnumId;
 	@One(target = SysEnum.class, field = "sysEnumId")
 	private SysEnum sysEnum;
 
@@ -46,11 +46,11 @@ public class SysEnumItem {
 		this.value = value;
 	}
 
-	public Integer getSysEnumId() {
+	public Long getSysEnumId() {
 		return sysEnumId;
 	}
 
-	public void setSysEnumId(Integer sysEnumId) {
+	public void setSysEnumId(Long sysEnumId) {
 		this.sysEnumId = sysEnumId;
 	}
 
