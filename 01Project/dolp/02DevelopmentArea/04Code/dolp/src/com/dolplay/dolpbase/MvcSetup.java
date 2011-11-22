@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.PropertiesProvider;
+import com.dolplay.dolpbase.common.util.IocObjectProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
@@ -42,7 +42,7 @@ public class MvcSetup implements Setup {
 		// 初始化dao,datasource及properties
 		DaoProvider.init(config.getIoc());
 		Dao dao = DaoProvider.getDao();
-		PropertiesProvider.init(config.getIoc());
+		IocObjectProvider.init(config.getIoc());
 		// 初始化系统基本的数据表
 		if (!dao.exists("SYSTEM_USER")) {
 			// 建实体类的表

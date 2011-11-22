@@ -14,7 +14,7 @@ import org.nutz.mvc.View;
 
 import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
-import com.dolplay.dolpbase.common.util.PropertiesProvider;
+import com.dolplay.dolpbase.common.util.IocObjectProvider;
 
 /**
  * @author Administrator
@@ -40,7 +40,7 @@ public class DolpJsonView implements View {
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			String exceptionMessage;
 			// 获取环境类型
-			DolpProperties prop = PropertiesProvider.getProp();
+			DolpProperties prop = IocObjectProvider.getProp();
 			String env = (String) prop.get("Environment");
 			// 获取配置文件参数Environment,判断是否为空
 			if (Strings.isEmpty(env)) {
