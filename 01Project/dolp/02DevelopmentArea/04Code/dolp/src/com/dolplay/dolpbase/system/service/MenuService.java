@@ -41,24 +41,19 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	public List<MenuEntity> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel, String roleIds) {
-		StringBuilder addWhere = new StringBuilder();
 		nodeId = nodeId == null ? 0 : nodeId;
+		Condition cnd = null;
 		if (nodeId != 0) {
-			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
+			cnd = Cnd.where("NODE.LFT", ">", nLeft).and("NODE.RGT", "<", nRight);
 			nLevel++;
 		} else {
+			cnd = Cnd.where("1", "=", "1");
 			nLevel = 0;
 		}
-
 		Sql sql = Sqls
-				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,"
-						+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED "
-						+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-						+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT "
-						+ addWhere
-						+ " AND NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID in ($roleId))"
-						+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
+				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID in ($roleId)) GROUP BY NODE.ID ORDER BY NODE.LFT");
 		sql.vars().set("roleId", roleIds);
+		sql.setCondition(cnd);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(MenuEntity.class));
@@ -135,16 +130,14 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentLft = parentNode.getLft();
 			parentRgt = parentNode.getRgt();
 		}
-		Sql sql = Sqls.create("SELECT M1.ID,M1.NAME,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 $condition"
-				+ " AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT"
-				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
+		Sql sql = Sqls
+				.create("SELECT M1.ID,M1.NAME,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 WHERE M1.LFT>$parentLft AND M1.RGT<$parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRgt", parentRgt);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(MenuEntity.class));
-		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
-		dao().execute(sql.setCondition(cnd));
+		dao().execute(sql);
 		List<MenuEntity> rs = sql.getList(MenuEntity.class);
 		resData.setReturnData(rs);
 		return resData;
@@ -173,13 +166,10 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentLft = parentNode.getLft();
 			parentRgt = parentNode.getRgt();
 		}
-		Sql sql = Sqls.create("SELECT * FROM  SYSTEM_MENU M1 $condition AND NOT EXISTS "
-				+ "(SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT"
-				+ " AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
+		Sql sql = Sqls
+				.create("SELECT * FROM SYSTEM_MENU M1 WHERE M1.LFT>$parentLft AND M1.RGT<$parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>$parentLft AND M2.RGT<$parentRgt)");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRgt", parentRgt);
-		Condition cnd = Cnd.where("LFT", ">", parentLft).and("RGT", "<", parentRgt);
-		sql.setCondition(cnd);
 		// 开始封装jqGrid的json格式数据类
 		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, jqReq);
 		return jq;
@@ -217,9 +207,8 @@ public class MenuService extends DolpBaseService<Menu> {
 				parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
 			}
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
-			Sql sql = Sqls.create("SELECT * FROM SYSTEM_MENU M1 WHERE"
-					+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
-					+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
+			Sql sql = Sqls
+					.create("SELECT * FROM SYSTEM_MENU M1 WHERE NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 ) AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
 			sql.vars().set("parentLft", parentLft);
 			sql.vars().set("parentRight", parentRight);
 			// 获取单个实体的回调
@@ -267,9 +256,8 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
 		}
 		//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
-		Sql sql = Sqls.create("SELECT * FROM SYSTEM_MENU M1 WHERE"
-				+ " NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 )"
-				+ " AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
+		Sql sql = Sqls
+				.create("SELECT * FROM SYSTEM_MENU M1 WHERE NOT EXISTS ( SELECT * FROM SYSTEM_MENU M2 WHERE M2.LFT = M1.RGT+1 ) AND LFT>$parentLft AND RGT<$parentRight-2 ORDER BY LFT");
 		sql.vars().set("parentLft", parentLft);
 		sql.vars().set("parentRight", parentRight);
 		// 获取实体列表的回调
@@ -310,22 +298,19 @@ public class MenuService extends DolpBaseService<Menu> {
 	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
 		AjaxResData respData = new AjaxResData();
 		List<TreeNode> nodes = new ArrayList<TreeNode>();
-
-		StringBuilder addWhere = new StringBuilder();
 		nodeId = nodeId == null ? 0 : nodeId;
+		Condition cnd = null;
 		if (nodeId != 0) {
-			addWhere.append(" AND NODE.LFT > ").append(nLeft).append(" AND NODE.RGT < ").append(nRight);
+			cnd = Cnd.where("NODE.LFT", ">", nLeft).and("NODE.RGT", "<", nRight);
 			nLevel++;
 		} else {
+			cnd = Cnd.where("1", "=", "1");
 			nLevel = 0;
 		}
-		Sql sql = Sqls.create("SELECT NODE.ID,NODE.NAME,NODE.LFT,NODE.RGT,"
-				+ "NODE.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS CHECKED,"
-				+ "(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.RGT<>NODE.LFT+1 AS ISPARENT"
-				+ " FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT "
-				+ " WHERE NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT " + addWhere
-				+ " GROUP BY NODE.ID ORDER BY NODE.LFT");
+		Sql sql = Sqls
+				.create("SELECT NODE.ID,NODE.NAME,NODE.LFT,NODE.RGT,NODE.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = $roleId) AS CHECKED,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.RGT<>NODE.LFT+1 AS ISPARENT FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
 		sql.vars().set("roleId", roleId);
+		sql.setCondition(cnd);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(MenuEntity.class));
@@ -343,9 +328,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		}
 
 		sql = Sqls
-				.create("SELECT ID,NAME,"
-						+ "ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = $roleId) AS CHECKED"
-						+ " FROM SYSTEM_PRIVILEGE WHERE MENUID=$nodeId");
+				.create("SELECT ID,NAME,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = $roleId) AS CHECKED FROM SYSTEM_PRIVILEGE WHERE MENUID=$nodeId");
 		sql.vars().set("roleId", roleId);
 		sql.vars().set("nodeId", nodeId);
 		// 查询实体的回调
