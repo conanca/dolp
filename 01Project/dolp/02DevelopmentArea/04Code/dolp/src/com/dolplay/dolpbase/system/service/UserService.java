@@ -39,7 +39,7 @@ import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class UserService extends DolpBaseService<User> {
 
 	public UserService(Dao dao) {

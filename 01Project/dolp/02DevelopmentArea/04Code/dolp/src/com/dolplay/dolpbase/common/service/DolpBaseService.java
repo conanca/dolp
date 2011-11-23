@@ -16,6 +16,7 @@ import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.dolplay.dolpbase.common.domain.DolpProperties;
+import com.dolplay.dolpbase.common.util.IocObjectProvider;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.SysPara;
@@ -29,18 +30,16 @@ import com.dolplay.dolpbase.system.domain.User;
  */
 public abstract class DolpBaseService<T> extends JqgridService<T> {
 
-	private DolpProperties prop;
-
 	public DolpBaseService(Dao dao) {
 		super(dao);
 	}
 
+	/**
+	 * 获取配置文件对象
+	 * @return
+	 */
 	public DolpProperties getProp() {
-		return prop;
-	}
-
-	public void setProp(DolpProperties prop) {
-		this.prop = prop;
+		return IocObjectProvider.getProp();
 	}
 
 	/**

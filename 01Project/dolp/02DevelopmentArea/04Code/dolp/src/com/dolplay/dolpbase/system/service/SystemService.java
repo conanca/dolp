@@ -23,7 +23,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class SystemService extends DolpBaseService<Object> {
 
 	public SystemService(Dao dao) {

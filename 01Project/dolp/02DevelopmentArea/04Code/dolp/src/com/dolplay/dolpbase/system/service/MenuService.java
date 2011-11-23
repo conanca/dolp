@@ -24,7 +24,7 @@ import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.TreeNode;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class MenuService extends DolpBaseService<Menu> {
 
 	public MenuService(Dao dao) {

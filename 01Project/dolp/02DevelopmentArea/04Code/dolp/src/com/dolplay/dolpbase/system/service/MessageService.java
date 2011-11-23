@@ -33,7 +33,7 @@ import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.User;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class MessageService extends DolpBaseService<Message> {
 
 	public MessageService(Dao dao) {
