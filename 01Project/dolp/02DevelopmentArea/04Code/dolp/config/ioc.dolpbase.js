@@ -15,8 +15,8 @@ var ioc = {
 	// 消息附件文件的文件池
 	attachmentPool : {
 		type : 'org.nutz.filepool.NutFilePool',
-		// 临时文件最大个数为 1000 个
-		args : [ "/dolpbase/file/attachment", 1000 ]
+		// 文件保存在服务器的路径,个数无限
+		args : [ "/dolpbase/file/attachment", 0 ]
 	},
 	// 上传消息附件的Context
 	uploadAttachmentContext : {
