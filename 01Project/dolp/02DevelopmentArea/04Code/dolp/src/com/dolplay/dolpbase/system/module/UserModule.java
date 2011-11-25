@@ -72,7 +72,7 @@ public class UserModule {
 	}
 
 	@At
-	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
 	public ResponseData importUsers(@Param("userImportFile") File f) {
 		return userService.importUsers(f);
 	}
