@@ -130,8 +130,6 @@ $(function(){
 			}
 		}
 	});
-	//添加自定义按钮——导出Excel
-	$("#userInfoList").export2Excel('#userInfoPager');
 
 	//查询按钮点击事件
 	$("#userInfoSerchForm").submit(function() {
@@ -141,7 +139,7 @@ $(function(){
 		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
 		return false;
 	});
-
+	//角色分配界面，分配按钮点击事件
 	$('#roleAssignForm').submit(function() {
 		var url = 'system/user/assignRole';
 		var roleAssignFormInfo = $(this).serializeObject();
@@ -151,7 +149,7 @@ $(function(){
 		});
 		return false;
 	});
-
+	//角色分配界面，取消按钮点击事件
 	$("#roleAssignInfoCancelbtn").click(function() {
 		$('#roleAssignInfo').dialog( "close" );
 	});
@@ -191,6 +189,7 @@ $(function(){
 	});
 	$("#userPostList").setJqGridCUD('#userPostPager',{edit:false,add:false,del:false,search:false});
 
+	//岗位分配界面，分配按钮点击事件
 	$("#postAssignBtn").click(function() {
 		var selectedPost = $("#userPostList").getCol('isset',true);
 		var selectedPostIds = new Array();
@@ -210,7 +209,7 @@ $(function(){
 			$("#postAssignInfo").dialog( "close" );
 		})
 	});
-
+	//岗位分配界面，取消按钮点击事件
 	$("#postAssignInfoCancelbtn").click(function() {
 		$('#postAssignInfo').dialog( "close" );
 	});
