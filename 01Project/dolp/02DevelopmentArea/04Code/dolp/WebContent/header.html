@@ -13,7 +13,7 @@ $(function() {
 			$.cookie('theme', $('#jQueryUICssSwitch').val());
 		}else{
 			var date = new Date();
-			date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
+			date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
 			$.cookie('theme', $('#jQueryUICssSwitch').val(), { expires: date, path: '/'});
 		}
 		$('#jQueryUICssSrc').attr('href', 'themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.14.custom.css');
