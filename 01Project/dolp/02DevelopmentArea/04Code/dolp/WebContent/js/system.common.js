@@ -180,6 +180,7 @@ $.extend({
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		$(this).navGrid(pager,para,
 			{
+				closeAfterEdit: true,
 				beforeSubmit : function(postdata, formid) {
 					$.blockUI();
 					return[true]; 
@@ -195,6 +196,7 @@ $.extend({
 				}
 			},
 			{
+				closeAfterAdd: true,
 				beforeSubmit : function(postdata, formid) { 
 					$.blockUI();
 					return[true]; 
