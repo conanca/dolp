@@ -11,11 +11,11 @@ $(function(){
 				maxlength: 20,
 				minlength: 3
 			},
-			password_again: {
+			password_repeat: {
 				required: true,
 				maxlength: 20,
 				minlength: 3,
-				equalTo: "#changePwdForm_Password1"
+				equalTo: "#changePwdFormPassword"
 			}
 		},
 		errorPlacement: function(error, element) {
@@ -24,7 +24,7 @@ $(function(){
 		}
 	});
 
-	//点击保存时提交
+	//点击修改时提交
 	$('#changePwdForm').submit(function() {
 		if($(this).valid()){
 			var changePwdInfo = $(this).serializeObject();
@@ -47,11 +47,11 @@ $(function(){
 	</tr>
 	<tr>
 		<td>新密码：</td>
-		<td><input type="password" name="newPassword" id="changePwdForm_Password1"/></td>
+		<td><input type="password" name="newPassword" id="changePwdFormPassword"/></td>
 	</tr>
 	<tr>
 		<td>再次输入新密码：</td>
-		<td><input type="password" name="password_again"/></td>
+		<td><input type="password" name="password_repeat"/></td>
 	</tr>
 </table>
 <p>
