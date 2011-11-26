@@ -44,6 +44,7 @@ $(function(){
 
 	$('#messageSentboxDetail').hide();
 
+	// 返回发件箱按钮点击事件
 	$('#messageSentboxBack').click(function(){
 		// 删除页面上显示的附件
 		$('#messageSentboxDetailAttachmentLinks').empty();
@@ -52,6 +53,7 @@ $(function(){
 		$("#messageSentboxList").setGridState('visible');
 		$('#messageSentboxDetail').hide();
 	});
+	// 删除按钮点击事件
 	$('#messageSentboxDelete').click(function(){
 		var url = 'system/message/deleteSentMessage';
 		var messageId = $('#messageSentboxDetailId').val();

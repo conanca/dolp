@@ -44,7 +44,7 @@ $(function(){
 
 	$('#messageInboxDetail').hide();
 
-	// 返回按钮点击事件
+	// 返回收件箱按钮点击事件
 	$('#messageInboxBack').click(function(){
 		// 删除页面上显示的附件
 		$('#messageInboxDetailAttachmentLinks').empty();
@@ -53,6 +53,7 @@ $(function(){
 		$("#messageInboxList").setGridState('visible');
 		$('#messageInboxDetail').hide();
 	});
+	// 删除按钮点击事件
 	$('#messageInboxDelete').click(function(){
 		var url = 'system/message/deleteReceivedMessage';
 		var messageId = $('#messageInboxDetailId').val();
