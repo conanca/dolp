@@ -1,7 +1,6 @@
 package com.dolplay.dolpbase.common.view;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,26 +43,16 @@ public class DolpJsonView implements View {
 			String env = (String) prop.get("Environment");
 			// 获取配置文件参数Environment,判断是否为空
 			if (Strings.isEmpty(env)) {
-				exceptionMessage = "配置文件中Environment未配置或为空";
+				exceptionMessage = "配置文件中Environment未配置或为空,无法显示异常信息!";
 			} else {
 				// 获取异常信息
 				Throwable exception = (Throwable) obj;
 				exceptionMessage = exception.getMessage();
-				// 异常信息为空时的处理
-				if (null == exceptionMessage) {
-					if (exception instanceof NullPointerException) {
-						exceptionMessage = "java.lang.NullPointerException: null";
-					} else {
-						exceptionMessage = "未知异常";
-					}
-				}
-				// 判断异常信息中是否含中文
-				String regEx = "[\u4e00-\u9fa5]";
-				Pattern pat = Pattern.compile(regEx);
-				Matcher matcher = pat.matcher(exceptionMessage);
+				exceptionMessage = null == exceptionMessage ? exception.getClass().getCanonicalName()
+						: exceptionMessage;
 				// 若当前配置的环境为生产环境,并且异常信息不含中文,则异常信息改为简单提示信息
-				if (env.equals("prd") && !matcher.find()) {
-					exceptionMessage = "异常发生,请联系管理员";
+				if (env.equals("prd") && !Pattern.compile("[\u4e00-\u9fa5]").matcher(exceptionMessage).find()) {
+					exceptionMessage = "异常发生,请联系管理员!";
 				}
 			}
 			// 为了前台显示之用封装异常信息
