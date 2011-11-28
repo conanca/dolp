@@ -43,7 +43,7 @@ var ioc = {
 	tempFilePool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,最大个数1000
-		args : [ "/dolpbase/file/attachment", 1000 ]
+		args : [ "/dolpbase/file/temp", 1000 ]
 	},
 	// 上传临时文件的Context
 	tempFileContext : {
