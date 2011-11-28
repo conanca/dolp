@@ -29,9 +29,9 @@ public class CheckAttachmentOperation implements ActionFilter {
 		Object obj = actionContext.getRequest().getSession().getAttribute("logonUser");
 		Long userId = ((User) obj).getId();
 		Sql sql = Sqls
-				.create("SELECT $fileIdInPool IN (SELECT IDINPOOL FROM SYSTEM_POOLFILE WHERE ID IN(SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE WHERE MESSAGEID IN (SELECT ID FROM SYSTEM_MESSAGE WHERE SENDERUSERID = $userId OR (ID IN (SELECT MESSAGEID FROM SYSTEM_MESSAGE_RECEIVERUSER WHERE USERID = $userId ) AND (STATE = 1 OR STATE = 2)))))");
-		sql.vars().set("fileIdInPool", fileIdInPool);
-		sql.vars().set("userId", userId);
+				.create("SELECT @fileIdInPool IN (SELECT IDINPOOL FROM SYSTEM_POOLFILE WHERE ID IN(SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE WHERE MESSAGEID IN (SELECT ID FROM SYSTEM_MESSAGE WHERE SENDERUSERID = @userId OR (ID IN (SELECT MESSAGEID FROM SYSTEM_MESSAGE_RECEIVERUSER WHERE USERID = @userId ) AND (STATE = 1 OR STATE = 2)))))");
+		sql.params().set("fileIdInPool", fileIdInPool);
+		sql.params().set("userId", userId);
 		// TODO nutz加个 FetchBooleanCallback会简化以下代码
 		sql.setCallback(new SqlCallback() {
 			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {

@@ -133,9 +133,9 @@ public class RoleService extends DolpBaseService<Role> {
 	@Aop(value = "log")
 	public StandardJqgridResData getUserPostGridData(JqgridReqData jqReq, Long organizationId, Long userId) {
 		Sql sql = Sqls
-				.create("SELECT ID,NAME,DESCRIPTION,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId) AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = $organizationId");
-		sql.vars().set("userId", userId);
-		sql.vars().set("organizationId", organizationId);
+				.create("SELECT ID,NAME,DESCRIPTION,ID IN (SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = @userId) AS ISSET FROM SYSTEM_ROLE WHERE ORGANIZATIONID = @organizationId");
+		sql.params().set("userId", userId);
+		sql.params().set("organizationId", organizationId);
 		StandardJqgridResData jq = getStandardJqgridResData(sql, jqReq);
 		return jq;
 	}

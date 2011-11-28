@@ -21,8 +21,8 @@ public class RemoveInvalidAttachmentJob implements Job {
 		Dao dao = DaoProvider.getDao();
 		FilePool attachmentPool = IocObjectProvider.getAttachmentPool();
 		Sql sql = Sqls
-				.create("SELECT * FROM SYSTEM_POOLFILE WHERE POOLIOCNAME = $poolIocName AND IDINPOOL NOT IN (SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE)");
-		sql.vars().set("poolIocName", "'attachmentPool'");
+				.create("SELECT * FROM SYSTEM_POOLFILE WHERE POOLIOCNAME = @poolIocName AND IDINPOOL NOT IN (SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE)");
+		sql.params().set("poolIocName", "attachmentPool");
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(PoolFile.class));
 		dao.execute(sql);

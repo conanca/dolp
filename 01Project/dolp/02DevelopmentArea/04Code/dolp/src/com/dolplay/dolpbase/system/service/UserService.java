@@ -169,9 +169,9 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData getCurrentRoleIdArr(Long userId) {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls
-				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = $isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = $userId)");
-		sql.vars().set("isOrgaRela", false);
-		sql.vars().set("userId", userId);
+				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = @isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = @userId)");
+		sql.params().set("isOrgaRela", false);
+		sql.params().set("userId", userId);
 		sql.setCallback(new QueryLongCallback());
 		dao().execute(sql);
 		long[] currentRoleIDs = (long[]) sql.getResult();
