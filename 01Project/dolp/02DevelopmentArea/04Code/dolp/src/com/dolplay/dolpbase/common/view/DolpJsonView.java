@@ -40,10 +40,10 @@ public class DolpJsonView implements View {
 			String exceptionMessage;
 			// 获取环境类型
 			DolpProperties prop = IocObjectProvider.getProp();
-			String env = (String) prop.get("Environment");
-			// 获取配置文件参数Environment,判断是否为空
+			String env = (String) prop.get("SYSTEM_ENVIRONMENT");
+			// 获取配置文件参数SYSTEM_ENVIRONMENT,判断是否为空
 			if (Strings.isEmpty(env)) {
-				exceptionMessage = "配置文件中Environment未配置或为空,无法显示异常信息!";
+				exceptionMessage = "配置文件中SYSTEM_ENVIRONMENT未配置或为空,无法显示异常信息!";
 			} else {
 				// 获取异常信息
 				Throwable exception = (Throwable) obj;

@@ -11,7 +11,7 @@ public class SysPara {
 	@Id
 	private Long id;
 	@Column
-	@ColDefine(type = ColType.VARCHAR, width = 20)
+	@ColDefine(type = ColType.VARCHAR, width = 100)
 	private String name;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 500)

@@ -114,7 +114,7 @@ public class UserService extends DolpBaseService<User> {
 				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
 				return respData;
 			}
-			String defaultPass = getSysParaValue("DefaultPassword");
+			String defaultPass = getSysParaValue("SYSTEM_DEFAULTPASSWORD");
 			// 对默认密码进行MD5加密
 			defaultPass = DigestUtils.md5Hex(defaultPass);
 			user.setPassword(defaultPass);

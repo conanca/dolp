@@ -33,9 +33,9 @@ public class SystemService extends DolpBaseService<Object> {
 	@Aop(value = "log")
 	public AjaxResData getSystemName() {
 		AjaxResData respData = new AjaxResData();
-		String systemName = (String) getProp().get("SystemName");
+		String systemName = (String) getProp().get("SYSTEM_SYSTEMNAME");
 		if (Strings.isEmpty(systemName)) {
-			respData.setSystemMessage(null, "配置文件中SystemName未配置或为空", null);
+			respData.setSystemMessage(null, "配置文件中SYSTEM_SYSTEMNAME未配置或为空", null);
 		} else {
 			respData.setReturnData(systemName);
 		}

@@ -6,8 +6,8 @@ var ioc = {
 		args : [
 			{
 				"TestProp":"123",
-				"SystemName":"Dolp基盘",
-				"Environment":"dev"
+				"SYSTEM_SYSTEMNAME":"Dolp基盘",
+				"SYSTEM_ENVIRONMENT":"dev"
 			}
 		]
 	},

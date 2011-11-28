@@ -50,6 +50,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			cnd = Cnd.where("1", "=", "1");
 			nLevel = 0;
 		}
+		// TODO 若NUTZ的ISSUE#121修正，此处可以修改一下
 		Sql sql = Sqls
 				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID IN ($roleIds)) GROUP BY NODE.ID ORDER BY NODE.LFT");
 		sql.vars().set("roleIds", roleIds);
@@ -120,7 +121,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		if (nodeId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			long rootRgt = Long.valueOf(getSysParaValue("MaxRightValue"));
+			long rootRgt = Long.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -156,7 +157,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		if (parentId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			long rootRgt = Long.valueOf(getSysParaValue("MaxRightValue"));
+			long rootRgt = Long.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -204,7 +205,7 @@ public class MenuService extends DolpBaseService<Menu> {
 				parentLft = parentMenu.getLft();
 				parentRight = parentMenu.getRgt();
 			} else {
-				parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
+				parentRight = Integer.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
 			}
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
 			Sql sql = Sqls
@@ -253,7 +254,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentLft = parentMenu.getLft();
 			parentRight = parentMenu.getRgt();
 		} else {
-			parentRight = Integer.valueOf(getSysParaValue("MaxRightValue"));
+			parentRight = Integer.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
 		}
 		//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
 		Sql sql = Sqls
