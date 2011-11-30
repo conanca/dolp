@@ -42,6 +42,8 @@ import com.dolplay.dolpbase.system.domain.User;
 @IocBean(args = { "refer:dao" })
 public class UserService extends DolpBaseService<User> {
 
+	public static final String SYSTEM_DEFAULTPASSWORD = "SYSTEM_DEFAULTPASSWORD";
+
 	public UserService(Dao dao) {
 		super(dao);
 	}
@@ -114,7 +116,7 @@ public class UserService extends DolpBaseService<User> {
 				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
 				return respData;
 			}
-			String defaultPass = getSysParaValue("SYSTEM_DEFAULTPASSWORD");
+			String defaultPass = getSysParaValue(SYSTEM_DEFAULTPASSWORD);
 			// 对默认密码进行MD5加密
 			defaultPass = DigestUtils.md5Hex(defaultPass);
 			user.setPassword(defaultPass);
