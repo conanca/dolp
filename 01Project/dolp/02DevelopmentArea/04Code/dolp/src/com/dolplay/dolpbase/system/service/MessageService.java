@@ -14,8 +14,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
-import org.nutz.filepool.FilePool;
-import org.nutz.filepool.NutFilePool;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -28,7 +26,6 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
-import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.User;
@@ -66,12 +63,13 @@ public class MessageService extends DolpBaseService<Message> {
 		final List<PoolFile> poolFiles = getUploadFileInfoList(idsInPool, "attachmentPool");
 		// 获取message对象
 		final Message message = getNewMessage(senderUser, receiverUsers, title, content);
+		// 设置消息的附件
+		message.setAttachments(poolFiles);
 		// 设置状态为已保存/已发送
 		message.setState(state);
 		// 插入附件文件信息，插入/更新消息，插入(收件人、附件文件)关系数据
 		Trans.exec(new Atom() {
 			public void run() {
-				message.setAttachments(poolFiles);
 				// 如果指定messageId,则只是更新该消息的内容；否则新增记录
 				if (messageId != null) {
 					message.setId(messageId);
@@ -144,22 +142,21 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData deleteDraftMessage(Long messageId, Ioc ioc) {
+	public AjaxResData deleteDraftMessage(final Long messageId, final Ioc ioc) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
 			respData.setSystemMessage(null, "未选择消息!", null);
 			return respData;
 		}
-		// 清除该message的相关数据表数据
-		clearMessageRelation(messageId);
-		// 删除该message的相关附件文件
-		FilePool pool = ioc.get(NutFilePool.class, "attachmentPool");
-		Map<Long, String> attachmentMap = getAttachmentMap(messageId);
-		for (Long id : attachmentMap.keySet()) {
-			pool.removeFile(id, StringUtils.getFileSuffix(attachmentMap.get(id)));
-		}
-		// 删除该消息
-		delete(messageId);
+		// 相关数据库操作
+		Trans.exec(new Atom() {
+			public void run() {
+				// 清除该message的相关数据表数据
+				clearMessageRelation(messageId);
+				// 删除该消息
+				delete(messageId);
+			}
+		});
 		respData.setSystemMessage("删除成功!", null, null);
 		return respData;
 	}
@@ -346,13 +343,13 @@ public class MessageService extends DolpBaseService<Message> {
 	}
 
 	/**
-	 * 清除旧的(收件人、附件文件)关系数据，附件文件信息
+	 * 清除旧的(收件人、附件文件)关系数据
 	 * @param messageId
 	 * @param ioc
 	 */
 	private void clearMessageRelation(Long messageId) {
 		messageId = null == messageId ? 0 : messageId;
-		Message m = dao().fetchLinks(fetch(messageId), "attachments");
+		Message m = fetch(messageId);
 		if (null != m) {
 			dao().clearLinks(m, "receivers");
 			dao().clearLinks(m, "attachments");
