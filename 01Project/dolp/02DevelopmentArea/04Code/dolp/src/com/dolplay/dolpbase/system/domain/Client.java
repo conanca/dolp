@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -28,6 +30,17 @@ public class Client {
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 200)
 	private String userAgent;
+
+	public static Client getInstance(ResultSet rs) throws SQLException {
+		Client client = new Client();
+		client.id = rs.getLong("ID");
+		client.sessionId = rs.getString("SESSIONID");
+		client.userId = rs.getLong("USERID");
+		client.logonTime = rs.getTimestamp("LOGONTIME");
+		client.ipAddr = rs.getString("IPADDR");
+		client.userAgent = rs.getString("USERAGENT");
+		return client;
+	}
 
 	public Long getId() {
 		return id;

@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -38,6 +40,16 @@ public class Message {
 	private Integer state;
 	@Column
 	private Integer type;
+
+	public static Message getInstance(ResultSet rs) throws SQLException {
+		Message message = new Message();
+		message.id = rs.getLong("ID");
+		message.senderUserId = rs.getLong("senderUserId");
+		message.date = rs.getTimestamp("DATE");
+		message.title = rs.getString("TITLE");
+		message.content = rs.getString("CONTENT");
+		return message;
+	}
 
 	public Long getId() {
 		return id;

@@ -12,20 +12,23 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
+import com.dolplay.dolpbase.common.domain.ZTreeNode;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.DolpCollectionHandler;
 import com.dolplay.dolpbase.system.domain.Menu;
-import com.dolplay.dolpbase.system.domain.MenuEntity;
+import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
+import com.dolplay.dolpbase.system.domain.MenuZTreeNode;
 import com.dolplay.dolpbase.system.domain.Privilege;
-import com.dolplay.dolpbase.system.domain.PrivilegeEntity;
+import com.dolplay.dolpbase.system.domain.PrivilegeZTreeNode;
 import com.dolplay.dolpbase.system.domain.Role;
-import com.dolplay.dolpbase.system.domain.TreeNode;
 import com.dolplay.dolpbase.system.domain.User;
 
 @IocBean(args = { "refer:dao" })
 public class MenuService extends DolpBaseService<Menu> {
+
+	public static final String SYSTEM_MAXRIGHTVALUE = "SYSTEM_MAXRIGHTVALUE";
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -40,7 +43,7 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @param roleIds
 	 * @return
 	 */
-	public List<MenuEntity> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel, String roleIds) {
+	private List<MenuTreeGridRow> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel, String roleIds) {
 		nodeId = nodeId == null ? 0 : nodeId;
 		Condition cnd = null;
 		if (nodeId != 0) {
@@ -57,11 +60,11 @@ public class MenuService extends DolpBaseService<Menu> {
 		sql.setCondition(cnd);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
+		sql.setEntity(dao().getEntity(MenuTreeGridRow.class));
 		dao().execute(sql);
-		List<MenuEntity> rs = sql.getList(MenuEntity.class);
-		List<MenuEntity> menus = new ArrayList<MenuEntity>();
-		for (MenuEntity menuEntity : rs) {
+		List<MenuTreeGridRow> rs = sql.getList(MenuTreeGridRow.class);
+		List<MenuTreeGridRow> menus = new ArrayList<MenuTreeGridRow>();
+		for (MenuTreeGridRow menuEntity : rs) {
 			if (menuEntity.getLevel() == nLevel) {
 				menus.add(menuEntity);
 			}
@@ -79,7 +82,7 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuEntity> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
+	public AdvancedJqgridResData<MenuTreeGridRow> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
 			User logonUser) {
 		if (logonUser == null) {
 			throw new RuntimeException("用户未登录!");
@@ -90,13 +93,13 @@ public class MenuService extends DolpBaseService<Menu> {
 			throw new RuntimeException("当前用户未被分配角色!");
 		}
 		String roleIds;
-		AdvancedJqgridResData<MenuEntity> jq = new AdvancedJqgridResData<MenuEntity>();
+		AdvancedJqgridResData<MenuTreeGridRow> jq = new AdvancedJqgridResData<MenuTreeGridRow>();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(0);
 		try {
 			roleIds = DolpCollectionHandler.getIdsString(roles, ",");
-			List<MenuEntity> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
+			List<MenuTreeGridRow> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
 			jq.setRows(rows);
 		} catch (Exception e) {
 			throw new RuntimeException("获取角色ID异常!", e);
@@ -105,7 +108,7 @@ public class MenuService extends DolpBaseService<Menu> {
 	}
 
 	/**
-	 * 菜单管理页面，左侧菜单树的显示（不显示叶子节点）
+	 * 菜单管理和权限管理页面，左侧菜单树的显示（不显示叶子节点）
 	 * @param nodeId
 	 * @param nLeft
 	 * @param nRight
@@ -121,7 +124,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		if (nodeId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			long rootRgt = Long.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
+			long rootRgt = Long.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -132,14 +135,14 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentRgt = parentNode.getRgt();
 		}
 		Sql sql = Sqls
-				.create("SELECT M1.ID,M1.NAME,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
+				.create("SELECT M1.*,FALSE AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
 		sql.params().set("parentLft", parentLft);
 		sql.params().set("parentRgt", parentRgt);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
+		sql.setEntity(dao().getEntity(MenuZTreeNode.class));
 		dao().execute(sql);
-		List<MenuEntity> rs = sql.getList(MenuEntity.class);
+		List<MenuZTreeNode> rs = sql.getList(MenuZTreeNode.class);
 		resData.setReturnData(rs);
 		return resData;
 	}
@@ -157,7 +160,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		if (parentId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
-			long rootRgt = Long.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
+			long rootRgt = Long.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
 			if (rootRgt <= 0) {
 				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
 			}
@@ -205,7 +208,7 @@ public class MenuService extends DolpBaseService<Menu> {
 				parentLft = parentMenu.getLft();
 				parentRight = parentMenu.getRgt();
 			} else {
-				parentRight = Integer.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
+				parentRight = Integer.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
 			}
 			//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
 			Sql sql = Sqls
@@ -254,7 +257,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentLft = parentMenu.getLft();
 			parentRight = parentMenu.getRgt();
 		} else {
-			parentRight = Integer.valueOf(getSysParaValue("SYSTEM_MAXRIGHTVALUE"));
+			parentRight = Integer.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
 		}
 		//获取父菜单下，lft,rgt最小的不连续的值，如果没有不连续的，则取lft,rgt最大的
 		Sql sql = Sqls
@@ -298,45 +301,54 @@ public class MenuService extends DolpBaseService<Menu> {
 	@Aop(value = "log")
 	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
 		AjaxResData respData = new AjaxResData();
-		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		List<ZTreeNode> nodes = new ArrayList<ZTreeNode>();
+		roleId = roleId == null ? 0 : roleId;
+
+		// 获取菜单数据节点
+		long parentLft;
+		long parentRgt = 0;
 		nodeId = nodeId == null ? 0 : nodeId;
-		Condition cnd = null;
-		if (nodeId != 0) {
-			cnd = Cnd.where("NODE.LFT", ">", nLeft).and("NODE.RGT", "<", nRight);
-			nLevel++;
+		if (nodeId == 0) {
+			parentLft = 0;
+			// 取系统参数:"菜单节点最大Rigth值"
+			long rootRgt = Long.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
+			if (rootRgt <= 0) {
+				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
+			}
+			parentRgt = rootRgt;
 		} else {
-			cnd = Cnd.where("1", "=", "1");
-			nLevel = 0;
+			Menu parentNode = fetch(nodeId);
+			parentLft = parentNode.getLft();
+			parentRgt = parentNode.getRgt();
 		}
 		Sql sql = Sqls
-				.create("SELECT NODE.ID,NODE.NAME,NODE.LFT,NODE.RGT,NODE.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = @roleId) AS CHECKED,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.RGT<>NODE.LFT+1 AS ISPARENT FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT GROUP BY NODE.ID ORDER BY NODE.LFT");
+				.create("SELECT M1.*,M1.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
 		sql.params().set("roleId", roleId);
-		sql.setCondition(cnd);
+		sql.params().set("parentLft", parentLft);
+		sql.params().set("parentRgt", parentRgt);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuEntity.class));
+		sql.setEntity(dao().getEntity(MenuZTreeNode.class));
 		dao().execute(sql);
-		List<MenuEntity> menuEntites = sql.getList(MenuEntity.class);
-		for (MenuEntity menuEntity : menuEntites) {
-			if (menuEntity.getLevel() == nLevel) {
-				// 如果该菜单含操作权限数据，则将其设为父节点
-				long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
-				if (privilegesCount > 0) {
-					menuEntity.setParent(true);
-				}
-				nodes.add(menuEntity);
+		List<MenuZTreeNode> menuEntites = sql.getList(MenuZTreeNode.class);
+		// 如果菜单含操作权限数据，则将其设为父节点
+		for (MenuZTreeNode menuEntity : menuEntites) {
+			long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
+			if (privilegesCount > 0) {
+				menuEntity.setParent(true);
 			}
 		}
+		nodes.addAll(menuEntites);
 
+		// 获取权限数据节点
 		sql = Sqls
-				.create("SELECT ID,NAME,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = @roleId) AS CHECKED FROM SYSTEM_PRIVILEGE WHERE MENUID=@nodeId");
+				.create("SELECT *,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,FALSE AS ISPARENT FROM SYSTEM_PRIVILEGE WHERE MENUID=@nodeId");
 		sql.params().set("roleId", roleId);
 		sql.params().set("nodeId", nodeId);
-		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(PrivilegeEntity.class));
+		sql.setEntity(dao().getEntity(PrivilegeZTreeNode.class));
 		dao().execute(sql);
-		List<PrivilegeEntity> privileges = sql.getList(PrivilegeEntity.class);
+		List<PrivilegeZTreeNode> privileges = sql.getList(PrivilegeZTreeNode.class);
 
 		nodes.addAll(privileges);
 		respData.setReturnData(nodes);

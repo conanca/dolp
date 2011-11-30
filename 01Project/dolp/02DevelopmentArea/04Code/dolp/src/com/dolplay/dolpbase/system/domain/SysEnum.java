@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -21,6 +23,14 @@ public class SysEnum {
 	private String description;
 	@Many(target = SysEnumItem.class, field = "sysEnumId")
 	private List<SysEnumItem> items;
+
+	public static SysEnum getInstance(ResultSet rs) throws SQLException {
+		SysEnum sysEnum = new SysEnum();
+		sysEnum.id = rs.getLong("ID");
+		sysEnum.name = rs.getString("NAME");
+		sysEnum.description = rs.getString("DESCRIPTION");
+		return sysEnum;
+	}
 
 	public Long getId() {
 		return id;

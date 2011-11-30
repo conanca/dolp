@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -29,6 +31,16 @@ public class Privilege {
 	private String methodPath;
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "PRIVILEGEID", to = "ROLEID")
 	private List<Role> roles;
+
+	public static Privilege getInstance(ResultSet rs) throws SQLException {
+		Privilege privilege = new Privilege();
+		privilege.id = rs.getLong("ID");
+		privilege.name = rs.getString("NAME");
+		privilege.description = rs.getString("DESCRIPTION");
+		privilege.menuId = rs.getLong("MENUID");
+		privilege.methodPath = rs.getString("METHODPATH");
+		return privilege;
+	}
 
 	public Long getId() {
 		return id;

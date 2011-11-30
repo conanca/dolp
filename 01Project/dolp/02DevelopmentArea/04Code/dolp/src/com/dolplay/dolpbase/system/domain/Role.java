@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_ROLE")
-public class Role implements TreeNode {
+public class Role {
 	@Id
 	private Long id;
 	@Column

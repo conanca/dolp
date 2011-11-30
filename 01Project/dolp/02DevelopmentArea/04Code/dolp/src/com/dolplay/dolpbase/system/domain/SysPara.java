@@ -1,5 +1,8 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
@@ -19,6 +22,15 @@ public class SysPara {
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 500)
 	private String description;
+
+	public static SysPara getInstance(ResultSet rs) throws SQLException {
+		SysPara sysPara = new SysPara();
+		sysPara.id = rs.getLong("ID");
+		sysPara.name = rs.getString("NAME");
+		sysPara.value = rs.getString("VALUE");
+		sysPara.description = rs.getString("DESCRIPTION");
+		return sysPara;
+	}
 
 	public Long getId() {
 		return id;

@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase.system.domain;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -31,6 +33,17 @@ public class Menu {
 	private List<Privilege> privileges;
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_MENU", from = "MENUID", to = "ROLEID")
 	private List<Role> roles;
+
+	public static Menu getInstance(ResultSet rs) throws SQLException {
+		Menu menu = new Menu();
+		menu.id = rs.getLong("ID");
+		menu.name = rs.getString("NAME");
+		menu.url = rs.getString("URL");
+		menu.description = rs.getString("DESCRIPTION");
+		menu.lft = rs.getLong("LFT");
+		menu.rgt = rs.getLong("RGT");
+		return menu;
+	}
 
 	public Long getId() {
 		return id;

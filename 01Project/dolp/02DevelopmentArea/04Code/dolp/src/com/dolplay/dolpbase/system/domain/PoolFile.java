@@ -1,6 +1,8 @@
 package com.dolplay.dolpbase.system.domain;
 
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -34,6 +36,18 @@ public class PoolFile {
 	private Long ownerUserId;
 	private String clientLocalPath;
 	private String contentType;
+
+	public static PoolFile getInstance(ResultSet rs) throws SQLException {
+		PoolFile poolFile = new PoolFile();
+		poolFile.id = rs.getLong("ID");
+		poolFile.idInPool = rs.getLong("IDINPOOL");
+		poolFile.name = rs.getString("NAME");
+		poolFile.suffix = rs.getString("SUFFIX");
+		poolFile.poolIocName = rs.getString("POOLIOCNAME");
+		poolFile.uploadDate = rs.getTimestamp("UPLOADDATE");
+		poolFile.ownerUserId = rs.getLong("OWNERUSERID");
+		return poolFile;
+	}
 
 	public Long getId() {
 		return id;
