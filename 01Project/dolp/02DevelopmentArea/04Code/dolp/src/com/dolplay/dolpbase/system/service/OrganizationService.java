@@ -37,10 +37,9 @@ public class OrganizationService extends DolpBaseService<Organization> {
 		Condition cnd = Cnd.where("PARENTORGID", "=", id);
 		List<Organization> orgNodes = query(cnd, null);
 		for (Organization orgNode : orgNodes) {
-			dao().fetchLinks(orgNode, "childrenOrgs");
-			if (orgNode.getChildrenOrgs() != null && orgNode.getChildrenOrgs().size() > 0) {
+			int childrenOrgsCount = count(Cnd.where("PARENTORGID", "=", orgNode.getId()));
+			if (childrenOrgsCount > 0) {
 				orgNode.setParent(true);
-				orgNode.setChildrenOrgs(null);
 			}
 		}
 		respData.setReturnData(orgNodes);
