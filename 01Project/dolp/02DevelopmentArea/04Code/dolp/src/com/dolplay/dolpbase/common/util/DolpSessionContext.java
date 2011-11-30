@@ -8,13 +8,13 @@ import javax.servlet.http.HttpSession;
 public class DolpSessionContext {
 	private static Map<String, HttpSession> sessionMap = new HashMap<String, HttpSession>();
 
-	public static synchronized void AddSession(HttpSession session) {
+	public static synchronized void addSession(HttpSession session) {
 		if (session != null) {
 			sessionMap.put(session.getId(), session);
 		}
 	}
 
-	public static synchronized void DelSession(HttpSession session) {
+	public static synchronized void delSession(HttpSession session) {
 		if (session != null) {
 			sessionMap.remove(session.getId());
 		}
