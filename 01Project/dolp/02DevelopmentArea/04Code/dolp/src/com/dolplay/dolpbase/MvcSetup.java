@@ -59,13 +59,13 @@ public class MvcSetup implements Setup {
 			dao.create(PoolFile.class, true);
 
 			// 添加默认记录
-			FileSqlManager fm = new FileSqlManager("init_system.sql");
+			FileSqlManager fm = new FileSqlManager("init_system_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
 		// 初始化quartz的数据表
 		if (!dao.exists("QRTZ_JOB_DETAILS")) {
-			FileSqlManager fm = new FileSqlManager("tables_quartz.sql");
+			FileSqlManager fm = new FileSqlManager("tables_quartz_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
