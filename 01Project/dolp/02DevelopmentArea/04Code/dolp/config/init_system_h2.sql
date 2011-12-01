@@ -117,8 +117,8 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (42,'修改该用户密码',null,17,'com.dolplay.dolpbase.system.module.UserModule.changeCurrentUserPassword'),
 (43,'修改用户密码',null,2,'com.dolplay.dolpbase.system.module.UserModule.changeUserPassword'),
 (44,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.importUsers'),
-(45,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export'),
-(46,'导入用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export2'),
+(45,'导出用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export'),
+(46,'导出用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export2'),
 (47,'上传附件',null,12,'com.dolplay.dolpbase.system.module.MessageModule.uploadAttachment'),
 (50,'获取消息附件信息',null,12,'com.dolplay.dolpbase.system.module.MessageModule.getAttachments'),
 (51,'下载附件',null,12,'com.dolplay.dolpbase.system.module.MessageModule.downloadAttachment');
