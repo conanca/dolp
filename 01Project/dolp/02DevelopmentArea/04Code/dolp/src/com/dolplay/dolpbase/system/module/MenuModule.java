@@ -82,8 +82,8 @@ public class MenuModule {
 	 */
 	@At("/getPrivilegeNodesByRoleId/*")
 	public ResponseData getPrivilegeNodesByRoleId(Long roleId, @Param("id") Long id, @Param("lft") Long lft,
-			@Param("rgt") Long rgt, @Param("level") Integer level) {
-		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt, level);
+			@Param("rgt") Long rgt) {
+		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt);
 	}
 
 	/**

@@ -12,6 +12,7 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
+import com.dolplay.dolpbase.common.domain.SimpleZTreeNode;
 import com.dolplay.dolpbase.common.domain.ZTreeNode;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
@@ -21,7 +22,6 @@ import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
 import com.dolplay.dolpbase.system.domain.MenuZTreeNode;
 import com.dolplay.dolpbase.system.domain.Privilege;
-import com.dolplay.dolpbase.system.domain.PrivilegeZTreeNode;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
 
@@ -53,7 +53,6 @@ public class MenuService extends DolpBaseService<Menu> {
 			cnd = Cnd.where("1", "=", "1");
 			nLevel = 0;
 		}
-		// TODO 若NUTZ的ISSUE#121修正，此处可以修改一下
 		Sql sql = Sqls
 				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID IN ($roleIds)) GROUP BY NODE.ID ORDER BY NODE.LFT");
 		sql.vars().set("roleIds", roleIds);
@@ -135,14 +134,14 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentRgt = parentNode.getRgt();
 		}
 		Sql sql = Sqls
-				.create("SELECT M1.*,FALSE AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
+				.create("SELECT M1.ID,M1.NAME,FALSE AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
 		sql.params().set("parentLft", parentLft);
 		sql.params().set("parentRgt", parentRgt);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuZTreeNode.class));
+		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
 		dao().execute(sql);
-		List<MenuZTreeNode> rs = sql.getList(MenuZTreeNode.class);
+		List<SimpleZTreeNode> rs = sql.getList(SimpleZTreeNode.class);
 		resData.setReturnData(rs);
 		return resData;
 	}
@@ -299,7 +298,7 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
+	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight) {
 		AjaxResData respData = new AjaxResData();
 		List<ZTreeNode> nodes = new ArrayList<ZTreeNode>();
 		roleId = roleId == null ? 0 : roleId;
@@ -330,27 +329,27 @@ public class MenuService extends DolpBaseService<Menu> {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(MenuZTreeNode.class));
 		dao().execute(sql);
-		List<MenuZTreeNode> menuEntites = sql.getList(MenuZTreeNode.class);
+		List<MenuZTreeNode> menuZTreeNodes = sql.getList(MenuZTreeNode.class);
 		// 如果菜单含操作权限数据，则将其设为父节点
-		for (MenuZTreeNode menuEntity : menuEntites) {
-			long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuEntity.getId()));
+		for (MenuZTreeNode menuZTreeNode : menuZTreeNodes) {
+			long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuZTreeNode.getId()));
 			if (privilegesCount > 0) {
-				menuEntity.setParent(true);
+				menuZTreeNode.setParent(true);
 			}
 		}
-		nodes.addAll(menuEntites);
+		nodes.addAll(menuZTreeNodes);
 
 		// 获取权限数据节点
 		sql = Sqls
-				.create("SELECT *,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,FALSE AS ISPARENT FROM SYSTEM_PRIVILEGE WHERE MENUID=@nodeId");
+				.create("SELECT ID,NAME,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,FALSE AS ISPARENT FROM SYSTEM_PRIVILEGE WHERE MENUID=@nodeId");
 		sql.params().set("roleId", roleId);
 		sql.params().set("nodeId", nodeId);
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(PrivilegeZTreeNode.class));
+		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
 		dao().execute(sql);
-		List<PrivilegeZTreeNode> privileges = sql.getList(PrivilegeZTreeNode.class);
+		List<SimpleZTreeNode> privilegeZTreeNodes = sql.getList(SimpleZTreeNode.class);
 
-		nodes.addAll(privileges);
+		nodes.addAll(privilegeZTreeNodes);
 		respData.setReturnData(nodes);
 		return respData;
 	}
