@@ -2,7 +2,6 @@ package com.dolplay.codegen;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -138,28 +137,5 @@ public class CodeGenerator {
 
 	private String getHtmlPath(Class<?> domainClass) {
 		return "WebContent\\" + HTMLPATH + "\\" + domainClass.getSimpleName().toLowerCase() + "_manager.html";
-	}
-
-	public static void str2File(File f, String str) {
-		BufferedWriter bw = null;
-		try {
-			if (!f.exists()) {
-				f.createNewFile();
-			}
-			bw = new BufferedWriter(new FileWriter(f, true));
-			bw.write(str);
-			bw.flush();
-			System.out.println("文件写入完成！");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				bw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 }
