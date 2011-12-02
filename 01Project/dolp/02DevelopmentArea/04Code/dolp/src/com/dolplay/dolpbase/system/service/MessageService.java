@@ -181,7 +181,7 @@ public class MessageService extends DolpBaseService<Message> {
 			}
 			cnd = Cnd.where("ID", "IN", messageIds).and("STATE", "<>", 0);
 		} else {
-			cnd = Cnd.where("1", "=", "0");
+			cnd = Cnd.where("1", "=", 0);
 		}
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		List<Message> messages = jq.getRows();

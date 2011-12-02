@@ -50,7 +50,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			cnd = Cnd.where("NODE.LFT", ">", nLeft).and("NODE.RGT", "<", nRight);
 			nLevel++;
 		} else {
-			cnd = Cnd.where("1", "=", "1");
+			cnd = Cnd.where("1", "=", 1);
 			nLevel = 0;
 		}
 		Sql sql = Sqls
