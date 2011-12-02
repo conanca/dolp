@@ -24,4 +24,10 @@ public class StringUtils {
 	public static void main(String[] args) {
 		System.out.println(StringUtils.encoderByMd5("123"));
 	}
+
+	public static String quote(CharSequence cs, char c) {
+		if (null == cs)
+			return null;
+		return new StringBuilder().append(c).append(cs).append(c).toString();
+	}
 }

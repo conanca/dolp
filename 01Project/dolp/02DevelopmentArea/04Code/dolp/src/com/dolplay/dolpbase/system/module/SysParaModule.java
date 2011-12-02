@@ -18,8 +18,9 @@ public class SysParaModule {
 	private SysParaService sysParaService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
-		return sysParaService.getGridData(jqReq);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") SysPara sysParaSearch) {
+		return sysParaService.getGridData(jqReq, isSearch, sysParaSearch);
 	}
 
 	@At
