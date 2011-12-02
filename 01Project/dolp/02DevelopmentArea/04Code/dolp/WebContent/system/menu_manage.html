@@ -52,11 +52,9 @@ $(function() {
 	});
 	$("#menuEditList").setJqGridCUD('#menuEditPager',{edit:true,add:true,del:true,search:false});
 	// 添加父菜单按钮
-	$("#menuEditList").navButtonAdd('#menuEditPager',{caption:"添加父菜单",buttonicon:"ui-icon-plus",
-		onClickButton:function(){
-			$("#parentMenuInfo").dialog( "open" );
-			$("#parentMenuInfoParentId").val(parentId);
-		}
+	$("#addParentMenuBtn").click(function() {
+		$("#parentMenuInfo").dialog( "open" );
+		$("#parentMenuInfoParentId").val(parentId);
 	});
 	//初始化添加父菜单信息界面
 	$("#parentMenuInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
@@ -107,6 +105,9 @@ $(function() {
 		</td>
 		<td class="linebetween">&nbsp;</td>
 		<td valign="top">
+			<input type="button" value="添加父菜单" id="addParentMenuBtn">
+			<br/>
+			<br/>
 			<table id="menuEditList"></table>
 			<div id="menuEditPager"></div>
 		</td>

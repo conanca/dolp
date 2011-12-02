@@ -76,69 +76,56 @@ $(function(){
 		sortorder: "asc",
 		multiselect: true
 	});
-	//不显示jqgrid自带的查询按钮
+	// 不显示jqgrid自带的查询按钮
 	$("#userInfoList").setJqGridCUD('#userInfoPager',{edit:true,add:true,del:true,search:false});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"角色",buttonicon:"ui-icon-person",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				$("#assigningUserID").val(id);
-
+	// 角色按钮点击事件
+	$("#userRoleBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			$("#assigningUserID").val(id);
 				// 全部取消选中 选择框roleIds的值
-				$("#roleIds option").each(function(){
-					if($(this).attr("selected") == true){
-						$(this).removeAttr("selected");
-					}
-				});
-
+			$("#roleIds option").each(function(){
+				if($("#userInfoList").attr("selected") == true){
+					$("#userInfoList").removeAttr("selected");
+				}
+			});
 				// 指定选中的选择框roleIds的值
-				$.dolpGet("system/user/getCurrentRoleIDs/"+id,null,function(returnData){
-					var currentRole = returnData;
-					$.each(currentRole,function(index,value){
-						$("#roleIds option[value='"+value+"']").attr("selected","selected");
-						// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
-						$("#roleIds").multiselect("destroy");
-						$("#roleIds").multiselect();
-					});
+			$.dolpGet("system/user/getCurrentRoleIDs/"+id,null,function(returnData){
+				var currentRole = returnData;
+				$.each(currentRole,function(index,value){
+					$("#roleIds option[value='"+value+"']").attr("selected","selected");
+					// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
+					$("#roleIds").multiselect("destroy");
+					$("#roleIds").multiselect();
 				});
-
-				$("#roleAssignInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+			});
+			$("#roleAssignInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"岗位",buttonicon:"ui-icon-flag",position:"last",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				roleId = id;
-				$("#postAssignInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+	// 岗位按钮点击事件
+	$("#userPostBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			roleId = id;
+			$("#postAssignInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"修改密码",buttonicon:"ui-icon-key",position:"last",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				$("#userMangeChangePwdForm_userId").val(id);
-				$("#userPasswordChangeInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+	// 修改密码按钮点击事件
+	$("#userChgPassBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			$("#userMangeChangePwdForm_userId").val(id);
+			$("#userPasswordChangeInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
 
-	//查询按钮点击事件
-	$("#userInfoSerchForm").submit(function() {
-		var number = $("#userInfo_search_number").val();
-		var name = $("#userInfo_search_name").val();
-		url = "system/user/getGridData?number="+number+"&name="+name;
-		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
-		return false;
-	});
+
 	//角色分配界面，分配按钮点击事件
 	$('#roleAssignForm').submit(function() {
 		var url = 'system/user/assignRole';
@@ -258,32 +245,14 @@ $(function(){
 });
 </script>
 
-<fieldset>
-<legend>用户查询</legend>
-<form id="userInfoSerchForm" action="#">
-<table>
-	<tr>
-		<td>
-			用户编号：
-		</td>
-		<td>
-			<input type="text" name="number" id="userInfo_search_number"/>
-		</td>
-		<td>
-			姓名：
-		</td>
-		<td>
-			<input type="text" name="name" id="userInfo_search_name"/>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4" align="right">
-			<input type="submit" value="查询"/>
-		</td>
-	</tr>
-</table>
-</form>
-</fieldset>
+<input type="button" value="角色" id="userRoleBtn">
+<input type="button" value="岗位" id="userPostBtn">
+<input type="button" value="修改密码" id="userChgPassBtn">
+<br/>
+<br/>
+
+<table id="userInfoList"></table>
+<div id="userInfoPager"></div>
 <br/>
 
 <fieldset>
@@ -294,10 +263,6 @@ $(function(){
 	<a target="_blank" href="system/user/export">导出</a>
 	<a target="_blank" href="system/user/export2">导出2</a>
 </fieldset>
-<br/>
-
-<table id="userInfoList"></table>
-<div id="userInfoPager"></div>
 
 <div id="roleAssignInfo" title="角色分配信息">
 	<form id="roleAssignForm" action="#">
