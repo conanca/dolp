@@ -27,8 +27,9 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getGridData/*")
-	public ResponseData getGridData(Long parentId, @Param("..") JqgridReqData jqReq) {
-		return menuService.getGridData(jqReq, parentId);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("parentId") Long parentId,
+			@Param("_search") Boolean isSearch, @Param("..") Menu menuSearch) {
+		return menuService.getGridData(jqReq, parentId, isSearch, menuSearch);
 	}
 
 	/**

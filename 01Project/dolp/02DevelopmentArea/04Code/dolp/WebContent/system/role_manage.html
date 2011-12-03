@@ -35,6 +35,8 @@ $(function(){
 	});
 	//添加自定义按钮——导出Excel
 	$("#roleList").addExport2ExcelBtn('#rolePager');
+	// 开启查询功能
+	$("#roleList").addSearchToolbar('#rolePager');
 
 	//初始化权限信息界面
 	$("#privilegeInfo").dialog({ width: 250 , hide: 'slide' , modal: true , autoOpen: false});

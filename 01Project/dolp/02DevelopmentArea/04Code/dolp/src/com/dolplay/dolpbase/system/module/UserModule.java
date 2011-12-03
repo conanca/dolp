@@ -28,9 +28,9 @@ public class UserModule {
 	private UserService userService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("number") String number,
-			@Param("name") String name) {
-		return userService.getGridData(jqReq, number, name);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") User searchUser) {
+		return userService.getGridData(jqReq, isSearch, searchUser);
 	}
 
 	@At

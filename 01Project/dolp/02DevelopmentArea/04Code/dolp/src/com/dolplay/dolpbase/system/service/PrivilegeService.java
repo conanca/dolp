@@ -5,11 +5,13 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Privilege;
 
 @IocBean(args = { "refer:dao" })
@@ -20,8 +22,26 @@ public class PrivilegeService extends DolpBaseService<Privilege> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Privilege> getGridData(Long menuId, JqgridReqData jqReq) {
-		Condition cnd = Cnd.where("MENUID", "=", menuId);
+	public AdvancedJqgridResData<Privilege> getGridData(JqgridReqData jqReq, Boolean isSearch, Privilege privilegeSearch) {
+		Cnd cnd = Cnd.where("1", "=", 1);
+		Long menuId = privilegeSearch.getMenuId();
+		if (null != menuId) {
+			cnd = Cnd.where("MENUID", "=", menuId);
+		}
+		if (isSearch && null != privilegeSearch) {
+			String name = privilegeSearch.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String description = privilegeSearch.getDescription();
+			if (!Strings.isEmpty(description)) {
+				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			}
+			String methodPath = privilegeSearch.getMethodPath();
+			if (!Strings.isEmpty(methodPath)) {
+				cnd.and("METHODPATH", "LIKE", StringUtils.quote(methodPath, '%'));
+			}
+		}
 		AdvancedJqgridResData<Privilege> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}

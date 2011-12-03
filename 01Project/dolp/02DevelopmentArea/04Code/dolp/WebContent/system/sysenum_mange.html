@@ -18,7 +18,7 @@ $(function(){
 		sortorder: "asc",
 		multiselect: false,
 		onSelectRow: function(id) {
-			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/"+id,page:1});
+			$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData?sysEnumId="+id,page:1});
 			$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:id}});
 			$("#sysenumSubList").trigger('reloadGrid');
 		}
@@ -26,17 +26,19 @@ $(function(){
 	//开启jqgrid自带的增删改功能
 	$("#sysenumList").setJqGridCUD('#sysenumPager',{edit:true,add:true,del:true,search:false},{
 			add:function(){
-				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/0",page:1});
+				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData?sysEnumId=0",page:1});
 				$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:null}});
 				$('#sysenumSubList').trigger("reloadGrid");
 			},
 			del:function(){
-				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData/0",page:1});
+				$("#sysenumSubList").setGridParam({url:"system/sysEnum/getSysEnumItemGridData?sysEnumId=0",page:1});
 				$("#sysenumSubList").setColProp('sysEnumId',{editoptions:{defaultValue:null}});
 				$('#sysenumSubList').trigger("reloadGrid");
 			}
 		}
 	);
+	// 开启查询功能
+	$("#sysenumList").addSearchToolbar('#sysenumPager');
 
 	$("#sysenumSubList").jqGrid({
 		jsonReader:{
@@ -60,6 +62,8 @@ $(function(){
 	});
 	//显示jqgrid自带的增删改查按钮
 	$("#sysenumSubList").setJqGridCUD('#sysenumSubPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#sysenumSubList").addSearchToolbar('#sysenumSubPager');
 });
 </script>
 

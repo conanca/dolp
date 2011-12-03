@@ -7,6 +7,8 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
+import org.nutz.mvc.annotation.Param;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -14,6 +16,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Organization;
 
 @IocBean(args = { "refer:dao" })
@@ -24,8 +27,27 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, Long parentOrgId) {
-		Condition cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
+	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, Boolean isSearch,
+			@Param("..") Organization organizationSearch) {
+		Cnd cnd = Cnd.where("1", "=", 1);
+		Long parentOrgId = organizationSearch.getParentOrgId();
+		if (null != parentOrgId) {
+			cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
+		}
+		if (isSearch && null != organizationSearch) {
+			String code = organizationSearch.getCode();
+			if (!Strings.isEmpty(code)) {
+				cnd.and("CODE", "LIKE", StringUtils.quote(code, '%'));
+			}
+			String name = organizationSearch.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String description = organizationSearch.getDescription();
+			if (!Strings.isEmpty(description)) {
+				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			}
+		}
 		AdvancedJqgridResData<Organization> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}

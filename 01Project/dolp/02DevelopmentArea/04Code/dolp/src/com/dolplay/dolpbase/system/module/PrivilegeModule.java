@@ -17,9 +17,10 @@ public class PrivilegeModule {
 	@Inject
 	private PrivilegeService privilegeService;
 
-	@At("/getGridData/*")
-	public ResponseData getGridData(Long menuId, @Param("..") JqgridReqData jqReq) {
-		return privilegeService.getGridData(menuId, jqReq);
+	@At
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Privilege privilegeSearch) {
+		return privilegeService.getGridData(jqReq, isSearch, privilegeSearch);
 	}
 
 	@At

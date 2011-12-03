@@ -10,6 +10,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.SimpleZTreeNode;
@@ -18,6 +19,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.DolpCollectionHandler;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
 import com.dolplay.dolpbase.system.domain.MenuZTreeNode;
@@ -153,9 +155,10 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, Long parentId) {
+	public AdvancedJqgridResData<Menu> getGridData(JqgridReqData jqReq, Long parentId, Boolean isSearch, Menu menuSearch) {
 		long parentLft;
 		long parentRgt = 0;
+		parentId = parentId == null ? 0 : parentId;
 		if (parentId == 0) {
 			parentLft = 0;
 			// 取系统参数:"菜单节点最大Rigth值"
@@ -169,10 +172,28 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentLft = parentNode.getLft();
 			parentRgt = parentNode.getRgt();
 		}
+
+		Cnd cnd = Cnd.where("1", "=", 1);
+		if (isSearch && null != menuSearch) {
+			String name = menuSearch.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("M1.NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String url = menuSearch.getUrl();
+			if (!Strings.isEmpty(url)) {
+				cnd.and("M1.URL", "LIKE", StringUtils.quote(url, '%'));
+			}
+			String description = menuSearch.getDescription();
+			if (!Strings.isEmpty(description)) {
+				cnd.and("M1.DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			}
+		}
+
 		Sql sql = Sqls
-				.create("SELECT * FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
+				.create("SELECT * FROM SYSTEM_MENU M1 $condition AND M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
 		sql.params().set("parentLft", parentLft);
 		sql.params().set("parentRgt", parentRgt);
+		sql.setCondition(cnd);
 		// 开始封装jqGrid的json格式数据类
 		AdvancedJqgridResData<Menu> jq = getAdvancedJqgridRespData(Menu.class, sql, jqReq);
 		return jq;

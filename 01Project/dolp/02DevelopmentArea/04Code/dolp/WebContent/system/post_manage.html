@@ -47,6 +47,8 @@ $(function(){
 		multiselect: true
 	});
 	$("#postList").setJqGridCUD('#postPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#postList").addSearchToolbar('#postPager');
 
 });
 </script>

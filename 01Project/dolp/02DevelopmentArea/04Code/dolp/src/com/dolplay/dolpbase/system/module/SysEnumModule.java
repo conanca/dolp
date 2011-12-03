@@ -22,13 +22,15 @@ public class SysEnumModule {
 	private SysEnumItemService sysEnumItemService;
 
 	@At
-	public ResponseData getSysEnumGridData(@Param("..") JqgridReqData jqReq) {
-		return sysEnumService.getGridData(jqReq);
+	public ResponseData getSysEnumGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") SysEnum sysEnumSearch) {
+		return sysEnumService.getGridData(jqReq, isSearch, sysEnumSearch);
 	}
 
 	@At("/getSysEnumItemGridData/*")
-	public ResponseData getSysEnumItemGridData(Long sysEnumId, @Param("..") JqgridReqData jqReq) {
-		return sysEnumItemService.getGridData(jqReq, sysEnumId);
+	public ResponseData getSysEnumItemGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") SysEnumItem sysEnumItemSearch) {
+		return sysEnumItemService.getGridData(jqReq, isSearch, sysEnumItemSearch);
 	}
 
 	@At

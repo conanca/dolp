@@ -78,6 +78,8 @@ $(function(){
 	});
 	// 不显示jqgrid自带的查询按钮
 	$("#userInfoList").setJqGridCUD('#userInfoPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#userInfoList").addSearchToolbar('#userInfoPager');
 	// 角色按钮点击事件
 	$("#userRoleBtn").click(function(){
 		var id = $("#userInfoList").getGridParam('selrow');
@@ -245,9 +247,9 @@ $(function(){
 });
 </script>
 
-<input type="button" value="角色" id="userRoleBtn">
-<input type="button" value="岗位" id="userPostBtn">
-<input type="button" value="修改密码" id="userChgPassBtn">
+<input type="button" value="用户角色" id="userRoleBtn">
+<input type="button" value="用户岗位" id="userPostBtn">
+<input type="button" value="修改用户密码" id="userChgPassBtn">
 <br/>
 <br/>
 

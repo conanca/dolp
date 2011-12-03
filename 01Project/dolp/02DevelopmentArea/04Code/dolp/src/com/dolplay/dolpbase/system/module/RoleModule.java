@@ -18,9 +18,9 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("isOrgaRela") Boolean isOrgaRela,
-			@Param("organizationId") Long organizationId) {
-		return roleService.getGridData(jqReq, isOrgaRela, organizationId);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Role roleSearch) {
+		return roleService.getGridData(jqReq, isSearch, roleSearch);
 	}
 
 	@At

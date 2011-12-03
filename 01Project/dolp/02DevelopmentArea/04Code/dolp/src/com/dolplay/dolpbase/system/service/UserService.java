@@ -35,6 +35,7 @@ import com.dolplay.dolpbase.common.report.ReportHandler;
 import com.dolplay.dolpbase.common.report.WebappDataSource;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.ExcelHandler;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
@@ -49,13 +50,34 @@ public class UserService extends DolpBaseService<User> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, String number, String name) {
-		Cnd cnd = Cnd.where("1", "=", 1);
-		if (!Strings.isBlank(number)) {
-			cnd = cnd.and("NUMBER", "LIKE", "%" + Strings.trim(number) + "%");
-		}
-		if (!Strings.isBlank(name)) {
-			cnd = cnd.and("NAME", "LIKE", "%" + Strings.trim(name) + "%");
+	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, Boolean isSearch, User searchUser) {
+		Cnd cnd = null;
+		if (isSearch && null != searchUser) {
+			cnd = Cnd.where("1", "=", 1);
+			String number = searchUser.getNumber();
+			if (!Strings.isEmpty(number)) {
+				cnd.and("NUMBER", "LIKE", StringUtils.quote(number, '%'));
+			}
+			String name = searchUser.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String gender = searchUser.getGender();
+			if (!Strings.isEmpty(gender)) {
+				cnd.and("GENDER", "=", gender);
+			}
+			Integer age = searchUser.getAge();
+			if (null != age) {
+				cnd.and("AGE", "=", age);
+			}
+			String birthday = searchUser.getBirthday();
+			if (!Strings.isEmpty(birthday)) {
+				cnd.and("BIRTHDAY", "LIKE", StringUtils.quote(birthday, '%'));
+			}
+			String phone = searchUser.getPhone();
+			if (!Strings.isEmpty(phone)) {
+				cnd.and("PHONE", "=", phone);
+			}
 		}
 		AdvancedJqgridResData<User> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;

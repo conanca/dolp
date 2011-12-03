@@ -7,6 +7,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -14,6 +15,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.SysEnum;
 
 @IocBean(args = { "refer:dao" })
@@ -24,7 +26,19 @@ public class SysEnumService extends DolpBaseService<SysEnum> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<SysEnum> getGridData(JqgridReqData jqReq) {
+	public AdvancedJqgridResData<SysEnum> getGridData(JqgridReqData jqReq, Boolean isSearch, SysEnum sysEnumSearch) {
+		Cnd cnd = null;
+		if (isSearch && null != sysEnumSearch) {
+			cnd = Cnd.where("1", "=", 1);
+			String name = sysEnumSearch.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String description = sysEnumSearch.getDescription();
+			if (!Strings.isEmpty(description)) {
+				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			}
+		}
 		AdvancedJqgridResData<SysEnum> jq = getAdvancedJqgridRespData(null, jqReq);
 		return jq;
 	}

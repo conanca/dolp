@@ -12,6 +12,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
@@ -20,6 +21,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Role;
 
 @IocBean(args = { "refer:dao" })
@@ -30,10 +32,27 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, Boolean isOrgaRela, Long organizationId) {
-		Condition cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
-		if (isOrgaRela) {
-			cnd = ((Cnd) cnd).and("ORGANIZATIONID", "=", organizationId);
+	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, Boolean isSearch, Role roleSearch) {
+		Cnd cnd = Cnd.where("1", "=", 1);
+		Boolean isOrgaRela = roleSearch.getIsOrgaRela();
+		if (null != isOrgaRela) {
+			cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
+			if (isOrgaRela) {
+				Long organizationId = roleSearch.getOrganizationId();
+				if (null != organizationId) {
+					cnd = cnd.and("ORGANIZATIONID", "=", organizationId);
+				}
+			}
+		}
+		if (isSearch && null != roleSearch) {
+			String name = roleSearch.getName();
+			if (!Strings.isEmpty(name)) {
+				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+			}
+			String description = roleSearch.getDescription();
+			if (!Strings.isEmpty(description)) {
+				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			}
 		}
 		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;

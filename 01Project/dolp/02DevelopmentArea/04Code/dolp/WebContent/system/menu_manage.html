@@ -11,8 +11,7 @@ $(function() {
 		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
-				$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+treeNode.id,page:1});
-				$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+treeNode.id});
+				$("#menuEditList").setGridParam({url:"system/menu/getGridData?parentId="+treeNode.id,page:1,editurl:"system/menu/editRow/"+treeNode.id});
 				$("#menuEditList").trigger('reloadGrid');
 				parentId = treeNode.id;
 			}
@@ -24,8 +23,7 @@ $(function() {
 	//点击刷新按钮
 	$("#menuTreeRefreshBtn").click(function() {
 		menuTree.reAsyncChildNodes(null, "refresh");
-		$("#menuEditList").setGridParam({url:"system/menu/getGridData/0",page:1});
-		$("#menuEditList").setGridParam({editurl:"system/menu/editRow/0"});
+		$("#menuEditList").setGridParam({url:"system/menu/getGridData?parentId=0",page:1,editurl:"system/menu/editRow/0"});
 		$("#menuEditList").trigger('reloadGrid');
 	});
 
@@ -34,7 +32,7 @@ $(function() {
 			repeatitems: false
 		},
 		caption:"菜单列表",
-		url:'system/menu/getGridData/0',
+		url:'system/menu/getGridData?parentId=0',
 		editurl:"system/menu/editRow/0",
 		colNames: ["id","菜单名","url","描述","lft","rgt"],
 		colModel: [
@@ -51,6 +49,8 @@ $(function() {
 		multiselect: true
 	});
 	$("#menuEditList").setJqGridCUD('#menuEditPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#menuEditList").addSearchToolbar('#menuEditPager');
 	// 添加父菜单按钮
 	$("#addParentMenuBtn").click(function() {
 		$("#parentMenuInfo").dialog( "open" );

@@ -5,11 +5,13 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 
 @IocBean(args = { "refer:dao" })
@@ -20,8 +22,24 @@ public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, Long sysEnumId) {
-		Cnd cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
+	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, Boolean isSearch,
+			SysEnumItem sysEnumItemSearch) {
+		Cnd cnd = Cnd.where("1", "=", 1);
+		Long sysEnumId = sysEnumItemSearch.getSysEnumId();
+		if (null != sysEnumItemSearch) {
+			cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
+		}
+		if (isSearch && null != sysEnumItemSearch) {
+			String text = sysEnumItemSearch.getText();
+			if (!Strings.isEmpty(text)) {
+				cnd.and("TEXT", "LIKE", StringUtils.quote(text, '%'));
+			}
+			String value = sysEnumItemSearch.getValue();
+			if (!Strings.isEmpty(value)) {
+				cnd.and("VALUE", "LIKE", StringUtils.quote(value, '%'));
+			}
+		}
+
 		AdvancedJqgridResData<SysEnumItem> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
