@@ -19,7 +19,7 @@ public class CheckLogon implements ActionFilter {
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(null, null, "请先登录系统!");
+			excpAjaxResData.setSystemMessage(null, null, "用户未登录或已退出系统!\n请先登录系统!");
 			jsonView.setData(excpAjaxResData);
 			return jsonView;
 		} else {
