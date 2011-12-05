@@ -7,6 +7,7 @@ import org.nutz.mvc.annotation.Param;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
+import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.service.ClientService;
 
 @IocBean
@@ -17,8 +18,9 @@ public class ClientModule {
 	private ClientService clientService;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
-		return clientService.getGridData(jqReq);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Client clientSearch, @Param("userName") String userName) {
+		return clientService.getGridData(jqReq, isSearch, clientSearch, userName);
 	}
 
 	@At

@@ -10,8 +10,8 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'title',index:'title', width:500},
-			{name:'sender.name',index:'sender.name', width:200, editable:true},
-			{name:'date',index:'date', width:200},
+			{name:'sender.name',index:'senderName', width:200, editable:true},
+			{name:'date',index:'date', width:200, search:false},
 			{name:'content',index:'content', width:0,hidden:true}
 		],
 		pager: '#messageInboxPager',
@@ -41,7 +41,8 @@ $(function(){
 		}
 	});
 	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:false,search:false});
-
+	// 开启查询功能
+	$("#messageInboxList").addSearchToolbar('#messageInboxPager');
 	$('#messageInboxDetail').hide();
 
 	// 返回收件箱按钮点击事件

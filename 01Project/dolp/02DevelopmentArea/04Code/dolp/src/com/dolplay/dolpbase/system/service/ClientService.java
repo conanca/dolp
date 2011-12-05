@@ -11,6 +11,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -18,6 +19,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.DolpSessionContext;
 import com.dolplay.dolpbase.common.util.MVCHandler;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.User;
 
@@ -60,8 +62,33 @@ public class ClientService extends DolpBaseService<Client> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Client> getGridData(JqgridReqData jqReq) {
-		AdvancedJqgridResData<Client> jq = getAdvancedJqgridRespData(null, jqReq);
+	public AdvancedJqgridResData<Client> getGridData(JqgridReqData jqReq, Boolean isSearch, Client clientSearch,
+			String userName) {
+		Cnd cnd = null;
+		if (isSearch && null != clientSearch) {
+			cnd = Cnd.where("1", "=", 1);
+			String ipAddr = clientSearch.getIpAddr();
+			if (!Strings.isEmpty(ipAddr)) {
+				cnd.and("IPADDR", "LIKE", StringUtils.quote(ipAddr, '%'));
+			}
+			String userAgent = clientSearch.getUserAgent();
+			if (!Strings.isEmpty(userAgent)) {
+				cnd.and("USERAGENT", "LIKE", StringUtils.quote(userAgent, '%'));
+			}
+			Timestamp logonTime = clientSearch.getLogonTime();
+			if (null != logonTime) {
+				cnd.and("LOGONTIME", "=", logonTime);
+			}
+			if (!Strings.isEmpty(userName)) {
+				User user = dao().fetch(User.class, Cnd.where("name", "LIKE", StringUtils.quote(userName, '%')));
+				if (null != user) {
+					cnd.and("USERID", "=", user.getId());
+				} else {
+					cnd.and("1", "=", 0);
+				}
+			}
+		}
+		AdvancedJqgridResData<Client> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		List<Client> clients = jq.getRows();
 		for (Client client : clients) {
 			dao().fetchLinks(client, "user");

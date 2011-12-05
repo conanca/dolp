@@ -11,13 +11,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.entity.Record;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
@@ -26,6 +26,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.User;
@@ -168,8 +169,9 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, User readerUser) {
-		Condition cnd = null;
+	public AdvancedJqgridResData<Message> getReceivedMessageGridData(JqgridReqData jqReq, Boolean isSearch,
+			Message messageSearch, String senderName, User readerUser) {
+		Cnd cnd = null;
 		List<Record> recList = dao().query("SYSTEM_MESSAGE_RECEIVERUSER", Cnd.where("USERID", "=", readerUser.getId()),
 				null);
 		if (recList != null && recList.size() > 0) {
@@ -183,6 +185,23 @@ public class MessageService extends DolpBaseService<Message> {
 		} else {
 			cnd = Cnd.where("1", "=", 0);
 		}
+
+		if (isSearch && null != messageSearch) {
+			cnd = Cnd.where("1", "=", 1);
+			String title = messageSearch.getTitle();
+			if (!Strings.isEmpty(title)) {
+				cnd.and("TITLE", "LIKE", StringUtils.quote(title, '%'));
+			}
+			if (!Strings.isEmpty(senderName)) {
+				User user = dao().fetch(User.class, Cnd.where("name", "LIKE", StringUtils.quote(senderName, '%')));
+				if (null != user) {
+					cnd.and("SENDERUSERID", "=", user.getId());
+				} else {
+					cnd.and("1", "=", 0);
+				}
+			}
+		}
+
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		List<Message> messages = jq.getRows();
 		for (Message message : messages) {
@@ -199,8 +218,18 @@ public class MessageService extends DolpBaseService<Message> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser, int state) {
-		Condition cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
+	public AdvancedJqgridResData<Message> getSentMessageGridData(JqgridReqData jqReq, User senderUser,
+			Boolean isSearch, @Param("..") Message messageSearch, int state) {
+		Cnd cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
+
+		if (isSearch && null != messageSearch) {
+			cnd = Cnd.where("1", "=", 1);
+			String title = messageSearch.getTitle();
+			if (!Strings.isEmpty(title)) {
+				cnd.and("TITLE", "LIKE", StringUtils.quote(title, '%'));
+			}
+		}
+
 		AdvancedJqgridResData<Message> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		List<Message> messages = jq.getRows();
 		for (Message message : messages) {

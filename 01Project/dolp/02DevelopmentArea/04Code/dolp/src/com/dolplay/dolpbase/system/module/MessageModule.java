@@ -27,6 +27,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.util.StringUtils;
+import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.filter.CheckAttachmentOperation;
 import com.dolplay.dolpbase.system.filter.CheckLogon;
@@ -41,21 +42,24 @@ public class MessageModule {
 	private MessageService messageService;
 
 	@At
-	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Message messageSearch, @Param("senderName") String senderName, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
-		return messageService.getReceivedMessageGridData(jqReq, currentUser);
+		return messageService.getReceivedMessageGridData(jqReq, isSearch, messageSearch, senderName, currentUser);
 	}
 
 	@At
-	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Message messageSearch, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
-		return messageService.getSentMessageGridData(jqReq, currentUser, 1);
+		return messageService.getSentMessageGridData(jqReq, currentUser, isSearch, messageSearch, 1);
 	}
 
 	@At
-	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, HttpSession session) {
+	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
+			@Param("..") Message messageSearch, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
-		return messageService.getSentMessageGridData(jqReq, currentUser, 0);
+		return messageService.getSentMessageGridData(jqReq, currentUser, isSearch, messageSearch, 0);
 	}
 
 	@At("/getAttachments/*")
