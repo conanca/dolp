@@ -59,7 +59,7 @@ $(function(){
 				}
 			},
 			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
-			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}},
+			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}, stype:'select'},
 			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'birthday',index:'birthday', width:100,editable:true,sorttype:'date',
 				editoptions:{size:12, dataInit:function(el){

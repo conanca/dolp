@@ -6,7 +6,7 @@ $(function(){
 	$('#messageNewEditor').wysiwyg();
 
 	//初始化用户信息界面
-	$("#messageNewUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
+	$("#messageNewUserSelect").dialog({width: 520 , hide: 'slide' , modal: true , autoOpen: false});
 
 	//设置Grid
 	$("#messageNewUserInfoList").jqGrid({
@@ -20,7 +20,7 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'number',index:'number', width:100},
 			{name:'name',index:'name', width:100},
-			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}},
+			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}, stype:'select'},
 			{name:'age',index:'age', width:100, editable:true,hidden:true},
 			{name:'birthday',index:'birthday', width:100,hidden:true},
 			{name:'phone',index:'phone', width:150}
@@ -32,7 +32,8 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#messageNewUserInfoList").setJqGridCUD('#messageNewUserInfoPager',{edit:false,add:false,del:false,search:false});
-
+	// 开启查询功能
+	$("#messageNewUserInfoList").addSearchToolbar('#messageNewUserInfoPager');
 	//查询按钮点击事件
 	$("#messageNewUserInfo_search_btn").click(function () { 
 		var number = $("#messageNewUserInfo_search_number").val();
@@ -162,36 +163,10 @@ function removeAttachment(id,name){
 </div>
 
 <div id="messageNewUserSelect" title="用户列表">
-	<fieldset>
-	<legend>用户查询</legend>
-	<table>
-		<tr>
-			<td>
-				编号：
-			</td>
-			<td>
-				<input type="text" name="number" id="messageNewUserInfo_search_number"/>
-			</td>
-			<td>
-				姓名：
-			</td>
-			<td>
-				<input type="text" name="name" id="messageNewUserInfo_search_name"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4" align="right">
-				<input type="button" id="messageNewUserInfo_search_btn" value="查询"/>
-			</td>
-		</tr>
-	</table>
-	</fieldset>
+	<input type="button" id="messageNewUserSelectBtn" value="选择"/>
+	<input type="button" id="messageNewUserCloseBtn" value="关闭"/>
+	<br/>
 	<br/>
 	<table id="messageNewUserInfoList"></table>
 	<div id="messageNewUserInfoPager"></div>
-	<br/>
-	<div align="right">
-		<input type="button" id="messageNewUserSelectBtn" value="选择"/>
-		<input type="button" id="messageNewUserCloseBtn" value="关闭"/>
-	</div>
 </div>
