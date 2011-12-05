@@ -132,9 +132,9 @@ $.extend({
 		},"json");
 		return returnData;
 	},
-	//为JSON格式的map数据做键值互换
+	//为JSON格式的map数据做键值互换,并增加一个空字符串的项
     swapJSON: function(json) {
-        var o = {};
+        var o = {'':''};
         $.each(json, function(k, v) {
             o[v] = k;
         });
