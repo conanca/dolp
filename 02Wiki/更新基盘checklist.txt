@@ -1,6 +1,8 @@
 1.更新WebContent\WEB-INF\lib\dolp.jar文件
 2.更新整个temp目录
-3.更新build.xml文件，并修改相应的设置
-4.WebContent目录下，除了自有网页目录、自有jar包及js文件外，其他文件及目录全部更新
-5.config目录下，除了自有配置文件，更新其他文件，并修改相应设置
-6.更新MvcSetup.java，MainScheduler.java，MainModule.java，CodeGenerator.java并作相应修改
+*3.更新build.xml文件，并修改相应的设置
+*4.更新WebContent\WEB-INF下的web.xml文件，并修改相应的设置
+5.更新WebContent\WEB-INF下的jar包，保留自有的jar包
+6.WebContent目录下，更新css、images、js、META-INF、reports、system、themes、wysiwygeditor、zTreeStyle、demo1.html、header.html、index.html、main.html和menu.html;
+7.config目录下，除了自有配置文件或SQL脚本，更新其他文件（包括dao.js、ioc.dolpbase.js、init_system_h2.sql和logback.xml），并修改相应设置
+8.更新MvcSetup.java，MainScheduler.java，MainModule.java，CodeGenerator.java并作相应修改
