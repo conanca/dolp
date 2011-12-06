@@ -1,11 +1,10 @@
-package com.dolplay.dolpbase.system.job;
+package com.dolplay.dolpbase.system.secheduler.job;
 
 import java.util.Date;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +15,9 @@ public class CountClientJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		JobKey jobKey = context.getJobDetail().getKey();
-		logger.debug(jobKey + " executing at " + new Date());
 		int clientCount = DaoProvider.getDao().count("SYSTEM_CLIENT");
-		logger.info(new Date() + " 当前在线终端数目：" + clientCount);
+		StringBuilder sb = new StringBuilder();
+		sb.append(new Date()).append("当前在线终端数目：").append(clientCount);
+		logger.info(sb.toString());
 	}
 }

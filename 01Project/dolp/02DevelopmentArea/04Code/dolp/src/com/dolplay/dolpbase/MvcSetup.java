@@ -27,6 +27,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.secheduler.DolpScheduler;
 
 public class MvcSetup implements Setup {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetup.class);
@@ -92,10 +93,9 @@ public class MvcSetup implements Setup {
 			}
 		}
 
-		// 启动调度任务
-		MainScheduler runner = new MainScheduler();
+		// 启动默认调度任务
 		try {
-			//runner.run();
+			DolpScheduler.run();
 		} catch (Exception e) {
 			logger.error("Start SchedulerRunner exception", e);
 		}
@@ -105,16 +105,13 @@ public class MvcSetup implements Setup {
 	 * 当应用系统停止的时候:
 	 * 1.清空在线用户表;
 	 * 2.停止调度程序;
-	 * 3.关闭 DaoHandler的数据库连接
 	 */
 	@Override
 	public void destroy(NutConfig config) {
 		// 清空在线用户表
 		DaoProvider.getDao().clear("SYSTEM_CLIENT");
-		// 停止Scheduler
-		MainScheduler runner = new MainScheduler();
 		try {
-			//runner.stop();
+			DolpScheduler.stop();
 		} catch (Exception e) {
 			logger.error("Stop SchedulerRunner exception", e);
 		}

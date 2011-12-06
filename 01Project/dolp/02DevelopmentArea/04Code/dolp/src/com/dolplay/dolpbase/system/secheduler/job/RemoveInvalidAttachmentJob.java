@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.system.job;
+package com.dolplay.dolpbase.system.secheduler.job;
 
 import java.util.List;
 
@@ -14,12 +14,18 @@ import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.common.util.IocObjectProvider;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 
+/**
+ * 移除无用的消息附件文件(包括文件本身和文件信息表中记录)的job
+ * @author Administrator
+ *
+ */
 public class RemoveInvalidAttachmentJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		Dao dao = DaoProvider.getDao();
 		FilePool attachmentPool = IocObjectProvider.getAttachmentPool();
+
 		Sql sql = Sqls
 				.create("SELECT * FROM SYSTEM_POOLFILE WHERE POOLIOCNAME = @poolIocName AND IDINPOOL NOT IN (SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE)");
 		sql.params().set("poolIocName", "attachmentPool");
