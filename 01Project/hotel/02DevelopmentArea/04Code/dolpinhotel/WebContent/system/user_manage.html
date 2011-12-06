@@ -2,8 +2,6 @@
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	// 填充选择框roleIds的值
 	$.dolpGet("system/role/getAllRoleMap/false",null,function(returnData){
 		$("#roleIds").addItems(returnData);
@@ -24,7 +22,7 @@ $(function(){
 	$("#postAssignInfo").dialog({ width: 650 , hide: 'slide' , modal: true , autoOpen: false, close: function(event, ui) {
 			//关闭后刷新tree和grid
 			userPostOrganizationTree.reAsyncChildNodes(null, "refresh");
-			$("#userPostList").setGridParam({url:"system/role/getUserPostGridData",page:1});
+			$("#userPostList").setGridParam({url:"system/role/getUserPostGridData?userId=0&organizationId=0",page:1});
 			$("#userPostList").trigger('reloadGrid');
 		}
 	});
@@ -61,7 +59,7 @@ $(function(){
 				}
 			},
 			{name:'name',index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
-			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}},
+			{name:'gender',index:'gender', width:100,editable:true,edittype:'select', formatter:'select', editoptions:{value:genders1}, stype:'select'},
 			{name:'age',index:'age', width:100,editable:true,editrules:{required:true,integer:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
 			{name:'birthday',index:'birthday', width:100,editable:true,sorttype:'date',
 				editoptions:{size:12, dataInit:function(el){
@@ -78,81 +76,69 @@ $(function(){
 		sortorder: "asc",
 		multiselect: true
 	});
-	//不显示jqgrid自带的查询按钮
+	// 不显示jqgrid自带的查询按钮
 	$("#userInfoList").setJqGridCUD('#userInfoPager',{edit:true,add:true,del:true,search:false});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"角色",buttonicon:"ui-icon-person",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				$("#assigningUserID").val(id);
-
+	// 开启查询功能
+	$("#userInfoList").addSearchToolbar('#userInfoPager');
+	// 角色按钮点击事件
+	$("#userRoleBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			$("#assigningUserID").val(id);
 				// 全部取消选中 选择框roleIds的值
-				$("#roleIds option").each(function(){
-					if($(this).attr("selected") == true){
-						$(this).removeAttr("selected");
-					}
-				});
-
+			$("#roleIds option").each(function(){
+				if($("#userInfoList").attr("selected") == true){
+					$("#userInfoList").removeAttr("selected");
+				}
+			});
 				// 指定选中的选择框roleIds的值
-				$.dolpGet("system/user/getCurrentRoleIDs/"+id,null,function(returnData){
-					var currentRole = returnData;
-					$.each(currentRole,function(index,value){
-						$("#roleIds option[value='"+value+"']").attr("selected","selected");
-						// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
-						$("#roleIds").multiselect("destroy");
-						$("#roleIds").multiselect();
-					});
+			$.dolpGet("system/user/getCurrentRoleIDs/"+id,null,function(returnData){
+				var currentRole = returnData;
+				$.each(currentRole,function(index,value){
+					$("#roleIds option[value='"+value+"']").attr("selected","selected");
+					// TODO 由于multiselect插件的bug,改变选择框元素的属性时，需重新载入插件
+					$("#roleIds").multiselect("destroy");
+					$("#roleIds").multiselect();
 				});
-
-				$("#roleAssignInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+			});
+			$("#roleAssignInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"岗位",buttonicon:"ui-icon-flag",position:"last",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				roleId = id;
-				$("#postAssignInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+	// 岗位按钮点击事件
+	$("#userPostBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			roleId = id;
+			$("#postAssignInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
-	$("#userInfoList").navButtonAdd('#userInfoPager',{caption:"修改密码",buttonicon:"ui-icon-key",position:"last",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				$("#userMangeChangePwdForm_userId").val(id);
-				$("#userPasswordChangeInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择用户",null);
-			}
+	// 修改密码按钮点击事件
+	$("#userChgPassBtn").click(function(){
+		var id = $("#userInfoList").getGridParam('selrow');
+		if (id) {
+			$("#userMangeChangePwdForm_userId").val(id);
+			$("#userPasswordChangeInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择用户",null);
 		}
 	});
-	//添加自定义按钮——导出Excel
-	$("#userInfoList").export2Excel('#userInfoPager');
 
-	//查询按钮点击事件
-	$("#userInfoSerchForm").submit(function() {
-		var number = $("#userInfo_search_number").val();
-		var name = $("#userInfo_search_name").val();
-		url = "system/user/getGridData?number="+number+"&name="+name;
-		$("#userInfoList").setGridParam({url:url, page:1}).trigger("reloadGrid");
-		return false;
-	});
 
+	//角色分配界面，分配按钮点击事件
 	$('#roleAssignForm').submit(function() {
-		//关闭用户角色分配界面
-		$("#roleAssignInfo").dialog( "close" );
 		var url = 'system/user/assignRole';
 		var roleAssignFormInfo = $(this).serializeObject();
-		$.dolpPost(url,roleAssignFormInfo);
+		$.dolpPost(url,roleAssignFormInfo,function(returnData){
+			//关闭用户角色分配界面
+			$("#roleAssignInfo").dialog( "close" );
+		});
 		return false;
 	});
-
+	//角色分配界面，取消按钮点击事件
 	$("#roleAssignInfoCancelbtn").click(function() {
 		$('#roleAssignInfo').dialog( "close" );
 	});
@@ -177,7 +163,7 @@ $(function(){
 
 	$("#userPostList").jqGrid({
 		caption:"岗位列表",
-		url:'system/role/getUserPostGridData',
+		url:'system/role/getUserPostGridData?userId=0&organizationId=0',
 		colNames:['id','名称','描述','已分配'],
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
@@ -192,6 +178,7 @@ $(function(){
 	});
 	$("#userPostList").setJqGridCUD('#userPostPager',{edit:false,add:false,del:false,search:false});
 
+	//岗位分配界面，分配按钮点击事件
 	$("#postAssignBtn").click(function() {
 		var selectedPost = $("#userPostList").getCol('isset',true);
 		var selectedPostIds = new Array();
@@ -205,10 +192,13 @@ $(function(){
 		});
 		var url = "system/user/assignPost";
 		var userId = $("#userInfoList").getGridParam('selrow');
-		var orgId = userPostOrganizationTree.getSelectedNode().id;
-		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds})
+		var selectNodes = userPostOrganizationTree.getSelectedNodes();
+		var orgId = selectNodes[0].id;
+		$.dolpPost(url,{userId:userId,orgId:orgId,selectedPostIds:selectedPostIds},function(returnData){
+			$("#postAssignInfo").dialog( "close" );
+		})
 	});
-
+	//岗位分配界面，取消按钮点击事件
 	$("#postAssignInfoCancelbtn").click(function() {
 		$('#postAssignInfo').dialog( "close" );
 	});
@@ -238,11 +228,12 @@ $(function(){
 	$('#userMangeChangePwdForm').submit(function() {
 		if($(this).valid()){
 			var changePwdInfo = $(this).serializeObject();
-			$.dolpPost('system/user/changeUserPassword',changePwdInfo);
+			$.dolpPost('system/user/changeUserPassword',changePwdInfo,function(returnData){
+				$("#userPasswordChangeInfoCancelbtn").click();
+			});
 		}else{
 			$.addMessageStr(null,"未通过验证",null);
 		}
-		$("#userPasswordChangeInfoCancelbtn").click();
 		return false;
 	});
 
@@ -256,46 +247,24 @@ $(function(){
 });
 </script>
 
-<fieldset>
-<legend>用户查询</legend>
-<form id="userInfoSerchForm" action="#">
-<table>
-	<tr>
-		<td>
-			用户编号：
-		</td>
-		<td>
-			<input type="text" name="number" id="userInfo_search_number"/>
-		</td>
-		<td>
-			姓名：
-		</td>
-		<td>
-			<input type="text" name="name" id="userInfo_search_name"/>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4" align="right">
-			<input type="submit" value="查询"/>
-		</td>
-	</tr>
-</table>
-</form>
-</fieldset>
+<input type="button" value="用户角色" id="userRoleBtn">
+<input type="button" value="用户岗位" id="userPostBtn">
+<input type="button" value="修改用户密码" id="userChgPassBtn">
+<br/>
+<br/>
+
+<table id="userInfoList"></table>
+<div id="userInfoPager"></div>
 <br/>
 
 <fieldset>
 <legend>用户导入导出</legend>
 	<input type="file" name="userImportFile" id="userImportFile"/><br/>
-	<button id="userImportFileUploadBtn">上传导入</button>
+	<input type="button" value="上传导入" id="userImportFileUploadBtn">
 	<br/>
 	<a target="_blank" href="system/user/export">导出</a>
 	<a target="_blank" href="system/user/export2">导出2</a>
 </fieldset>
-<br/>
-
-<table id="userInfoList"></table>
-<div id="userInfoPager"></div>
 
 <div id="roleAssignInfo" title="角色分配信息">
 	<form id="roleAssignForm" action="#">

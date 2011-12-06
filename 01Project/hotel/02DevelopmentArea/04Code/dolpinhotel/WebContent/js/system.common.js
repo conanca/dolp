@@ -132,9 +132,9 @@ $.extend({
 		},"json");
 		return returnData;
 	},
-	//为JSON格式的map数据做键值互换
+	//为JSON格式的map数据做键值互换,并增加一个空字符串的项
     swapJSON: function(json) {
-        var o = {};
+        var o = {'':''};
         $.each(json, function(k, v) {
             o[v] = k;
         });
@@ -180,6 +180,7 @@ $.extend({
 	$.fn.setJqGridCUD = function(pager,para,afterSubmitTodo) {
 		$(this).navGrid(pager,para,
 			{
+				closeAfterEdit: true,
 				beforeSubmit : function(postdata, formid) {
 					$.blockUI();
 					return[true]; 
@@ -195,6 +196,7 @@ $.extend({
 				}
 			},
 			{
+				closeAfterAdd: true,
 				beforeSubmit : function(postdata, formid) { 
 					$.blockUI();
 					return[true]; 
@@ -241,8 +243,8 @@ $.extend({
 		);
 	};
 	//为grid添加自定义按钮——导出Excel
-	$.fn.export2Excel = function(pager) {
-		$(this).navButtonAdd(pager,{caption:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
+	$.fn.addExport2ExcelBtn = function(pager) {
+		$(this).jqGrid('navButtonAdd',pager,{caption:"",title:"导出",buttonicon:"ui-icon-arrowthickstop-1-s",
 			onClickButton:function(){
 				var colNames = $(this).getGridParam("colNames");
 				var rowDatas = $.toJSON($(this).getRowData());
@@ -252,6 +254,18 @@ $.extend({
 			}
 		});
 	};
+	//为grid添加自定义按钮——查询栏开关
+	$.fn.addSearchToolbar = function(pager) {
+		$(this).jqGrid('navButtonAdd',pager,{caption:"",title:"查询栏开关", buttonicon :'ui-icon-search', onClickButton:function(){
+				if(!$(this)[0].toggleToolbar){
+					$(this).jqGrid('filterToolbar',{searchOnEnter:false});
+				}else{
+					$(this)[0].toggleToolbar();
+				}
+			}
+		});
+	};
+	
 	// 上传文件
 	$.fn.dolpUpload = function(url,data,afterRequest){
 		$.blockUI();

@@ -1,7 +1,5 @@
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	var organizationTreeSetting = {
 		async: {
 			enable: true,
@@ -11,7 +9,7 @@ $(function(){
 		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
-				$("#organizationList").setGridParam({url:"system/organization/getGridData/"+treeNode.id,page:1});
+				$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId="+treeNode.id,page:1});
 				$("#organizationList").setColProp('parentOrgId',{editoptions:{defaultValue:treeNode.id}});
 				$("#organizationList").trigger('reloadGrid');
 			}
@@ -23,7 +21,7 @@ $(function(){
 	//点击刷新按钮
 	$("#organizationTreeRefreshBtn").click(function() {
 		organizationTree.reAsyncChildNodes(null, "refresh");
-		$("#organizationList").setGridParam({url:"system/organization/getGridData/0",page:1});
+		$("#organizationList").setGridParam({url:"system/organization/getGridData?parentOrgId=0",page:1});
 		$("#organizationList").setColProp('parentOrgId',{editoptions:{defaultValue:"0"}});
 		$("#organizationList").trigger('reloadGrid');
 	});
@@ -33,7 +31,7 @@ $(function(){
 			repeatitems: false
 		},
 		caption:"机构列表",
-		url:'system/organization/getGridData',
+		url:'system/organization/getGridData?parentOrgId=0',
 		editurl:"system/organization/editRow",
 		colNames:['id','代码','名称','描述','父节点Id'],
 		colModel:[
@@ -49,6 +47,8 @@ $(function(){
 		multiselect: true
 	});
 	$("#organizationList").setJqGridCUD('#organizationPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#organizationList").addSearchToolbar('#organizationPager');
 
 });
 </script>

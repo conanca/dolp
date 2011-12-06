@@ -15,17 +15,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.PropertiesProvider;
+import com.dolplay.dolpbase.common.util.IocObjectProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.Organization;
+import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.secheduler.DolpScheduler;
 import com.dolplay.dolpinhotel.management.Bill;
 import com.dolplay.dolpinhotel.management.Customer;
 import com.dolplay.dolpinhotel.management.RoomOccupancy;
@@ -46,7 +48,7 @@ public class MvcSetup implements Setup {
 		// 初始化dao,datasource及properties
 		DaoProvider.init(config.getIoc());
 		Dao dao = DaoProvider.getDao();
-		PropertiesProvider.init(config.getIoc());
+		IocObjectProvider.init(config.getIoc());
 		// 初始化系统基本的数据表
 		if (!dao.exists("SYSTEM_USER")) {
 			// 建实体类的表
@@ -60,24 +62,26 @@ public class MvcSetup implements Setup {
 			dao.create(SysEnumItem.class, true);
 			dao.create(SysPara.class, true);
 			dao.create(User.class, true);
+			dao.create(PoolFile.class, true);
 
 			// 添加默认记录
-			FileSqlManager fm = new FileSqlManager("init_system.sql");
+			FileSqlManager fm = new FileSqlManager("init_system_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 
+			// 添加hotel系统的默认记录
 			dao.create(Room.class, true);
 			dao.create(RoomType.class, true);
 			dao.create(Bill.class, true);
 			dao.create(Customer.class, true);
 			dao.create(RoomOccupancy.class, true);
-			fm = new FileSqlManager("init_hotel.sql");
+			fm = new FileSqlManager("init_hotel_h2.sql");
 			sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
 		// 初始化quartz的数据表
 		if (!dao.exists("QRTZ_JOB_DETAILS")) {
-			FileSqlManager fm = new FileSqlManager("tables_quartz.sql");
+			FileSqlManager fm = new FileSqlManager("tables_quartz_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
@@ -104,10 +108,9 @@ public class MvcSetup implements Setup {
 			}
 		}
 
-		// 启动调度任务
-		MainScheduler runner = new MainScheduler();
+		// 启动默认调度任务
 		try {
-			//runner.run();
+			DolpScheduler.run();
 		} catch (Exception e) {
 			logger.error("Start SchedulerRunner exception", e);
 		}
@@ -117,16 +120,13 @@ public class MvcSetup implements Setup {
 	 * 当应用系统停止的时候:
 	 * 1.清空在线用户表;
 	 * 2.停止调度程序;
-	 * 3.关闭 DaoHandler的数据库连接
 	 */
 	@Override
 	public void destroy(NutConfig config) {
 		// 清空在线用户表
 		DaoProvider.getDao().clear("SYSTEM_CLIENT");
-		// 停止Scheduler
-		MainScheduler runner = new MainScheduler();
 		try {
-			//runner.stop();
+			DolpScheduler.stop();
 		} catch (Exception e) {
 			logger.error("Stop SchedulerRunner exception", e);
 		}

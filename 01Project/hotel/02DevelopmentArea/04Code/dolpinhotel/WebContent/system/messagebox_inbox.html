@@ -1,7 +1,5 @@
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	$("#messageInboxList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -12,8 +10,8 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'title',index:'title', width:500},
-			{name:'sender.name',index:'sender.name', width:200, editable:true},
-			{name:'date',index:'date', width:200},
+			{name:'sender.name',index:'senderName', width:200, editable:true},
+			{name:'date',index:'date', width:200, search:false},
 			{name:'content',index:'content', width:0,hidden:true}
 		],
 		pager: '#messageInboxPager',
@@ -28,26 +26,41 @@ $(function(){
 			$('#messageInboxDetailDate').text(row.date);
 			$('#messageInboxDetailSender').text(row["sender.name"]);
 			$('#messageInboxDetailContent').html(row.content);
+			$.dolpGet('system/message/getReceiver/'+row.id,null,function(returnData){
+				$('#messageInboxDetailReceiverUserNames').text(returnData);
+			});
 			$(this).setGridState('hidden');
-			$('#messageInboxDetail').show();
+			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
+				$.each(returnData,function(id,name){
+					$('#messageInboxDetailAttachmentLinks').append('<a target="_blank" href="system/message/downloadAttachment?id=' + id
+							+ '&name=' + name + '">' + name
+							+ '</a></br>');
+				});
+				$('#messageInboxDetail').show();
+			});
 		}
 	});
 	$("#messageInboxList").setJqGridCUD('#messageInboxPager',{edit:false,add:false,del:false,search:false});
-
+	// 开启查询功能
+	$("#messageInboxList").addSearchToolbar('#messageInboxPager');
 	$('#messageInboxDetail').hide();
 
+	// 返回收件箱按钮点击事件
 	$('#messageInboxBack').click(function(){
+		// 删除页面上显示的附件
+		$('#messageInboxDetailAttachmentLinks').empty();
 		// 显示Grid，隐藏消息详细内容
-		$("#messageInboxList").setGridState('visible');
-		$('#messageInboxDetail').hide();
-	});
-	$('#messageInboxDelete').click(function(){
-		var url = 'system/message/deleteReceivedMessage';
-		var messageId = $('#messageInboxDetailId').val();
-		$.dolpPost(url,{messageId:messageId});
 		$("#messageInboxList").trigger('reloadGrid');
 		$("#messageInboxList").setGridState('visible');
 		$('#messageInboxDetail').hide();
+	});
+	// 删除按钮点击事件
+	$('#messageInboxDelete').click(function(){
+		var url = 'system/message/deleteReceivedMessage';
+		var messageId = $('#messageInboxDetailId').val();
+		$.dolpPost(url,{messageId:messageId},function(returnData){
+			$('#messageInboxBack').click();
+		});
 	});
 });
 </script>
@@ -69,7 +82,12 @@ $(function(){
 					<label id="messageInboxDetailDate"></label>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2">收件人:<label id="messageInboxDetailReceiverUserNames"></label></td>
+			</tr>
 		</table>
 		<div id="messageInboxDetailContent"></div>
+		附件:<div id="messageInboxDetailAttachmentLinks">
+		</div>
 	</fieldset>
 </div>

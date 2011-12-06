@@ -10,7 +10,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class AvailableRoomCheckService extends DolpBaseService<Object> {
 
 	public AvailableRoomCheckService(Dao dao) {

@@ -1,7 +1,5 @@
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	var postOrganizationTreeSetting = {
 		async: {
 			enable: true,
@@ -33,7 +31,7 @@ $(function(){
 			repeatitems: false
 		},
 		caption:"岗位列表",
-		url:'system/role/getGridData?isOrgaRela=true',
+		url:'system/role/getGridData?isOrgaRela=true&organizationId=0',
 		editurl:"system/role/editRow",
 		colNames:['id','名称','描述','isOrgaRela','organizationId'],
 		colModel:[
@@ -49,6 +47,8 @@ $(function(){
 		multiselect: true
 	});
 	$("#postList").setJqGridCUD('#postPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#postList").addSearchToolbar('#postPager');
 
 });
 </script>

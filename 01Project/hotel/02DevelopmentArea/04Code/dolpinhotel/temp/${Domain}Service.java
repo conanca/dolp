@@ -4,6 +4,8 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.StringUtils;
+
 import ${domainPackage}.${Domain};
 
 import org.nutz.dao.Cnd;
@@ -11,6 +13,7 @@ import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 @IocBean(args = { "refer:dao" })
 public class ${Domain}Service extends DolpBaseService<${Domain}> {
@@ -20,8 +23,16 @@ public class ${Domain}Service extends DolpBaseService<${Domain}> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<${Domain}> getGridData(JqgridReqData jqReq) {
-		AdvancedJqgridResData<${Domain}> jq = getAdvancedJqgridRespData(null, jqReq);
+	public AdvancedJqgridResData<${Domain}> getGridData(JqgridReqData jqReq, Boolean isSearch, ${Domain} ${Domain?uncap_first}Search) {
+		Cnd cnd = null;
+		if (isSearch && null != ${Domain?uncap_first}Search) {
+			cnd = Cnd.where("1", "=", 1);
+			Long id = ${Domain?uncap_first}Search.getId();
+			if (!Strings.isEmpty(id)) {
+				cnd.and("ID", "=", id);
+			}
+		}
+		AdvancedJqgridResData<${Domain}> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
 	}
 

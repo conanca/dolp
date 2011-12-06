@@ -20,6 +20,8 @@ $(function(){
 		multiselect: true
 	});
 	$("#sysParaList").setJqGridCUD('#sysParaPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#sysParaList").addSearchToolbar('#sysParaPager');
 });
 </script>
 

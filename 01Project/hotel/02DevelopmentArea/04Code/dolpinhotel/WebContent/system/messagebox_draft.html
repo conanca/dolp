@@ -1,9 +1,12 @@
+<link href="wysiwygeditor/jquery.wysiwyg.css" rel="stylesheet" type="text/css"/>
+<script charset="utf-8" src="wysiwygeditor/jquery.wysiwyg.js"></script>
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
+	// 初始化编辑器
+	$('#messageDraftboxEditor').wysiwyg();
+	
 	//初始化用户信息界面
-	$("#messageDraftboxUserSelect").dialog({width: 500 , hide: 'slide' , modal: true , autoOpen: false});
+	$("#messageDraftboxUserSelect").dialog({width: 520 , hide: 'slide' , modal: true , autoOpen: false});
 
 	//设置Grid
 	$("#messageDraftboxUserInfoList").jqGrid({
@@ -17,7 +20,7 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'number',index:'number', width:100},
 			{name:'name',index:'name', width:100},
-			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}},
+			{name:'gender',index:'gender', width:100,edittype:'select', formatter:'select', editoptions:{value:genders1}, stype:'select'},
 			{name:'age',index:'age', width:100, editable:true,hidden:true},
 			{name:'birthday',index:'birthday', width:100,hidden:true},
 			{name:'phone',index:'phone', width:150}
@@ -29,7 +32,8 @@ $(function(){
 	});
 	//不显示jqgrid自带的增删改查按钮
 	$("#messageDraftboxUserInfoList").setJqGridCUD('#messageDraftboxUserInfoPager',{edit:false,add:false,del:false,search:false});
-
+	// 开启查询功能
+	$("#messageDraftboxUserInfoList").addSearchToolbar('#messageDraftboxUserInfoPager');
 	$("#messageDraftboxList").jqGrid({
 		jsonReader:{
 			repeatitems: false
@@ -41,7 +45,7 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'title',index:'title', width:500},
 			{name:'sender.name',index:'sender.name', width:200, editable:true},
-			{name:'date',index:'date', width:200},
+			{name:'date',index:'date', width:200,search:false},
 			{name:'content',index:'content', width:0,hidden:true}
 		],
 		pager: '#messageDraftboxPager',
@@ -53,33 +57,55 @@ $(function(){
 			// 显示消息详细内容，隐藏Grid
 			$('#messageDraftboxMessageId').val(row.id);
 			$('#messageDraftboxTitle').val(row.title);
-			$('#messageDraftboxContent').val(row.content);
-			$.dolpGet('system/message/getReceiverUserNum/'+row.id,null,function(returnData){
+			$('#messageDraftboxEditor').wysiwyg('setContent', row.content);
+			$.dolpGet('system/message/getReceiver/'+row.id,null,function(returnData){
 				$('#messageDraftboxReceiverUserNames').val(returnData);
 			});
 			$(this).setGridState('hidden');
-			$('#messageDraftboxDetail').show();
+			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
+				$.each(returnData,function(id,name){
+					var nameP = "'" + name + "'";
+					$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
+							+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id
+							+ '&name=' + name + '">' + name
+							+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
+					var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+					var optionValue = id + "=" + name;
+					$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
+				});
+				$('#messageDraftboxDetail').show();
+			});
 		}
 	});
 	$("#messageDraftboxList").setJqGridCUD('#messageDraftboxPager',{edit:false,add:false,del:false,search:false});
-
+	// 开启查询功能
+	$("#messageDraftboxList").addSearchToolbar('#messageDraftboxPager');
 	$('#messageDraftboxDetail').hide();
 	$('#messageDraftboxUserSelect').hide();
 
+	// 重置按钮点击事件
+	$("#messageDraftboxReset").click(function() {
+		$('#messageDraftboxForm')[0].reset();
+		// 删除页面上显示的附件
+		$('#messageDraftboxDetailTmpAttachmentLinks').empty();
+		$('#messageDraftboxAttachments').empty();
+	});
+	// 返回草稿箱按钮点击事件
 	$('#messageDraftboxBack').click(function(){
+		$("#messageDraftboxReset").click();
 		// 显示Grid，隐藏消息详细内容
 		$('#messageDraftboxList').trigger("reloadGrid");
 		$("#messageDraftboxList").setGridState('visible');
 		$('#messageDraftboxDetail').hide();
 		$('#messageDraftboxUserSelect').hide();
 	});
+	// 删除按钮点击事件
 	$('#messageDraftboxDelete').click(function(){
 		var url = 'system/message/deleteDraftMessage';
 		var messageId = $('#messageDraftboxMessageId').val();
-		$.dolpPost(url,{messageId:messageId});
-		$("#messageDraftboxList").trigger('reloadGrid');
-		$("#messageDraftboxList").setGridState('visible');
-		$('#messageDraftboxDetail').hide();
+		$.dolpPost(url,{messageId:messageId},function(returnData){
+			$('#messageDraftboxBack').click();
+		});
 	});
 	//查询按钮点击事件
 	$("#messageDraftboxUserInfo_search_btn").click(function () { 
@@ -104,7 +130,7 @@ $(function(){
 				var row = $("#messageDraftboxUserInfoList").getRowData(selId)
 				var number = row.number;
 				var name = row.name;
-				receiverUserNames+=name+"<"+number+">,";
+				receiverUserNames += name + "<" + number + ">,";
 			});
 			$('#messageDraftboxReceiverUserNames').val(receiverUserNames);
 			$("#messageDraftboxUserCloseBtn").click();
@@ -139,74 +165,81 @@ $(function(){
 		}
 	});
 
+	// 发送按钮点击事件
 	$("#messageDraftboxSend").click(function(){
 		var url = 'system/message/sendMessage';
 		messageDraftboxSaveOrSendMessage(url);
-		$('#messageDraftboxBack').click();
 	});
+	// 保存草稿按钮点击事件
 	$("#messageDraftboxSave").click(function(){
 		var url = 'system/message/saveMessage';
 		messageDraftboxSaveOrSendMessage(url);
-		$('#messageDraftboxBack').click();
+	});
+	// 上传按钮点击事件
+	$("#messageDraftboxAttachmentUploadBtn").click(function() {
+		$("#messageDraftboxAttachmentInput").dolpUpload('system/message/uploadAttachment',{},function(returnData){
+			if(returnData == null){
+				return;
+			}
+			var id = returnData.idInPool;
+			var name = returnData.name;
+			var nameP = "'" + name + "'";
+			$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
+					+ '"><a style="float:left">' + name
+					+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
+			var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+			var optionValue = id + "=" + name;
+			$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
+		});
 	});
 });
 
+//保存草稿或发送消息
 function messageDraftboxSaveOrSendMessage(url){
 	if($("#messageDraftboxForm").valid()){
 		var messageNewFormInfo = $("#messageDraftboxForm").serializeObject();
-		$.dolpPost(url,messageNewFormInfo);
-		$('#messageDraftboxForm')[0].reset();
+		$.dolpPost(url,messageNewFormInfo,function(returnData){
+			$('#messageDraftboxBack').click();
+		});
 	}else{
 		$.addMessageStr(null,"未通过验证",null);
 	}
+}
+
+//删除附件文件
+function removeAttachment(id,name){
+	$('div[name="'+id+'"]').remove();
+	var optionValue = id + "=" + name;
+	$('option[value="' + optionValue + '"]').remove();
 }
 </script>
 
 <table id="messageDraftboxList"></table>
 <div id="messageDraftboxPager"></div>
 <div id="messageDraftboxDetail">
-	<input type="button" value="返回收件箱" id="messageDraftboxBack"/>
+	<input type="button" value="返回草稿箱" id="messageDraftboxBack"/>
 	<input type="button" value="删除" id="messageDraftboxDelete"/>
 	<input type="button" value="发送" id="messageDraftboxSend"/>
 	<input type="button" value="保存" id="messageDraftboxSave"/>
+	<input type="button" value="重置" id="messageDraftboxReset"/>
 	<br/>
 	<form id="messageDraftboxForm" action="#">
 		<input type="hidden" name="messageId" id="messageDraftboxMessageId"/>
-		<p><a href="#" id="messageDraftboxReceiver">收件人：</a><textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;主题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
-		<p><textarea name="content" rows="8" style="width:98%;" id="messageDraftboxContent"></textarea></p>
+		<p><a href="#" id="messageDraftboxReceiver">收件人</a>：<textarea name="receiverUsers" rows="2" style="width:91%;" id="messageDraftboxReceiverUserNames"/></textarea></p>
+		<p>主&nbsp;&nbsp;&nbsp;题：<input type="text" name="title" style="width:91%;" id="messageDraftboxTitle"/></p>
+		<p><textarea name="content" style="width:94.5%;height:100%;" id="messageDraftboxEditor"></textarea></p>
+		<select multiple="multiple" style="display:none" name="attachments[]" id="messageDraftboxAttachments"></select>
 	</form>
+	附件:<input type="file" name="messageAttachment" id="messageDraftboxAttachmentInput"/><input type="button" value="上传" id="messageDraftboxAttachmentUploadBtn"><br/>
+	<div id="messageDraftboxDetailTmpAttachmentLinks">
+	</div>
 </div>
 
 <div id="messageDraftboxUserSelect" title="用户列表">
-	<fieldset>
-	<legend>用户查询</legend>
-	<table>
-		<tr>
-			<td>
-				编号：
-			</td>
-			<td>
-				<input type="text" name="number" id="messageDraftboxUserInfo_search_number"/>
-			</td>
-			<td>
-				姓名：
-			</td>
-			<td>
-				<input type="text" name="name" id="messageDraftboxUserInfo_search_name"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4" align="right">
-				<input type="button" id="messageDraftboxUserInfo_search_btn" value="查询"/>
-			</td>
-		</tr>
-	</table>
-	</fieldset>
+	<input type="button" id="messageDraftboxUserSelectBtn" value="选择"/>
+	<input type="button" id="messageDraftboxUserCloseBtn" value="关闭"/>
+	<br/>
 	<br/>
 	<table id="messageDraftboxUserInfoList"></table>
 	<div id="messageDraftboxUserInfoPager"></div>
-	<br/>
-	<input type="button" id="messageDraftboxUserSelectBtn" value="选择"/>
-	<input type="button" id="messageDraftboxUserCloseBtn" value="关闭"/>
 </div>

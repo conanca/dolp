@@ -9,7 +9,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class CustomerService extends DolpBaseService<Customer> {
 
 	public CustomerService(Dao dao) {

@@ -1,8 +1,5 @@
 <script type="text/javascript">
 $(function() {
-
-	$("input:button,input:submit,input:reset").button();
-
 	var parentId=0;
 
 	var menuTreeSetting = {
@@ -14,8 +11,7 @@ $(function() {
 		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
-				$("#menuEditList").setGridParam({url:"system/menu/getGridData/"+treeNode.id,page:1});
-				$("#menuEditList").setGridParam({editurl:"system/menu/editRow/"+treeNode.id});
+				$("#menuEditList").setGridParam({url:"system/menu/getGridData?parentId="+treeNode.id,page:1,editurl:"system/menu/editRow/"+treeNode.id});
 				$("#menuEditList").trigger('reloadGrid');
 				parentId = treeNode.id;
 			}
@@ -27,8 +23,7 @@ $(function() {
 	//点击刷新按钮
 	$("#menuTreeRefreshBtn").click(function() {
 		menuTree.reAsyncChildNodes(null, "refresh");
-		$("#menuEditList").setGridParam({url:"system/menu/getGridData/0",page:1});
-		$("#menuEditList").setGridParam({editurl:"system/menu/editRow/0"});
+		$("#menuEditList").setGridParam({url:"system/menu/getGridData?parentId=0",page:1,editurl:"system/menu/editRow/0"});
 		$("#menuEditList").trigger('reloadGrid');
 	});
 
@@ -37,8 +32,8 @@ $(function() {
 			repeatitems: false
 		},
 		caption:"菜单列表",
-		url:'system/menu/getGridData',
-		editurl:"system/menu/editRow",
+		url:'system/menu/getGridData?parentId=0',
+		editurl:"system/menu/editRow/0",
 		colNames: ["id","菜单名","url","描述","lft","rgt"],
 		colModel: [
 			{name: "id",index:'id',width:0,hidden:true,editable:true},
@@ -54,12 +49,12 @@ $(function() {
 		multiselect: true
 	});
 	$("#menuEditList").setJqGridCUD('#menuEditPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#menuEditList").addSearchToolbar('#menuEditPager');
 	// 添加父菜单按钮
-	$("#menuEditList").navButtonAdd('#menuEditPager',{caption:"添加父菜单",buttonicon:"ui-icon-plus",
-		onClickButton:function(){
-			$("#parentMenuInfo").dialog( "open" );
-			$("#parentMenuInfoParentId").val(parentId);
-		}
+	$("#addParentMenuBtn").click(function() {
+		$("#parentMenuInfo").dialog( "open" );
+		$("#parentMenuInfoParentId").val(parentId);
 	});
 	//初始化添加父菜单信息界面
 	$("#parentMenuInfo").dialog({ width: 500 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
@@ -110,6 +105,9 @@ $(function() {
 		</td>
 		<td class="linebetween">&nbsp;</td>
 		<td valign="top">
+			<input type="button" value="添加父菜单" id="addParentMenuBtn">
+			<br/>
+			<br/>
 			<table id="menuEditList"></table>
 			<div id="menuEditPager"></div>
 		</td>
@@ -117,6 +115,7 @@ $(function() {
 </table>
 <div id="parentMenuInfo" title="添加父菜单">
 	<form id="parentMenuInfoForm" action="#">
+	<br/>
 	<table>
 		<tr>
 			<td>
@@ -132,6 +131,9 @@ $(function() {
 			<td>
 				<input type="text" name="description"/>
 			</td>
+		</tr>
+		<tr>
+			<td colspan="4" align="center"><br/></td>
 		</tr>
 		<tr>
 			<td colspan="4" align="center">

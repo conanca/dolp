@@ -25,7 +25,7 @@ import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpinhotel.common.domain.highcharts.ChartReturnData;
 import com.dolplay.dolpinhotel.common.domain.highcharts.SeriesItem;
 
-@IocBean(args = { "refer:dao" }, fields = { "prop" })
+@IocBean(args = { "refer:dao" })
 public class BillService extends DolpBaseService<Bill> {
 
 	public BillService(Dao dao) {

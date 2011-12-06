@@ -1,7 +1,5 @@
 <script type="text/javascript">
 $(function() {
-	$("input:button,input:submit,input:reset").button();
-
 	var privilegeMenuTreeSetting = {
 		async: {
 			enable: true,
@@ -11,7 +9,7 @@ $(function() {
 		},
 		callback:{
 			beforeClick: function(treeId, treeNode){
-				$("#privilegeList").setGridParam({url:"system/privilege/getGridData/"+treeNode.id,page:1});
+				$("#privilegeList").setGridParam({url:"system/privilege/getGridData?menuId="+treeNode.id,page:1});
 				$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:treeNode.id}});
 				$("#privilegeList").trigger('reloadGrid');
 			}
@@ -23,7 +21,7 @@ $(function() {
 	//点击刷新按钮
 	$("#privilegeMenuTreeRefreshBtn").click(function() {
 		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
-		$("#privilegeList").setGridParam({url:"system/privilege/getGridData/0",page:1});
+		$("#privilegeList").setGridParam({url:"system/privilege/getGridData?menuId=0",page:1});
 		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:"0"}});
 		$("#privilegeList").trigger('reloadGrid');
 	});
@@ -33,7 +31,7 @@ $(function() {
 			repeatitems: false
 		},
 		caption:"权限列表",
-		url:'system/privilege/getGridData',
+		url:'system/privilege/getGridData?menuId=0',
 		editurl:"system/privilege/editRow",
 		colNames: ["id","权限名","方法路径","描述","menuId"],
 		colModel: [
@@ -49,6 +47,8 @@ $(function() {
 		multiselect: true
 	});
 	$("#privilegeList").setJqGridCUD('#privilegePager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#privilegeList").addSearchToolbar('#privilegePager');
 });
 </script>
 <table width='100%'>

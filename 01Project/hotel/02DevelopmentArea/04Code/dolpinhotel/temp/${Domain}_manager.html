@@ -23,6 +23,7 @@ $(function(){
 		multiselect: true
 	});
 	$("#${Domain?uncap_first}List").setJqGridCUD('#${Domain?uncap_first}Pager',{edit:true,add:true,del:true,search:false});
+	$("#${Domain?uncap_first}List").addSearchToolbar('#${Domain?uncap_first}Pager');
 });
 </script>
 

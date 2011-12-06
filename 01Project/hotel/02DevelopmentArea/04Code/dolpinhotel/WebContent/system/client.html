@@ -11,8 +11,8 @@ $(function(){
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'sessionId',index:'sessionId', width:0,hidden:true},
 			{name:'userId',index:'userId', width:0,hidden:true},
-			{name:'user.name',index:'user.name', width:100},
-			{name:'logonTime',index:'logonTime', width:200},
+			{name:'user.name',index:'userName', width:100},
+			{name:'logonTime',index:'logonTime', width:200, search:false},
 			{name:'ipAddr',index:'ipAddr', width:200},
 			{name:'userAgent',index:'userAgent', width:500}
 		],
@@ -22,25 +22,30 @@ $(function(){
 		multiselect: true
 	});
 	$("#clientList").setJqGridCUD('#clientPager',{edit:false,add:false,del:false,search:false});
-	$("#clientList").navButtonAdd('#clientPager',{caption:"踢出",buttonicon:"ui-icon-trash",
-		onClickButton:function(){
-			var selIds = $(this).getGridParam('selarrrow');
-			if( selIds != null && selIds != ''){
-				var sessionIds = [];
-				$.each(selIds, function(index, selId) {
-					var row = $("#clientList").getRowData(selId)
-					var sessionId = row.sessionId;
-					sessionIds[index] = sessionId;
-				});
-				$.dolpPost("system/client/kickOff",{sessionIds:sessionIds});
+	// 开启查询功能
+	$("#clientList").addSearchToolbar('#clientPager');
+	$("#clientKickOffBtn").click(function() {
+		var selIds = $("#clientList").getGridParam('selarrrow');
+		if( selIds != null && selIds != ''){
+			var sessionIds = [];
+			$.each(selIds, function(index, selId) {
+				var row = $("#clientList").getRowData(selId)
+				var sessionId = row.sessionId;
+				sessionIds[index] = sessionId;
+			});
+			$.dolpPost("system/client/kickOff",{sessionIds:sessionIds},function(returnData){
 				$("#clientList").trigger('reloadGrid');
-			}else{
-				$.addMessageStr(null,"请选择要踢出的在线用户",null);
-			}
+			});
+		}else{
+			$.addMessageStr(null,"请选择要踢出的在线用户",null);
 		}
 	});
 });
 </script>
+
+<input type="button" value="踢出在线用户" id="clientKickOffBtn">
+<br/>
+<br/>
 
 <table id="clientList"></table>
 <div id="clientPager"></div>

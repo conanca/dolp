@@ -1,13 +1,12 @@
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
 	var roleId=0;
 	$("#roleList").jqGrid({
 		jsonReader:{
 			repeatitems: false
 		},
 		caption:"角色列表",
-		url:'system/role/getGridData',
+		url:'system/role/getGridData?isOrgaRela=false',
 		editurl:"system/role/editRow",
 		colNames:['id','名称','描述','isOrgaRela'],
 		colModel:[
@@ -22,22 +21,22 @@ $(function(){
 		multiselect: true
 	});
 	$("#roleList").setJqGridCUD('#rolePager',{edit:true,add:true,del:true,search:false});
-	//添加自定义按钮——权限分配
-	$("#roleList").navButtonAdd('#rolePager',{caption:"权限分配",buttonicon:"ui-icon-key",
-		onClickButton:function(){
-			var id = $(this).getGridParam('selrow');
-			if (id) {
-				roleId = id;
-				privilegeTree.setting.async.url = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
-				privilegeTree.reAsyncChildNodes(null, "refresh");
-				$("#privilegeInfo").dialog( "open" );
-			} else {
-				$.addMessageStr(null,"请选择角色",null);
-			}
+	//角色权限按钮点击事件
+	$("#rolePrivilegeBtn").click(function() {
+		var id = $("#roleList").getGridParam('selrow');
+		if (id) {
+			roleId = id;
+			privilegeTree.setting.async.url = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
+			privilegeTree.reAsyncChildNodes(null, "refresh");
+			$("#privilegeInfo").dialog( "open" );
+		} else {
+			$.addMessageStr(null,"请选择角色",null);
 		}
 	});
 	//添加自定义按钮——导出Excel
-	$("#roleList").export2Excel('#rolePager');
+	$("#roleList").addExport2ExcelBtn('#rolePager');
+	// 开启查询功能
+	$("#roleList").addSearchToolbar('#rolePager');
 
 	//初始化权限信息界面
 	$("#privilegeInfo").dialog({ width: 250 , hide: 'slide' , modal: true , autoOpen: false});
@@ -49,9 +48,9 @@ $(function(){
 		},
 		async: {
 			enable: true,
-			url: "system/menu/getPrivilegeNodesByRoleId",
+			url: "system/menu/getPrivilegeNodesByRoleId/0",
 			dataFilter: ajaxDataFilter,
-			autoParam: ["name", "id","lft","rgt","level"]
+			autoParam: ["name", "id", "lft", "rgt"]
 		}
 	};
 	$.fn.zTree.init($("#privilegeTreeUl"), privilegeTreeSetting);
@@ -89,15 +88,20 @@ $(function(){
 		});
 
 		var url = "system/role/assignPrivilege";
-		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges});
-		$("#privilegeInfoCancelbtn").click();
+		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges},function(returnData){
+			$("#privilegeInfoCancelbtn").click();
+		});
 	});
-
+	// 取消按钮点击事件
 	$("#privilegeInfoCancelbtn").click(function() {
 		$('#privilegeInfo').dialog( "close" );
 	});
 });
 </script>
+
+<input type="button" value="角色权限" id="rolePrivilegeBtn"/>
+<br/>
+<br/>
 
 <table id="roleList"></table>
 <div id="rolePager"></div>

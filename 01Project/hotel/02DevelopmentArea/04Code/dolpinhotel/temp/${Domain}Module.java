@@ -18,8 +18,8 @@ public class ${Domain}Module {
 	private ${Domain}Service ${Domain?uncap_first}Service;
 
 	@At
-	public ResponseData getGridData(@Param("..") JqgridReqData jqReq) {
-		return ${Domain?uncap_first}Service.getGridData(jqReq);
+	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch, @Param("..") ${Domain} ${Domain?uncap_first}Search) {
+		return ${Domain?uncap_first}Service.getGridData(jqReq, isSearch, ${Domain?uncap_first}Search);
 	}
 
 	@At
