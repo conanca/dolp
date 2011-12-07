@@ -1,0 +1,54 @@
+#title: 系统参数维护与获取
+#author: conanca
+#index:0,1
+-----
+维护系统参数
+	配置文件
+		在ioc.dolpbase.js文件中,args中添加相应的参数(键值对形式):
+		{{{<Javascript>
+			// 系统参数
+			prop : {
+				type : "com.dolplay.dolpbase.common.domain.DolpProperties",
+				args : [
+					{
+						"TestProp":"123",
+						"SYSTEM_SYSTEMNAME":"Dolp基盘",
+						"SYSTEM_ENVIRONMENT":"dev"
+					}
+				]
+			},
+		}}}
+	
+	系统参数表
+		通过Dolp的"系统管理"——"系统参数管理"界面维护
+-----
+获取系统参数
+	在Service类中
+		只要Service类继承自DolpBaseService,就可以通过其自身方法获取系统参数
+		获取配置文件中的参数值
+			示例:获取系统名("SYSTEM_SYSTEMNAME")
+			在Service类中的任意方法，均可以通过类似以下代码获取指定的参数
+			{{{<java>
+				String systemName = (String) getProp().get("SYSTEM_SYSTEMNAME");
+			}}}
+		获取系统参数表中的参数值
+			示例:获取默认密码("SYSTEM_DEFAULTPASSWORD")
+			在Service类中的任意方法，均可以通过类似以下代码获取指定的参数
+			{{{<java>
+				String defaultPass = getSysParaValue("SYSTEM_DEFAULTPASSWORD");
+			}}}
+	在其他类中
+		获取配置文件中的参数值
+			示例:获取环境类型("SYSTEM_ENVIRONMENT")
+			可以通过类似以下代码获取指定的参数
+			{{{<java>
+				// 获取环境类型
+				DolpProperties prop = IocObjectProvider.getProp();
+				String env = (String) prop.get(SYSTEM_ENVIRONMENT);
+			}}}
+		获取系统参数表中的参数值
+			示例:
+			{{{<java>
+				SysPara sysPara = DaoProvider.getDao().fetch(SysPara.class, Cnd.where("NAME", "=", "defaultPass"));
+				String pss = sysPara.getValue()
+			}}}

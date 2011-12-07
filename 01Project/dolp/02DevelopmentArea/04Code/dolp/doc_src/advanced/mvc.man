@@ -1,0 +1,5 @@
+#title: 新增一个入口方法
+#author: conanca
+#index:0,1
+-----
+test
