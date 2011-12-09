@@ -1,0 +1,15 @@
+#title: 更新dolp基盘Check List
+#author: conanca
+#index:0,1
+-----
+Dolp发布了新版本，想为自己的项目更新下，应该注意什么呢？
+以下是一个Check List
+
+#更新WebContent\WEB-INF\lib\dolp.jar文件
+#更新整个temp目录
+#更新build.xml文件，并修改相应的设置
+#更新WebContent\WEB-INF下的web.xml文件，并修改相应的设置
+#更新WebContent\WEB-INF下的jar包，保留自有的jar包
+#WebContent目录下，更新css、images、js、META-INF、reports、system、themes、wysiwygeditor、zTreeStyle、demo1.html、header.html、index.html、main.html和menu.html;
+#config目录下，除了自有配置文件或SQL脚本，更新其他文件（包括dao.js、ioc.dolpbase.js、init_system_h2.sql和logback.xml），并修改相应设置
+#更新MvcSetup.java，MainScheduler.java，MainModule.java，CodeGenerator.java并作相应修改

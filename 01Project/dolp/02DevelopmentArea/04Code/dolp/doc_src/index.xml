@@ -8,7 +8,7 @@
 		<doc path="codegen.man"/>
 		<doc path="run.man"/>
 	</doc>
-	<doc path="advanced" title="高级开发">
+	<doc path="advanced" title="进阶">
 		<doc path="mvc.man"/>
 		<doc path="dao.man"/>
 		<doc path="sysparam.man"/>
@@ -22,7 +22,8 @@
 		<doc path="selector.man"/>
 	</doc>
 	<doc path="appendix" title="附录">
-		<doc path="sheji.man"/>
+		<doc path="design.man"/>
 		<doc path="dependence.man"/>
+		<doc path="updatechecklist.man"/>
 	</doc>
 </doc>
