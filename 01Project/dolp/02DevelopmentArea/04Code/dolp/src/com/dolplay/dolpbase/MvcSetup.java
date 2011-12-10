@@ -5,7 +5,6 @@ import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.common.util.MVCHandler;
 import com.dolplay.dolpbase.system.secheduler.DolpScheduler;
 
@@ -14,9 +13,8 @@ public class MvcSetup implements Setup {
 
 	/**
 	 * 当应用系统启动的时候:
-	 * 1.自动检查数据库，如果必要的数据表不存在，创建它们并创建默认的记录;
-	 * 2.清空在线用户表;
-	 * 3.启动调度程序
+	 * 1.默认的应用启动时要做的操作
+	 * 2.启动调度程序
 	 */
 	@Override
 	public void init(NutConfig config) {
@@ -37,8 +35,6 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void destroy(NutConfig config) {
-		// 清空在线用户表
-		DaoProvider.getDao().clear("SYSTEM_CLIENT");
 		try {
 			DolpScheduler.stop();
 		} catch (Exception e) {
