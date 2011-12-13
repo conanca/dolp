@@ -4,25 +4,27 @@ import javax.sql.DataSource;
 
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
-import org.nutz.ioc.Ioc;
+import org.nutz.mvc.NutConfig;
 
+import com.dolplay.dolpbase.system.util.NutConfigStorage;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 public class DaoProvider {
 
-	private static BoneCPDataSource dataSource;
-	private static Dao dao;
+	private static DataSource getDataSource(NutConfig nutConfig) {
+		return IocObjectProvider.getIocObject(nutConfig, BoneCPDataSource.class, "dataSource");
+	}
 
-	public static void init(Ioc ioc) {
-		dataSource = ioc.get(BoneCPDataSource.class, "dataSource");
-		dao = new NutDao(dataSource);
+	private static Dao getDao(NutConfig nutConfig) {
+		return new NutDao(getDataSource(nutConfig));
 	}
 
 	public static DataSource getDataSource() {
-		return dataSource;
+		return getDataSource(NutConfigStorage.getNutConfig());
 	}
 
 	public static Dao getDao() {
-		return dao;
+		return getDao(NutConfigStorage.getNutConfig());
 	}
+
 }

@@ -11,9 +11,8 @@ import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.View;
 
-import com.dolplay.dolpbase.common.domain.DolpProperties;
 import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
-import com.dolplay.dolpbase.common.util.IocObjectProvider;
+import com.dolplay.dolpbase.common.util.PropProvider;
 
 /**
  * @author Administrator
@@ -41,8 +40,7 @@ public class DolpJsonView implements View {
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			String exceptionMessage;
 			// 获取环境类型
-			DolpProperties prop = IocObjectProvider.getProp();
-			String env = (String) prop.get(SYSTEM_ENVIRONMENT);
+			String env = PropProvider.getProp().getString(SYSTEM_ENVIRONMENT);
 			// 获取配置文件参数SYSTEM_ENVIRONMENT,判断是否为空
 			if (Strings.isEmpty(env)) {
 				exceptionMessage = "配置文件中SYSTEM_ENVIRONMENT未配置或为空,无法显示异常信息!";

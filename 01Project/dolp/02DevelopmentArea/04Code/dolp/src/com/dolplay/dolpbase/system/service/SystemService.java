@@ -19,6 +19,7 @@ import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.PropProvider;
 import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.User;
@@ -35,7 +36,7 @@ public class SystemService extends DolpBaseService<Object> {
 	@Aop(value = "log")
 	public AjaxResData getSystemName() {
 		AjaxResData respData = new AjaxResData();
-		String systemName = (String) getProp().get(SYSTEM_SYSTEMNAME);
+		String systemName = PropProvider.getProp().getString(SYSTEM_SYSTEMNAME);
 		if (Strings.isEmpty(systemName)) {
 			respData.setSystemMessage(null, "配置文件中SYSTEM_SYSTEMNAME未配置或为空", null);
 		} else {
