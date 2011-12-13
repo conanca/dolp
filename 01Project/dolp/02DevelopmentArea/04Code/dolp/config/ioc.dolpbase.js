@@ -7,7 +7,13 @@ var ioc = {
 			{
 				"TestProp":"123",
 				"SYSTEM_SYSTEMNAME":"Dolp基盘",
-				"SYSTEM_ENVIRONMENT":"dev"
+				"SYSTEM_ENVIRONMENT":"dev",
+				// 启动时初始化Dolp数据表
+				"SYSTEM_INITDOLPTABLES_ONSTART":false,
+				// 启动Dolp调度任务
+				"SYSTEM_DOLPSCHEDULER_RUN":false,
+				// 是否检查入口方法存在于权限表中
+				"SYSTEM_ISCHECK_METHOD":true
 			}
 		]
 	},
