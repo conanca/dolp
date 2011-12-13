@@ -27,4 +27,49 @@ public class DolpProperties {
 	public Object get(String key) {
 		return propMap.get(key);
 	}
+
+	public String getString(String key) {
+		Object obj = get(key);
+		if (null != obj) {
+			return (String) obj;
+		} else {
+			return null;
+		}
+	}
+
+	public Integer getInt(String key) {
+		Object obj = get(key);
+		if (null != obj) {
+			return (Integer) obj;
+		} else {
+			return null;
+		}
+	}
+
+	public Float getFloat(String key) {
+		Object obj = get(key);
+		if (null != obj) {
+			return (Float) obj;
+		} else {
+			return null;
+		}
+	}
+
+	public Double getDouble(String key) {
+		Object obj = get(key);
+		if (null != obj) {
+			return (Double) obj;
+		} else {
+			return null;
+		}
+	}
+
+	public Boolean getBoolean(String key) {
+		Object obj = get(key);
+		if (null != obj) {
+			return (Boolean) obj;
+		} else {
+			return null;
+		}
+	}
 }
