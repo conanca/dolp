@@ -6,8 +6,14 @@ var ioc = {
 		args : [
 			{
 				"TestProp":"123",
-				"SYSTEM_SYSTEMNAME":"AAAA1",
-				"SYSTEM_ENVIRONMENT":"dev"
+				"SYSTEM_SYSTEMNAME":"Dolpin Hotel",
+				"SYSTEM_ENVIRONMENT":"dev",
+				// 启动时初始化Dolp数据表
+				"SYSTEM_INITDOLPTABLES_ONSTART":true,
+				// 启动Dolp调度任务
+				"SYSTEM_DOLPSCHEDULER_RUN":false,
+				// 是否检查入口方法存在于权限表中
+				"SYSTEM_ISCHECK_METHOD":true
 			}
 		]
 	},
@@ -16,7 +22,7 @@ var ioc = {
 	attachmentPool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,个数无限
-		args : [ "/dolpbase/file/attachment", 0 ]
+		args : [ "/dolpinhotel/file/attachment", 0 ]
 	},
 	// 上传消息附件的Context
 	uploadAttachmentContext : {
@@ -43,7 +49,7 @@ var ioc = {
 	tempFilePool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,最大个数1000
-		args : [ "/dolpbase/file/temp", 1000 ]
+		args : [ "/dolpinhotel/file/temp", 1000 ]
 	},
 	// 上传临时文件的Context
 	tempFileContext : {
