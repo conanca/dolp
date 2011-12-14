@@ -34,7 +34,7 @@ $(function(){
 		}
 	});
 	//开启jqgrid自带的删改功能
-	$("#billList").navGrid('#billPager',{edit:true,add:false,del:true,search:false},
+	$("#billList").setJqGridCUD('#billPager',{edit:true,add:false,del:true,search:false},
 		{
 			reloadAfterSubmit:true,
 			afterSubmit: function(xhr, postdata) {
@@ -91,7 +91,7 @@ $(function(){
 		multiselect: false
 	});
 	//不显示jqgrid自带的增删改查按钮
-	$("#billSubList").navGrid('#billSubPager',{edit:false,add:false,del:false,search:false});
+	$("#billSubList").setJqGridCUD('#billSubPager',{edit:false,add:false,del:false,search:false});
 
 	//查询按钮点击事件
 	$("#billSerchForm").submit(function() {

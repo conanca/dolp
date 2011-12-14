@@ -36,7 +36,7 @@ $(function(){
 		pager: '#customerPager'
 	});
 	//不显示查询按钮
-	$("#customerList").navGrid('#customerPager',{edit:true,add:true,del:true,search:false});
+	$("#customerList").setJqGridCUD('#customerPager',{edit:true,add:true,del:true,search:false});
 
 	// 验证
 	$("#roomOccupancyForm").validate({
