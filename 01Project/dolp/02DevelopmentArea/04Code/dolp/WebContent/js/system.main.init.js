@@ -29,7 +29,9 @@ $.extend($.jgrid.defaults, {
 	datatype: "json",
 	viewrecords: true,
 	loadComplete: function(){
-		$.addMessage($(this).getGridParam('userData').systemMessage);
+		if($(this).getGridParam('userData')){
+			$.addMessage($(this).getGridParam('userData').systemMessage);
+		}
 	}
 });
 

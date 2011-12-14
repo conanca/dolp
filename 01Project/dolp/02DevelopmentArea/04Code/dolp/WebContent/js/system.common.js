@@ -191,7 +191,9 @@ $.extend({
 					if(afterSubmitTodo && afterSubmitTodo.edit){
 						afterSubmitTodo.edit();
 					}
-					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					if($.parseJSON(xhr.responseText)){
+						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					}
 					return [true];
 				}
 			},
@@ -208,7 +210,9 @@ $.extend({
 						afterSubmitTodo.add();
 					}
 					$(this.selector).resetSelection();
-					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					if($.parseJSON(xhr.responseText)){
+						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					}
 					return [true];
 				}
 			},
@@ -223,7 +227,9 @@ $.extend({
 					if(afterSubmitTodo && afterSubmitTodo.del){
 						afterSubmitTodo.del();
 					}
-					$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					if($.parseJSON(xhr.responseText)){
+						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+					}
 					return [true];
 				},
 				serializeDelData : function(postdata) {
