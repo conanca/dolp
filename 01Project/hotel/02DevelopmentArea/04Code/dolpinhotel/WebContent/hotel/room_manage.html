@@ -1,7 +1,5 @@
 <script type="text/javascript">
 $(function(){
-	$("input:button,input:submit,input:reset").button();
-
 	//------------------设为同步模式------------------
 	$.ajaxSetup({ async: false});
 	// 查询出所有的房间类型
@@ -33,8 +31,6 @@ $(function(){
 	});
 	//开启jqgrid自带的增删改功能
 	$("#roomList").setJqGridCUD('#roomPager',{edit:true,add:true,del:true,search:false});
-	//添加自定义按钮——导出Excel
-	$("#roomList").export2Excel('#roomPager');
 	//查询按钮点击事件
 	$("#roomSerchForm").submit(function() {
 		var number = $("#room_manage_number").val();

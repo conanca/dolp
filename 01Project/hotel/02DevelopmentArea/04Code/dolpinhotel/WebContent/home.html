@@ -8,7 +8,10 @@ $(function(){
 			maintab.tabs('select',st);
 		} else {
 			maintab.tabs('add',st, "可用房确认");
-			$(st,"#tabs").load("hotel/available_room_check.html");
+			$(st,"#tabs").load("hotel/available_room_check.html",function(){
+				// 载入网页后要执行的语句:
+				$("input:button,input:submit,input:reset").button();
+			});
 		}
 	});
 
@@ -19,7 +22,10 @@ $(function(){
 			maintab.tabs('select',st);
 		} else {
 			maintab.tabs('add',st, "入住情况");
-			$(st,"#tabs").load("hotel/room_occupancy_manage.html");
+			$(st,"#tabs").load("hotel/room_occupancy_manage.html",function(){
+				// 载入网页后要执行的语句:
+				$("input:button,input:submit,input:reset").button();
+			});
 		}
 	});
 
@@ -29,7 +35,10 @@ $(function(){
 			maintab.tabs('select',st);
 		} else {
 			maintab.tabs('add',st, "登记入住");
-			$(st,"#tabs").load("hotel/check_in.html");
+			$(st,"#tabs").load("hotel/check_in.html",function(){
+				// 载入网页后要执行的语句:
+				$("input:button,input:submit,input:reset").button();
+			});
 		}
 	});
 
@@ -39,7 +48,10 @@ $(function(){
 			maintab.tabs('select',st);
 		} else {
 			maintab.tabs('add',st, "结帐离开");
-			$(st,"#tabs").load("hotel/room_occupancy_manage.html");
+			$(st,"#tabs").load("hotel/room_occupancy_manage.html",function(){
+				// 载入网页后要执行的语句:
+				$("input:button,input:submit,input:reset").button();
+			});
 		}
 	});
 });
