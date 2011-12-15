@@ -27,6 +27,9 @@ public class User {
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
+	/**
+	 * 性别 01:男;02:女（由系统枚举表维护）
+	 */
 	@Column
 	@ColDefine(type = ColType.CHAR, width = 2)
 	private String gender;
