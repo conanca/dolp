@@ -35,9 +35,9 @@ public class DolpScheduler {
 		Date nextFireTime = startTime;
 
 		// 设置CountClientJob及其触发器——每小时运行一次，无限重复运行
-		JobDetail countClientJob = JobBuilder.newJob(CountClientJob.class).withIdentity("countClientJob", "group1")
-				.build();
-		SimpleTrigger inHoursTrigger = TriggerBuilder.newTrigger().withIdentity("inHoursTrigger", "group1")
+		JobDetail countClientJob = JobBuilder.newJob(CountClientJob.class)
+				.withIdentity("CountClientJob", "DolpScheduler").build();
+		SimpleTrigger inHoursTrigger = TriggerBuilder.newTrigger().withIdentity("EveryHourTrigger", "DolpScheduler")
 				.startAt(startTime)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(1).repeatForever()).build();
 		if (!sched.checkExists(countClientJob.getKey()) && !sched.checkExists(inHoursTrigger.getKey())) {
@@ -50,9 +50,9 @@ public class DolpScheduler {
 
 		// 设置RemoveInvalidAttachmentJob及其触发器,只运行一次
 		JobDetail removeInvalidAttachmentJob = JobBuilder.newJob(RemoveInvalidAttachmentJob.class)
-				.withIdentity("removeInvalidAttachmentJob", "group1").build();
-		Trigger onceTrigger = TriggerBuilder.newTrigger().withIdentity("onceTrigger", "group1").startAt(startTime)
-				.build();
+				.withIdentity("RemoveInvalidAttachmentJob", "DolpScheduler").build();
+		Trigger onceTrigger = TriggerBuilder.newTrigger().withIdentity("OnceTrigger", "DolpScheduler")
+				.startAt(startTime).build();
 		if (!sched.checkExists(removeInvalidAttachmentJob.getKey()) && !sched.checkExists(onceTrigger.getKey())) {
 			sched.scheduleJob(removeInvalidAttachmentJob, onceTrigger);
 		}
