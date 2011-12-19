@@ -13,7 +13,11 @@ public class MvcSetup implements Setup {
 	@Override
 	public void init(NutConfig config) {
 		MvcSetupDefaultHandler.defaultInit(config);
+
+		//此处添加自定义的操作如初始化数据表,增加调度任务等
+
 		MvcSetupDefaultHandler.defaultCheck(config);
+		MvcSetupDefaultHandler.startScheduler();
 	}
 
 	/**

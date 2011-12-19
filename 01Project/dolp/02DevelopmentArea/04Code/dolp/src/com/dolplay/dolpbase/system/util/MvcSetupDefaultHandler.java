@@ -10,6 +10,9 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.mvc.NutConfig;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.secheduler.DolpScheduler;
+import com.dolplay.dolpbase.system.secheduler.SchedulerAdder;
 
 public class MvcSetupDefaultHandler {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetupDefaultHandler.class);
@@ -71,17 +74,28 @@ public class MvcSetupDefaultHandler {
 			throw new RuntimeException("数据库中必要的数据表不存在!请正确初始化数据库!");
 		}
 
-		// 启动默认调度任务
-		Boolean dolpschedulerRun = PropProvider.getProp().getBoolean("SYSTEM_DOLPSCHEDULER_RUN");
+		// 增加两个调度任务
+		try {
+			SchedulerAdder.add();
+		} catch (Exception e) {
+			logger.error("增加默认调度任务时发生异常", e);
+		}
+	}
+
+	public static void startScheduler() {
+		// 启动调度任务
+		Boolean dolpschedulerRun = PropProvider.getProp().getBoolean("SYSTEM_SCHEDULER_RUN");
 		if (null != dolpschedulerRun && dolpschedulerRun) {
-			logger.info("启动DolpScheduler");
+			logger.info("启动调度任务");
 			try {
-				DolpScheduler.run();
+				SchedulerFactory sf = new StdSchedulerFactory();
+				Scheduler sched = sf.getScheduler();
+				sched.start();
 			} catch (Exception e) {
 				logger.error("启动调度任务时发生异常", e);
 			}
 		} else {
-			logger.info("不启动DolpScheduler");
+			logger.info("不启动调度任务");
 		}
 	}
 
@@ -90,13 +104,13 @@ public class MvcSetupDefaultHandler {
 	 * @param config
 	 */
 	public static void defaultDestroy(NutConfig config) {
-		Boolean dolpschedulerRun = PropProvider.getProp().getBoolean("SYSTEM_DOLPSCHEDULER_RUN");
-		if (null != dolpschedulerRun && dolpschedulerRun) {
-			try {
-				DolpScheduler.stop();
-			} catch (Exception e) {
-				logger.error("关闭调度任务时发生异常", e);
-			}
+		// 关闭调度任务
+		try {
+			SchedulerFactory sf = new StdSchedulerFactory();
+			Scheduler sched = sf.getScheduler();
+			sched.shutdown();
+		} catch (Exception e) {
+			logger.error("关闭调度任务时发生异常", e);
 		}
 	}
 

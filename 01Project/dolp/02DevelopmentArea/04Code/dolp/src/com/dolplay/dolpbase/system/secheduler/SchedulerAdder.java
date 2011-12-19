@@ -5,31 +5,26 @@ import java.util.Date;
 import org.quartz.DateBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dolplay.dolpbase.common.util.SchedulerHandler;
 import com.dolplay.dolpbase.system.secheduler.job.CountClientJob;
 import com.dolplay.dolpbase.system.secheduler.job.RemoveInvalidAttachmentJob;
 
 /**
- * 随服务一起运行的Scheduler
+ * Dolp的默认调度任务添加器
  * @author Administrator
  *
  */
-public class DolpScheduler {
-	private static Logger logger = LoggerFactory.getLogger(DolpScheduler.class);
+public class SchedulerAdder {
+	private static Logger logger = LoggerFactory.getLogger(SchedulerAdder.class);
 
-	public static void run() throws Exception {
-		// 获取scheduler的引用
-		SchedulerFactory sf = new StdSchedulerFactory();
-		Scheduler sched = sf.getScheduler();
+	public static void add() throws Exception {
 
 		Date startTime = DateBuilder.evenMinuteDate(new Date());
 		Date nextFireTime = startTime;
@@ -40,11 +35,7 @@ public class DolpScheduler {
 		SimpleTrigger inHoursTrigger = TriggerBuilder.newTrigger().withIdentity("EveryHourTrigger", "DolpScheduler")
 				.startAt(startTime)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(1).repeatForever()).build();
-		if (!sched.checkExists(countClientJob.getKey()) && !sched.checkExists(inHoursTrigger.getKey())) {
-			sched.scheduleJob(countClientJob, inHoursTrigger);
-		} else {
-			nextFireTime = sched.getTrigger(inHoursTrigger.getKey()).getNextFireTime();
-		}
+		nextFireTime = SchedulerHandler.add(countClientJob, inHoursTrigger);
 		logger.info(countClientJob.getKey() + " 将开始于: " + nextFireTime + " 将会重复: " + inHoursTrigger.getRepeatCount()
 				+ " 次, 每 " + inHoursTrigger.getRepeatInterval() / 1000 + " 秒重复一次");
 
@@ -53,19 +44,7 @@ public class DolpScheduler {
 				.withIdentity("RemoveInvalidAttachmentJob", "DolpScheduler").build();
 		Trigger onceTrigger = TriggerBuilder.newTrigger().withIdentity("OnceTrigger", "DolpScheduler")
 				.startAt(startTime).build();
-		if (!sched.checkExists(removeInvalidAttachmentJob.getKey()) && !sched.checkExists(onceTrigger.getKey())) {
-			sched.scheduleJob(removeInvalidAttachmentJob, onceTrigger);
-		}
-		logger.info(removeInvalidAttachmentJob.getKey() + " 将开始于: " + onceTrigger.getStartTime());
-
-		// 启动scheduler
-		sched.start();
-	}
-
-	public static void stop() throws Exception {
-		// 获取scheduler的引用
-		SchedulerFactory sf = new StdSchedulerFactory();
-		Scheduler sched = sf.getScheduler();
-		sched.shutdown();
+		nextFireTime = SchedulerHandler.add(removeInvalidAttachmentJob, onceTrigger);
+		logger.info(removeInvalidAttachmentJob.getKey() + " 将开始于: " + nextFireTime);
 	}
 }
