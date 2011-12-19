@@ -10,8 +10,8 @@ var ioc = {
 				"SYSTEM_ENVIRONMENT":"dev",
 				// 启动时初始化Dolp数据表(系统初次部署启动时可设置为true,第二次启动前应设为false)
 				"SYSTEM_INITDOLPTABLES_ONSTART":true,
-				// 启动Dolp调度任务
-				"SYSTEM_DOLPSCHEDULER_RUN":false,
+				// 是否启动调度任务
+				"SYSTEM_SCHEDULER_RUN":false,
 				// 是否检查入口方法存在于权限表中
 				"SYSTEM_ISCHECK_METHOD":true
 			}
