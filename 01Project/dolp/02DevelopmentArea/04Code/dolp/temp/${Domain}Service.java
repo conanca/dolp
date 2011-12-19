@@ -28,7 +28,7 @@ public class ${Domain}Service extends DolpBaseService<${Domain}> {
 		if (isSearch && null != ${Domain?uncap_first}Search) {
 			cnd = Cnd.where("1", "=", 1);
 			Long id = ${Domain?uncap_first}Search.getId();
-			if (!Strings.isEmpty(id)) {
+			if (null != id) {
 				cnd.and("ID", "=", id);
 			}
 		}
