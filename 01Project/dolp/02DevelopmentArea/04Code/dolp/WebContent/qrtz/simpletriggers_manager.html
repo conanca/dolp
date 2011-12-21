@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+	$("#simpleTriggersList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"SimpleTriggers列表",
+		url:'qrtz/simpleTriggers/getGridData',
+		editurl:"qrtz/simpleTriggers/editRow",
+		colNames:['schedName','triggerName','triggerGroup','repeatCount','repeatInterval','timesTriggered'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:50},
+					{name:'triggerName',index:'triggerName', width:50},
+					{name:'triggerGroup',index:'triggerGroup', width:50},
+					{name:'repeatCount',index:'repeatCount', width:50},
+					{name:'repeatInterval',index:'repeatInterval', width:50},
+					{name:'timesTriggered',index:'timesTriggered', width:50}
+		],
+		pager: '#simpleTriggersPager',
+		sortname: 'triggerName',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#simpleTriggersList").setJqGridCUD('#simpleTriggersPager',{edit:true,add:true,del:true,search:false});
+	//$("#simpleTriggersList").addSearchToolbar('#simpleTriggersPager');
+});
+</script>
+
+<table id="simpleTriggersList"></table>
+<div id="simpleTriggersPager"></div>

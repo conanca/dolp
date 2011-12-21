@@ -38,7 +38,12 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (16,'草稿','system/messagebox_draft.html',NULL,209,210),
 (17,'修改密码','system/change_pwd.html',NULL,251,252),
 (18,'演示页面',NULL,NULL,301,400),
-(19,'格式化文本框','demo1.html',NULL,302,303);
+(19,'格式化文本框','demo1.html',NULL,302,303),
+(20,'调度程序管理','qrtz/triggers_manager.html',NULL,401,500),
+(21,'触发器管理','qrtz/triggers_manager.html',NULL,402,403),
+(22,'Simple触发器管理','qrtz/simpletriggers_manager.html',NULL,404,405),
+(23,'Cron触发器管理','qrtz/crontriggers_manager.html',NULL,406,407),
+(24,'作业管理','qrtz/jobdetails_manager.html',NULL,408,409);
 
 INSERT INTO SYSTEM_ROLE_MENU(ROLEID ,MENUID) VALUES
 (1,1),
@@ -59,7 +64,13 @@ INSERT INTO SYSTEM_ROLE_MENU(ROLEID ,MENUID) VALUES
 (2,16),
 (2,17),
 (2,18),
-(2,19);
+(2,19),
+(1,20),
+(1,21),
+(1,22),
+(1,23),
+(1,24);
+
 
 INSERT INTO SYSTEM_ORGANIZATION(ID ,CODE ,NAME ,DESCRIPTION ,PARENTORGID) VALUES
 (1,'0100','综合行政部','',0),
@@ -121,7 +132,12 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (46,'导出用户',null,2,'com.dolplay.dolpbase.system.module.UserModule.export2'),
 (47,'上传附件',null,12,'com.dolplay.dolpbase.system.module.MessageModule.uploadAttachment'),
 (50,'获取消息附件信息',null,12,'com.dolplay.dolpbase.system.module.MessageModule.getAttachments'),
-(51,'下载附件',null,12,'com.dolplay.dolpbase.system.module.MessageModule.downloadAttachment');
+(51,'下载附件',null,12,'com.dolplay.dolpbase.system.module.MessageModule.downloadAttachment'),
+(52,'查询',null,21,'com.dolplay.dolpbase.qrtz.module.TriggersModule.getGridData'),
+(53,'查询',null,22,'com.dolplay.dolpbase.qrtz.module.SimpleTriggersModule.getGridData'),
+(54,'查询',null,23,'com.dolplay.dolpbase.qrtz.module.CronTriggersModule.getGridData'),
+(55,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.JobDetailsModule.getGridData');
+
 
 INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
 (1,1),
@@ -173,7 +189,11 @@ INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
 (2,50),
 (2,51),
 (2,8),
-(2,33);
+(2,33),
+(1,52),
+(1,53),
+(1,54),
+(1,55);
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 

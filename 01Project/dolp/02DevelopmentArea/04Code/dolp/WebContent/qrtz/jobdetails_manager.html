@@ -1,0 +1,34 @@
+<script type="text/javascript">
+$(function(){
+	$("#jobDetailsList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"JobDetails列表",
+		url:'qrtz/jobDetails/getGridData',
+		editurl:"qrtz/jobDetails/editRow",
+		colNames:['schedName','jobName','jobGroup','description','jobClassName','isDurable','isNonconcurrent','isUpdateData','requestsRecovery','jobData'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:50},
+					{name:'jobName',index:'jobName', width:50},
+					{name:'jobGroup',index:'jobGroup', width:50},
+					{name:'description',index:'description', width:50},
+					{name:'jobClassName',index:'jobClassName', width:50},
+					{name:'isDurable',index:'isDurable', width:50},
+					{name:'isNonconcurrent',index:'isNonconcurrent', width:50},
+					{name:'isUpdateData',index:'isUpdateData', width:50},
+					{name:'requestsRecovery',index:'requestsRecovery', width:50},
+					{name:'jobData',index:'jobData', width:50,hidden:true}
+		],
+		pager: '#jobDetailsPager',
+		sortname: 'jobName',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#jobDetailsList").setJqGridCUD('#jobDetailsPager',{edit:true,add:true,del:true,search:false});
+	//$("#jobDetailsList").addSearchToolbar('#jobDetailsPager');
+});
+</script>
+
+<table id="jobDetailsList"></table>
+<div id="jobDetailsPager"></div>
