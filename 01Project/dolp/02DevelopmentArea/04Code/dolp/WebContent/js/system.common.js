@@ -78,7 +78,7 @@ $.extend({
 				if(response.systemMessage){
 					$.addMessage(response.systemMessage);
 				}
-				if(response.returnData){
+				if(response.returnData != null){
 					Items = response.returnData;
 				}
 				if($.isFunction(afterRequest)){
@@ -98,7 +98,7 @@ $.extend({
 				if(response.systemMessage){
 					$.addMessage(response.systemMessage);
 				}
-				if(response.returnData){
+				if(response.returnData != null){
 					returnData = response.returnData;
 				}
 				if($.isFunction(afterRequest)){
