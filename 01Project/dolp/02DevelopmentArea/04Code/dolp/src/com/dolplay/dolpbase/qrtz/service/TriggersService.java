@@ -5,6 +5,7 @@ import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.quartz.SchedulerException;
+import org.quartz.TriggerKey;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
@@ -52,6 +53,8 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().start();
+			resData.setReturnData(true);
+			resData.setSystemMessage("已启动调度任务!", null, null);
 		} catch (SchedulerException e) {
 			throw new RuntimeException("启动调度任务时发生异常", e);
 		}
@@ -63,8 +66,34 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().shutdown();
+			resData.setReturnData(true);
+			resData.setSystemMessage("已关闭调度任务!", null, null);
 		} catch (SchedulerException e) {
 			throw new RuntimeException("关闭调度任务时发生异常", e);
+		}
+		return resData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData pauseTrigger(String triggerName, String triggerGroup) {
+		AjaxResData resData = new AjaxResData();
+		try {
+			SchedulerHandler.getScheduler().pauseTrigger(new TriggerKey(triggerName, triggerGroup));
+			resData.setSystemMessage("已暂停触发器!", null, null);
+		} catch (SchedulerException e) {
+			throw new RuntimeException("暂停触发器时发生异常", e);
+		}
+		return resData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData resumeTrigger(String triggerName, String triggerGroup) {
+		AjaxResData resData = new AjaxResData();
+		try {
+			SchedulerHandler.getScheduler().resumeTrigger(new TriggerKey(triggerName, triggerGroup));
+			resData.setSystemMessage("已恢复触发器!", null, null);
+		} catch (SchedulerException e) {
+			throw new RuntimeException("恢复触发器时发生异常", e);
 		}
 		return resData;
 	}

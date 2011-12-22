@@ -33,17 +33,82 @@ $(function(){
 	});
 	$("#triggersList").setJqGridCUD('#triggersPager',{edit:true,add:true,del:true,search:false});
 	//$("#triggersList").addSearchToolbar('#triggersPager');
+	
+	var btnDisableControl = function(schedulerState){
+		if(schedulerState=='start'){
+			$("#schedulerStartBtn").attr("disabled",true);
+			$("#schedulerStopBtn").attr("disabled",false);
+		}
+		if(schedulerState=='shutdown'){
+			$("#schedulerStartBtn").attr("disabled",false);
+			$("#schedulerStopBtn").attr("disabled",true);
+		}
+	};
+	
+	$.dolpGet("qrtz/triggers/isSchedulerStart",null,function(returnData){
+		var schedulerState = returnData?'start':'shutdown';
+		btnDisableControl(schedulerState);
+	});
+	
+	$("#schedulerStartBtn").click(function(){
+		$.dolpGet("qrtz/triggers/startScheduler",null,function(returnData){
+			if(returnData){
+				btnDisableControl('start');
+			}
+		});
+	});
+	
+	$("#schedulerStopBtn").click(function(){
+		$.dolpGet("qrtz/triggers/shutdownScheduler",null,function(returnData){
+			if(returnData){
+				btnDisableControl('shutdown');
+			}
+		});
+	});
+	
+	$("#triggerPauseBtn").click(function(){
+		var id = $("#triggersList").getGridParam('selrow');
+		if (id) {
+			var row = $("#triggersList").getRowData(id);
+			$.dolpPost("qrtz/triggers/pauseTrigger",{"triggerName":row.triggerName,"triggerGroup":row.triggerGroup},function(){
+				$("#triggersList").trigger('reloadGrid');
+			});
+		} else {
+			$.addMessageStr(null,"请选择触发器",null);
+		}
+	});
+	
+	$("#triggerResumeBtn").click(function(){
+		var id = $("#triggersList").getGridParam('selrow');
+		if (id) {
+			var row = $("#triggersList").getRowData(id);
+			$.dolpPost("qrtz/triggers/resumeTrigger",{"triggerName":row.triggerName,"triggerGroup":row.triggerGroup},function(){
+				$("#triggersList").trigger('reloadGrid');
+			});
+		} else {
+			$.addMessageStr(null,"请选择触发器",null);
+		}
+	});
 });
 </script>
 
+<fieldset>
+<legend>调度程序控制</legend>
+<br/>
 <input type="button" value="启动调度" id="schedulerStartBtn">
 <input type="button" value="停止调度" id="schedulerStopBtn">
-<br/>
-<br/>
-<input type="button" value="查看详情" id="schedulerStartBtn">
-<input type="button" value="查看作业" id="schedulerStopBtn">
-<br/>
-<br/>
+</fieldset>
 
+<br/>
+<fieldset>
+<legend>触发器控制</legend>
+<br/>
+<input type="button" value="查看详情" id="triggerDetialBtn">
+<input type="button" value="查看作业" id="jobDetialBtn">
+<input type="button" value="暂停" id="triggerPauseBtn">
+<input type="button" value="恢复" id="triggerResumeBtn">
+<br/>
+<br/>
 <table id="triggersList"></table>
 <div id="triggersPager"></div>
+</fieldset>

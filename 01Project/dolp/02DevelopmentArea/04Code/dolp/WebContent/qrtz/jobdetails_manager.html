@@ -7,7 +7,7 @@ $(function(){
 		caption:"JobDetails列表",
 		url:'qrtz/jobDetails/getGridData',
 		editurl:"qrtz/jobDetails/editRow",
-		colNames:['schedName','jobName','jobGroup','description','jobClassName','isDurable','isNonconcurrent','isUpdateData','requestsRecovery','jobData'],
+		colNames:['调度程序名称','作业名称','作业组','描述','作业类名','是否持久化','isNonconcurrent','isUpdateData','requestsRecovery','jobData'],
 		colModel:[
 					{name:'schedName',index:'schedName', width:50},
 					{name:'jobName',index:'jobName', width:50},
@@ -27,8 +27,37 @@ $(function(){
 	});
 	$("#jobDetailsList").setJqGridCUD('#jobDetailsPager',{edit:true,add:true,del:true,search:false});
 	//$("#jobDetailsList").addSearchToolbar('#jobDetailsPager');
+	
+	$("#jobPauseBtn").click(function(){
+		var id = $("#jobDetailsList").getGridParam('selrow');
+		if (id) {
+			var row = $("#jobDetailsList").getRowData(id);
+			$.dolpPost("qrtz/jobDetails/pauseJob",{"jobName":row.jobName,"jobGroup":row.jobGroup},function(){
+				$("#jobDetailsList").trigger('reloadGrid');
+			});
+		} else {
+			$.addMessageStr(null,"请选择触发器",null);
+		}
+	});
+	
+	$("#jobResumeBtn").click(function(){
+		var id = $("#jobDetailsList").getGridParam('selrow');
+		if (id) {
+			var row = $("#jobDetailsList").getRowData(id);
+			$.dolpPost("qrtz/jobDetails/resumeJob",{"jobName":row.jobName,"jobGroup":row.jobGroup},function(){
+				$("#jobDetailsList").trigger('reloadGrid');
+			});
+		} else {
+			$.addMessageStr(null,"请选择触发器",null);
+		}
+	});
 });
 </script>
+
+<input type="button" value="暂停" id="jobPauseBtn">
+<input type="button" value="恢复" id="jobResumeBtn">
+<br/>
+<br/>
 
 <table id="jobDetailsList"></table>
 <div id="jobDetailsPager"></div>

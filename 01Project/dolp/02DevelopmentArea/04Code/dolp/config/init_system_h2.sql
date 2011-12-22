@@ -136,7 +136,17 @@ INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
 (52,'查询',null,21,'com.dolplay.dolpbase.qrtz.module.TriggersModule.getGridData'),
 (53,'查询',null,22,'com.dolplay.dolpbase.qrtz.module.SimpleTriggersModule.getGridData'),
 (54,'查询',null,23,'com.dolplay.dolpbase.qrtz.module.CronTriggersModule.getGridData'),
-(55,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.JobDetailsModule.getGridData');
+(55,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.JobDetailsModule.getGridData'),
+(56,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.isSchedulerStart'),
+(57,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.startScheduler'),
+(58,'查询',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.shutdownScheduler'),
+(59,'Simple触发器详情',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.getSimpleTrigger'),
+(60,'Cron触发器详情',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.getCronTrigger'),
+(61,'作业详情',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.getJobDetail'),
+(62,'暂停触发器',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.pauseTrigger'),
+(63,'恢复触发器',null,24,'com.dolplay.dolpbase.qrtz.module.TriggersModule.resumeTrigger'),
+(64,'暂停作业',null,24,'com.dolplay.dolpbase.qrtz.module.JobDetailsModule.pauseJob'),
+(65,'恢复作业',null,24,'com.dolplay.dolpbase.qrtz.module.JobDetailsModule.resumeJob');
 
 
 INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
@@ -193,7 +203,18 @@ INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
 (1,52),
 (1,53),
 (1,54),
-(1,55);
+(1,55),
+(1,56),
+(1,57),
+(1,58),
+(1,59),
+(1,60),
+(1,61),
+(1,62),
+(1,63),
+(1,64),
+(1,65);
+
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES
 (1,'certificateType','证件类型'), 
