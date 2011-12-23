@@ -11,7 +11,7 @@ var ioc = {
 				// 启动时初始化Dolp数据表(系统初次部署启动时可设置为true,第二次启动前应设为false)
 				"SYSTEM_INITDOLPTABLES_ONSTART":true,
 				// 是否启动调度任务
-				"SYSTEM_SCHEDULER_RUN":false,
+				"SYSTEM_SCHEDULER_RUN":true,
 				// 是否检查入口方法存在于权限表中
 				"SYSTEM_ISCHECK_METHOD":true
 			}
@@ -22,7 +22,7 @@ var ioc = {
 	attachmentPool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,个数无限
-		args : [ "/dolpbase/file/attachment", 0 ]
+		args : [ "~/dolpbase/file/attachment", 0 ]
 	},
 	// 上传消息附件的Context
 	uploadAttachmentContext : {
@@ -49,7 +49,7 @@ var ioc = {
 	tempFilePool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,最大个数1000
-		args : [ "/dolpbase/file/temp", 1000 ]
+		args : [ "~/dolpbase/file/temp", 1000 ]
 	},
 	// 上传临时文件的Context
 	tempFileContext : {
