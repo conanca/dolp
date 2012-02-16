@@ -6,15 +6,13 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.filepool.FilePool;
-import org.nutz.mvc.NutConfig;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.IocObjectProvider;
+import com.dolplay.dolpbase.common.util.IocProvider;
 import com.dolplay.dolpbase.system.domain.PoolFile;
-import com.dolplay.dolpbase.system.util.NutConfigStorage;
 
 /**
  * 移除无用的消息附件文件(包括文件本身和文件信息表中记录)的job
@@ -25,9 +23,8 @@ public class RemoveInvalidAttachmentJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		NutConfig nutConfig = NutConfigStorage.getNutConfig();
 		Dao dao = DaoProvider.getDao();
-		FilePool attachmentPool = IocObjectProvider.getIocObject(nutConfig, FilePool.class, "attachmentPool");
+		FilePool attachmentPool = IocProvider.getIoc().get(FilePool.class, "attachmentPool");
 
 		Sql sql = Sqls
 				.create("SELECT * FROM SYSTEM_POOLFILE WHERE POOLIOCNAME = @poolIocName AND IDINPOOL NOT IN (SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE)");
