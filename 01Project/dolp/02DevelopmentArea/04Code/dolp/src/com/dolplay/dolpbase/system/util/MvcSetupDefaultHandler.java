@@ -9,7 +9,7 @@ import java.util.Set;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
-import org.nutz.mvc.NutConfig;
+import org.nutz.mvc.Mvcs;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
+import com.dolplay.dolpbase.common.util.IocProvider;
 import com.dolplay.dolpbase.common.util.PropProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
@@ -38,8 +39,8 @@ public class MvcSetupDefaultHandler {
 	 * 默认的应用启动时要做的操作
 	 * @param config
 	 */
-	public static void defaultInit(NutConfig config) {
-		NutConfigStorage.loadNutConfig(config);
+	public static void defaultInit() {
+		IocProvider.init(Mvcs.getIoc());
 		Dao dao = DaoProvider.getDao();
 		// 初始化系统基本的数据表
 		Boolean initDolpTables = PropProvider.getProp().getBoolean("SYSTEM_INITDOLPTABLES_ONSTART");
@@ -103,7 +104,7 @@ public class MvcSetupDefaultHandler {
 	 *  默认的应用停止时要做的操作
 	 * @param config
 	 */
-	public static void defaultDestroy(NutConfig config) {
+	public static void defaultDestroy() {
 		// 关闭调度任务
 		try {
 			SchedulerFactory sf = new StdSchedulerFactory();
@@ -114,7 +115,7 @@ public class MvcSetupDefaultHandler {
 		}
 	}
 
-	public static void defaultCheck(NutConfig config) {
+	public static void defaultCheck() {
 		// 检查入口方法存在于权限表中
 		Boolean isCheck = PropProvider.getProp().getBoolean("SYSTEM_ISCHECK_METHOD");
 		if (null != isCheck && isCheck) {
@@ -127,7 +128,7 @@ public class MvcSetupDefaultHandler {
 				dbMethodPaths.add(privilege.getMethodPath());
 			}
 			// 获取系统所有的入口方法
-			Map<String, Method> map = config.getAtMap().getMethodMapping();
+			Map<String, Method> map = Mvcs.getAtMap().getMethodMapping();
 			// 如果有一个入口方法不属于SystemModule类的并且不存在于权限表中，则抛出异常
 			for (String reqPath : map.keySet()) {
 				Method method = map.get(reqPath);
