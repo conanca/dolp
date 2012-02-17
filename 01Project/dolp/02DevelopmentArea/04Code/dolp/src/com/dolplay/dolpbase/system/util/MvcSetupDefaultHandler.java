@@ -129,6 +129,8 @@ public class MvcSetupDefaultHandler {
 			}
 			// 获取系统所有的入口方法
 			Map<String, Method> map = Mvcs.getAtMap().getMethodMapping();
+			logger.debug("系统共有" + map.size() + "个入口方法,权限表中存有" + dbMethodPaths.size() + "个入口方法，请确认SystemModule类中是否只有"
+					+ (map.size() - dbMethodPaths.size()) + "个入口方法");
 			// 如果有一个入口方法不属于SystemModule类的并且不存在于权限表中，则抛出异常
 			for (String reqPath : map.keySet()) {
 				Method method = map.get(reqPath);
