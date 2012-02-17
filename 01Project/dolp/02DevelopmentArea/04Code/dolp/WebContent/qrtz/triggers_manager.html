@@ -52,7 +52,7 @@ $(function(){
 	
 	$("#schedulerStartBtn").click(function(){
 		$.dolpGet("qrtz/triggers/startScheduler",null,function(returnData){
-			if(returnData){
+			if($.toJSON(returnData)=='true'){
 				btnDisableControl('start');
 			}
 		});
@@ -60,7 +60,7 @@ $(function(){
 	
 	$("#schedulerStopBtn").click(function(){
 		$.dolpGet("qrtz/triggers/shutdownScheduler",null,function(returnData){
-			if(returnData){
+			if($.toJSON(returnData)=='true'){
 				btnDisableControl('shutdown');
 			}
 		});
