@@ -13,7 +13,11 @@ $(function(){
 					{name:'triggerName',index:'triggerName', width:50},
 					{name:'triggerGroup',index:'triggerGroup', width:50},
 					{name:'repeatCount',index:'repeatCount', width:50},
-					{name:'repeatInterval',index:'repeatInterval', width:50},
+					{name:'repeatInterval',index:'repeatInterval', width:50,
+						formatter:function (cellvalue, options, rowObject){
+							return (cellvalue / 60000) + "分钟";
+						}
+					},
 					{name:'timesTriggered',index:'timesTriggered', width:50}
 		],
 		pager: '#simpleTriggersPager',

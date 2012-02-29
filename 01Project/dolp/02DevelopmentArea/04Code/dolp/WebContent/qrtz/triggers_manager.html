@@ -9,19 +9,35 @@ $(function(){
 		editurl:"qrtz/triggers/editRow",
 		colNames:['调度程序名称','触发器名称','触发器组','作业名称','作业组','描述','下次触发时间','上次触发时间','优先级','触发器状态','触发器类型','开始时间','结束时间','calendarName','misfireInstr','jobData'],
 		colModel:[
-					{name:'schedName',index:'schedName', width:50},
+					{name:'schedName',index:'schedName', width:50,hidden:true},
 					{name:'triggerName',index:'triggerName', width:50},
-					{name:'triggerGroup',index:'triggerGroup', width:50},
+					{name:'triggerGroup',index:'triggerGroup', width:50,hidden:true},
 					{name:'jobName',index:'jobName', width:50},
-					{name:'jobGroup',index:'jobGroup', width:50},
-					{name:'description',index:'description', width:50},
-					{name:'nextFireTime',index:'nextFireTime', width:50},
-					{name:'prevFireTime',index:'prevFireTime', width:50},
-					{name:'priority',index:'priority', width:50},
+					{name:'jobGroup',index:'jobGroup', width:50,hidden:true},
+					{name:'description',index:'description', width:50,hidden:true},
+					{name:'nextFireTime',index:'nextFireTime', width:50,
+						formatter:function (cellvalue, options, rowObject){
+							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+						}
+					},
+					{name:'prevFireTime',index:'prevFireTime', width:50,
+						formatter:function (cellvalue, options, rowObject){
+							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+						}
+					},
+					{name:'priority',index:'priority', width:50,hidden:true},
 					{name:'triggerState',index:'triggerState', width:50},
 					{name:'triggerType',index:'triggerType', width:50},
-					{name:'startTime',index:'startTime', width:50},
-					{name:'endTime',index:'endTime', width:50},
+					{name:'startTime',index:'startTime', width:50,
+						formatter:function (cellvalue, options, rowObject){
+							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+						}
+					},
+					{name:'endTime',index:'endTime', width:50,hidden:true,
+						formatter:function (cellvalue, options, rowObject){
+							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+						}
+					},
 					{name:'calendarName',index:'calendarName', width:0,hidden:true},
 					{name:'misfireInstr',index:'misfireInstr', width:0,hidden:true},
 					{name:'jobData',index:'jobData', width:0,hidden:true}
