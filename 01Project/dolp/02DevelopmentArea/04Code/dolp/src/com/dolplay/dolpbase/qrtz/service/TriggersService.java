@@ -1,9 +1,10 @@
 package com.dolplay.dolpbase.qrtz.service;
 
-import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.FieldFilter;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.trans.Atom;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerKey;
 
@@ -22,8 +23,9 @@ public class TriggersService extends DolpBaseService<Triggers> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<Triggers> getGridData(JqgridReqData jqReq, Boolean isSearch, Triggers triggersSearch) {
-		Cnd cnd = null;
+	public AdvancedJqgridResData<Triggers> getGridData(final JqgridReqData jqReq, Boolean isSearch,
+			Triggers triggersSearch) {
+		//		Cnd cnd = null;
 		//		if (isSearch && null != triggersSearch) {
 		//			cnd = Cnd.where("1", "=", 1);
 		//			Long id = triggersSearch.getId();
@@ -31,8 +33,13 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		//				cnd.and("ID", "=", id);
 		//			}
 		//		}
-		AdvancedJqgridResData<Triggers> jq = getAdvancedJqgridRespData(cnd, jqReq);
-		return jq;
+		final Object[] objs = new Object[1];
+		FieldFilter.create(Triggers.class, null, "jobData", true).run(new Atom() {
+			public void run() {
+				objs[0] = getAdvancedJqgridRespData(null, jqReq);
+			}
+		});
+		return (AdvancedJqgridResData<Triggers>) objs[0];
 	}
 
 	@Aop(value = "log")

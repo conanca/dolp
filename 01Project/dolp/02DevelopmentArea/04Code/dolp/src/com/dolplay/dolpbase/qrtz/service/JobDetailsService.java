@@ -3,8 +3,10 @@ package com.dolplay.dolpbase.qrtz.service;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.FieldFilter;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.trans.Atom;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 
@@ -23,9 +25,9 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 	}
 
 	@Aop(value = "log")
-	public AdvancedJqgridResData<JobDetails> getGridData(JqgridReqData jqReq, Boolean isSearch,
+	public AdvancedJqgridResData<JobDetails> getGridData(final JqgridReqData jqReq, Boolean isSearch,
 			JobDetails jobDetailsSearch) {
-		Cnd cnd = null;
+		//Cnd cnd = null;
 		//		if (isSearch && null != jobDetailsSearch) {
 		//			cnd = Cnd.where("1", "=", 1);
 		//			Long id = jobDetailsSearch.getId();
@@ -33,8 +35,14 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 		//				cnd.and("ID", "=", id);
 		//			}
 		//		}
-		AdvancedJqgridResData<JobDetails> jq = getAdvancedJqgridRespData(cnd, jqReq);
-		return jq;
+
+		final Object[] objs = new Object[1];
+		FieldFilter.create(JobDetails.class, null, "jobData", true).run(new Atom() {
+			public void run() {
+				objs[0] = getAdvancedJqgridRespData(null, jqReq);
+			}
+		});
+		return (AdvancedJqgridResData<JobDetails>) objs[0];
 	}
 
 	@Aop(value = "log")
