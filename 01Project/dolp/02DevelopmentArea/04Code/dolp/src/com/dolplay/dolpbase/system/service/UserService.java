@@ -19,8 +19,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
-import org.nutz.dao.impl.sql.callback.FetchStringCallback;
-import org.nutz.dao.impl.sql.callback.QueryLongCallback;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -99,7 +97,7 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData getNewUserNumber() {
 		AjaxResData respData = new AjaxResData();
 		Sql sql = Sqls.create("SELECT MAX(NUMBER) AS MAXNUMBER FROM SYSTEM_USER");
-		sql.setCallback(new FetchStringCallback());
+		sql.setCallback(Sqls.callback.str());
 		dao().execute(sql);
 		String newUserNumber = Strings.alignRight(String.valueOf(Long.parseLong(sql.getString()) + 1), 4, '0');
 		respData.setReturnData(newUserNumber);
@@ -196,7 +194,7 @@ public class UserService extends DolpBaseService<User> {
 				.create("SELECT ID FROM SYSTEM_ROLE WHERE ISORGARELA = @isOrgaRela AND ID IN (SELECT DISTINCT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID = @userId)");
 		sql.params().set("isOrgaRela", false);
 		sql.params().set("userId", userId);
-		sql.setCallback(new QueryLongCallback());
+		sql.setCallback(Sqls.callback.longs());
 		dao().execute(sql);
 		long[] currentRoleIDs = (long[]) sql.getResult();
 		respData.setReturnData(currentRoleIDs);
