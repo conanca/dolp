@@ -47,7 +47,10 @@ $(function() {
 				.append('<span class="ui-tabs-close ui-icon ui-icon-close" title="Close Tab"></span>')
 				.find('span.ui-tabs-close')
 				.click(function() {
+					var curTabDivId = $(this).parents('li:first').children().attr('href');
+					var curTabDivDialog = $(curTabDivId).find($('.ui-dialog-content'));
 					maintab.tabs( 'remove', $('li', maintab).index($(this).parents('li:first')[0] ) );
+					curTabDivDialog.remove();
 				} );
 			// select just added tab
 			maintab.tabs('select', '#' + ui.panel.id);

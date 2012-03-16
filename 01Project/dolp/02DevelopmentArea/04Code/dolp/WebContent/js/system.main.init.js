@@ -20,6 +20,18 @@ $(document).ajaxError(function(e,xhr,opt){
 	$.addMessageStr(null,null,xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
 });
 
+// 覆盖jqueryUI dialog的全局参数，以设置默认值
+$.extend($.ui.dialog.prototype.options, {
+	// 设置关闭时效果
+	hide: 'slide',
+	// 设置不自动打开
+	autoOpen: false,
+	// 将该dialog的有关DIV移至当前激活的标签的DIV中
+	create: function(event, ui) {
+		$(this).parent().appendTo($('.ui-tabs-panel:not(.ui-tabs-hide)'));
+	}
+});
+
 // 覆盖jqGrid的全局参数，以设置默认值
 $.extend($.jgrid.defaults, {
 	rowNum:10,
