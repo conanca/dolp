@@ -9,11 +9,16 @@ import com.jolbox.bonecp.BoneCPDataSource;
 
 public class DaoProvider {
 
+	private static Dao dao;
+
 	public static DataSource getDataSource() {
 		return IocProvider.getIoc().get(BoneCPDataSource.class, "dataSource");
 	}
 
 	public static Dao getDao() {
-		return new NutDao(getDataSource());
+		if (dao == null) {
+			dao = new NutDao(getDataSource());
+		}
+		return dao;
 	}
 }
