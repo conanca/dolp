@@ -11,6 +11,7 @@ public class IocProvider {
 	}
 
 	public static Ioc getIoc() {
+		// 优先从Mvcs中获取
 		Ioc ioc = Mvcs.getIoc();
 		if (ioc == null) {
 			ioc = IocProvider.ioc;
