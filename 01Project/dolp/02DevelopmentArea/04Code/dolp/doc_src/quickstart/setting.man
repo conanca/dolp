@@ -1,6 +1,0 @@
-#title: 修改配置文件及必要的类文件
-#author: conanca
-#index:0,1
------
-test
-dao.js ioc.dolpbase.js logback.xml system.main.init.js system.main.css	修改主模块、代码生成器等类
