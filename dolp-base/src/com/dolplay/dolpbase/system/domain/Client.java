@@ -16,7 +16,7 @@ public class Client {
 	@Id
 	private Long id;
 	@Column
-	@ColDefine(type = ColType.CHAR, width = 32)
+	@ColDefine(type = ColType.VARCHAR, width = 100)
 	private String sessionId;
 	@Column
 	private Long userId;
