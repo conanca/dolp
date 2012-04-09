@@ -1,6 +1,7 @@
 
 syntax: glob
 build
+classes
 dist
 .settings
 .classpath
