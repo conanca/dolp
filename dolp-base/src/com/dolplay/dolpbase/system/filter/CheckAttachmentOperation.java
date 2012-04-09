@@ -1,12 +1,7 @@
 package com.dolplay.dolpbase.system.filter;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
@@ -32,16 +27,9 @@ public class CheckAttachmentOperation implements ActionFilter {
 				.create("SELECT @fileIdInPool IN (SELECT IDINPOOL FROM SYSTEM_POOLFILE WHERE ID IN(SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE WHERE MESSAGEID IN (SELECT ID FROM SYSTEM_MESSAGE WHERE SENDERUSERID = @userId OR (ID IN (SELECT MESSAGEID FROM SYSTEM_MESSAGE_RECEIVERUSER WHERE USERID = @userId ) AND (STATE = 1 OR STATE = 2)))))");
 		sql.params().set("fileIdInPool", fileIdInPool);
 		sql.params().set("userId", userId);
-		// TODO nutz加个 FetchBooleanCallback会简化以下代码
-		sql.setCallback(new SqlCallback() {
-			public Object invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-				if (null != rs && rs.next())
-					return rs.getBoolean(1);
-				return null;
-			}
-		});
+		sql.setCallback(Sqls.callback.bool());
 		DaoProvider.getDao().execute(sql);
-		boolean isIn = (Boolean) sql.getResult();
+		boolean isIn = sql.getBoolean();
 		if (isIn) {
 			return null;
 		} else {
