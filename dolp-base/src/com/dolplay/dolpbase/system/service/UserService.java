@@ -50,7 +50,7 @@ public class UserService extends DolpBaseService<User> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<User> getGridData(JqgridReqData jqReq, Boolean isSearch, User searchUser) {
 		Cnd cnd = null;
-		if (isSearch && null != searchUser) {
+		if (null != isSearch && isSearch && null != searchUser) {
 			cnd = Cnd.where("1", "=", 1);
 			String number = searchUser.getNumber();
 			if (!Strings.isEmpty(number)) {

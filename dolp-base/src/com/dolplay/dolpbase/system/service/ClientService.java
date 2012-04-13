@@ -65,7 +65,7 @@ public class ClientService extends DolpBaseService<Client> {
 	public AdvancedJqgridResData<Client> getGridData(JqgridReqData jqReq, Boolean isSearch, Client clientSearch,
 			String userName) {
 		Cnd cnd = null;
-		if (isSearch && null != clientSearch) {
+		if (null != isSearch && isSearch && null != clientSearch) {
 			cnd = Cnd.where("1", "=", 1);
 			String ipAddr = clientSearch.getIpAddr();
 			if (!Strings.isEmpty(ipAddr)) {

@@ -24,7 +24,7 @@ public class SysParaService extends DolpBaseService<SysPara> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<SysPara> getGridData(JqgridReqData jqReq, Boolean isSearch, SysPara sysParaSearch) {
 		Cnd cnd = null;
-		if (isSearch && null != sysParaSearch) {
+		if (null != isSearch && isSearch && null != sysParaSearch) {
 			cnd = Cnd.where("1", "=", 1);
 			String name = sysParaSearch.getName();
 			if (!Strings.isEmpty(name)) {

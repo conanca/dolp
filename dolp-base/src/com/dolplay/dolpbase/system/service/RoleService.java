@@ -34,24 +34,26 @@ public class RoleService extends DolpBaseService<Role> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Role> getGridData(JqgridReqData jqReq, Boolean isSearch, Role roleSearch) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		Boolean isOrgaRela = roleSearch.getIsOrgaRela();
-		if (null != isOrgaRela) {
-			cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
-			if (isOrgaRela) {
-				Long organizationId = roleSearch.getOrganizationId();
-				if (null != organizationId) {
-					cnd = cnd.and("ORGANIZATIONID", "=", organizationId);
+		if (null != roleSearch) {
+			Boolean isOrgaRela = roleSearch.getIsOrgaRela();
+			if (null != isOrgaRela) {
+				cnd = Cnd.where("ISORGARELA", "=", isOrgaRela);
+				if (isOrgaRela) {
+					Long organizationId = roleSearch.getOrganizationId();
+					if (null != organizationId) {
+						cnd = cnd.and("ORGANIZATIONID", "=", organizationId);
+					}
 				}
 			}
-		}
-		if (isSearch && null != roleSearch) {
-			String name = roleSearch.getName();
-			if (!Strings.isEmpty(name)) {
-				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
-			}
-			String description = roleSearch.getDescription();
-			if (!Strings.isEmpty(description)) {
-				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			if (null != isSearch && isSearch) {
+				String name = roleSearch.getName();
+				if (!Strings.isEmpty(name)) {
+					cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+				}
+				String description = roleSearch.getDescription();
+				if (!Strings.isEmpty(description)) {
+					cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+				}
 			}
 		}
 		AdvancedJqgridResData<Role> jq = getAdvancedJqgridRespData(cnd, jqReq);

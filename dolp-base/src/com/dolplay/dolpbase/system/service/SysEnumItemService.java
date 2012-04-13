@@ -25,18 +25,20 @@ public class SysEnumItemService extends DolpBaseService<SysEnumItem> {
 	public AdvancedJqgridResData<SysEnumItem> getGridData(JqgridReqData jqReq, Boolean isSearch,
 			SysEnumItem sysEnumItemSearch) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		Long sysEnumId = sysEnumItemSearch.getSysEnumId();
 		if (null != sysEnumItemSearch) {
-			cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
-		}
-		if (isSearch && null != sysEnumItemSearch) {
-			String text = sysEnumItemSearch.getText();
-			if (!Strings.isEmpty(text)) {
-				cnd.and("TEXT", "LIKE", StringUtils.quote(text, '%'));
+			Long sysEnumId = sysEnumItemSearch.getSysEnumId();
+			if (null != sysEnumItemSearch) {
+				cnd = Cnd.where("SYSENUMID", "=", sysEnumId);
 			}
-			String value = sysEnumItemSearch.getValue();
-			if (!Strings.isEmpty(value)) {
-				cnd.and("VALUE", "LIKE", StringUtils.quote(value, '%'));
+			if (null != isSearch && isSearch) {
+				String text = sysEnumItemSearch.getText();
+				if (!Strings.isEmpty(text)) {
+					cnd.and("TEXT", "LIKE", StringUtils.quote(text, '%'));
+				}
+				String value = sysEnumItemSearch.getValue();
+				if (!Strings.isEmpty(value)) {
+					cnd.and("VALUE", "LIKE", StringUtils.quote(value, '%'));
+				}
 			}
 		}
 

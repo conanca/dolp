@@ -24,22 +24,24 @@ public class PrivilegeService extends DolpBaseService<Privilege> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Privilege> getGridData(JqgridReqData jqReq, Boolean isSearch, Privilege privilegeSearch) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		Long menuId = privilegeSearch.getMenuId();
-		if (null != menuId) {
-			cnd = Cnd.where("MENUID", "=", menuId);
-		}
-		if (isSearch && null != privilegeSearch) {
-			String name = privilegeSearch.getName();
-			if (!Strings.isEmpty(name)) {
-				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+		if (null != privilegeSearch) {
+			Long menuId = privilegeSearch.getMenuId();
+			if (null != menuId) {
+				cnd = Cnd.where("MENUID", "=", menuId);
 			}
-			String description = privilegeSearch.getDescription();
-			if (!Strings.isEmpty(description)) {
-				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
-			}
-			String methodPath = privilegeSearch.getMethodPath();
-			if (!Strings.isEmpty(methodPath)) {
-				cnd.and("METHODPATH", "LIKE", StringUtils.quote(methodPath, '%'));
+			if (null != isSearch && isSearch) {
+				String name = privilegeSearch.getName();
+				if (!Strings.isEmpty(name)) {
+					cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+				}
+				String description = privilegeSearch.getDescription();
+				if (!Strings.isEmpty(description)) {
+					cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+				}
+				String methodPath = privilegeSearch.getMethodPath();
+				if (!Strings.isEmpty(methodPath)) {
+					cnd.and("METHODPATH", "LIKE", StringUtils.quote(methodPath, '%'));
+				}
 			}
 		}
 		AdvancedJqgridResData<Privilege> jq = getAdvancedJqgridRespData(cnd, jqReq);

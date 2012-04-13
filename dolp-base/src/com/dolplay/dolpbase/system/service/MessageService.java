@@ -186,8 +186,7 @@ public class MessageService extends DolpBaseService<Message> {
 			cnd = Cnd.where("1", "=", 0);
 		}
 
-		if (isSearch && null != messageSearch) {
-			cnd = Cnd.where("1", "=", 1);
+		if (null != isSearch && isSearch && null != messageSearch) {
 			String title = messageSearch.getTitle();
 			if (!Strings.isEmpty(title)) {
 				cnd.and("TITLE", "LIKE", StringUtils.quote(title, '%'));
@@ -222,7 +221,7 @@ public class MessageService extends DolpBaseService<Message> {
 			Boolean isSearch, @Param("..") Message messageSearch, int state) {
 		Cnd cnd = Cnd.where("SENDERUSERID", "=", senderUser.getId()).and("STATE", "=", state);
 
-		if (isSearch && null != messageSearch) {
+		if (null != isSearch && isSearch && null != messageSearch) {
 			cnd = Cnd.where("1", "=", 1);
 			String title = messageSearch.getTitle();
 			if (!Strings.isEmpty(title)) {

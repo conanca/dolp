@@ -28,7 +28,7 @@ public class SysEnumService extends DolpBaseService<SysEnum> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<SysEnum> getGridData(JqgridReqData jqReq, Boolean isSearch, SysEnum sysEnumSearch) {
 		Cnd cnd = null;
-		if (isSearch && null != sysEnumSearch) {
+		if (null != isSearch && isSearch && null != sysEnumSearch) {
 			cnd = Cnd.where("1", "=", 1);
 			String name = sysEnumSearch.getName();
 			if (!Strings.isEmpty(name)) {

@@ -30,22 +30,24 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	public AdvancedJqgridResData<Organization> getGridData(JqgridReqData jqReq, Boolean isSearch,
 			@Param("..") Organization organizationSearch) {
 		Cnd cnd = Cnd.where("1", "=", 1);
-		Long parentOrgId = organizationSearch.getParentOrgId();
-		if (null != parentOrgId) {
-			cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
-		}
-		if (isSearch && null != organizationSearch) {
-			String code = organizationSearch.getCode();
-			if (!Strings.isEmpty(code)) {
-				cnd.and("CODE", "LIKE", StringUtils.quote(code, '%'));
+		if (null != organizationSearch) {
+			Long parentOrgId = organizationSearch.getParentOrgId();
+			if (null != parentOrgId) {
+				cnd = Cnd.where("PARENTORGID", "=", parentOrgId);
 			}
-			String name = organizationSearch.getName();
-			if (!Strings.isEmpty(name)) {
-				cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
-			}
-			String description = organizationSearch.getDescription();
-			if (!Strings.isEmpty(description)) {
-				cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+			if (null != isSearch && isSearch) {
+				String code = organizationSearch.getCode();
+				if (!Strings.isEmpty(code)) {
+					cnd.and("CODE", "LIKE", StringUtils.quote(code, '%'));
+				}
+				String name = organizationSearch.getName();
+				if (!Strings.isEmpty(name)) {
+					cnd.and("NAME", "LIKE", StringUtils.quote(name, '%'));
+				}
+				String description = organizationSearch.getDescription();
+				if (!Strings.isEmpty(description)) {
+					cnd.and("DESCRIPTION", "LIKE", StringUtils.quote(description, '%'));
+				}
 			}
 		}
 		AdvancedJqgridResData<Organization> jq = getAdvancedJqgridRespData(cnd, jqReq);

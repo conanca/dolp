@@ -174,7 +174,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		}
 
 		Cnd cnd = Cnd.where("1", "=", 1);
-		if (isSearch && null != menuSearch) {
+		if (null != isSearch && isSearch && null != menuSearch) {
 			String name = menuSearch.getName();
 			if (!Strings.isEmpty(name)) {
 				cnd.and("M1.NAME", "LIKE", StringUtils.quote(name, '%'));
