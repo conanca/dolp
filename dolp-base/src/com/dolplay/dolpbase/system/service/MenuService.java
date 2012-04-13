@@ -66,7 +66,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		List<MenuTreeGridRow> rs = sql.getList(MenuTreeGridRow.class);
 		List<MenuTreeGridRow> menus = new ArrayList<MenuTreeGridRow>();
 		for (MenuTreeGridRow menuEntity : rs) {
-			if (menuEntity.getLevel() == nLevel) {
+			if (menuEntity.getLevel().intValue() == nLevel.intValue()) {
 				menus.add(menuEntity);
 			}
 		}
