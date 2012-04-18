@@ -15,8 +15,8 @@ import com.dolplay.dolpbase.common.view.DolpViewMaker;
 import com.dolplay.dolpbase.system.filter.CheckLogon;
 import com.dolplay.dolpbase.system.filter.CheckPrivilege;
 
-// 如果在其他包下还有子模块，需要在"com.dolplay.dolpbase.system.module"的后面增加包名
-@Modules(packages = { "com.dolplay.dolpbase.system.module" }, scanPackage = true)
+// 如果在其他包下还有子模块，需要在"com.dolplay.dolpbase"的后面增加包名
+@Modules(packages = { "com.dolplay.dolpbase" }, scanPackage = true)
 // 如果在其他包下还有类交予ico容器管理，需要在"com.dolplay.dolpbase"的后面加上
 @IocBy(type = ComboIocProvider.class, args = { "*org.nutz.ioc.loader.json.JsonLoader", "dao.js", "ioc.system.js",
 		"ioc.dolpbase.js", "*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.dolplay.dolpbase" })
