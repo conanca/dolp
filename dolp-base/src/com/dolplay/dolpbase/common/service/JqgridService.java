@@ -79,7 +79,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 		sql.setPager(pager);
 		// sql 设置回调
 		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(tClass));
+		sql.setEntity(getEntity());
 
 		// 查询
 		dao().execute(sql);
@@ -105,7 +105,7 @@ public abstract class JqgridService<T> extends IdEntityService<T> {
 		// 创建分页信息
 		Pager pager = createPager(jqReq, count);
 		// sql 设置排序
-		DaoUtils.addOrderBy(sql, createOrderBy(jqReq), getEntity());
+		DaoUtils.addOrderBy(sql, createOrderBy(jqReq), null);
 		// sql 设置分页
 		sql.setPager(pager);
 		// sql 设置回调
