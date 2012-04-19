@@ -11,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.system.secheduler.DolpScheduler;
 import com.dolplay.dolpbase.system.util.MvcSetupDefaultHandler;
-import com.dolplay.dolpbase.system.util.NutConfigStorage;
 import com.dolplay.dolpinhotel.management.Bill;
 import com.dolplay.dolpinhotel.management.Customer;
 import com.dolplay.dolpinhotel.management.RoomOccupancy;
@@ -31,10 +29,9 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void init(NutConfig config) {
-		NutConfigStorage.loadNutConfig(config);
 		Dao dao = DaoProvider.getDao();
 		if (!dao.exists("SYSTEM_USER")) {
-			MvcSetupDefaultHandler.defaultInit(config);
+			MvcSetupDefaultHandler.defaultInit();
 		}
 		// 初始化默认表数据
 		if (!dao.exists("DOLPINHOTEL_ROOMTYPE")) {
@@ -48,7 +45,8 @@ public class MvcSetup implements Setup {
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
 		}
 		// 默认检查
-		MvcSetupDefaultHandler.defaultCheck(config);
+		MvcSetupDefaultHandler.defaultCheck();
+		MvcSetupDefaultHandler.startScheduler();
 	}
 
 	/**
@@ -58,12 +56,6 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void destroy(NutConfig config) {
-		// 清空在线用户表
-		DaoProvider.getDao().clear("SYSTEM_CLIENT");
-		try {
-			DolpScheduler.stop();
-		} catch (Exception e) {
-			logger.error("Stop SchedulerRunner exception", e);
-		}
+		MvcSetupDefaultHandler.defaultDestroy();
 	}
 }

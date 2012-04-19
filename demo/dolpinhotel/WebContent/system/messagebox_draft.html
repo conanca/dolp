@@ -6,7 +6,28 @@ $(function(){
 	$('#messageDraftboxEditor').wysiwyg();
 	
 	//初始化用户信息界面
-	$("#messageDraftboxUserSelect").dialog({width: 520 , hide: 'slide' , modal: true , autoOpen: false});
+	$("#messageDraftboxUserSelect").dialog({width: 520});
+	
+	// 保存草稿或发送消息
+	var messageDraftboxSaveOrSendMessage = function(url){
+		if($("#messageDraftboxForm").valid()){
+			var messageNewFormInfo = $("#messageDraftboxForm").serializeObject();
+			$.dolpPost(url,messageNewFormInfo,function(returnData){
+				$('#messageDraftboxBack').click();
+			});
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
+	};
+	
+	// 删除附件文件
+	$('span[name=removeMessageAttachmentBtn]').live('click', function() {
+		var idinpool = $(this).attr("idinpool");
+		var filename = $(this).attr("filename");
+		$('div[idinpool='+idinpool+']').remove();
+		var optionValue = idinpool + "=" + filename;
+		$('option[value="' + optionValue + '"]').remove();
+	});
 
 	//设置Grid
 	$("#messageDraftboxUserInfoList").jqGrid({
@@ -44,7 +65,7 @@ $(function(){
 		colModel:[
 			{name:'id',index:'id', width:0,hidden:true},
 			{name:'title',index:'title', width:500},
-			{name:'sender.name',index:'sender.name', width:200, editable:true},
+			{name:'sender.name',index:'senderName', width:200, sortable:false, search:false},
 			{name:'date',index:'date', width:200,search:false},
 			{name:'content',index:'content', width:0,hidden:true}
 		],
@@ -64,12 +85,9 @@ $(function(){
 			$(this).setGridState('hidden');
 			$.dolpGet('system/message/getAttachments/'+row.id,null,function(returnData){
 				$.each(returnData,function(id,name){
-					var nameP = "'" + name + "'";
-					$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
-							+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id
-							+ '&name=' + name + '">' + name
-							+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
-					var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+					$('#messageDraftboxDetailTmpAttachmentLinks').append('<div idinpool="' + id
+							+ '"><a style="float:left" target="_blank" href="system/message/downloadAttachment?id=' + id + '&name=' + name + '">' + name
+							+ '</a><span name="removeMessageAttachmentBtn" class="ui-icon ui-icon-trash" style="cursor:pointer" idinpool="' + id + '" filename="' + name + '"></span></div>');
 					var optionValue = id + "=" + name;
 					$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
 				});
@@ -183,35 +201,14 @@ $(function(){
 			}
 			var id = returnData.idInPool;
 			var name = returnData.name;
-			var nameP = "'" + name + "'";
-			$('#messageDraftboxDetailTmpAttachmentLinks').append('<div name="' + id
+			$('#messageDraftboxDetailTmpAttachmentLinks').append('<div idinpool="' + id
 					+ '"><a style="float:left">' + name
-					+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
-			var optionId = '"messageDraftboxAttachmentsOption' + id + '"';
+					+ '</a><span name="removeMessageAttachmentBtn" class="ui-icon ui-icon-trash" style="cursor:pointer" idinpool="' + id + '" filename="' + name + '"></span></div>');
 			var optionValue = id + "=" + name;
 			$('#messageDraftboxAttachments').append('<option selected="selected" value="' + optionValue + '">');
 		});
 	});
 });
-
-//保存草稿或发送消息
-function messageDraftboxSaveOrSendMessage(url){
-	if($("#messageDraftboxForm").valid()){
-		var messageNewFormInfo = $("#messageDraftboxForm").serializeObject();
-		$.dolpPost(url,messageNewFormInfo,function(returnData){
-			$('#messageDraftboxBack').click();
-		});
-	}else{
-		$.addMessageStr(null,"未通过验证",null);
-	}
-}
-
-//删除附件文件
-function removeAttachment(id,name){
-	$('div[name="'+id+'"]').remove();
-	var optionValue = id + "=" + name;
-	$('option[value="' + optionValue + '"]').remove();
-}
 </script>
 
 <table id="messageDraftboxList"></table>

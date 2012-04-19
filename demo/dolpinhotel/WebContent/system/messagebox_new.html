@@ -6,7 +6,28 @@ $(function(){
 	$('#messageNewEditor').wysiwyg();
 
 	//初始化用户信息界面
-	$("#messageNewUserSelect").dialog({width: 520 , hide: 'slide' , modal: true , autoOpen: false});
+	$("#messageNewUserSelect").dialog({width: 520});
+	
+	// 保存草稿或发送消息
+	var messageNewSaveOrSendMessage = function(url){
+		if($("#messageNewForm").valid()){
+			var messageNewFormInfo = $("#messageNewForm").serializeObject();
+			$.dolpPost(url,messageNewFormInfo,function(returnData){
+				$("#messageNewReset").click();
+			});
+		}else{
+			$.addMessageStr(null,"未通过验证",null);
+		}
+	}
+
+	// 删除附件文件
+	$('span[name=removeMessageAttachmentBtn]').live('click', function() {
+		var idinpool = $(this).attr("idinpool");
+		var filename = $(this).attr("filename");
+		$('div[idinpool='+idinpool+']').remove();
+		var optionValue = idinpool + "=" + filename;
+		$('option[value="' + optionValue + '"]').remove();
+	});
 
 	//设置Grid
 	$("#messageNewUserInfoList").jqGrid({
@@ -117,35 +138,14 @@ $(function(){
 			}
 			var id = returnData.idInPool;
 			var name = returnData.name;
-			var nameP = "'" + name + "'";
-			$('#tmpAttachmentLinks').append('<div name="' + id
+			$('#tmpAttachmentLinks').append('<div idinpool="' + id
 					+ '"><a style="float:left">' + name
-					+ '</a><span class="ui-icon ui-icon-trash" style="cursor:pointer" onclick="removeAttachment(' + id + ',' + nameP + ');"></span></div>');
-			var optionId = '"messageNewAttachmentsOption' + id + '"';
+					+ '</a><span name="removeMessageAttachmentBtn" class="ui-icon ui-icon-trash" style="cursor:pointer" idinpool="' + id + '" filename="' + name + '"></span></div>');
 			var optionValue = id + "=" + name;
 			$('#messageNewAttachments').append('<option selected="selected" value="' + optionValue + '">');
 		});
 	});
 });
-
-// 保存草稿或发送消息
-function messageNewSaveOrSendMessage(url){
-	if($("#messageNewForm").valid()){
-		var messageNewFormInfo = $("#messageNewForm").serializeObject();
-		$.dolpPost(url,messageNewFormInfo,function(returnData){
-			$("#messageNewReset").click();
-		});
-	}else{
-		$.addMessageStr(null,"未通过验证",null);
-	}
-}
-
-// 删除附件文件
-function removeAttachment(id,name){
-	$('div[name="'+id+'"]').remove();
-	var optionValue = id + "=" + name;
-	$('option[value="' + optionValue + '"]').remove();
-}
 </script>
 
 <input type="button" value="发送" id="messageNewSend"/>

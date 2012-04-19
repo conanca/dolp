@@ -5,11 +5,11 @@ $(function(){
 		url:'dolpinhotel/management/availableroomcheck/getGridData',
 		colNames:['房间类型','可用房数量'],
 		colModel:[
-			{name:'roomType',index:'roomType', width:90},
-			{name:'count',index:'count', width:60},
+			{name:'roomType',index:'ROOMTYPENAME', width:90},
+			{name:'count',index:'AVAILABLEROOMCOUNT', width:60},
 		],
 		pager: '#availableRoomCheckPager',
-		sortname: 'count',
+		sortname: 'AVAILABLEROOMCOUNT',
 		sortorder: "desc"
 	});
 	//不显示jqgrid自带的增删改查按钮

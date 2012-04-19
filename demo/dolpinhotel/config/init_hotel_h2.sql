@@ -1,67 +1,68 @@
 /* 插入hotel初始记录 */
 INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA,ORGANIZATIONID) VALUES
-(4,'酒店管理员','拥有酒店设置的权限',0,null),
-(5,'前台','拥有基本业务功能的权限',0,null);
+(1001,'酒店管理员','拥有酒店设置的权限',0,null),
+(1002,'前台','拥有基本业务功能的权限',0,null);
 
 INSERT INTO SYSTEM_USER_ROLE(USERID ,ROLEID) VALUES
-(1,4),
-(1,5);
+(1,1001),
+(1,1002),
+(2,1002);
 
 INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
-(20,'酒店设置',NULL,NULL,501,700),
-(21,'房间类型设置','hotel/room_type_manage.html',NULL,502,503),
-(22,'房间设置','hotel/room_manage.html',NULL,504,505),
-(23,'经营管理',NULL,NULL,701,1000),
-(24,'可用房确认','hotel/available_room_check.html',NULL,702,703),
-(25,'入住情况','hotel/room_occupancy_manage.html',NULL,704,705),
-(26,'入住登记','hotel/check_in.html',NULL,706,707),
-(27,'账单管理','hotel/bill_manage.html',NULL,708,709),
-(28,'账单统计','hotel/bill_statistic.html',NULL,710,711);
+(1001,'酒店设置',NULL,NULL,501,700),
+(1002,'房间类型设置','hotel/room_type_manage.html',NULL,502,503),
+(1003,'房间设置','hotel/room_manage.html',NULL,504,505),
+(1004,'经营管理',NULL,NULL,701,1000),
+(1005,'可用房确认','hotel/available_room_check.html',NULL,702,703),
+(1006,'入住情况','hotel/room_occupancy_manage.html',NULL,704,705),
+(1007,'入住登记','hotel/check_in.html',NULL,706,707),
+(1008,'账单管理','hotel/bill_manage.html',NULL,708,709),
+(1009,'账单统计','hotel/bill_statistic.html',NULL,710,711);
 
 INSERT INTO SYSTEM_ROLE_MENU(ROLEID ,MENUID) VALUES
-(4,20),
-(4,21),
-(4,22),
-(5,23),
-(5,24),
-(5,25),
-(5,26),
-(5,27),
-(5,28);
+(1001,1001),
+(1001,1002),
+(1001,1003),
+(1002,1004),
+(1002,1005),
+(1002,1006),
+(1002,1007),
+(1002,1008),
+(1002,1009);
 
 INSERT INTO SYSTEM_PRIVILEGE(ID ,NAME ,DESCRIPTION ,MENUID,METHODPATH) VALUES
-(101,'查询',null,21,'com.dolplay.dolpinhotel.setup.RoomTypeModule.getGridData'),
-(102,'修改',null,21,'com.dolplay.dolpinhotel.setup.RoomTypeModule.editRow'),
-(103,'获取房间类型Map',null,20,'com.dolplay.dolpinhotel.setup.RoomTypeModule.getAllRoomTypeMap'),
-(104,'查询',null,22,'com.dolplay.dolpinhotel.setup.RoomModule.getJqgridData'),
-(105,'修改',null,22,'com.dolplay.dolpinhotel.setup.RoomModule.editRow'),
-(106,'获取可用房间Map',null,22,'com.dolplay.dolpinhotel.setup.RoomModule.getAllAvailableRoomForSelectOption'),
-(107,'所有房间Map',null,22,'com.dolplay.dolpinhotel.setup.RoomModule.getAllRoomForSelectOption'),
-(108,'查询',null,24,'com.dolplay.dolpinhotel.management.AvailableRoomCheckModule.getGridData'),
-(109,'查询',null,27,'com.dolplay.dolpinhotel.management.BillModule.getGridData'),
-(110,'修改',null,27,'com.dolplay.dolpinhotel.management.BillModule.editRow'),
-(111,'统计',null,28,'com.dolplay.dolpinhotel.management.BillModule.statisticBill'),
-(112,'查询',null,25,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.getGridData'),
-(113,'登记',null,26,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.saveRoomOccupancy'),
-(114,'结帐',null,25,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.checkOut'),
-(115,'查询顾客信息',null,25,'com.dolplay.dolpinhotel.management.CustomerModule.getGridDataByRoomOccId');
+(1001,'查询',null,1002,'com.dolplay.dolpinhotel.setup.RoomTypeModule.getGridData'),
+(1002,'修改',null,1002,'com.dolplay.dolpinhotel.setup.RoomTypeModule.editRow'),
+(1003,'获取房间类型Map',null,1001,'com.dolplay.dolpinhotel.setup.RoomTypeModule.getAllRoomTypeMap'),
+(1004,'查询',null,1003,'com.dolplay.dolpinhotel.setup.RoomModule.getJqgridData'),
+(1005,'修改',null,1003,'com.dolplay.dolpinhotel.setup.RoomModule.editRow'),
+(1006,'获取可用房间Map',null,1003,'com.dolplay.dolpinhotel.setup.RoomModule.getAllAvailableRoomForSelectOption'),
+(1007,'所有房间Map',null,1003,'com.dolplay.dolpinhotel.setup.RoomModule.getAllRoomForSelectOption'),
+(1008,'查询',null,1005,'com.dolplay.dolpinhotel.management.AvailableRoomCheckModule.getGridData'),
+(1009,'查询',null,1008,'com.dolplay.dolpinhotel.management.BillModule.getGridData'),
+(1010,'修改',null,1008,'com.dolplay.dolpinhotel.management.BillModule.editRow'),
+(1011,'统计',null,1009,'com.dolplay.dolpinhotel.management.BillModule.statisticBill'),
+(1012,'查询',null,1006,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.getGridData'),
+(1013,'登记',null,1007,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.saveRoomOccupancy'),
+(1014,'结帐',null,1006,'com.dolplay.dolpinhotel.management.RoomOccupancyModule.checkOut'),
+(1015,'查询顾客信息',null,1006,'com.dolplay.dolpinhotel.management.CustomerModule.getGridDataByRoomOccId');
 
 INSERT INTO SYSTEM_ROLE_PRIVILEGE(ROLEID,PRIVILEGEID) VALUES
-(2,101),
-(2,102),
-(2,103),
-(2,104),
-(2,105),
-(2,106),
-(2,107),
-(2,108),
-(2,109),
-(2,110),
-(2,111),
-(2,112),
-(2,113),
-(2,114),
-(2,115);
+(1001,1001),
+(1001,1002),
+(1001,1003),
+(1001,1004),
+(1001,1005),
+(1002,1006),
+(1002,1007),
+(1002,1008),
+(1002,1009),
+(1002,1010),
+(1002,1011),
+(1002,1012),
+(1002,1013),
+(1002,1014),
+(1002,1015);
 
 INSERT INTO DOLPINHOTEL_ROOMTYPE(ID, NAME, PRICE, DESCRIPTION) VALUES
 (1, '标准间', 150.00, '标准两人间'),

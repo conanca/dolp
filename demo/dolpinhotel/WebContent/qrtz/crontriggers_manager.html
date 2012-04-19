@@ -1,0 +1,29 @@
+<script type="text/javascript">
+$(function(){
+	$("#cronTriggersList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"CronTriggers列表",
+		url:'qrtz/cronTriggers/getGridData',
+		editurl:"qrtz/cronTriggers/editRow",
+		colNames:['调度程序名称','触发器名称','触发器组','cron表达式','时区Id'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:50},
+					{name:'triggerName',index:'triggerName', width:50},
+					{name:'triggerGroup',index:'triggerGroup', width:50},
+					{name:'cronExpression',index:'cronExpression', width:50},
+					{name:'timeZoneId',index:'timeZoneId', width:50}
+		],
+		pager: '#cronTriggersPager',
+		sortname: 'triggerName',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#cronTriggersList").setJqGridCUD('#cronTriggersPager',{edit:false,add:false,del:false,search:false});
+	//$("#cronTriggersList").addSearchToolbar('#cronTriggersPager');
+});
+</script>
+
+<table id="cronTriggersList"></table>
+<div id="cronTriggersPager"></div>

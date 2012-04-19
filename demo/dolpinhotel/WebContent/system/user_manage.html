@@ -11,7 +11,7 @@ $(function(){
 	$(".multiselect").multiselect();
 
 	//初始化用户角色分配界面
-	$("#roleAssignInfo").dialog({ width: 500 , height: 330 , hide: 'slide' , modal: true , autoOpen: false , close: function(event, ui) {
+	$("#roleAssignInfo").dialog({ width: 500 , height: 330 , close: function(event, ui) {
 			//关闭后全部取消选中
 			$("#roleIds option:selected").each(function(){
 				$(this).removeAttr("selected");
@@ -19,7 +19,7 @@ $(function(){
 		}
 	});
 	//初始化用户岗位分配界面
-	$("#postAssignInfo").dialog({ width: 650 , hide: 'slide' , modal: true , autoOpen: false, close: function(event, ui) {
+	$("#postAssignInfo").dialog({ width: 650 , close: function(event, ui) {
 			//关闭后刷新tree和grid
 			userPostOrganizationTree.reAsyncChildNodes(null, "refresh");
 			$("#userPostList").setGridParam({url:"system/role/getUserPostGridData?userId=0&organizationId=0",page:1});
@@ -27,7 +27,7 @@ $(function(){
 		}
 	});
 	//初始化修改用户密码界面
-	$("#userPasswordChangeInfo").dialog({ width: 300 , hide: 'slide' , modal: true , autoOpen: false, close: function(event, ui) {
+	$("#userPasswordChangeInfo").dialog({ width: 300 , close: function(event, ui) {
 			//关闭后清空表单的旧值
 			$('#userMangeChangePwdForm')[0].reset();
 			$("#userMangeChangePwdForm_userId").val('');
