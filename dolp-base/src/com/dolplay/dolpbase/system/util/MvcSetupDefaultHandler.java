@@ -30,7 +30,7 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.secheduler.SchedulerAdder;
+import com.dolplay.dolpbase.system.secheduler.DolpSchedulerAdder;
 
 public class MvcSetupDefaultHandler {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetupDefaultHandler.class);
@@ -77,7 +77,7 @@ public class MvcSetupDefaultHandler {
 
 		// 增加两个调度任务
 		try {
-			SchedulerAdder.add();
+			DolpSchedulerAdder.add();
 		} catch (Exception e) {
 			logger.error("增加默认调度任务时发生异常", e);
 		}

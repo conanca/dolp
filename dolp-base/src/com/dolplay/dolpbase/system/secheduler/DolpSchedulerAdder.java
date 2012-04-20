@@ -21,8 +21,8 @@ import com.dolplay.dolpbase.system.secheduler.job.RemoveInvalidAttachmentJob;
  * @author Administrator
  *
  */
-public class SchedulerAdder {
-	private static Logger logger = LoggerFactory.getLogger(SchedulerAdder.class);
+public class DolpSchedulerAdder {
+	private static Logger logger = LoggerFactory.getLogger(DolpSchedulerAdder.class);
 
 	public static void add() throws Exception {
 
