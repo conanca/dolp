@@ -43,7 +43,7 @@ INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT) VALUES
 (21,'草稿','system/messagebox_draft.html',NULL,209,210),
 (22,'修改密码','system/change_pwd.html',NULL,251,252),
 (23,'演示页面',NULL,NULL,301,400),
-(24,'格式化文本框','demo1.html',NULL,302,303);
+(24,'jqGrid local data','demo1.html',NULL,302,303);
 
 INSERT INTO SYSTEM_ROLE_MENU(ROLEID ,MENUID) VALUES
 (1,1),
