@@ -46,6 +46,10 @@ $(function() {
 				required: true,
 				minlength: 3
 			}
+		},
+		errorPlacement: function(error, element) {
+			$('<br/>').appendTo(element.parent());
+			error.appendTo(element.parent());
 		}
 	});
 
