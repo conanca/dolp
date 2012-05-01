@@ -28,7 +28,10 @@ var opts = {
 };
 
 $(function() {
-	$("#login").dialog( {width:330, draggable: false } );
+	$("#login").dialog( {width:330, draggable: false ,open: function(event, ui) {
+			$("a.ui-dialog-titlebar-close.ui-corner-all", $(this).parent()).hide();
+		}
+	});
 	$("input:button,input:submit,input:reset").button();
 
 	$.pnotify(opts);
@@ -76,7 +79,7 @@ $(function() {
 <div id="login" title="请登录">
 	<form id="logonForm" action="#">
 		<p><font color="#FF0000">(用户编号：1000/密码：123)</font></p>
-		<table>
+		<table width="100%">
 			<tr>
 				<td>用户编号：</td>
 				<td><input type="text" name="num"/></td>
