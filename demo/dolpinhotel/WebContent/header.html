@@ -2,21 +2,14 @@
 $(function() {
 	var theme = $.cookie('theme');
 	if(theme){
-		$('#jQueryUICssSrc').attr('href', 'themes/' + theme + '/jquery-ui-1.8.14.custom.css');
-		$("#jQueryUICssSwitch option:selected").each(function() {
-			$(this).attr("selected", false);
-		});
+		$('#jQueryUICssSrc').attr('href', 'themes/' + theme + '/jquery-ui-1.8.19.custom.css');
 		$("#jQueryUICssSwitch").val(theme);
 	}
 	$('#jQueryUICssSwitch').change(function() {
-		if($.cookie('theme')){
-			$.cookie('theme', $('#jQueryUICssSwitch').val());
-		}else{
-			var date = new Date();
-			date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
-			$.cookie('theme', $('#jQueryUICssSwitch').val(), { expires: date, path: '/'});
-		}
-		$('#jQueryUICssSrc').attr('href', 'themes/' + $('#jQueryUICssSwitch').val() + '/jquery-ui-1.8.14.custom.css');
+		var newTheme = $(this).val();
+		// 主题cookie保存30天
+		$.cookie('theme', newTheme, { expires: 30, path: '/'});
+		$('#jQueryUICssSrc').attr('href', 'themes/' + newTheme + '/jquery-ui-1.8.19.custom.css');
 	});
 
 	$.dolpGet('getSystemName',null,function(returnData){
