@@ -22,6 +22,7 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		super(dao);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public AdvancedJqgridResData<Triggers> getGridData(final JqgridReqData jqReq, Boolean isSearch,
 			Triggers triggersSearch) {

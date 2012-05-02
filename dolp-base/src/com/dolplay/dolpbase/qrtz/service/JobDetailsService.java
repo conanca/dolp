@@ -24,6 +24,7 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 		super(dao);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Aop(value = "log")
 	public AdvancedJqgridResData<JobDetails> getGridData(final JqgridReqData jqReq, Boolean isSearch,
 			JobDetails jobDetailsSearch) {
