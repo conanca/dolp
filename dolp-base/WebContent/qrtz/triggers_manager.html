@@ -17,12 +17,12 @@ $(function(){
 					{name:'description',index:'description', width:50,hidden:true},
 					{name:'nextFireTime',index:'nextFireTime', width:50,
 						formatter:function (cellvalue, options, rowObject){
-							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+							return moment.humanizeDuration( cellvalue-new Date(),null,true);
 						}
 					},
 					{name:'prevFireTime',index:'prevFireTime', width:50,
 						formatter:function (cellvalue, options, rowObject){
-							return moment(cellvalue).format("YYYY-MM-DD hh:mm:ss");
+								return cellvalue>0?moment(cellvalue).fromNow():'从未';
 						}
 					},
 					{name:'priority',index:'priority', width:50,hidden:true},

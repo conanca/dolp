@@ -15,7 +15,7 @@ $(function(){
 					{name:'repeatCount',index:'repeatCount', width:50},
 					{name:'repeatInterval',index:'repeatInterval', width:50,
 						formatter:function (cellvalue, options, rowObject){
-							return (cellvalue / 60000) + "分钟";
+							return moment.humanizeDuration(cellvalue);
 						}
 					},
 					{name:'timesTriggered',index:'timesTriggered', width:50}

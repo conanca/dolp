@@ -63,3 +63,6 @@ $.getSysEmnuItem("gender",function(returnData){
 	genders = returnData;
 	genders1 = $.swapJSON(genders);
 });
+
+//设置momentjs插件的语言
+moment.lang('zh-cn');
