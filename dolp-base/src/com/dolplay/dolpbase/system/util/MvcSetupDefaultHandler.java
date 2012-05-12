@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.IocProvider;
 import com.dolplay.dolpbase.common.util.PropProvider;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
@@ -30,7 +29,6 @@ import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
 import com.dolplay.dolpbase.system.domain.SysPara;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.secheduler.DolpSchedulerAdder;
 
 public class MvcSetupDefaultHandler {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetupDefaultHandler.class);
@@ -39,8 +37,7 @@ public class MvcSetupDefaultHandler {
 	 * 默认的应用启动时要做的操作
 	 * @param config
 	 */
-	public static void defaultInit() {
-		IocProvider.init(Mvcs.getIoc());
+	public static void dolpTableInit() {
 		Dao dao = DaoProvider.getDao();
 		// 初始化系统基本的数据表
 		Boolean initDolpTables = PropProvider.getProp().getBoolean("SYSTEM_INITDOLPTABLES_ONSTART");
@@ -66,20 +63,6 @@ public class MvcSetupDefaultHandler {
 			fm = new FileSqlManager("tables_quartz_h2.sql");
 			sqlList = fm.createCombo(fm.keys());
 			dao.execute(sqlList.toArray(new Sql[sqlList.size()]));
-		}
-
-		// 清空在线用户表
-		if (dao.exists("SYSTEM_CLIENT")) {
-			dao.clear("SYSTEM_CLIENT");
-		} else {
-			throw new RuntimeException("数据库中必要的数据表不存在!请正确初始化数据库!");
-		}
-
-		// 增加两个调度任务
-		try {
-			DolpSchedulerAdder.add();
-		} catch (Exception e) {
-			logger.error("增加默认调度任务时发生异常", e);
 		}
 	}
 
