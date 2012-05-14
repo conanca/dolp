@@ -6,6 +6,7 @@ import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.common.util.IocProvider;
 import com.dolplay.dolpbase.system.secheduler.DolpSchedulerAdder;
 import com.dolplay.dolpbase.system.util.MvcSetupDefaultHandler;
@@ -39,6 +40,8 @@ public class MvcSetup implements Setup {
 		}
 		// 启动调度任务
 		MvcSetupDefaultHandler.startScheduler();
+		// 清空在线用户表
+		DaoProvider.getDao().clear("SYSTEM_CLIENT");
 	}
 
 	/**
