@@ -18,12 +18,17 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void init(NutConfig config) {
-		// 初始化dolp的数据表
-		MvcSetupDefaultHandler.dolpTableInit();
-		// TODO 此处添加自定义的操作如初始化数据表,增加调度任务等
-
 		// 初始化IocProvider
 		IocProvider.init(Mvcs.getIoc());
+		// 初始化dolp的数据表
+		MvcSetupDefaultHandler.dolpTableInit();
+		
+		/**
+		 * 此处添加自定义的操作如初始化数据表,增加调度任务等
+		 * 
+		 * 
+		 */
+
 		// 进行必要的检查操作
 		MvcSetupDefaultHandler.defaultCheck();
 		// 增加两个dolp的调度任务
