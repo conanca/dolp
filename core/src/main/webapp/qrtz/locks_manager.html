@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$("#locksList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"Locks列表",
+		url:'qrtz/locks/getGridData',
+		editurl:"qrtz/locks/editRow",
+		colNames:['schedName','lockName'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'lockName',index:'lockName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#locksPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#locksList").setJqGridCUD('#locksPager',{edit:true,add:true,del:true,search:false});
+	$("#locksList").addSearchToolbar('#locksPager');
+});
+</script>
+
+<table id="locksList"></table>
+<div id="locksPager"></div>

@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(function(){
+	$("#calendarsList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"Calendars列表",
+		url:'qrtz/calendars/getGridData',
+		editurl:"qrtz/calendars/editRow",
+		colNames:['schedName','calendarName','calendar'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'calendarName',index:'calendarName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'calendar',index:'calendar', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#calendarsPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#calendarsList").setJqGridCUD('#calendarsPager',{edit:true,add:true,del:true,search:false});
+	$("#calendarsList").addSearchToolbar('#calendarsPager');
+});
+</script>
+
+<table id="calendarsList"></table>
+<div id="calendarsPager"></div>

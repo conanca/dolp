@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(function(){
+	$("#pausedTriggerGrpsList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"PausedTriggerGrps列表",
+		url:'qrtz/pausedTriggerGrps/getGridData',
+		editurl:"qrtz/pausedTriggerGrps/editRow",
+		colNames:['schedName','triggerGroup'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerGroup',index:'triggerGroup', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#pausedTriggerGrpsPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#pausedTriggerGrpsList").setJqGridCUD('#pausedTriggerGrpsPager',{edit:true,add:true,del:true,search:false});
+	$("#pausedTriggerGrpsList").addSearchToolbar('#pausedTriggerGrpsPager');
+});
+</script>
+
+<table id="pausedTriggerGrpsList"></table>
+<div id="pausedTriggerGrpsPager"></div>

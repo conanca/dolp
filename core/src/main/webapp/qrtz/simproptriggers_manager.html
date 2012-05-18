@@ -1,0 +1,38 @@
+<script type="text/javascript">
+$(function(){
+	$("#simpropTriggersList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"SimpropTriggers列表",
+		url:'qrtz/simpropTriggers/getGridData',
+		editurl:"qrtz/simpropTriggers/editRow",
+		colNames:['schedName','triggerName','triggerGroup','strProp1','strProp2','strProp3','intProp1','intProp2','longProp1','longProp2','decProp1','decProp2','boolProp1','boolProp2'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerName',index:'triggerName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerGroup',index:'triggerGroup', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'strProp1',index:'strProp1', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'strProp2',index:'strProp2', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'strProp3',index:'strProp3', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'intProp1',index:'intProp1', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'intProp2',index:'intProp2', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'longProp1',index:'longProp1', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'longProp2',index:'longProp2', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'decProp1',index:'decProp1', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'decProp2',index:'decProp2', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'boolProp1',index:'boolProp1', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'boolProp2',index:'boolProp2', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#simpropTriggersPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#simpropTriggersList").setJqGridCUD('#simpropTriggersPager',{edit:true,add:true,del:true,search:false});
+	$("#simpropTriggersList").addSearchToolbar('#simpropTriggersPager');
+});
+</script>
+
+<table id="simpropTriggersList"></table>
+<div id="simpropTriggersPager"></div>

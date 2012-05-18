@@ -1,0 +1,28 @@
+<script type="text/javascript">
+$(function(){
+	$("#blobTriggersList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"BlobTriggers列表",
+		url:'qrtz/blobTriggers/getGridData',
+		editurl:"qrtz/blobTriggers/editRow",
+		colNames:['schedName','triggerName','triggerGroup','blobData'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerName',index:'triggerName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerGroup',index:'triggerGroup', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'blobData',index:'blobData', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#blobTriggersPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#blobTriggersList").setJqGridCUD('#blobTriggersPager',{edit:true,add:true,del:true,search:false});
+	$("#blobTriggersList").addSearchToolbar('#blobTriggersPager');
+});
+</script>
+
+<table id="blobTriggersList"></table>
+<div id="blobTriggersPager"></div>

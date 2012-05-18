@@ -1,0 +1,36 @@
+<script type="text/javascript">
+$(function(){
+	$("#firedTriggersList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"FiredTriggers列表",
+		url:'qrtz/firedTriggers/getGridData',
+		editurl:"qrtz/firedTriggers/editRow",
+		colNames:['schedName','entryId','triggerName','triggerGroup','instanceName','firedTime','priority','state','jobName','jobGroup','isNonconcurrent','requestsRecovery'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'entryId',index:'entryId', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerName',index:'triggerName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'triggerGroup',index:'triggerGroup', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'instanceName',index:'instanceName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'firedTime',index:'firedTime', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'priority',index:'priority', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'state',index:'state', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'jobName',index:'jobName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'jobGroup',index:'jobGroup', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'isNonconcurrent',index:'isNonconcurrent', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'requestsRecovery',index:'requestsRecovery', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#firedTriggersPager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#firedTriggersList").setJqGridCUD('#firedTriggersPager',{edit:true,add:true,del:true,search:false});
+	$("#firedTriggersList").addSearchToolbar('#firedTriggersPager');
+});
+</script>
+
+<table id="firedTriggersList"></table>
+<div id="firedTriggersPager"></div>

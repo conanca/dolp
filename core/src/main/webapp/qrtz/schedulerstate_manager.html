@@ -1,0 +1,28 @@
+<script type="text/javascript">
+$(function(){
+	$("#schedulerStateList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"SchedulerState列表",
+		url:'qrtz/schedulerState/getGridData',
+		editurl:"qrtz/schedulerState/editRow",
+		colNames:['schedName','instanceName','lastCheckinTime','checkinInterval'],
+		colModel:[
+					{name:'schedName',index:'schedName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'instanceName',index:'instanceName', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'lastCheckinTime',index:'lastCheckinTime', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+					{name:'checkinInterval',index:'checkinInterval', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#schedulerStatePager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#schedulerStateList").setJqGridCUD('#schedulerStatePager',{edit:true,add:true,del:true,search:false});
+	$("#schedulerStateList").addSearchToolbar('#schedulerStatePager');
+});
+</script>
+
+<table id="schedulerStateList"></table>
+<div id="schedulerStatePager"></div>
