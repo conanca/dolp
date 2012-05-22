@@ -20,6 +20,15 @@ $(document).ajaxError(function(e,xhr,opt){
 	$.addMessageStr(null,null,xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
 });
 
+var serverDate;
+
+$(document).ajaxComplete(function(e, xhr, settings) {
+	var date = xhr.getResponseHeader("Date");
+	if(date){
+		serverDate = moment(date);
+	}
+});
+
 // 覆盖jqueryUI dialog的全局参数，以设置默认值
 $.extend($.ui.dialog.prototype.options, {
 	// 设置关闭时效果
