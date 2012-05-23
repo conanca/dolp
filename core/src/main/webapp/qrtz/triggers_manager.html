@@ -90,7 +90,7 @@ $(function(){
 				$("#triggersList").trigger('reloadGrid');
 			});
 		} else {
-			$.addMessageStr(null,"请选择触发器",null);
+			$.showError("请选择触发器");
 		}
 	});
 	
@@ -102,7 +102,7 @@ $(function(){
 				$("#triggersList").trigger('reloadGrid');
 			});
 		} else {
-			$.addMessageStr(null,"请选择触发器",null);
+			$.showError("请选择触发器");
 		}
 	});
 });

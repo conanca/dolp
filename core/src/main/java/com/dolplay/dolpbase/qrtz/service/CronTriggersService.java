@@ -41,10 +41,10 @@ public class CronTriggersService extends DolpBaseService<CronTriggers> {
 				.and("triggerGroup", "=", triggerGroup);
 		CronTriggers cronTrigger = fetch(cnd);
 		if (null == cronTrigger) {
-			resData.setSystemMessage(null, "获取触发器详情失败", null);
+			resData.setError("获取触发器详情失败");
 			return resData;
 		}
-		resData.setReturnData(cronTrigger);
+		resData.setLogic(cronTrigger);
 		return resData;
 	}
 }

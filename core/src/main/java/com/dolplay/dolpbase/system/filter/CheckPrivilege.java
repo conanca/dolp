@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.nutz.json.Json;
 import org.nutz.mvc.ActionContext;
 import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
@@ -13,7 +12,7 @@ import org.nutz.mvc.view.UTF8JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
+import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.User;
 
@@ -26,7 +25,6 @@ public class CheckPrivilege implements ActionFilter {
 
 	@Override
 	public View match(ActionContext context) {
-		ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
 		// 获取被过滤的入口方法的path
 		Method method = context.getMethod();
 		String methodPath = method.getDeclaringClass().getName() + "." + method.getName();
@@ -41,16 +39,15 @@ public class CheckPrivilege implements ActionFilter {
 				return null;
 			}
 		}
-		// 将提示信息记入log并返回给前台
+		// 将提示信息记入log
 		StringBuilder sb = new StringBuilder("用户");
 		sb.append(((User) session.getAttribute("logonUser")).getNumber());
 		sb.append(" 无此权限: ");
 		sb.append(methodPath);
 		logger.warn(sb.toString());
+		// 将提示信息返回给前台
 		UTF8JsonView jsonView = new UTF8JsonView(null);
-		excpAjaxResData.setSystemMessage(null, "用户没有此权限: " + context.getPath(), null);
-		jsonView.setData(excpAjaxResData);
-		logger.debug(Json.toJson(excpAjaxResData));
+		jsonView.setData(AjaxResData.getInstanceErrorNotice("用户没有此权限: " + context.getPath()));
 		return jsonView;
 	}
 }

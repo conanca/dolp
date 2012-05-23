@@ -7,7 +7,7 @@ import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
 import org.nutz.mvc.view.UTF8JsonView;
 
-import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
+import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.system.domain.User;
 
@@ -34,9 +34,7 @@ public class CheckAttachmentOperation implements ActionFilter {
 			return null;
 		} else {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
-			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(null, null, "用户无权操作该文件!");
-			jsonView.setData(excpAjaxResData);
+			jsonView.setData(AjaxResData.getInstanceErrorNotice("用户无权操作该文件!"));
 			return jsonView;
 		}
 	}

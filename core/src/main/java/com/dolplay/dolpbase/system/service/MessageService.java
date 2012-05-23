@@ -95,7 +95,7 @@ public class MessageService extends DolpBaseService<Message> {
 			successMessage = "未知操作!";
 		}
 		AjaxResData respData = new AjaxResData();
-		respData.setSystemMessage(successMessage, null, null);
+		respData.setInfo(successMessage);
 		return respData;
 	}
 
@@ -109,12 +109,12 @@ public class MessageService extends DolpBaseService<Message> {
 	public AjaxResData deleteReceivedMessage(Long messageId, User user) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
-			respData.setSystemMessage(null, "未选择消息!", null);
+			respData.setNotice("未选择消息!");
 			return respData;
 		}
 		dao().clear("SYSTEM_MESSAGE_RECEIVERUSER",
 				Cnd.where("USERID", "=", user.getId()).and("MESSAGEID", "=", messageId));
-		respData.setSystemMessage("删除成功!", null, null);
+		respData.setInfo("删除成功!");
 		return respData;
 	}
 
@@ -127,13 +127,13 @@ public class MessageService extends DolpBaseService<Message> {
 	public AjaxResData deleteSentMessage(Long messageId) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
-			respData.setSystemMessage(null, "未选择消息!", null);
+			respData.setNotice("未选择消息!");
 			return respData;
 		}
 		Message message = fetch(messageId);
 		message.setState(2);
 		dao().update(message);
-		respData.setSystemMessage("删除成功!", null, null);
+		respData.setInfo("删除成功!");
 		return respData;
 	}
 
@@ -146,7 +146,7 @@ public class MessageService extends DolpBaseService<Message> {
 	public AjaxResData deleteDraftMessage(final Long messageId, final Ioc ioc) {
 		AjaxResData respData = new AjaxResData();
 		if (messageId <= 0) {
-			respData.setSystemMessage(null, "未选择消息!", null);
+			respData.setNotice("未选择消息!");
 			return respData;
 		}
 		// 相关数据库操作
@@ -158,7 +158,7 @@ public class MessageService extends DolpBaseService<Message> {
 				delete(messageId);
 			}
 		});
-		respData.setSystemMessage("删除成功!", null, null);
+		respData.setInfo("删除成功!");
 		return respData;
 	}
 
@@ -259,7 +259,7 @@ public class MessageService extends DolpBaseService<Message> {
 		if (Strings.isEmpty(receiverUserNums)) {
 			receiverUserNums = " ";
 		}
-		respData.setReturnData(receiverUserNums);
+		respData.setLogic(receiverUserNums);
 		return respData;
 	}
 
@@ -283,7 +283,7 @@ public class MessageService extends DolpBaseService<Message> {
 	 */
 	public AjaxResData getAttachments(Long messageId) {
 		AjaxResData respData = new AjaxResData();
-		respData.setReturnData(getAttachmentMap(messageId));
+		respData.setLogic(getAttachmentMap(messageId));
 		return respData;
 	}
 
@@ -311,11 +311,11 @@ public class MessageService extends DolpBaseService<Message> {
 		PoolFile uploadTempFile = saveUploadFileInfo(tf, ioc, owner);
 		dao().insert(uploadTempFile);
 		if (uploadTempFile != null) {
-			//respData.setSystemMessage("上传完成!", null, null);
+			//respData.setInfo("上传完成!", null, null);
 		} else {
-			respData.setSystemMessage(null, "请勿上传空文件!", null);
+			respData.setNotice("请勿上传空文件!");
 		}
-		respData.setReturnData(uploadTempFile);
+		respData.setLogic(uploadTempFile);
 		return respData;
 	}
 

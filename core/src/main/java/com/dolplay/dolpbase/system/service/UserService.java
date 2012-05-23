@@ -100,7 +100,7 @@ public class UserService extends DolpBaseService<User> {
 		sql.setCallback(Sqls.callback.str());
 		dao().execute(sql);
 		String newUserNumber = Strings.alignRight(String.valueOf(Long.parseLong(sql.getString()) + 1), 4, '0');
-		respData.setReturnData(newUserNumber);
+		respData.setLogic(newUserNumber);
 		return respData;
 	}
 
@@ -130,24 +130,24 @@ public class UserService extends DolpBaseService<User> {
 					}
 				});
 			}
-			respData.setSystemMessage("删除成功!", null, null);
+			respData.setInfo("删除成功!");
 		} else if ("add".equals(oper)) {
 			if (isUserNumberDuplicate(user.getNumber())) {
-				respData.setSystemMessage(null, null, "添加失败：系统中已存在相同的用户编号!");
+				respData.setError("添加失败：系统中已存在相同的用户编号!");
 				return respData;
 			}
 			String defaultPass = getSysParaValue(SYSTEM_DEFAULTPASSWORD);
 			// 对默认密码进行MD5加密
 			defaultPass = DigestUtils.md5Hex(defaultPass);
 			user.setPassword(defaultPass);
-			respData.setSystemMessage("添加成功!", null, null);
+			respData.setInfo("添加成功!");
 			dao().insert(user);
 		} else if ("edit".equals(oper)) {
 			// 忽略“密码”字段
 			dao().updateIgnoreNull(user);
-			respData.setSystemMessage("修改成功!", null, null);
+			respData.setInfo("修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未操作数据", null);
+			respData.setError("未操作数据");
 		}
 		return respData;
 	}
@@ -156,13 +156,13 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData updateRole(final Long userId, String[] roleIds) {
 		AjaxResData respData = new AjaxResData();
 		if (userId <= 0) {
-			respData.setSystemMessage(null, "未正确选择用户", null);
+			respData.setNotice("未正确选择用户");
 			return respData;
 		}
 		// 如果新分配的角色 roleIds为Null,则直接清空中间表中该用户原有角色然后return
 		if (roleIds == null || roleIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", Cnd.where("USERID", "=", userId));
-			respData.setSystemMessage(null, "该用户未分配任何角色!", null);
+			respData.setNotice("该用户未分配任何角色!");
 			return respData;
 		}
 		List<Role> roles = new ArrayList<Role>();
@@ -183,7 +183,7 @@ public class UserService extends DolpBaseService<User> {
 				dao().insertRelation(user, "roles");
 			}
 		});
-		respData.setSystemMessage("分配成功!", null, null);
+		respData.setInfo("分配成功!");
 		return respData;
 	}
 
@@ -197,7 +197,7 @@ public class UserService extends DolpBaseService<User> {
 		sql.setCallback(Sqls.callback.longs());
 		dao().execute(sql);
 		long[] currentRoleIDs = (long[]) sql.getResult();
-		respData.setReturnData(currentRoleIDs);
+		respData.setLogic(currentRoleIDs);
 		return respData;
 	}
 
@@ -223,7 +223,7 @@ public class UserService extends DolpBaseService<User> {
 		// 如果未选中任何岗位，则清除此用户该机构下的所有岗位关系
 		if (postIds == null || postIds.length == 0) {
 			dao().clear("SYSTEM_USER_ROLE", cnd);
-			respData.setSystemMessage(null, "该用户未分配任何岗位!", null);
+			respData.setNotice("该用户未分配任何岗位!");
 			return respData;
 		}
 		// 清除旧岗位关系，插入新的关系
@@ -235,7 +235,7 @@ public class UserService extends DolpBaseService<User> {
 				}
 			}
 		});
-		respData.setSystemMessage("分配成功!", null, null);
+		respData.setInfo("分配成功!");
 		return respData;
 	}
 
@@ -247,13 +247,13 @@ public class UserService extends DolpBaseService<User> {
 		// 比较输入的原密码和数据库中的原密码
 		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
 		if (countAuthenticatedUser == 0) {
-			respData.setSystemMessage(null, "原密码错误!", null);
+			respData.setError("原密码错误!");
 		} else {
 			// 对输入的新密码进行MD5加密
 			newPassword = DigestUtils.md5Hex(newPassword);
 			user.setPassword(newPassword);
 			dao().update(user);
-			respData.setSystemMessage("密码修改成功!", null, null);
+			respData.setInfo("密码修改成功!");
 		}
 		return respData;
 	}
@@ -267,9 +267,9 @@ public class UserService extends DolpBaseService<User> {
 			newPassword = DigestUtils.md5Hex(newPassword);
 			user.setPassword(newPassword);
 			dao().updateIgnoreNull(user);
-			respData.setSystemMessage("密码修改成功!", null, null);
+			respData.setInfo("密码修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未正确选择用户", null);
+			respData.setNotice("未正确选择用户");
 		}
 		return respData;
 	}
@@ -278,7 +278,7 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData importUsers(File f) {
 		AjaxResData respData = new AjaxResData();
 		if (f == null) {
-			respData.setSystemMessage(null, "请选择正确的文件!", null);
+			respData.setNotice("请选择正确的文件!");
 			return respData;
 		}
 
@@ -297,7 +297,7 @@ public class UserService extends DolpBaseService<User> {
 		}
 		f.delete();
 
-		respData.setSystemMessage("新增" + userList.size() + "位用户", null, null);
+		respData.setInfo("新增" + userList.size() + "位用户");
 		return respData;
 	}
 

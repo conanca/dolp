@@ -30,7 +30,7 @@ $(function(){
 			privilegeTree.reAsyncChildNodes(null, "refresh");
 			$("#privilegeInfo").dialog( "open" );
 		} else {
-			$.addMessageStr(null,"请选择角色",null);
+			$.showNotice("请选择角色");
 		}
 	});
 	//添加自定义按钮——导出Excel

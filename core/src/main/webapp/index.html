@@ -64,11 +64,11 @@ $(function() {
 					window.location="main";
 				}else{
 					$('#logonForm')[0].reset();
-					$.addMessage(response.systemMessage);
+					$.showNotices(response.notices);
 				}
 			},"json");
 		}else{
-			$.addMessageStr(null,"未通过验证",null);
+			$.showError("未通过验证");
 		}
 		return false;
 	});

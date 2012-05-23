@@ -103,7 +103,7 @@ $(function(){
 			});
 			$("#roleAssignInfo").dialog( "open" );
 		} else {
-			$.addMessageStr(null,"请选择用户",null);
+			$.showNotice("请选择用户");
 		}
 	});
 	// 岗位按钮点击事件
@@ -113,7 +113,7 @@ $(function(){
 			roleId = id;
 			$("#postAssignInfo").dialog( "open" );
 		} else {
-			$.addMessageStr(null,"请选择用户",null);
+			$.showNotice("请选择用户");
 		}
 	});
 	// 修改密码按钮点击事件
@@ -123,7 +123,7 @@ $(function(){
 			$("#userMangeChangePwdForm_userId").val(id);
 			$("#userPasswordChangeInfo").dialog( "open" );
 		} else {
-			$.addMessageStr(null,"请选择用户",null);
+			$.showNotice("请选择用户");
 		}
 	});
 
@@ -232,7 +232,7 @@ $(function(){
 				$("#userPasswordChangeInfoCancelbtn").click();
 			});
 		}else{
-			$.addMessageStr(null,"未通过验证",null);
+			$.showError("未通过验证");
 		}
 		return false;
 	});

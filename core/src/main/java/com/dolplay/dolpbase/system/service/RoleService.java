@@ -76,15 +76,15 @@ public class RoleService extends DolpBaseService<Role> {
 					clear(cnd);
 				}
 			});
-			respData.setSystemMessage("删除成功!", null, null);
+			respData.setInfo("删除成功!");
 		} else if ("add".equals(oper)) {
 			dao().insert(role);
-			respData.setSystemMessage("添加成功!", null, null);
+			respData.setInfo("添加成功!");
 		} else if ("edit".equals(oper)) {
 			dao().update(role);
-			respData.setSystemMessage("修改成功!", null, null);
+			respData.setInfo("修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未知操作!", null);
+			respData.setError("未知操作!");
 		}
 		return respData;
 	}
@@ -97,7 +97,7 @@ public class RoleService extends DolpBaseService<Role> {
 		for (Role r : roles) {
 			roleOptions.put(r.getName(), String.valueOf(r.getId()));
 		}
-		respData.setReturnData(roleOptions);
+		respData.setLogic(roleOptions);
 		return respData;
 	}
 
@@ -140,7 +140,7 @@ public class RoleService extends DolpBaseService<Role> {
 			}
 		});
 
-		respData.setSystemMessage("分配成功!", null, null);
+		respData.setInfo("分配成功!");
 		return respData;
 	}
 

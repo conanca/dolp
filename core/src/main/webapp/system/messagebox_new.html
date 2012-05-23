@@ -16,7 +16,7 @@ $(function(){
 				$("#messageNewReset").click();
 			});
 		}else{
-			$.addMessageStr(null,"未通过验证",null);
+			$.showError("未通过验证");
 		}
 	}
 
@@ -83,7 +83,7 @@ $(function(){
 			$('#messageNewReceiverUsers').val(receiverUserNames);
 			$("#messageNewUserCloseBtn").click();
 		}else{
-			$.addMessageStr(null,"请选择收件人",null);
+			$.showNotice("请选择收件人");
 		}
 	});
 

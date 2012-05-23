@@ -1,11 +1,11 @@
 // zTree异步获取到数据后，在添加到 zTree 之前利用此方法进行数据预处理，以显示系统消息
 function ajaxDataFilter(treeId, parentNode, response) {
 	if (response) {
-		if(response.systemMessage){
-			$.addMessage(response.systemMessage);
+		if(response.notices){
+			$.showNotices(response.notices);
 		}
-		if(response.returnData){
-			return response.returnData;
+		if(response.logic){
+			return response.logic;
 		}else{
 			return null;
 		}
@@ -13,121 +13,105 @@ function ajaxDataFilter(treeId, parentNode, response) {
 };
 
 $.extend({
-	//显示系统消息的函数(消息对象systemMessage)
-	addMessage : function(systemMessage) {
-		if(!systemMessage){
+	//显示系统通知的函数(通知对象notices)
+	showNotices : function(notices) {
+		if(!notices){
 			return;
 		}
-		var infoMessages = systemMessage.infoMessages;
-		var warnMessages = systemMessage.warnMessages;
-		var errorMessages = systemMessage.errorMessages;
-		if (infoMessages) {
-			opts.pnotify_title = "消息";
-			opts.pnotify_type = "notice";
-			$.each(infoMessages, function(k,infoMessage) {
-				opts.pnotify_text = infoMessage;
-				$.pnotify(opts);
-	        });
-		}
-		if (warnMessages) {
-			opts.pnotify_title = "警告";
-			opts.pnotify_type = "error";
-			opts.pnotify_error_icon = 'ui-icon-notice';
-			$.each(warnMessages, function(k,warnMessage) {
-				opts.pnotify_text = warnMessage;
-				$.pnotify(opts);
-	        });
-		}
-		if (errorMessages) {
-			opts.pnotify_title = "错误";
-			opts.pnotify_type = "error";
-			$.each(errorMessages, function(k,errorMessage) {
-				opts.pnotify_text = errorMessage;
-				$.pnotify(opts);
-	        });
-		}
+		$.each(notices, function(k,notic) {
+			opts.pnotify_type = notic.type;
+			opts.pnotify_title = notic.title;
+			opts.pnotify_text = notic.text;
+			$.pnotify(opts);
+		});
 	},
-	//显示系统消息的函数(消息内容infoMessage,warnMessage,errorMessage)
-	addMessageStr : function(infoMessage,warnMessage,errorMessage) {
-		if (infoMessage) {
-			opts.pnotify_title = "消息";
+	
+	// 显示通知
+	showNotice : function(text){
+		if (text) {
+			opts.pnotify_title = "通知";
 			opts.pnotify_type = "notice";
-			opts.pnotify_text = infoMessage;
-			$.pnotify(opts);
-		}
-		if (warnMessage) {
-			opts.pnotify_title = "警告";
-			opts.pnotify_text = warnMessage;
-			opts.pnotify_type = "error";
-			pnotify_error_icon: 'ui-icon-notice';
-			$.pnotify(opts);
-		}
-		if (errorMessage) {
-			opts.pnotify_title = "错误";
-			opts.pnotify_text = errorMessage;
-			opts.pnotify_type = "error";
+			opts.pnotify_text = text;
 			$.pnotify(opts);
 		}
 	},
+	// 显示信息
+	showInfo : function(text){
+		if (text) {
+			opts.pnotify_title = "消息";
+			opts.pnotify_type = "info";
+			opts.pnotify_text = text;
+			$.pnotify(opts);
+		}
+	},
+	// 显示错误
+	showError : function(text){
+		if (text) {
+			opts.pnotify_title = "错误";
+			opts.pnotify_type = "error";
+			opts.pnotify_text = text;
+			$.pnotify(opts);
+		}
+	},
+
 	//根据系统枚举名称，获得它所有的枚举值
 	getSysEmnuItem: function(SysEnumName, afterRequest) {
 		var url = 'getSysEnumItemMap/'+SysEnumName;
-		var Items = {};
+		var Items = null;
 		$.getJSON(url,function(response){
 			if(response){
-				if(response.systemMessage){
-					$.addMessage(response.systemMessage);
+				if(response.notices){
+					$.showNotices(response.notices);
 				}
-				if(response.returnData != null){
-					Items = response.returnData;
+				if(response.logic){
+					Items = response.logic;
 				}
 				if($.isFunction(afterRequest)){
 					afterRequest(Items);
 				}
 			}else{
-				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
+				$.showError("Error requesting " + url + ": no response content");
 			}
 		});
 		return Items;
     },
 	//$.getJSON的扩展函数，封装了自定义的response数据的返回和系统消息的显示
 	dolpGet: function(url, data, afterRequest) {
-		var returnData = {};
+		var returnData = null;
 		$.getJSON(url,data,function(response){
 			if(response){
-				if(response.systemMessage){
-					$.addMessage(response.systemMessage);
+				if(response.notices){
+					$.showNotices(response.notices);
 				}
-				if(response.returnData != null){
-					returnData = response.returnData;
+				if(response.logic){
+					returnData = response.logic;
 				}
 				if($.isFunction(afterRequest)){
 					afterRequest(returnData);
 				}
 			}else{
-				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
+				$.showError("Error requesting " + url + ": no response content");
 			}
 		});
 		return returnData;
 	},
     //$.post的扩展函数，封装了自定义的response数据的返回和系统消息的显示;ajax请求时显示阴影遮罩
 	dolpPost : function(url, data, afterRequest){
-		var returnData = {};
-		$.blockUI();
+		var returnData = null;
 		$.post(url,data,function(response){
 			$.unblockUI();
 			if(response){
-				if(response.systemMessage){
-					$.addMessage(response.systemMessage);
+				if(response.notices){
+					$.showNotices(response.notices);
 				}
-				if(response.returnData){
-					returnData = response.returnData;
+				if(response.logic){
+					returnData = response.logic;
 				}
 				if($.isFunction(afterRequest)){
 					afterRequest(returnData);
 				}
 			}else{
-				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
+				$.showError("Error requesting " + url + ": no response content");
 			}
 		},"json");
 		return returnData;
@@ -192,7 +176,7 @@ $.extend({
 						afterSubmitTodo.edit();
 					}
 					if($.parseJSON(xhr.responseText)){
-						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+						$.showNotices($.parseJSON(xhr.responseText).notices);
 					}
 					return [true];
 				}
@@ -211,7 +195,7 @@ $.extend({
 					}
 					$(this.selector).resetSelection();
 					if($.parseJSON(xhr.responseText)){
-						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+						$.showNotices($.parseJSON(xhr.responseText).notices);
 					}
 					return [true];
 				}
@@ -228,7 +212,7 @@ $.extend({
 						afterSubmitTodo.del();
 					}
 					if($.parseJSON(xhr.responseText)){
-						$.addMessage($.parseJSON(xhr.responseText).systemMessage);
+						$.showNotices($.parseJSON(xhr.responseText).notices);
 					}
 					return [true];
 				},
@@ -278,14 +262,14 @@ $.extend({
 		$(this).upload(url,data,function(response) {
 			$.unblockUI();
 			if(response){
-				if(response.systemMessage){
-					$.addMessage(response.systemMessage);
+				if(response.notices){
+					$.showNotices(response.notices);
 				}
 				if($.isFunction(afterRequest)){
-					afterRequest(response.returnData);
+					afterRequest(response.logic);
 				}
 			}else{
-				$.addMessageStr(null,null,"Error requesting " + url + ": no response content");
+				$.showError("Error requesting " + url + ": no response content");
 			}
 	    }, "json");
 	};

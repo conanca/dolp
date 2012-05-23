@@ -53,10 +53,10 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 				.and("jobGroup", "=", jobGroup);
 		JobDetails jobDetail = fetch(cnd);
 		if (null == jobDetail) {
-			resData.setSystemMessage(null, "获取作业失败", null);
+			resData.setError("获取作业失败");
 			return resData;
 		}
-		resData.setReturnData(jobDetail);
+		resData.setLogic(jobDetail);
 		return resData;
 	}
 
@@ -65,7 +65,7 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().pauseJob(new JobKey(jobName, jobGroup));
-			resData.setSystemMessage("已暂停作业!", null, null);
+			resData.setInfo("已暂停作业!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("暂停作业时发生异常", e);
 		}
@@ -77,7 +77,7 @@ public class JobDetailsService extends DolpBaseService<JobDetails> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().resumeJob(new JobKey(jobName, jobGroup));
-			resData.setSystemMessage("已恢复作业!", null, null);
+			resData.setInfo("已恢复作业!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("恢复作业时发生异常", e);
 		}

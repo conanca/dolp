@@ -87,7 +87,7 @@ $(function() {
 				$('#menuEditList').trigger("reloadGrid");
 			});
 		}else{
-			$.addMessageStr(null,"未通过验证",null);
+			$.showError("未通过验证");
 		}
 		return false;
 	});

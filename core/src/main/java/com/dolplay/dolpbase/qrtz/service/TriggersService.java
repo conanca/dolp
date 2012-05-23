@@ -52,7 +52,7 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		} catch (SchedulerException e) {
 			throw new RuntimeException("调度任务获取状态异常", e);
 		}
-		resData.setReturnData(isStart);
+		resData.setLogic(isStart);
 		return resData;
 	}
 
@@ -61,8 +61,8 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().start();
-			resData.setReturnData(true);
-			resData.setSystemMessage("已启动调度任务!", null, null);
+			resData.setLogic(true);
+			resData.setInfo("已启动调度任务!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("启动调度任务时发生异常", e);
 		}
@@ -74,8 +74,8 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().shutdown();
-			resData.setReturnData(true);
-			resData.setSystemMessage("已关闭调度任务!", null, null);
+			resData.setLogic(true);
+			resData.setInfo("已关闭调度任务!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("关闭调度任务时发生异常", e);
 		}
@@ -87,7 +87,7 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().pauseTrigger(new TriggerKey(triggerName, triggerGroup));
-			resData.setSystemMessage("已暂停触发器!", null, null);
+			resData.setInfo("已暂停触发器!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("暂停触发器时发生异常", e);
 		}
@@ -99,7 +99,7 @@ public class TriggersService extends DolpBaseService<Triggers> {
 		AjaxResData resData = new AjaxResData();
 		try {
 			SchedulerHandler.getScheduler().resumeTrigger(new TriggerKey(triggerName, triggerGroup));
-			resData.setSystemMessage("已恢复触发器!", null, null);
+			resData.setInfo("已恢复触发器!");
 		} catch (SchedulerException e) {
 			throw new RuntimeException("恢复触发器时发生异常", e);
 		}

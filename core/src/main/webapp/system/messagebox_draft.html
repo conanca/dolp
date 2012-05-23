@@ -16,7 +16,7 @@ $(function(){
 				$('#messageDraftboxBack').click();
 			});
 		}else{
-			$.addMessageStr(null,"未通过验证",null);
+			$.showError("未通过验证");
 		}
 	};
 	
@@ -153,7 +153,7 @@ $(function(){
 			$('#messageDraftboxReceiverUserNames').val(receiverUserNames);
 			$("#messageDraftboxUserCloseBtn").click();
 		}else{
-			$.addMessageStr(null,"请选择收件人",null);
+			$.showNotice("请选择收件人");
 		}
 	});
 

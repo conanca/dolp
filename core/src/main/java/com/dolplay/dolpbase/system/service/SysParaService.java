@@ -49,15 +49,15 @@ public class SysParaService extends DolpBaseService<SysPara> {
 		if ("del".equals(oper)) {
 			final Condition cnd = Cnd.where("ID", "IN", ids.split(","));
 			clear(cnd);
-			respData.setSystemMessage("删除成功!", null, null);
+			respData.setInfo("删除成功!");
 		} else if ("add".equals(oper)) {
 			dao().insert(sysPara);
-			respData.setSystemMessage("添加成功!", null, null);
+			respData.setInfo("添加成功!");
 		} else if ("edit".equals(oper)) {
 			dao().update(sysPara);
-			respData.setSystemMessage("修改成功!", null, null);
+			respData.setInfo("修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未知操作!", null);
+			respData.setError("未知操作!");
 		}
 		return respData;
 	}

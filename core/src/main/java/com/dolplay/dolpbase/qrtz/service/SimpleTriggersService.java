@@ -41,10 +41,10 @@ public class SimpleTriggersService extends DolpBaseService<SimpleTriggers> {
 				.and("triggerGroup", "=", triggerGroup);
 		SimpleTriggers simpleTrigger = fetch(cnd);
 		if (null == simpleTrigger) {
-			resData.setSystemMessage(null, "获取触发器详情失败", null);
+			resData.setInfo("获取触发器详情失败");
 			return resData;
 		}
-		resData.setReturnData(simpleTrigger);
+		resData.setLogic(simpleTrigger);
 		return resData;
 	}
 }

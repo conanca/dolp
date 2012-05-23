@@ -38,9 +38,9 @@ public class SystemService extends DolpBaseService<Object> {
 		AjaxResData respData = new AjaxResData();
 		String systemName = PropProvider.getProp().getString(SYSTEM_SYSTEMNAME);
 		if (Strings.isEmpty(systemName)) {
-			respData.setSystemMessage(null, "配置文件中SYSTEM_SYSTEMNAME未配置或为空", null);
+			respData.setError("配置文件中SYSTEM_SYSTEMNAME未配置或为空");
 		} else {
-			respData.setReturnData(systemName);
+			respData.setLogic(systemName);
 		}
 		return respData;
 	}
@@ -60,7 +60,7 @@ public class SystemService extends DolpBaseService<Object> {
 		for (SysEnumItem item : items) {
 			options.put(item.getText(), item.getValue());
 		}
-		respData.setReturnData(options);
+		respData.setLogic(options);
 		return respData;
 	}
 
@@ -68,8 +68,8 @@ public class SystemService extends DolpBaseService<Object> {
 	public AjaxResData getCurrentUserName(User cUser) {
 		AjaxResData respData = new AjaxResData();
 		if (cUser != null) {
-			respData.setReturnData(cUser.getName());
-			respData.setSystemMessage("用户" + cUser.getName() + "登录成功!", null, null);
+			respData.setLogic(cUser.getName());
+			respData.setInfo("用户" + cUser.getName() + "登录成功!");
 		}
 		return respData;
 	}

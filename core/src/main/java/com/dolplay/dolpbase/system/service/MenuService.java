@@ -144,7 +144,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
 		dao().execute(sql);
 		List<SimpleZTreeNode> rs = sql.getList(SimpleZTreeNode.class);
-		resData.setReturnData(rs);
+		resData.setLogic(rs);
 		return resData;
 	}
 
@@ -218,7 +218,7 @@ public class MenuService extends DolpBaseService<Menu> {
 				Cnd cnd = Cnd.where("LFT", ">=", aMenu.getLft()).and("RGT", "<=", aMenu.getRgt());
 				clear(cnd);
 			}
-			respData.setSystemMessage("删除成功!", null, null);
+			respData.setInfo("删除成功!");
 		} else if ("add".equals(oper)) {
 			//获取父菜单;
 			long parentLft = 0;
@@ -241,19 +241,19 @@ public class MenuService extends DolpBaseService<Menu> {
 			dao().execute(sql);
 			Menu brotherOfnewMenu = sql.getObject(Menu.class);
 			if (brotherOfnewMenu == null) {
-				respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
+				respData.setError("该菜单节点已满,添加失败!");
 			} else {
 				// 设置左右值
 				menu.setLft(brotherOfnewMenu.getLft() + 2);
 				menu.setRgt(brotherOfnewMenu.getRgt() + 2);
 				dao().insert(menu);
-				respData.setSystemMessage("添加成功!", null, null);
+				respData.setInfo("添加成功!");
 			}
 		} else if ("edit".equals(oper)) {
 			dao().update(menu);
-			respData.setSystemMessage("修改成功!", null, null);
+			respData.setInfo("修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未知操作!", null);
+			respData.setError("未知操作!");
 		}
 		return respData;
 	}
@@ -290,7 +290,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		dao().execute(sql);
 		List<Menu> brotherOfnewMenus = sql.getList(Menu.class);
 		if (brotherOfnewMenus == null || brotherOfnewMenus.size() == 0) {
-			respData.setSystemMessage(null, "该菜单节点已满,添加失败!", null);
+			respData.setError("该菜单节点已满,添加失败!");
 		} else {
 			// 新建菜单
 			Menu menu = new Menu();
@@ -303,7 +303,7 @@ public class MenuService extends DolpBaseService<Menu> {
 				menu.setRgt(brotherOfnewMenus.get(1).getLft() - 1);
 			}
 			dao().insert(menu);
-			respData.setSystemMessage("添加成功!", null, null);
+			respData.setInfo("添加成功!");
 		}
 
 		return respData;
@@ -371,7 +371,7 @@ public class MenuService extends DolpBaseService<Menu> {
 		List<SimpleZTreeNode> privilegeZTreeNodes = sql.getList(SimpleZTreeNode.class);
 
 		nodes.addAll(privilegeZTreeNodes);
-		respData.setReturnData(nodes);
+		respData.setLogic(nodes);
 		return respData;
 	}
 }

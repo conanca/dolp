@@ -42,45 +42,6 @@ public abstract class JqgridResData implements ResponseData {
 		records = (pager.getRecordCount());
 	}
 
-	/**
-	 * 用于简化 创建userdata对象 的帮助函数
-	 * @param returnData
-	 * @param infoMessages
-	 * @param warnMessages
-	 * @param errorMessages
-	 */
-	public void setUserdata(Object returnData, String infoMessages, String warnMessages, String errorMessages) {
-		AjaxResData userdata = new AjaxResData(returnData, new SystemMessage(infoMessages, warnMessages, errorMessages));
-		setUserdata(userdata);
-	}
-
-	/**
-	 * 用于简化 创建userdata对象的returnData 的帮助函数
-	 * @param returnData
-	 */
-	public void setReturnData(Object returnData) {
-		if (userdata != null) {
-			userdata.setReturnData(returnData);
-		} else {
-			setUserdata(new AjaxResData(returnData, null));
-		}
-	}
-
-	/**
-	 * 用于简化 创建userdata对象的systemMessage 的帮助函数
-	 * @param infoMessage
-	 * @param warnMessage
-	 * @param errorMessage
-	 */
-	public void setSystemMessage(String infoMessage, String warnMessage, String errorMessage) {
-		SystemMessage systemMessage = new SystemMessage(infoMessage, warnMessage, errorMessage);
-		if (userdata != null) {
-			userdata.setSystemMessage(systemMessage);
-		} else {
-			setUserdata(new AjaxResData(null, systemMessage));
-		}
-	}
-
 	public Integer getPage() {
 		return page;
 	}

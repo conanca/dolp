@@ -17,7 +17,7 @@ $.ajaxSetup({timeout:10000});
 // 设置ajax请求失败时报错
 $(document).ajaxError(function(e,xhr,opt){
 	$.unblockUI();
-	$.addMessageStr(null,null,xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
+	$.showError(xhr.statusText + "(" + xhr.status + ") requesting " + opt.url);
 });
 
 var serverDate;
@@ -49,9 +49,9 @@ $.extend($.jgrid.defaults, {
    	height: "100%",
 	datatype: "json",
 	viewrecords: true,
-	loadComplete: function(){
-		if($(this).getGridParam('userData')){
-			$.addMessage($(this).getGridParam('userData').systemMessage);
+	loadComplete: function(data){
+		if(data){
+			$.showNotices(data.notices);
 		}
 	}
 });

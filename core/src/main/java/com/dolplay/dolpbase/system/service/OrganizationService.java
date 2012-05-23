@@ -66,7 +66,7 @@ public class OrganizationService extends DolpBaseService<Organization> {
 				orgNode.setParent(true);
 			}
 		}
-		respData.setReturnData(orgNodes);
+		respData.setLogic(orgNodes);
 		return respData;
 	}
 
@@ -84,15 +84,15 @@ public class OrganizationService extends DolpBaseService<Organization> {
 					clear(cnd);
 				}
 			});
-			respData.setSystemMessage("删除成功!", null, null);
+			respData.setInfo("删除成功!");
 		} else if ("add".equals(oper)) {
 			dao().insert(organization);
-			respData.setSystemMessage("添加成功!", null, null);
+			respData.setInfo("添加成功!");
 		} else if ("edit".equals(oper)) {
 			dao().update(organization);
-			respData.setSystemMessage("修改成功!", null, null);
+			respData.setInfo("修改成功!");
 		} else {
-			respData.setSystemMessage(null, "未知操作!", null);
+			respData.setError("未知操作!");
 		}
 		return respData;
 	}

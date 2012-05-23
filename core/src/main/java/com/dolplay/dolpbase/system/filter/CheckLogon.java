@@ -5,7 +5,7 @@ import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.View;
 import org.nutz.mvc.view.UTF8JsonView;
 
-import com.dolplay.dolpbase.common.domain.ExceptionAjaxResData;
+import com.dolplay.dolpbase.common.domain.AjaxResData;
 
 /**
  * @author Administrator
@@ -18,9 +18,7 @@ public class CheckLogon implements ActionFilter {
 		Object obj = context.getRequest().getSession().getAttribute("logonUser");
 		if (null == obj) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
-			ExceptionAjaxResData excpAjaxResData = new ExceptionAjaxResData();
-			excpAjaxResData.setSystemMessage(null, null, "用户未登录或已退出系统!\n请先登录系统!");
-			jsonView.setData(excpAjaxResData);
+			jsonView.setData(AjaxResData.getInstanceErrorNotice("用户未登录或已退出系统!\n请先登录系统!"));
 			return jsonView;
 		} else {
 			return null;
