@@ -114,14 +114,13 @@ public class MvcSetupDefaultHandler {
 			Map<String, Method> map = Mvcs.getAtMap().getMethodMapping();
 			logger.debug("系统共有" + map.size() + "个入口方法,权限表中存有" + dbMethodPaths.size() + "个入口方法，请确认SystemModule类中是否只有"
 					+ (map.size() - dbMethodPaths.size()) + "个入口方法");
-			// 如果有一个入口方法不属于SystemModule类的并且不存在于权限表中，则抛出异常
+			// 如果发现有入口方法不属于SystemModule类的并且不存在于权限表中，则将错误信息记入日志
 			for (String reqPath : map.keySet()) {
 				Method method = map.get(reqPath);
 				String methodpath = method.getDeclaringClass().getName() + "." + method.getName();
 				if (!methodpath.contains("com.dolplay.dolpbase.system.module.SystemModule")
 						&& !dbMethodPaths.contains(methodpath)) {
-					RuntimeException e = new RuntimeException("权限表中无该方法:" + methodpath);
-					throw e;
+					logger.error("注意!权限表中无该方法:" + methodpath);
 				}
 			}
 		}
