@@ -9,7 +9,9 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
+import org.quartz.TriggerUtils;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.spi.OperableTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,19 +30,19 @@ public class SchedulerHandler {
 	}
 
 	public static Date add(JobDetail job, Trigger trigger) {
-		Date nextFireTime = trigger.getStartTime();
+		Date nextFireTime = null;
 
 		Scheduler sched;
 		try {
 			sched = getScheduler();
 			if (!sched.checkExists(job.getKey()) && !sched.checkExists(trigger.getKey())) {
 				sched.scheduleJob(job, trigger);
+				nextFireTime = TriggerUtils.computeFireTimes((OperableTrigger) trigger, null, 1).get(0);
 			} else {
 				nextFireTime = sched.getTrigger(trigger.getKey()).getNextFireTime();
 			}
 		} catch (SchedulerException e) {
 			logger.error("调度任务异常", e);
-			return null;
 		}
 
 		return nextFireTime;
