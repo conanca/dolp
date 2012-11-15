@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dolplay</groupId>
 	<artifactId>dolp</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>0.7.1</version>
 	<name>Dolp</name>
 	<url>http://dolplay.com</url>
@@ -15,9 +15,15 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-all</artifactId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
-			<version>1.b.43</version>
+			<version>1.b.45</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

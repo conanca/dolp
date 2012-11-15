@@ -22,6 +22,7 @@ import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.Organization;
+import com.dolplay.dolpbase.system.domain.Permission;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
@@ -48,7 +49,7 @@ public class MvcSetupDefaultHandler {
 			dao.create(Menu.class, true);
 			dao.create(Message.class, true);
 			dao.create(Organization.class, true);
-			dao.create(Privilege.class, true);
+			dao.create(Permission.class, true);
 			dao.create(Role.class, true);
 			dao.create(SysEnum.class, true);
 			dao.create(SysEnumItem.class, true);

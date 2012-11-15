@@ -1,5 +1,7 @@
 package com.dolplay.dolpbase;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
@@ -23,7 +25,7 @@ public class MvcSetup implements Setup {
 		IocProvider.init(Mvcs.getIoc());
 		// 初始化dolp的数据表
 		MvcSetupDefaultHandler.dolpTableInit();
-		
+
 		/**
 		 * 此处添加自定义的操作如初始化数据表,增加调度任务等
 		 * 
@@ -31,7 +33,7 @@ public class MvcSetup implements Setup {
 		 */
 
 		// 进行必要的检查操作
-		MvcSetupDefaultHandler.defaultCheck();
+		//MvcSetupDefaultHandler.defaultCheck();
 		// 增加两个dolp的调度任务
 		try {
 			DolpSchedulerAdder.add();
@@ -42,6 +44,11 @@ public class MvcSetup implements Setup {
 		MvcSetupDefaultHandler.startScheduler();
 		// 清空在线用户表
 		DaoProvider.getDao().clear("SYSTEM_CLIENT");
+
+		// 设置 Shiro 的 securityManager
+		SecurityManager securityManager = IocProvider.getIoc().get(SecurityManager.class);
+		SecurityUtils.setSecurityManager(securityManager);
+
 	}
 
 	/**

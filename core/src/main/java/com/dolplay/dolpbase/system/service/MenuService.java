@@ -3,13 +3,19 @@ package com.dolplay.dolpbase.system.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.shiro.mgt.SecurityManager;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
@@ -18,19 +24,19 @@ import com.dolplay.dolpbase.common.domain.ZTreeNode;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
-import com.dolplay.dolpbase.common.util.DolpCollectionHandler;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
 import com.dolplay.dolpbase.system.domain.MenuZTreeNode;
 import com.dolplay.dolpbase.system.domain.Privilege;
-import com.dolplay.dolpbase.system.domain.Role;
-import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.util.MvcUtils;
 
 @IocBean(args = { "refer:dao" })
 public class MenuService extends DolpBaseService<Menu> {
 
 	public static final String SYSTEM_MAXRIGHTVALUE = "SYSTEM_MAXRIGHTVALUE";
+	@Inject
+	private SecurityManager securityManager;
 
 	public MenuService(Dao dao) {
 		super(dao);
@@ -45,7 +51,8 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @param roleIds
 	 * @return
 	 */
-	private List<MenuTreeGridRow> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel, String roleIds) {
+	private List<MenuTreeGridRow> getMenuNodes(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
+			String permissionIds) {
 		nodeId = nodeId == null ? 0 : nodeId;
 		Condition cnd = null;
 		if (nodeId != 0) {
@@ -56,8 +63,8 @@ public class MenuService extends DolpBaseService<Menu> {
 			nLevel = 0;
 		}
 		Sql sql = Sqls
-				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.ID IN(SELECT DISTINCT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID IN ($roleIds)) GROUP BY NODE.ID ORDER BY NODE.LFT");
-		sql.vars().set("roleIds", roleIds);
+				.create("SELECT NODE.ID,NODE.NAME,NODE.URL,NODE.DESCRIPTION,(COUNT(PARENT.ID) - 1) AS LEVEL,NODE.LFT,NODE.RGT,NODE.RGT=NODE.LFT+1 AS ISLEAF,FALSE AS EXPANDED FROM SYSTEM_MENU AS NODE,SYSTEM_MENU AS PARENT $condition AND NODE.LFT BETWEEN PARENT.LFT AND PARENT.RGT AND NODE.PERMISSIONID IN($permissionIds) GROUP BY NODE.ID ORDER BY NODE.LFT");
+		sql.vars().set("permissionIds", permissionIds);
 		sql.setCondition(cnd);
 		// 查询实体的回调
 		sql.setCallback(Sqls.callback.entities());
@@ -84,27 +91,25 @@ public class MenuService extends DolpBaseService<Menu> {
 	 */
 	@Aop(value = "log")
 	public AdvancedJqgridResData<MenuTreeGridRow> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
-			User logonUser) {
-		if (logonUser == null) {
-			throw new RuntimeException("用户未登录!");
+			HttpServletRequest request, ServletResponse response) {
+		long[] permissionIdArr = (long[]) MvcUtils.getSubject(securityManager, request, response).getSession()
+				.getAttribute("CurrentPermission");
+		String permissionIds = "0";
+
+		if (permissionIdArr != null) {
+			for (Long permissionId : permissionIdArr) {
+				if (!Lang.isEmpty(permissionId)) {
+					permissionIds += permissionId + ",";
+				}
+			}
 		}
-		User user = dao().fetchLinks(dao().fetch(User.class, logonUser.getId()), "roles");
-		List<Role> roles = user.getRoles();
-		if (null == roles || roles.size() == 0) {
-			throw new RuntimeException("当前用户未被分配角色!");
-		}
-		String roleIds;
+		permissionIds = permissionIds.substring(0, permissionIds.length() - 1);
 		AdvancedJqgridResData<MenuTreeGridRow> jq = new AdvancedJqgridResData<MenuTreeGridRow>();
 		jq.setPage(1);
 		jq.setTotal(1);
 		jq.setRecords(0);
-		try {
-			roleIds = DolpCollectionHandler.getIdsString(roles, ",");
-			List<MenuTreeGridRow> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, roleIds);
-			jq.setRows(rows);
-		} catch (Exception e) {
-			throw new RuntimeException("获取角色ID异常!", e);
-		}
+		List<MenuTreeGridRow> rows = getMenuNodes(nodeId, nLeft, nRight, nLevel, permissionIds);
+		jq.setRows(rows);
 		return jq;
 	}
 

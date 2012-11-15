@@ -14,6 +14,9 @@ import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.shiro.crypto.RandomNumberGenerator;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -45,6 +48,10 @@ public class UserService extends DolpBaseService<User> {
 
 	public UserService(Dao dao) {
 		super(dao);
+	}
+
+	public User fetchByNumber(String number) {
+		return this.fetch(Cnd.where("NUMBER", "=", number));
 	}
 
 	@Aop(value = "log")
@@ -137,13 +144,16 @@ public class UserService extends DolpBaseService<User> {
 				return respData;
 			}
 			String defaultPass = getSysParaValue(SYSTEM_DEFAULTPASSWORD);
-			// 对默认密码进行MD5加密
-			defaultPass = DigestUtils.md5Hex(defaultPass);
-			user.setPassword(defaultPass);
+			// 对默认密码进行加盐加密
+			RandomNumberGenerator rng = new SecureRandomNumberGenerator();
+			String salt = rng.nextBytes().toBase64();
+			String hashedPasswordBase64 = new Sha256Hash(defaultPass, salt, 1024).toBase64();
+			user.setSalt(salt);
+			user.setPassword(hashedPasswordBase64);
 			respData.setInfo("添加成功!");
 			dao().insert(user);
 		} else if ("edit".equals(oper)) {
-			// 忽略“密码”字段
+			// 忽略“密码”“盐”字段
 			dao().updateIgnoreNull(user);
 			respData.setInfo("修改成功!");
 		} else {
@@ -187,6 +197,16 @@ public class UserService extends DolpBaseService<User> {
 		return respData;
 	}
 
+	public List<String> getRoleNameList(User user) {
+		user = dao().fetchLinks(user, "roles");
+		List<Role> roles = user.getRoles();
+		List<String> roleNameList = new ArrayList<String>();
+		for (Role role : roles) {
+			roleNameList.add(role.getName());
+		}
+		return roleNameList;
+	}
+
 	@Aop(value = "log")
 	public AjaxResData getCurrentRoleIdArr(Long userId) {
 		AjaxResData respData = new AjaxResData();
@@ -209,6 +229,16 @@ public class UserService extends DolpBaseService<User> {
 		Condition cnd = Cnd.wrap(sb.toString());
 		List<Privilege> privileges = dao().query(Privilege.class, cnd, null);
 		return privileges;
+	}
+
+	public long[] getCurrentPermissionIdList(Long userId) {
+		String sqlStr = "SELECT ID from SYSTEM_PERMISSION WHERE ID IN (SELECT DISTINCT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE ROLEID IN(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID=$userId))";
+		Sql sql = Sqls.create(sqlStr);
+		sql.vars().set("userId", userId);
+		sql.setCallback(Sqls.callback.longs());
+		dao().execute(sql);
+		long[] permissionIdArr = (long[]) sql.getResult();
+		return permissionIdArr;
 	}
 
 	@Aop(value = "log")
@@ -243,15 +273,20 @@ public class UserService extends DolpBaseService<User> {
 	public AjaxResData changePasswordForCurrentUser(User user, String oldPassword, String newPassword) {
 		AjaxResData respData = new AjaxResData();
 		// 对输入的原密码进行MD5加密
-		oldPassword = DigestUtils.md5Hex(oldPassword);
+		String salt = user.getSalt();
+		String hashedPasswordBase64 = new Sha256Hash(oldPassword, salt, 1024).toBase64();
 		// 比较输入的原密码和数据库中的原密码
-		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId()).and("PASSWORD", "=", oldPassword));
+		int countAuthenticatedUser = count(Cnd.where("ID", "=", user.getId())
+				.and("PASSWORD", "=", hashedPasswordBase64));
 		if (countAuthenticatedUser == 0) {
 			respData.setError("原密码错误!");
 		} else {
 			// 对输入的新密码进行MD5加密
-			newPassword = DigestUtils.md5Hex(newPassword);
-			user.setPassword(newPassword);
+			RandomNumberGenerator rng = new SecureRandomNumberGenerator();
+			salt = rng.nextBytes().toBase64();
+			hashedPasswordBase64 = new Sha256Hash(newPassword, salt, 1024).toBase64();
+			user.setSalt(salt);
+			user.setPassword(hashedPasswordBase64);
 			dao().update(user);
 			respData.setInfo("密码修改成功!");
 		}

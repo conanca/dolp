@@ -28,10 +28,8 @@ public class Role {
 	private Organization organization;
 	@ManyMany(target = User.class, relation = "SYSTEM_USER_ROLE", from = "ROLEID", to = "USERID")
 	private List<User> users;
-	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_MENU", from = "ROLEID", to = "MENUID")
-	private List<Menu> menus;
-	@ManyMany(target = Menu.class, relation = "SYSTEM_ROLE_PRIVILEGE", from = "ROLEID", to = "PRIVILEGEID")
-	private List<Privilege> privileges;
+	@ManyMany(target = Permission.class, relation = "SYSTEM_ROLE_PERMISSION", from = "ROLEID", to = "PERMISSIONID")
+	private List<Permission> permissions;
 
 	public Long getId() {
 		return id;
@@ -89,19 +87,11 @@ public class Role {
 		this.users = users;
 	}
 
-	public List<Menu> getMenus() {
-		return menus;
+	public List<Permission> getPermissions() {
+		return permissions;
 	}
 
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-
-	public List<Privilege> getPrivileges() {
-		return privileges;
-	}
-
-	public void setPrivileges(List<Privilege> privileges) {
-		this.privileges = privileges;
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
 	}
 }

@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.domain.jqgrid.StandardJqgridResData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.StringUtils;
+import com.dolplay.dolpbase.system.domain.Permission;
 import com.dolplay.dolpbase.system.domain.Role;
 
 @IocBean(args = { "refer:dao" })
@@ -99,6 +101,17 @@ public class RoleService extends DolpBaseService<Role> {
 		}
 		respData.setLogic(roleOptions);
 		return respData;
+	}
+
+	public List<String> getPermissionNameList(Role role) {
+		List<String> permissionNameList = new ArrayList<String>();
+
+		role = dao().fetchLinks(role, "permissions");
+		List<Permission> permissions = role.getPermissions();
+		for (Permission permission : permissions) {
+			permissionNameList.add(permission.getName());
+		}
+		return permissionNameList;
 	}
 
 	@Aop(value = "log")

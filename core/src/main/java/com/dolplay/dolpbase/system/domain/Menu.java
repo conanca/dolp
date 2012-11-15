@@ -8,8 +8,8 @@ import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.ColType;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.ManyMany;
+import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("SYSTEM_MENU")
@@ -29,8 +29,10 @@ public class Menu {
 	private Long lft;
 	@Column
 	private Long rgt;
-	@Many(target = Privilege.class, field = "menuId")
-	private List<Privilege> privileges;
+	@Column
+	private Long permissionId;
+	@One(target = Permission.class, field = "permissionId")
+	private Permission permission;
 	@ManyMany(target = Role.class, relation = "SYSTEM_ROLE_MENU", from = "MENUID", to = "ROLEID")
 	private List<Role> roles;
 
@@ -93,12 +95,20 @@ public class Menu {
 		this.rgt = rgt;
 	}
 
-	public List<Privilege> getPrivileges() {
-		return privileges;
+	public Long getPermissionId() {
+		return permissionId;
 	}
 
-	public void setPrivileges(List<Privilege> privileges) {
-		this.privileges = privileges;
+	public void setPermissionId(Long permissionId) {
+		this.permissionId = permissionId;
+	}
+
+	public Permission getPermission() {
+		return permission;
+	}
+
+	public void setPermission(Permission permission) {
+		this.permission = permission;
 	}
 
 	public List<Role> getRoles() {

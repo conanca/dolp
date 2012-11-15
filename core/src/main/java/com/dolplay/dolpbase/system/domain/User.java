@@ -1,7 +1,5 @@
 package com.dolplay.dolpbase.system.domain;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -21,9 +19,12 @@ public class User {
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String number;
 	@Column
-	@ColDefine(type = ColType.CHAR, width = 32)
+	@ColDefine(type = ColType.CHAR, width = 44)
 	@JsonField(ignore = true)
 	private String password;
+	@Column
+	@ColDefine(type = ColType.CHAR, width = 24)
+	private String salt;
 	@Column
 	@ColDefine(type = ColType.VARCHAR, width = 20)
 	private String name;
@@ -47,19 +48,6 @@ public class User {
 	@Many(target = Message.class, field = "senderUserId")
 	private List<Message> sentMessages;
 
-	public static User getInstance(ResultSet rs) throws SQLException {
-		User user = new User();
-		user.id = rs.getLong("ID");
-		user.number = rs.getString("NUMBER");
-		user.password = rs.getString("PASSWORD");
-		user.name = rs.getString("NAME");
-		user.gender = rs.getString("GENDER");
-		user.age = rs.getInt("AGE");
-		user.birthday = rs.getString("BIRTHDAY");
-		user.phone = rs.getString("PHONE");
-		return user;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -82,6 +70,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public String getName() {

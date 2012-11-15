@@ -1,6 +1,7 @@
 package com.dolplay.dolpbase.system.module;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -10,7 +11,6 @@ import org.nutz.mvc.annotation.Param;
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.system.domain.Menu;
-import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.service.MenuService;
 
 @IocBean
@@ -98,8 +98,8 @@ public class MenuModule {
 	 */
 	@At
 	public ResponseData dispMenu(@Param("nodeid") Long nodeId, @Param("n_left") Long nLeft,
-			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpSession session) {
-		User logonUser = (User) session.getAttribute("logonUser");
-		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, logonUser);
+			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpServletRequest request,
+			ServletResponse response) {
+		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, request, response);
 	}
 }
