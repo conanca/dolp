@@ -24,7 +24,6 @@ import org.nutz.mvc.annotation.Param;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
 import com.dolplay.dolpbase.system.util.MvcUtils;
@@ -37,8 +36,6 @@ public class SystemModule {
 	private SystemService systemService;
 	@Inject
 	private UserService userService;
-	@Inject
-	private ClientService clientService;
 	@Inject
 	private SecurityManager securityManager;
 
