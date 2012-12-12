@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.filepool.FilePool;
 import org.nutz.filepool.NutFilePool;
 import org.nutz.ioc.Ioc;
@@ -42,6 +43,7 @@ public class MessageModule {
 	private MessageService messageService;
 
 	@At
+	@RequiresPermissions("message:read:*")
 	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch, @Param("senderName") String senderName, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
@@ -49,6 +51,7 @@ public class MessageModule {
 	}
 
 	@At
+	@RequiresPermissions("message:read:*")
 	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
@@ -56,6 +59,7 @@ public class MessageModule {
 	}
 
 	@At
+	@RequiresPermissions("message:read:*")
 	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
@@ -63,11 +67,13 @@ public class MessageModule {
 	}
 
 	@At("/getAttachments/*")
+	@RequiresPermissions("message:read:*")
 	public ResponseData getAttachments(Long messageId) {
 		return messageService.getAttachments(messageId);
 	}
 
 	@At
+	@RequiresPermissions("message:send:*")
 	public ResponseData sendMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc, HttpSession session) throws IOException {
@@ -76,6 +82,7 @@ public class MessageModule {
 	}
 
 	@At
+	@RequiresPermissions("message:create:*")
 	public ResponseData saveMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc, HttpSession session) throws IOException {
@@ -84,28 +91,33 @@ public class MessageModule {
 	}
 
 	@At
+	@RequiresPermissions("message:delete:*")
 	public ResponseData deleteReceivedMessage(@Param("messageId") Long messageId, HttpSession session) {
 		User currentUser = (User) session.getAttribute("logonUser");
 		return messageService.deleteReceivedMessage(messageId, currentUser);
 	}
 
 	@At
+	@RequiresPermissions("message:delete:*")
 	public ResponseData deleteSentMessage(@Param("messageId") Long messageId) {
 		return messageService.deleteSentMessage(messageId);
 	}
 
 	@At
+	@RequiresPermissions("message:delete:*")
 	public ResponseData deleteDraftMessage(@Param("messageId") Long messageId, Ioc ioc) {
 		return messageService.deleteDraftMessage(messageId, ioc);
 	}
 
 	@At("/getReceiver/*")
+	@RequiresPermissions("message:read:*")
 	public ResponseData getReceiver(Long messageId) {
 		return messageService.getReceiverUserNameNum(messageId);
 	}
 
 	@At
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
+	@RequiresPermissions("message:create:*")
 	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc, HttpSession session)
 			throws IOException {
 		User cUser = (User) session.getAttribute("logonUser");
@@ -116,6 +128,7 @@ public class MessageModule {
 	@Ok("raw:stream")
 	@Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class),
 			@By(type = CheckAttachmentOperation.class) })
+	@RequiresPermissions("message:read:*")
 	public InputStream downloadAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc,
 			HttpServletResponse response) throws FileNotFoundException, UnsupportedEncodingException {
 		FilePool attachmentPool = ioc.get(NutFilePool.class, "attachmentPool");

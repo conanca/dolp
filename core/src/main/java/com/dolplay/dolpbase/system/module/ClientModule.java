@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.module;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -18,12 +19,14 @@ public class ClientModule {
 	private ClientService clientService;
 
 	@At
+	@RequiresPermissions("client:read:*")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Client clientSearch, @Param("userName") String userName) {
 		return clientService.getGridData(jqReq, isSearch, clientSearch, userName);
 	}
 
 	@At
+	@RequiresPermissions("client:kickoff:*")
 	public ResponseData kickOff(@Param("sessionIds[]") String[] sessionIds) {
 		return clientService.kickOff(sessionIds);
 	}

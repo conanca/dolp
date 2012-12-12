@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.module;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -18,17 +19,20 @@ public class RoleModule {
 	private RoleService roleService;
 
 	@At
+	@RequiresPermissions("role:read:*")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Role roleSearch) {
 		return roleService.getGridData(jqReq, isSearch, roleSearch);
 	}
 
 	@At
+	@RequiresPermissions("role:create, delete, update:*")
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Role role) {
 		return roleService.CUDRole(oper, ids, role);
 	}
 
 	@At
+	@RequiresPermissions("role:assign_permission:*")
 	public ResponseData assignPrivilege(@Param("roleId") String roleId, @Param("checkedMenus[]") String[] checkedMenus,
 			@Param("checkedPrivileges[]") String[] checkedPrivileges,
 			@Param("unCheckedMenus[]") String[] unCheckedMenus,
@@ -38,6 +42,7 @@ public class RoleModule {
 	}
 
 	@At("/getAllRoleMap/*")
+	@RequiresPermissions("role:read:*")
 	public ResponseData getAllRoleMap(Boolean isOrgaRela) {
 		return roleService.getAllRoleMap(isOrgaRela);
 	}
@@ -50,6 +55,7 @@ public class RoleModule {
 	 * @return
 	 */
 	@At
+	@RequiresPermissions("user:read_post:*")
 	public ResponseData getUserPostGridData(@Param("..") JqgridReqData jqReq,
 			@Param("organizationId") Long organizationId, @Param("userId") Long userId) {
 		return roleService.getUserPostGridData(jqReq, organizationId, userId);

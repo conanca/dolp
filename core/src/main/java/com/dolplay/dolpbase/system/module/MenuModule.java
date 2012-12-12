@@ -3,6 +3,7 @@ package com.dolplay.dolpbase.system.module;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -27,6 +28,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getGridData/*")
+	@RequiresPermissions("menu:read:*")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("parentId") Long parentId,
 			@Param("_search") Boolean isSearch, @Param("..") Menu menuSearch) {
 		return menuService.getGridData(jqReq, parentId, isSearch, menuSearch);
@@ -43,6 +45,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/editRow/*")
+	@RequiresPermissions("menu:create, delete, update:*")
 	public ResponseData editRow(Long parentId, @Param("oper") String oper, @Param("ids") String ids,
 			@Param("..") Menu menu) {
 		return menuService.CUDMenu(oper, ids, menu, parentId);
@@ -57,6 +60,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
+	@RequiresPermissions("menu:create:*")
 	public ResponseData addParentMenu(@Param("parentId") Long parentId, @Param("name") String name,
 			@Param("description") String description) {
 		return menuService.addMenuIsNotLeaf(parentId, name, description);
@@ -72,6 +76,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
+	@RequiresPermissions("menu:read:*")
 	public ResponseData getNodes(@Param("id") Long id, @Param("name") String name) {
 		return menuService.getTreeNodes(id);
 	}
@@ -82,6 +87,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At("/getPrivilegeNodesByRoleId/*")
+	@RequiresPermissions("menu:read:*")
 	public ResponseData getPrivilegeNodesByRoleId(Long roleId, @Param("id") Long id, @Param("lft") Long lft,
 			@Param("rgt") Long rgt) {
 		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt);
@@ -97,6 +103,7 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
+	@RequiresPermissions("menu:read:*")
 	public ResponseData dispMenu(@Param("nodeid") Long nodeId, @Param("n_left") Long nLeft,
 			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpServletRequest request,
 			ServletResponse response) {

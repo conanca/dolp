@@ -1,0 +1,68 @@
+<script type="text/javascript">
+$(function() {
+	var privilegeMenuTreeSetting = {
+		async: {
+			enable: true,
+			url: "system/menu/getNodes",
+			dataFilter: ajaxDataFilter,
+			autoParam:["name", "id"]
+		},
+		callback:{
+			beforeClick: function(treeId, treeNode){
+				$("#privilegeList").setGridParam({url:"system/privilege/getGridData?menuId="+treeNode.id,page:1});
+				$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:treeNode.id}});
+				$("#privilegeList").trigger('reloadGrid');
+			}
+		}
+	};
+	$.fn.zTree.init($("#privilegeMenuTreeUl"), privilegeMenuTreeSetting);
+	var privilegeMenuTree = $.fn.zTree.getZTreeObj("privilegeMenuTreeUl");
+
+	//点击刷新按钮
+	$("#privilegeMenuTreeRefreshBtn").click(function() {
+		privilegeMenuTree.reAsyncChildNodes(null, "refresh");
+		$("#privilegeList").setGridParam({url:"system/privilege/getGridData?menuId=0",page:1});
+		$("#privilegeList").setColProp('menuId',{editoptions:{defaultValue:"0"}});
+		$("#privilegeList").trigger('reloadGrid');
+	});
+
+	$("#permissionList").jqGrid({
+		jsonReader:{
+			repeatitems: false
+		},
+		caption:"权限列表",
+		url:'system/permission/getGridData?menuId=0',
+		editurl:"system/permission/editRow",
+		colNames: ["id","权限名","方法路径","描述","menuId"],
+		colModel: [
+			{name: "id",index:'id',width:0,hidden:true,editable:true},
+			{name: "name",index:'name', width:100,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name: "methodPath",index:'methodPath',width:300,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}},
+			{name: "description",index:'description',width:200,editable:true, edittype:'textarea'},
+			{name: "menuId",index:'menuId',width:0,hidden:true,editable:true,editrules:{required:true},formoptions:{elmsuffix:' <font color="red">*</font>'}}
+		],
+		pager: '#privilegePager',
+		sortname: 'id',
+		sortorder: "asc",
+		multiselect: true
+	});
+	$("#permissionList").setJqGridCUD('#permissionPager',{edit:true,add:true,del:true,search:false});
+	// 开启查询功能
+	$("#permissionList").addSearchToolbar('#permissionPager');
+});
+</script>
+<table width='100%'>
+	<tr>
+		<td valign="top" width="15%">
+			<input type="button" value="刷新" id="privilegeMenuTreeRefreshBtn"/>
+			<div>
+				<ul id="privilegeMenuTreeUl" class="ztree"></ul>
+			</div>
+		</td>
+		<td class="linebetween">&nbsp;</td>
+		<td valign="top">
+			<table id="permissionList"></table>
+			<div id="permissionPager"></div>
+		</td>
+	</tr>
+</table>

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -28,38 +29,45 @@ public class UserModule {
 	private UserService userService;
 
 	@At
+	@RequiresPermissions("user:read:*")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") User searchUser) {
 		return userService.getGridData(jqReq, isSearch, searchUser);
 	}
 
 	@At
+	@RequiresPermissions("user:create:*")
 	public ResponseData getNewUserNumber() {
 		return userService.getNewUserNumber();
 	}
 
 	@At
+	@RequiresPermissions("user:create, delete, update:*")
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") User user) {
 		return userService.CUDUser(oper, ids, user);
 	}
 
 	@At
+	@RequiresPermissions("user:assign_role:*")
 	public ResponseData assignRole(@Param("userId") Long userId, @Param("assignedRoleIds[]") String[] roleIds) {
 		return userService.updateRole(userId, roleIds);
 	}
 
 	@At("/getCurrentRoleIDs/*")
+	@RequiresPermissions("user:read_role:*")
 	public ResponseData getCurrentRoleIDs(Long userId) {
 		return userService.getCurrentRoleIdArr(userId);
 	}
 
 	@At
+	@RequiresPermissions("user:assign_post:*")
 	public ResponseData assignPost(@Param("userId") Long userId, @Param("orgId") String orgId,
 			@Param("selectedPostIds[]") String[] postIds) {
 		return userService.updatePost(userId, orgId, postIds);
 	}
 
 	@At
+	@RequiresPermissions("user:change_pwd:[current_user]")
 	public ResponseData changeCurrentUserPassword(HttpSession session, @Param("oldPassword") String oldPassword,
 			@Param("newPassword") String newPassword) {
 		User cUser = (User) session.getAttribute("logonUser");
@@ -67,24 +75,28 @@ public class UserModule {
 	}
 
 	@At
+	@RequiresPermissions("user:change_pwd:*")
 	public ResponseData changeUserPassword(@Param("userId") Long userId, @Param("newPassword") String newPassword) {
 		return userService.changePasswordForAUser(userId, newPassword);
 	}
 
 	@At
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:tempFileUpload" })
+	@RequiresPermissions("user:import:*")
 	public ResponseData importUsers(@Param("userImportFile") File f) {
 		return userService.importUsers(f);
 	}
 
 	@At
 	@Ok("jasper")
+	@RequiresPermissions("user:export:*")
 	public JRHtmlExporter export(ServletContext context) {
 		return userService.exportUsers(context);
 	}
 
 	@At
 	@Ok("jasper2:/reports/users.jasper")
+	@RequiresPermissions("user:export2:*")
 	public Object[] export2() {
 		return userService.exportUsers2();
 	}

@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase.system.module;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -18,12 +19,14 @@ public class SysParaModule {
 	private SysParaService sysParaService;
 
 	@At
+	@RequiresPermissions("syspara:read:*")
 	public ResponseData getGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") SysPara sysParaSearch) {
 		return sysParaService.getGridData(jqReq, isSearch, sysParaSearch);
 	}
 
 	@At
+	@RequiresPermissions("syspara:create, delete, update:*")
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") SysPara sysPara) {
 		return sysParaService.CUDSysPara(oper, ids, sysPara);
 	}
