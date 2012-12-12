@@ -82,18 +82,6 @@ public class MenuModule {
 	}
 
 	/**
-	 * 角色管理页面中的权限分配菜单树显示
-	 * @param roleId
-	 * @return
-	 */
-	@At("/getPrivilegeNodesByRoleId/*")
-	@RequiresPermissions("menu:read:*")
-	public ResponseData getPrivilegeNodesByRoleId(Long roleId, @Param("id") Long id, @Param("lft") Long lft,
-			@Param("rgt") Long rgt) {
-		return menuService.getPrivilegeTreeNodesByRoleId(roleId, id, lft, rgt);
-	}
-
-	/**
 	 * west布局的菜单显示
 	 * @param nodeId
 	 * @param nLeft

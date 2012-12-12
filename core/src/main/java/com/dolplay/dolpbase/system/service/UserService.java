@@ -37,7 +37,6 @@ import com.dolplay.dolpbase.common.report.WebappDataSource;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.ExcelHandler;
 import com.dolplay.dolpbase.common.util.StringUtils;
-import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
 
@@ -219,16 +218,6 @@ public class UserService extends DolpBaseService<User> {
 		long[] currentRoleIDs = (long[]) sql.getResult();
 		respData.setLogic(currentRoleIDs);
 		return respData;
-	}
-
-	@Aop(value = "log")
-	public List<Privilege> getCurrentPrivileges(Long userId) {
-		StringBuilder sb = new StringBuilder(
-				"ID IN (SELECT DISTINCT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE ROLEID IN(SELECT ROLEID FROM SYSTEM_USER_ROLE WHERE USERID='");
-		sb.append(userId).append("'))");
-		Condition cnd = Cnd.wrap(sb.toString());
-		List<Privilege> privileges = dao().query(Privilege.class, cnd, null);
-		return privileges;
 	}
 
 	public long[] getCurrentPermissionIdList(Long userId) {

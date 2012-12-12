@@ -20,15 +20,12 @@ import org.nutz.lang.Strings;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.SimpleZTreeNode;
-import com.dolplay.dolpbase.common.domain.ZTreeNode;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Menu;
 import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
-import com.dolplay.dolpbase.system.domain.MenuZTreeNode;
-import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.util.MvcUtils;
 
 @IocBean(args = { "refer:dao" })
@@ -314,69 +311,4 @@ public class MenuService extends DolpBaseService<Menu> {
 		return respData;
 	}
 
-	/**
-	 * 角色管理页面中的权限分配菜单树显示
-	 * @param roleId
-	 * @param nodeId
-	 * @param nLeft
-	 * @param nRight
-	 * @param nLevel
-	 * @return
-	 */
-	@Aop(value = "log")
-	public AjaxResData getPrivilegeTreeNodesByRoleId(Long roleId, Long nodeId, Long nLeft, Long nRight) {
-		AjaxResData respData = new AjaxResData();
-		List<ZTreeNode> nodes = new ArrayList<ZTreeNode>();
-		roleId = roleId == null ? 0 : roleId;
-
-		// 获取菜单数据节点
-		long parentLft;
-		long parentRgt = 0;
-		nodeId = nodeId == null ? 0 : nodeId;
-		if (nodeId == 0) {
-			parentLft = 0;
-			// 取系统参数:"菜单节点最大Rigth值"
-			long rootRgt = Long.valueOf(getSysParaValue(SYSTEM_MAXRIGHTVALUE));
-			if (rootRgt <= 0) {
-				throw new RuntimeException("系统参数:\"菜单节点最大Rigth值\"错误!");
-			}
-			parentRgt = rootRgt;
-		} else {
-			Menu parentNode = fetch(nodeId);
-			parentLft = parentNode.getLft();
-			parentRgt = parentNode.getRgt();
-		}
-		Sql sql = Sqls
-				.create("SELECT M1.*,M1.ID IN(SELECT MENUID FROM SYSTEM_ROLE_MENU WHERE SYSTEM_ROLE_MENU.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM  SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
-		sql.params().set("roleId", roleId);
-		sql.params().set("parentLft", parentLft);
-		sql.params().set("parentRgt", parentRgt);
-		// 查询实体的回调
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(MenuZTreeNode.class));
-		dao().execute(sql);
-		List<MenuZTreeNode> menuZTreeNodes = sql.getList(MenuZTreeNode.class);
-		// 如果菜单含操作权限数据，则将其设为父节点
-		for (MenuZTreeNode menuZTreeNode : menuZTreeNodes) {
-			long privilegesCount = dao().count(Privilege.class, Cnd.where("MENUID", "=", menuZTreeNode.getId()));
-			if (privilegesCount > 0) {
-				menuZTreeNode.setParent(true);
-			}
-		}
-		nodes.addAll(menuZTreeNodes);
-
-		// 获取权限数据节点
-		sql = Sqls
-				.create("SELECT ID,NAME,ID IN(SELECT PRIVILEGEID FROM SYSTEM_ROLE_PRIVILEGE WHERE SYSTEM_ROLE_PRIVILEGE.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,FALSE AS ISPARENT FROM SYSTEM_PRIVILEGE WHERE MENUID=@nodeId");
-		sql.params().set("roleId", roleId);
-		sql.params().set("nodeId", nodeId);
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
-		dao().execute(sql);
-		List<SimpleZTreeNode> privilegeZTreeNodes = sql.getList(SimpleZTreeNode.class);
-
-		nodes.addAll(privilegeZTreeNodes);
-		respData.setLogic(nodes);
-		return respData;
-	}
 }

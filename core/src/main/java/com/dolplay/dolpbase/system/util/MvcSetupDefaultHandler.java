@@ -1,15 +1,10 @@
 package com.dolplay.dolpbase.system.util;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
-import org.nutz.mvc.Mvcs;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -24,7 +19,6 @@ import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.Organization;
 import com.dolplay.dolpbase.system.domain.Permission;
 import com.dolplay.dolpbase.system.domain.PoolFile;
-import com.dolplay.dolpbase.system.domain.Privilege;
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.SysEnum;
 import com.dolplay.dolpbase.system.domain.SysEnumItem;
@@ -99,31 +93,4 @@ public class MvcSetupDefaultHandler {
 		}
 	}
 
-	public static void defaultCheck() {
-		// 检查入口方法存在于权限表中
-		Boolean isCheck = PropProvider.getProp().getBoolean("SYSTEM_ISCHECK_METHOD");
-		if (null != isCheck && isCheck) {
-			logger.info("检查入口方法存在于权限表中");
-			Dao dao = DaoProvider.getDao();
-			// 获取权限表中所有的方法列表
-			List<Privilege> privilegeList = dao.query(Privilege.class, null, null);
-			Set<String> dbMethodPaths = new HashSet<String>();
-			for (Privilege privilege : privilegeList) {
-				dbMethodPaths.add(privilege.getMethodPath());
-			}
-			// 获取系统所有的入口方法
-			Map<String, Method> map = Mvcs.getAtMap().getMethodMapping();
-			logger.debug("系统共有" + map.size() + "个入口方法,权限表中存有" + dbMethodPaths.size() + "个入口方法，请确认SystemModule类中是否只有"
-					+ (map.size() - dbMethodPaths.size()) + "个入口方法");
-			// 如果发现有入口方法不属于SystemModule类的并且不存在于权限表中，则将错误信息记入日志
-			for (String reqPath : map.keySet()) {
-				Method method = map.get(reqPath);
-				String methodpath = method.getDeclaringClass().getName() + "." + method.getName();
-				if (!methodpath.contains("com.dolplay.dolpbase.system.module.SystemModule")
-						&& !dbMethodPaths.contains(methodpath)) {
-					logger.error("注意!权限表中无该方法:" + methodpath);
-				}
-			}
-		}
-	}
 }

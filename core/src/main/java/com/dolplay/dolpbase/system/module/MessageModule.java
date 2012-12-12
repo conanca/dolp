@@ -18,8 +18,6 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.By;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
@@ -30,9 +28,6 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Message;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.filter.CheckAttachmentOperation;
-import com.dolplay.dolpbase.system.filter.CheckLogon;
-import com.dolplay.dolpbase.system.filter.CheckPrivilege;
 import com.dolplay.dolpbase.system.service.MessageService;
 
 @IocBean
@@ -126,8 +121,6 @@ public class MessageModule {
 
 	@At
 	@Ok("raw:stream")
-	@Filters({ @By(type = CheckLogon.class), @By(type = CheckPrivilege.class),
-			@By(type = CheckAttachmentOperation.class) })
 	@RequiresPermissions("message:read:*")
 	public InputStream downloadAttachment(@Param("id") Long id, @Param("name") String name, Ioc ioc,
 			HttpServletResponse response) throws FileNotFoundException, UnsupportedEncodingException {
