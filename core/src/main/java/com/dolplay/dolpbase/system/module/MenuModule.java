@@ -76,7 +76,7 @@ public class MenuModule {
 	 */
 	@At
 	@RequiresPermissions("menu:read:*")
-	public ResponseData getNodes(@Param("id") Long id, @Param("name") String name) {
+	public ResponseData getNodes(@Param("id") Long id) {
 		return menuService.getTreeNodes(id);
 	}
 

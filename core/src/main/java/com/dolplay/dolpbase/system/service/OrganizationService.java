@@ -58,7 +58,7 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData getNodes(Long id, String name) {
+	public AjaxResData getNodes(Long id) {
 		AjaxResData respData = new AjaxResData();
 		id = id == null ? 0 : id;
 		Sql sql = Sqls

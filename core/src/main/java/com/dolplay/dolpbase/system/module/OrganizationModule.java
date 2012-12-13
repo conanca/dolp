@@ -34,7 +34,7 @@ public class OrganizationModule {
 
 	@At
 	@RequiresPermissions("organization:read:*")
-	public ResponseData getNodes(@Param("id") Long id, @Param("name") String name) {
-		return organizationService.getNodes(id, name);
+	public ResponseData getNodes(@Param("id") Long id) {
+		return organizationService.getNodes(id);
 	}
 }
