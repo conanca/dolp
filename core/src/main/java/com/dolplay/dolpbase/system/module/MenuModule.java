@@ -1,7 +1,6 @@
 package com.dolplay.dolpbase.system.module;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -93,8 +92,7 @@ public class MenuModule {
 	@At
 	@RequiresPermissions("menu:read:*")
 	public ResponseData dispMenu(@Param("nodeid") Long nodeId, @Param("n_left") Long nLeft,
-			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpServletRequest request,
-			ServletResponse response) {
-		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, request, response);
+			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpSession session) {
+		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, session);
 	}
 }

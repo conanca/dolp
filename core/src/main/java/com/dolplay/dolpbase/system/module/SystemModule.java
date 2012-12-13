@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
@@ -24,6 +25,7 @@ import org.nutz.mvc.annotation.Param;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.system.domain.User;
+import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
 import com.dolplay.dolpbase.system.util.MvcUtils;
@@ -36,6 +38,8 @@ public class SystemModule {
 	private SystemService systemService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private ClientService clientService;
 	@Inject
 	private SecurityManager securityManager;
 
@@ -67,16 +71,19 @@ public class SystemModule {
 			ThreadContext.bind(subject);
 			subject.login(token);
 			User user = userService.fetchByNumber(number);
+			session.setAttribute("logonUser", user);
 			long[] permissionIdArr = userService.getCurrentPermissionIdList(user.getId());
-			subject.getSession().setAttribute("CurrentPermission", permissionIdArr);
+			session.setAttribute("CurrentPermission", permissionIdArr);
+		} catch (UnknownAccountException e) {
+			throw new RuntimeException("用户不存在");
 		} catch (AuthenticationException e) {
-			throw new RuntimeException("用户不存在或密码错误", e);
+			throw new RuntimeException("验证错误");
 		} catch (Exception e) {
-			throw new RuntimeException("登录失败", e);
+			throw new RuntimeException("登录失败");
 		}
 
 		// 将该session相应的登录信息放入在线用户表中
-		//clientService.insert(session, request);
+		clientService.insert(session, request);
 	}
 
 	@At
