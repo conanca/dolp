@@ -12,7 +12,7 @@ import com.dolplay.dolpbase.system.domain.Permission;
 import com.dolplay.dolpbase.system.service.PermissionService;
 
 @IocBean
-@At("/system/privilege")
+@At("/system/permission")
 public class PermissionModule {
 
 	@Inject
@@ -28,6 +28,11 @@ public class PermissionModule {
 	@At
 	@RequiresPermissions("permission:create, delete, update:*")
 	public ResponseData editRow(@Param("oper") String oper, @Param("ids") String ids, @Param("..") Permission permission) {
-		return permissionService.CUDPrivilege(oper, ids, permission);
+		return permissionService.CUDPermission(oper, ids, permission);
+	}
+
+	@At("/permissionTreeNodes/*")
+	public ResponseData getPermissionTreeNodesByRoleId(Long roleId, @Param("id") Long id) {
+		return permissionService.getPermissionTreeNodesByRoleId(roleId, id);
 	}
 }

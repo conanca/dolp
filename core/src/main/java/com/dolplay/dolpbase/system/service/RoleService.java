@@ -115,38 +115,25 @@ public class RoleService extends DolpBaseService<Role> {
 	}
 
 	@Aop(value = "log")
-	public AjaxResData updateRolePrivileges(final String roleId, final String[] checkedMenus,
-			final String[] checkedPrivileges, final String[] unCheckedMenus, final String[] unCheckedPrivileges) {
+	public AjaxResData updateRolePermissions(final String roleId, final String[] checkedPermissions,
+			final String[] unCheckedPermissions) {
 		AjaxResData respData = new AjaxResData();
 
 		Trans.exec(new Atom() {
 			public void run() {
 				// 删除该角色未选中的菜单项和操作权限
-				if (unCheckedMenus != null && unCheckedMenus.length > 0) {
-					dao().clear("SYSTEM_ROLE_MENU",
-							Cnd.where("ROLEID", "=", roleId).and("MENUID", "in", unCheckedMenus));
-				}
-				if (unCheckedPrivileges != null && unCheckedMenus.length > 0) {
-					dao().clear("SYSTEM_ROLE_PRIVILEGE",
-							Cnd.where("ROLEID", "=", roleId).and("PRIVILEGEID", "in", unCheckedPrivileges));
+				if (unCheckedPermissions != null) {
+					dao().clear("SYSTEM_ROLE_PERMISSION",
+							Cnd.where("ROLEID", "=", roleId).and("PERMISSIONID", "in", unCheckedPermissions));
 				}
 				// 添加该角色选中的菜单项和操作权限，如果已存在则不添加
-				if (checkedMenus != null) {
-					for (String checkedMenu : checkedMenus) {
-						int checkedMenuCount = dao().count("SYSTEM_ROLE_MENU",
-								Cnd.where("ROLEID", "=", roleId).and("MENUID", "=", checkedMenu));
-						if (checkedMenuCount == 0) {
-							dao().insert("SYSTEM_ROLE_MENU", Chain.make("ROLEID", roleId).add("MENUID", checkedMenu));
-						}
-					}
-				}
-				if (checkedPrivileges != null) {
-					for (String checkedPrivilege : checkedPrivileges) {
-						int checkedPrivilegeCount = dao().count("SYSTEM_ROLE_PRIVILEGE",
-								Cnd.where("ROLEID", "=", roleId).and("PRIVILEGEID", "=", checkedPrivilege));
-						if (checkedPrivilegeCount == 0) {
-							dao().insert("SYSTEM_ROLE_PRIVILEGE",
-									Chain.make("ROLEID", roleId).add("PRIVILEGEID", checkedPrivilege));
+				if (checkedPermissions != null) {
+					for (String checkedPermission : checkedPermissions) {
+						int checkedPermissionCount = dao().count("SYSTEM_ROLE_PERMISSION",
+								Cnd.where("ROLEID", "=", roleId).and("PERMISSIONID", "=", checkedPermission));
+						if (checkedPermissionCount == 0) {
+							dao().insert("SYSTEM_ROLE_PERMISSION",
+									Chain.make("ROLEID", roleId).add("PERMISSIONID", checkedPermission));
 						}
 					}
 				}

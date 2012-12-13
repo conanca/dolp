@@ -26,7 +26,7 @@ $(function(){
 		var id = $("#roleList").getGridParam('selrow');
 		if (id) {
 			roleId = id;
-			privilegeTree.setting.async.url = "system/menu/getPrivilegeNodesByRoleId/"+roleId;
+			privilegeTree.setting.async.url = "system/permission/permissionTreeNodes/"+roleId;
 			privilegeTree.reAsyncChildNodes(null, "refresh");
 			$("#privilegeInfo").dialog( "open" );
 		} else {
@@ -44,56 +44,42 @@ $(function(){
 	var privilegeTreeSetting = {
 		check: {
 			enable: true,
-			chkboxType: { Y : "ps", N : "s" }	// 父子关联关系：被勾选时—关联父，关联子;取消勾选时—不关联父，关联子
+			chkboxType: { Y : "s", N : "s" }	// 父子关联关系：被勾选时—关联父，关联子;取消勾选时—不关联父，关联子
 		},
 		async: {
 			enable: true,
-			url: "system/menu/getPrivilegeNodesByRoleId/0",
+			url: "system/permission/permissionTreeNodes/0",
 			dataFilter: ajaxDataFilter,
-			autoParam: ["name", "id", "lft", "rgt"]
+			autoParam: ["name", "id"]
 		}
 	};
 	$.fn.zTree.init($("#privilegeTreeUl"), privilegeTreeSetting);
 	var privilegeTree = $.fn.zTree.getZTreeObj("privilegeTreeUl");
 	//分配权限
-	$("#privilegeAssignBtn").click(function() {
+	$("#permissionAssignBtn").click(function() {
 		var checkedTreeNodes = privilegeTree.getCheckedNodes();
-		var checkedMenus = [];
-		var checkedPrivileges = [];
+		var checkedPermissions = [];
 		var i = 0;
-		var j = 0;
 		$.each(checkedTreeNodes,function(index,value){
-			if(value.lft){
-				checkedMenus[i] = value.id;
-				i++;
-			}else{
-				checkedPrivileges[j] = value.id;
-				j++;
-			}
+			checkedPermissions[i] = value.id;
+			i++;
 		});
 
 		var unCheckedTreeNodes = privilegeTree.getCheckedNodes(false);
-		var unCheckedMenus = [];
-		var unCheckedPrivileges = [];
+		var unCheckedPermissions = [];
 		i = 0;
-		j = 0;
 		$.each(unCheckedTreeNodes,function(index,value){
-			if(value.lft){
-				unCheckedMenus[i] = value.id;
-				i++;
-			}else{
-				unCheckedPrivileges[j] = value.id;
-				j++;
-			}
+			unCheckedPermissions[i] = value.id;
+			i++;
 		});
 
-		var url = "system/role/assignPrivilege";
-		$.dolpPost(url,{roleId:roleId,checkedMenus:checkedMenus,checkedPrivileges:checkedPrivileges,unCheckedMenus:unCheckedMenus,unCheckedPrivileges:unCheckedPrivileges},function(returnData){
-			$("#privilegeInfoCancelbtn").click();
+		var url = "system/role/assignPermission";
+		$.dolpPost(url,{roleId:roleId,checkedPermissions:checkedPermissions,unCheckedPermissions:unCheckedPermissions},function(returnData){
+			$("#permissionInfoCancelbtn").click();
 		});
 	});
 	// 取消按钮点击事件
-	$("#privilegeInfoCancelbtn").click(function() {
+	$("#permissionInfoCancelbtn").click(function() {
 		$('#privilegeInfo').dialog( "close" );
 	});
 });
@@ -108,9 +94,9 @@ $(function(){
 
 <div id="privilegeInfo" title="权限信息">
 	<p align="center">
-		<input type="button" value="分配" id="privilegeAssignBtn"/>
+		<input type="button" value="分配" id="permissionAssignBtn"/>
 		&nbsp;&nbsp;&nbsp;
-		<input type="button" value="取消" id='privilegeInfoCancelbtn'/>
+		<input type="button" value="取消" id='permissionInfoCancelbtn'/>
 	</p>
 	<div>
 		<ul id="privilegeTreeUl" class="ztree"></ul>

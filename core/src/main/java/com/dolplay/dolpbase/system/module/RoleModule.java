@@ -33,12 +33,10 @@ public class RoleModule {
 
 	@At
 	@RequiresPermissions("role:assign_permission:*")
-	public ResponseData assignPrivilege(@Param("roleId") String roleId, @Param("checkedMenus[]") String[] checkedMenus,
-			@Param("checkedPrivileges[]") String[] checkedPrivileges,
-			@Param("unCheckedMenus[]") String[] unCheckedMenus,
-			@Param("unCheckedPrivileges[]") String[] unCheckedPrivileges) {
-		return roleService.updateRolePrivileges(roleId, checkedMenus, checkedPrivileges, unCheckedMenus,
-				unCheckedPrivileges);
+	public ResponseData assignPermission(@Param("roleId") String roleId,
+			@Param("checkedPermissions[]") String[] checkedPermissions,
+			@Param("unCheckedPermissions[]") String[] unCheckedPermissions) {
+		return roleService.updateRolePermissions(roleId, checkedPermissions, unCheckedPermissions);
 	}
 
 	@At("/getAllRoleMap/*")

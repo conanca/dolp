@@ -7,24 +7,27 @@ INSERT INTO SYSTEM_USER(ID, NUMBER, PASSWORD,SALT, NAME, GENDER, AGE, BIRTHDAY, 
 
 INSERT INTO SYSTEM_ROLE(ID ,NAME ,DESCRIPTION ,ISORGARELA,ORGANIZATIONID) VALUES
 (1,'系统管理员','拥有系统管理的权限',false,null),
-(2,'普通用户','拥有个人设置、消息管理等权限',false,null),
-(3,'财务人员','财务人员岗位(为演示岗位之用)',true,9);
+(2,'普通用户','拥有个人中心、演示功能等权限',false,null),
+(3,'人事专员','人事专员岗(为演示岗位之用)',true,2),
+(4,'会计','会计岗(为演示岗位之用)',true,9),
+(5,'出纳','出纳岗(为演示岗位之用)',true,9);
 
 INSERT INTO SYSTEM_USER_ROLE(USERID ,ROLEID) VALUES
 (1,1),
 (1,2),
-(1,3),
 (2,2),
 (2,3),
 (3,2),
-(4,2);
+(3,4),
+(4,2),
+(4,5);
 
 INSERT INTO SYSTEM_MENU(ID,NAME,URL,DESCRIPTION,LFT,RGT,PERMISSIONID) VALUES
 (1,'系统管理',NULL,NULL,1,200,102),
 (2,'用户管理','system/user_manage.html',NULL,2,3,103),
 (3,'角色管理','system/role_manage.html',NULL,4,5,104),
 (4,'菜单管理','system/menu_manage.html',NULL,6,7,105),
-(5,'权限管理','system/privilege_manage.html',NULL,8,9,106),
+(5,'权限管理','system/permission_manage.html',NULL,8,9,106),
 (6,'机构管理','system/organization_manage.html',NULL,10,11,107),
 (7,'岗位管理','system/post_manage.html',NULL,12,13,108),
 (8,'枚举管理','system/sysenum_mange.html',NULL,14,15,109),
@@ -60,7 +63,7 @@ INSERT INTO SYSTEM_PERMISSION(ID,NAME,DESCRIPTION,PARENTPERMISSIONID) VALUES
 (1,'*:*:*','全部权限',null),
 (2,'*:read:*','对任何对象的浏览',1),
 (101,'html:read:main','对首页页面的浏览',null),
-(102,'html:read:system_manage','对系统管理模块下页面的浏览',101),
+(102,'html:read:system_manage','对系统管理模块下页面的浏览',null),
 (103,'html:read:user_manage','对用户管理页面的浏览',102),
 (104,'html:read:role_manage','对角色管理页面的浏览',102),
 (105,'html:read:menu_manage','对菜单管理页面的浏览',102),
@@ -75,14 +78,14 @@ INSERT INTO SYSTEM_PERMISSION(ID,NAME,DESCRIPTION,PARENTPERMISSIONID) VALUES
 (114,'html:read:simpletriggers_manager','对Simple触发器管理页面的浏览',112),
 (115,'html:read:crontriggers_manager','对Cron触发器页面的浏览',112),
 (116,'html:read:jobdetails_manager','对作业管理页面的浏览',112),
-(117,'html:read:personal','对个人中心模块页面的浏览',102),
+(117,'html:read:personal','对个人中心模块页面的浏览',null),
 (118,'html:read:message_manage','对消息管理模块页面的浏览',117),
 (119,'html:read:messagebox_new','对写新消息页面的浏览',118),
 (120,'html:read:messagebox_inbox','对收件箱页面的浏览',118),
 (121,'html:read:messagebox_sent','对已发消息页面的浏览',118),
 (122,'html:read:messagebox_draft','对草稿页面的浏览',118),
 (123,'html:read:change_pwd','对修改密码页面的浏览',117),
-(124,'html:read:demo','对演示页面的浏览',101),
+(124,'html:read:demo','对演示页面的浏览',null),
 (125,'html:read:demo1','对jqGrid local data页面的浏览',124),
 (1001,'user:*:*','对用户的任意操作',1),
 (1002,'user:read:*','对用户的查询操作',1001),
@@ -160,7 +163,6 @@ INSERT INTO SYSTEM_PERMISSION(ID,NAME,DESCRIPTION,PARENTPERMISSIONID) VALUES
 INSERT INTO SYSTEM_ROLE_PERMISSION(ROLEID,PERMISSIONID) VALUES
 (1,1),
 (2,2),
-(1,101),
 (1,102),
 (1,103),
 (1,104),
@@ -176,15 +178,27 @@ INSERT INTO SYSTEM_ROLE_PERMISSION(ROLEID,PERMISSIONID) VALUES
 (1,114),
 (1,115),
 (1,116),
-(1,117),
-(1,118),
-(1,119),
-(1,120),
-(1,121),
-(1,122),
-(1,123),
-(1,124),
-(1,125);
+(2,101),
+(2,117),
+(2,118),
+(2,119),
+(2,120),
+(2,121),
+(2,122),
+(2,123),
+(2,124),
+(2,125),
+(2,1014),
+(2,1202),
+(2,1801),
+(2,1802),
+(2,1803),
+(2,1804),
+(2,1805),
+(2,1901),
+(2,1902),
+(2,1903),
+(2,1904);
 
 
 INSERT INTO SYSTEM_SYSENUM(ID,NAME,DESCRIPTION) VALUES

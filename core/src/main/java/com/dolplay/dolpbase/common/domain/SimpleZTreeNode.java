@@ -5,6 +5,12 @@ import java.sql.SQLException;
 
 import org.nutz.dao.entity.annotation.Column;
 
+// TODO 应废弃该类，使用类似MenuZTreeNode的方式
+/**
+ * 
+ * @author Administrator
+ *
+ */
 public class SimpleZTreeNode implements ZTreeNode {
 	@Column
 	private Long id;
