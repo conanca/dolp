@@ -5,17 +5,18 @@ import java.sql.SQLException;
 
 import org.nutz.dao.entity.annotation.Column;
 
-// TODO 应废弃该类，使用类似MenuZTreeNode的方式
 /**
  * 
  * @author Administrator
  *
  */
-public class SimpleZTreeNode implements ZTreeNode {
+public class SimpleZTreeNode {
 	@Column
 	private Long id;
 	@Column
 	private String name;
+	@Column
+	private String title;
 	@Column
 	private boolean checked;
 	@Column
@@ -27,6 +28,7 @@ public class SimpleZTreeNode implements ZTreeNode {
 		SimpleZTreeNode simpleZTreeNode = new SimpleZTreeNode();
 		simpleZTreeNode.id = rs.getLong("ID");
 		simpleZTreeNode.name = rs.getString("NAME");
+		simpleZTreeNode.title = rs.getString("TITLE");
 		simpleZTreeNode.checked = rs.getBoolean("CHECKED");
 		simpleZTreeNode.open = rs.getBoolean("OPEN");
 		simpleZTreeNode.isParent = rs.getBoolean("ISPARENT");
@@ -47,6 +49,14 @@ public class SimpleZTreeNode implements ZTreeNode {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public boolean isChecked() {

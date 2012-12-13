@@ -10,10 +10,8 @@ import org.nutz.dao.entity.annotation.Many;
 import org.nutz.dao.entity.annotation.One;
 import org.nutz.dao.entity.annotation.Table;
 
-import com.dolplay.dolpbase.common.domain.ZTreeNode;
-
 @Table("SYSTEM_ORGANIZATION")
-public class Organization implements ZTreeNode {
+public class Organization {
 	@Id
 	private Long id;
 	@Column
@@ -33,9 +31,6 @@ public class Organization implements ZTreeNode {
 	private List<Organization> childrenOrgs;
 	@Many(target = Role.class, field = "organizationId")
 	private List<Role> roles;
-	private boolean checked;
-	private boolean open;
-	private boolean isParent;
 
 	public Long getId() {
 		return id;
@@ -100,29 +95,4 @@ public class Organization implements ZTreeNode {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-
-	public boolean isChecked() {
-		return checked;
-	}
-
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
-
-	public boolean isOpen() {
-		return open;
-	}
-
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
-
-	public boolean isParent() {
-		return isParent;
-	}
-
-	public void setParent(boolean isParent) {
-		this.isParent = isParent;
-	}
-
 }

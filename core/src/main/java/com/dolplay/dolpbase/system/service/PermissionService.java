@@ -18,7 +18,6 @@ import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Permission;
-import com.dolplay.dolpbase.system.domain.PermissionZTreeNode;
 
 @IocBean(args = { "refer:dao" })
 public class PermissionService extends DolpBaseService<Permission> {
@@ -82,20 +81,16 @@ public class PermissionService extends DolpBaseService<Permission> {
 	@Aop(value = "log")
 	public AjaxResData getPermissionTreeNodesByRoleId(Long roleId, Long nodeId) {
 		AjaxResData respData = new AjaxResData();
-		String o = "=";
-		if (nodeId == null) {
-			o = "IS";
-		}
+		nodeId = nodeId == null ? 0 : nodeId;
 		Sql sql = Sqls
-				.create("SELECT P.ID,P.NAME,P.DESCRIPTION,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID "
-						+ o + " @nodeId");
+				.create("SELECT P.ID,P.NAME,P.DESCRIPTION AS TITLE,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID = @nodeId");
 		sql.params().set("roleId", roleId);
 		sql.params().set("nodeId", nodeId);
 
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
 		dao().execute(sql);
-		List<PermissionZTreeNode> permissionZTreeNodes = sql.getList(PermissionZTreeNode.class);
+		List<SimpleZTreeNode> permissionZTreeNodes = sql.getList(SimpleZTreeNode.class);
 		respData.setLogic(permissionZTreeNodes);
 		return respData;
 	}
@@ -103,19 +98,15 @@ public class PermissionService extends DolpBaseService<Permission> {
 	@Aop(value = "log")
 	public AjaxResData getPermissionTreeNodes(Long nodeId) {
 		AjaxResData respData = new AjaxResData();
-		String o = "=";
-		if (nodeId == null) {
-			o = "IS";
-		}
+		nodeId = nodeId == null ? 0 : nodeId;
 		Sql sql = Sqls
-				.create("SELECT P.ID,P.NAME,P.DESCRIPTION,FALSE AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID "
-						+ o + " @nodeId");
+				.create("SELECT P.ID,P.NAME,P.DESCRIPTION AS TITLE,FALSE AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID  = @nodeId");
 		sql.params().set("nodeId", nodeId);
 
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
 		dao().execute(sql);
-		List<PermissionZTreeNode> permissionZTreeNodes = sql.getList(PermissionZTreeNode.class);
+		List<SimpleZTreeNode> permissionZTreeNodes = sql.getList(SimpleZTreeNode.class);
 		respData.setLogic(permissionZTreeNodes);
 		return respData;
 	}

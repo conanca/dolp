@@ -5,6 +5,8 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -13,6 +15,7 @@ import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
+import com.dolplay.dolpbase.common.domain.SimpleZTreeNode;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
@@ -58,15 +61,15 @@ public class OrganizationService extends DolpBaseService<Organization> {
 	public AjaxResData getNodes(Long id, String name) {
 		AjaxResData respData = new AjaxResData();
 		id = id == null ? 0 : id;
-		Condition cnd = Cnd.where("PARENTORGID", "=", id);
-		List<Organization> orgNodes = query(cnd, null);
-		for (Organization orgNode : orgNodes) {
-			int childrenOrgsCount = count(Cnd.where("PARENTORGID", "=", orgNode.getId()));
-			if (childrenOrgsCount > 0) {
-				orgNode.setParent(true);
-			}
-		}
-		respData.setLogic(orgNodes);
+		Sql sql = Sqls
+				.create("SELECT O.ID,O.NAME,O.NAME AS TITLE,FALSE AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_ORGANIZATION O1 WHERE O1.PARENTORGID = O.ID) AS ISPARENT FROM SYSTEM_ORGANIZATION O WHERE O.PARENTORGID = @nodeId");
+		sql.params().set("nodeId", id);
+
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
+		dao().execute(sql);
+		List<SimpleZTreeNode> permissionZTreeNodes = sql.getList(SimpleZTreeNode.class);
+		respData.setLogic(permissionZTreeNodes);
 		return respData;
 	}
 

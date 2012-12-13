@@ -138,7 +138,7 @@ public class MenuService extends DolpBaseService<Menu> {
 			parentRgt = parentNode.getRgt();
 		}
 		Sql sql = Sqls
-				.create("SELECT M1.ID,M1.NAME,FALSE AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
+				.create("SELECT M1.ID,M1.NAME,M1.NAME AS TITLE,FALSE AS CHECKED,FALSE AS OPEN,(LFT+1<>RGT)AS ISPARENT FROM SYSTEM_MENU M1 WHERE M1.LFT>@parentLft AND M1.RGT<@parentRgt AND NOT EXISTS (SELECT * FROM SYSTEM_MENU M2 WHERE M1.LFT>M2.LFT AND M1.RGT<M2.RGT AND M2.LFT>@parentLft AND M2.RGT<@parentRgt)");
 		sql.params().set("parentLft", parentLft);
 		sql.params().set("parentRgt", parentRgt);
 		// 查询实体的回调
