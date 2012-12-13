@@ -32,6 +32,10 @@ public class PermissionService extends DolpBaseService<Permission> {
 			Permission permissionSearch) {
 		Cnd cnd = Cnd.where("1", "=", 1);
 		if (null != permissionSearch) {
+			Long parentPermissionId = permissionSearch.getParentPermissionId();
+			if (null != parentPermissionId) {
+				cnd = Cnd.where("PARENTPERMISSIONID", "=", parentPermissionId);
+			}
 			if (null != isSearch && isSearch) {
 				String name = permissionSearch.getName();
 				if (!Strings.isEmpty(name)) {
@@ -86,6 +90,26 @@ public class PermissionService extends DolpBaseService<Permission> {
 				.create("SELECT P.ID,P.NAME,P.DESCRIPTION,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID "
 						+ o + " @nodeId");
 		sql.params().set("roleId", roleId);
+		sql.params().set("nodeId", nodeId);
+
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
+		dao().execute(sql);
+		List<PermissionZTreeNode> permissionZTreeNodes = sql.getList(PermissionZTreeNode.class);
+		respData.setLogic(permissionZTreeNodes);
+		return respData;
+	}
+
+	@Aop(value = "log")
+	public AjaxResData getPermissionTreeNodes(Long nodeId) {
+		AjaxResData respData = new AjaxResData();
+		String o = "=";
+		if (nodeId == null) {
+			o = "IS";
+		}
+		Sql sql = Sqls
+				.create("SELECT P.ID,P.NAME,P.DESCRIPTION,FALSE AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID "
+						+ o + " @nodeId");
 		sql.params().set("nodeId", nodeId);
 
 		sql.setCallback(Sqls.callback.entities());

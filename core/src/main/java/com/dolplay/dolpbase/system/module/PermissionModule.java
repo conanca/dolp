@@ -35,4 +35,9 @@ public class PermissionModule {
 	public ResponseData getPermissionTreeNodesByRoleId(Long roleId, @Param("id") Long id) {
 		return permissionService.getPermissionTreeNodesByRoleId(roleId, id);
 	}
+
+	@At
+	public ResponseData getNodes(@Param("id") Long id) {
+		return permissionService.getPermissionTreeNodes(id);
+	}
 }
