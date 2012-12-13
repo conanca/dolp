@@ -288,8 +288,11 @@ public class UserService extends DolpBaseService<User> {
 		if (userId > 0) {
 			User user = new User();
 			user.setId(userId);
-			newPassword = DigestUtils.md5Hex(newPassword);
-			user.setPassword(newPassword);
+			RandomNumberGenerator rng = new SecureRandomNumberGenerator();
+			String salt = rng.nextBytes().toBase64();
+			String hashedPasswordBase64 = new Sha256Hash(newPassword, salt, 1024).toBase64();
+			user.setSalt(salt);
+			user.setPassword(hashedPasswordBase64);
 			dao().updateIgnoreNull(user);
 			respData.setInfo("密码修改成功!");
 		} else {
