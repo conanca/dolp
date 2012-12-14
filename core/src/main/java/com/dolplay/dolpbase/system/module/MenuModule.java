@@ -90,7 +90,6 @@ public class MenuModule {
 	 * @return
 	 */
 	@At
-	@RequiresPermissions("menu:read:*")
 	public ResponseData dispMenu(@Param("nodeid") Long nodeId, @Param("n_left") Long nLeft,
 			@Param("n_right") Long nRight, @Param("n_level") Integer nLevel, HttpSession session) {
 		return menuService.getGridData(nodeId, nLeft, nRight, nLevel, session);

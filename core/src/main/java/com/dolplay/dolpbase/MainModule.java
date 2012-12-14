@@ -1,5 +1,6 @@
 package com.dolplay.dolpbase;
 
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
@@ -10,6 +11,7 @@ import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
+import com.dolplay.dolpbase.common.filter.ShiroActionFilter;
 import com.dolplay.dolpbase.common.view.DolpViewMaker;
 
 // 如果在其他包下还有子模块，需要在"com.dolplay.dolpbase"的后面增加包名
@@ -21,7 +23,7 @@ import com.dolplay.dolpbase.common.view.DolpViewMaker;
 @SetupBy(MvcSetup.class)
 @Ok("json")
 @Fail("dolpjson")
-@Filters()
+@Filters(@By(type = ShiroActionFilter.class))
 @Views(DolpViewMaker.class)
 public class MainModule {
 
