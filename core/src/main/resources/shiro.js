@@ -1,4 +1,8 @@
 var ioc = {
+		
+	sessionManager : {
+		type : "org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
+	},
 
 	cacheManager : {
 		type : "org.apache.shiro.cache.MemoryConstrainedCacheManager"
@@ -31,6 +35,9 @@ var ioc = {
 	securityManager : {
 		type : "org.apache.shiro.web.mgt.DefaultWebSecurityManager",
 		fields : {
+			sessionManager : {
+				refer : "sessionManager"
+			},
 			cacheManager : {
 				refer : "cacheManager"
 			},

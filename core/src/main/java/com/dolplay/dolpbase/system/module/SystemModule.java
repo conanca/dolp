@@ -12,9 +12,9 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ThreadContext;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -28,7 +28,6 @@ import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
-import com.dolplay.dolpbase.system.util.MvcUtils;
 
 @IocBean
 @Filters
@@ -61,14 +60,12 @@ public class SystemModule {
 	}
 
 	@At
-	public void logon(@Param("num") String number, @Param("pwd") String password,
-			@Param("rememberMe") boolean rememberMe, HttpSession session, HttpServletRequest request,
-			ServletResponse response) {
-		String host = request.getRemoteHost();
-		AuthenticationToken token = new UsernamePasswordToken(number, password, rememberMe, host);
+	@RequiresGuest
+	public void logon(@Param("num") String number, @Param("pwd") String password, HttpSession session,
+			HttpServletRequest request, ServletResponse response) {
+		AuthenticationToken token = new UsernamePasswordToken(number, password);
 		try {
-			Subject subject = MvcUtils.getSubject(securityManager, request, response);
-			ThreadContext.bind(subject);
+			Subject subject = SecurityUtils.getSubject();
 			subject.login(token);
 			User user = userService.fetchByNumber(number);
 			session.setAttribute("logonUser", user);
