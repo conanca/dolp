@@ -101,6 +101,8 @@ public class SystemModule {
 	public void logout(HttpSession session) {
 		// 清除该用户的session
 		session.invalidate();
+		Subject currentUser = SecurityUtils.getSubject();
+		currentUser.logout();
 	}
 
 	@At
