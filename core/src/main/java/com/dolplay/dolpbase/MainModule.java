@@ -13,6 +13,7 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
 import com.dolplay.dolpbase.common.filter.ShiroActionFilter;
 import com.dolplay.dolpbase.common.view.DolpViewMaker;
+import com.dolplay.dolpbase.system.filter.CheckLogon;
 
 // 如果在其他包下还有子模块，需要在"com.dolplay.dolpbase"的后面增加包名
 @Modules(packages = { "com.dolplay.dolpbase" }, scanPackage = true)
@@ -23,7 +24,7 @@ import com.dolplay.dolpbase.common.view.DolpViewMaker;
 @SetupBy(MvcSetup.class)
 @Ok("json")
 @Fail("dolpjson")
-@Filters(@By(type = ShiroActionFilter.class))
+@Filters({ @By(type = CheckLogon.class), @By(type = ShiroActionFilter.class) })
 @Views(DolpViewMaker.class)
 public class MainModule {
 
