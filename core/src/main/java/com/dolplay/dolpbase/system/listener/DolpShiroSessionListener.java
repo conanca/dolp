@@ -11,7 +11,7 @@ public class DolpShiroSessionListener implements SessionListener {
 	@Override
 	public void onStart(Session session) {
 		//		Client client = new Client();
-		//		User cUser = (User) session.getAttribute("logonUser");
+		//		User cUser = (User) session.getAttribute("CurrentUser");
 		//		client.setUserId(cUser.getId());
 		//		client.setSessionId(session.getId().toString());
 		//		client.setLogonTime(new Timestamp((new Date()).getTime()));

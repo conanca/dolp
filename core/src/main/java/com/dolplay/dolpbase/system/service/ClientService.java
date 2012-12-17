@@ -31,7 +31,7 @@ public class ClientService extends DolpBaseService<Client> {
 	@Aop(value = "log")
 	public void insert(Session session) {
 		Client client = new Client();
-		User cUser = (User) session.getAttribute("logonUser");
+		User cUser = (User) session.getAttribute("CurrentUser");
 		client.setUserId(cUser.getId());
 		client.setSessionId(session.getId().toString());
 		client.setLogonTime(new Timestamp((new Date()).getTime()));

@@ -70,7 +70,7 @@ public class UserModule {
 	@RequiresPermissions("user:change_pwd:[current_user]")
 	public ResponseData changeCurrentUserPassword(@Param("oldPassword") String oldPassword,
 			@Param("newPassword") String newPassword) {
-		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return userService.changePasswordForCurrentUser(cUser, oldPassword, newPassword);
 	}
 

@@ -41,7 +41,7 @@ public class MessageModule {
 	@RequiresPermissions("message:read:*")
 	public ResponseData getInboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch, @Param("senderName") String senderName) {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.getReceivedMessageGridData(jqReq, isSearch, messageSearch, senderName, currentUser);
 	}
 
@@ -49,7 +49,7 @@ public class MessageModule {
 	@RequiresPermissions("message:read:*")
 	public ResponseData getSentboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch) {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, isSearch, messageSearch, 1);
 	}
 
@@ -57,7 +57,7 @@ public class MessageModule {
 	@RequiresPermissions("message:read:*")
 	public ResponseData getDraftboxGridData(@Param("..") JqgridReqData jqReq, @Param("_search") Boolean isSearch,
 			@Param("..") Message messageSearch) {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.getSentMessageGridData(jqReq, currentUser, isSearch, messageSearch, 0);
 	}
 
@@ -72,7 +72,7 @@ public class MessageModule {
 	public ResponseData sendMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc) throws IOException {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.saveOrSendMessage(1, messageId, currentUser, receiverUsers, title, content, attachments);
 	}
 
@@ -81,14 +81,14 @@ public class MessageModule {
 	public ResponseData saveMessage(@Param("messageId") Long messageId, @Param("receiverUsers") String[] receiverUsers,
 			@Param("title") String title, @Param("content") String content,
 			@Param("attachments[]") String[] attachments, Ioc ioc) throws IOException {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.saveOrSendMessage(0, messageId, currentUser, receiverUsers, title, content, attachments);
 	}
 
 	@At
 	@RequiresPermissions("message:delete:*")
 	public ResponseData deleteReceivedMessage(@Param("messageId") Long messageId) {
-		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.deleteReceivedMessage(messageId, currentUser);
 	}
 
@@ -114,7 +114,7 @@ public class MessageModule {
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:attachmentUpload" })
 	@RequiresPermissions("message:create:*")
 	public ResponseData uploadAttachment(@Param("messageAttachment") TempFile tf, Ioc ioc) throws IOException {
-		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return messageService.saveAttachment(tf, ioc, cUser);
 	}
 

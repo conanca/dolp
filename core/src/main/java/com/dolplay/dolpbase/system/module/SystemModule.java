@@ -62,7 +62,7 @@ public class SystemModule {
 			subject.login(token);
 			User user = userService.fetchByNumber(number);
 			Session session = subject.getSession();
-			session.setAttribute("logonUser", user);
+			session.setAttribute("CurrentUser", user);
 			long[] permissionIdArr = userService.getCurrentPermissionIdList(user.getId());
 			session.setAttribute("CurrentPermission", permissionIdArr);
 
@@ -98,7 +98,7 @@ public class SystemModule {
 
 	@At
 	public ResponseData getCurrentUserName() {
-		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
+		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return systemService.getCurrentUserName(cUser);
 	}
 

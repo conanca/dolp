@@ -80,7 +80,6 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @param nLeft
 	 * @param nRight
 	 * @param nLevel
-	 * @param logonUser
 	 * @return
 	 */
 	@Aop(value = "log")
