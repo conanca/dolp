@@ -3,10 +3,10 @@ package com.dolplay.dolpbase.system.module;
 import java.io.File;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -68,9 +68,9 @@ public class UserModule {
 
 	@At
 	@RequiresPermissions("user:change_pwd:[current_user]")
-	public ResponseData changeCurrentUserPassword(HttpSession session, @Param("oldPassword") String oldPassword,
+	public ResponseData changeCurrentUserPassword(@Param("oldPassword") String oldPassword,
 			@Param("newPassword") String newPassword) {
-		User cUser = (User) session.getAttribute("logonUser");
+		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("logonUser");
 		return userService.changePasswordForCurrentUser(cUser, oldPassword, newPassword);
 	}
 

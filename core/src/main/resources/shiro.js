@@ -1,9 +1,19 @@
 var ioc = {
+
+	sessionListener : {
+		type : "com.dolplay.dolpbase.system.listener.DolpShiroSessionListener"
+	},
 		
 	sessionManager : {
-		type : "org.apache.shiro.web.session.mgt.DefaultWebSessionManager"
+		type : "org.apache.shiro.web.session.mgt.DefaultWebSessionManager",
+		fields : {
+			globalSessionTimeout : 3600000,
+			sessionListeners : [{
+				refer : "sessionListener"
+			}]
+		}
 	},
-
+	
 	cacheManager : {
 		type : "org.apache.shiro.cache.MemoryConstrainedCacheManager"
 	},
@@ -35,6 +45,7 @@ var ioc = {
 	securityManager : {
 		type : "org.apache.shiro.web.mgt.DefaultWebSecurityManager",
 		fields : {
+			sessionMode : "http",
 			sessionManager : {
 				refer : "sessionManager"
 			},

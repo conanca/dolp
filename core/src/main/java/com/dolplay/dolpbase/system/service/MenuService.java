@@ -3,8 +3,7 @@ package com.dolplay.dolpbase.system.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -85,9 +84,8 @@ public class MenuService extends DolpBaseService<Menu> {
 	 * @return
 	 */
 	@Aop(value = "log")
-	public AdvancedJqgridResData<MenuTreeGridRow> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel,
-			HttpSession session) {
-		long[] permissionIdArr = (long[]) session.getAttribute("CurrentPermission");
+	public AdvancedJqgridResData<MenuTreeGridRow> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
+		long[] permissionIdArr = (long[]) SecurityUtils.getSubject().getSession().getAttribute("CurrentPermission");
 		String permissionIds = "0";
 
 		if (permissionIdArr != null) {

@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.aop.Aop;
@@ -17,8 +17,6 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
-import com.dolplay.dolpbase.common.util.DolpSessionContext;
-import com.dolplay.dolpbase.common.util.MVCHandler;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.User;
@@ -31,19 +29,14 @@ public class ClientService extends DolpBaseService<Client> {
 	}
 
 	@Aop(value = "log")
-	public void clear(HttpSession session) {
-		clear(Cnd.where("SESSIONID", "=", session.getId()));
-	}
-
-	@Aop(value = "log")
-	public void insert(HttpSession session, HttpServletRequest request) {
+	public void insert(Session session) {
 		Client client = new Client();
 		User cUser = (User) session.getAttribute("logonUser");
 		client.setUserId(cUser.getId());
-		client.setSessionId(session.getId());
+		client.setSessionId(session.getId().toString());
 		client.setLogonTime(new Timestamp((new Date()).getTime()));
-		client.setIpAddr(MVCHandler.getIpAddr(request));
-		client.setUserAgent(MVCHandler.getUserAgent(request));
+		client.setIpAddr(session.getHost());
+		//client.setUserAgent(MVCHandler.getUserAgent(request));
 		dao().insert(client);
 	}
 
@@ -52,7 +45,10 @@ public class ClientService extends DolpBaseService<Client> {
 		AjaxResData resData = new AjaxResData();
 		if (sessionIds != null && sessionIds.length > 0) {
 			for (String sessionId : sessionIds) {
-				DolpSessionContext.getSession(sessionId).invalidate();
+				//DolpSessionContext.getSession(sessionId).invalidate();
+				DefaultSessionKey sessionKey = new DefaultSessionKey(sessionId);
+				Session session = SecurityUtils.getSecurityManager().getSession(sessionKey);
+				session.stop();
 			}
 			resData.setInfo("已踢出用户!");
 		} else {
