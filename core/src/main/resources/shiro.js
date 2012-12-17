@@ -45,7 +45,6 @@ var ioc = {
 	securityManager : {
 		type : "org.apache.shiro.web.mgt.DefaultWebSecurityManager",
 		fields : {
-			sessionMode : "http",
 			sessionManager : {
 				refer : "sessionManager"
 			},
