@@ -11,7 +11,6 @@ import javax.servlet.ServletContext;
 
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -85,18 +84,6 @@ public class UserService extends DolpBaseService<User> {
 		}
 		AdvancedJqgridResData<User> jq = getAdvancedJqgridRespData(cnd, jqReq);
 		return jq;
-	}
-
-	@Aop(value = "log")
-	public User userAuthenticate(String number, String password) {
-		// 对输入的登录密码进行MD5加密
-		password = DigestUtils.md5Hex(password);
-		Condition cnd = Cnd.where("NUMBER", "=", number).and("PASSWORD", "=", password);
-		User user = fetch(cnd);
-		if (null == user) {
-			throw new RuntimeException("用户名或密码错误!");
-		}
-		return user;
 	}
 
 	@Aop(value = "log")
