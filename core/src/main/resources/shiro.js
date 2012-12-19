@@ -3,6 +3,13 @@ var ioc = {
 	sessionListener : {
 		type : "com.dolplay.dolpbase.system.listener.DolpShiroSessionListener"
 	},
+	
+	eHCacheManager : {
+		type : "org.apache.shiro.cache.ehcache.EhCacheManager",
+		fields : {
+			cacheManagerConfigFile : "classpath:ehcache-shiro.xml"
+		}
+	},
 		
 	sessionManager : {
 		type : "org.apache.shiro.web.session.mgt.DefaultWebSessionManager",
@@ -14,10 +21,6 @@ var ioc = {
 		}
 	},
 	
-	cacheManager : {
-		type : "org.apache.shiro.cache.MemoryConstrainedCacheManager"
-	},
-
 	sha256CredentialsMatcher : {
 		type : "org.apache.shiro.authc.credential.Sha256CredentialsMatcher",
 		fields : {
@@ -49,7 +52,7 @@ var ioc = {
 				refer : "sessionManager"
 			},
 			cacheManager : {
-				refer : "cacheManager"
+				refer : "eHCacheManager"
 			},
 			realm : {
 				refer : "shiroDbRealm"
