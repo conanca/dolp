@@ -5,14 +5,14 @@ import javax.sql.DataSource;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 
 public class DaoProvider {
 
 	private static Dao dao;
 
 	public static DataSource getDataSource() {
-		return IocProvider.getIoc().get(BoneCPDataSource.class, "dataSource");
+		return IocProvider.getIoc().get(DruidDataSource.class, "dataSource");
 	}
 
 	public static Dao getDao() {

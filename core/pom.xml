@@ -4,7 +4,7 @@
 	<groupId>com.dolplay</groupId>
 	<artifactId>dolp</artifactId>
 	<packaging>war</packaging>
-	<version>0.7.1</version>
+	<version>0.8.0</version>
 	<name>Dolp</name>
 	<url>http://dolplay.com</url>
 	<dependencies>
@@ -29,32 +29,19 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
-			<version>1.b.45</version>
+			<version>1.b.47</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>0.7.1.RELEASE</version>
-			<scope>compile</scope>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>0.2.10</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.3.166</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>1.0.3</version>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -102,8 +89,9 @@
 	<build>
 		<plugins>
 			<plugin>  
-				<groupId>org.apache.maven.plugins</groupId>  
-				<artifactId>maven-jar-plugin</artifactId>  
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<excludes>
 						<exclude>dao.js</exclude>
@@ -120,7 +108,8 @@
 			<plugin>  
 				<groupId>org.apache.maven.plugins</groupId>  
 				<artifactId>maven-war-plugin</artifactId>  
-				<configuration>  
+				<version>2.3</version>
+				<configuration>
 					<webResources>
 						<resource>
 							<directory>src/main/webapp</directory>
@@ -130,6 +119,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
