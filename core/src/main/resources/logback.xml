@@ -9,38 +9,49 @@
 <!--                                                                -->
 <configuration>
 
-  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d [%t] %-5p %c - %m%n</pattern>
-    </encoder>
-  </appender>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%t] %-5p %c - %m%n</pattern>
+		</encoder>
+	</appender>
 
-  <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!--  请修改下面的log存放目录  -->
-    <File>${user.home}/dolpbase/log/rolling.log</File>
-    <encoder>
-      <pattern>%d [%t] %-5p %c - %m%n</pattern>
-    </encoder>
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-    <!--  只保存INFO及更高级别的log信息  -->
-      <level>INFO</level>
-    </filter>
-   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-     <fileNamePattern>${user.home}/dolpbase/log/rolling.%d{yyyy-MM-dd}.log</fileNamePattern>
-     <!-- keep 1825 days worth of history -->
-     <maxHistory>1825</maxHistory> 
-   </rollingPolicy>
-  </appender>
+	<appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--  请修改下面的log存放目录  -->
+		<File>${user.home}/dolpbase/log/rolling.log</File>
+		<encoder>
+			<pattern>%d [%t] %-5p %c - %m%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!--  只保存INFO及更高级别的log信息  -->
+			<level>INFO</level>
+		</filter>
+		<!-- 按天分隔日志文件方式
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${user.home}/dolpbase/log/rolling.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>365</maxHistory> 
+		</rollingPolicy>
+		-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/dolpbase/log/root.%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<!-- 最大只支持到12个文件 -->
+			<maxIndex>10</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>5MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
 
 
-  <logger name="org.nutz" additivity="false" level="DEBUG">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="ROLLING_FILE"/>
-  </logger>
+	<logger name="org.nutz" additivity="false" level="DEBUG">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLLING_FILE"/>
+	</logger>
 
-  <root level="DEBUG">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="ROLLING_FILE"/>
-  </root>
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLLING_FILE"/>
+	</root>
 
 </configuration>
