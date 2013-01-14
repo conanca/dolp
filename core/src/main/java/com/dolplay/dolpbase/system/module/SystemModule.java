@@ -1,32 +1,39 @@
 package com.dolplay.dolpbase.system.module;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
+import com.dolplay.dolpbase.common.filter.ShiroActionFilter;
 import com.dolplay.dolpbase.system.domain.User;
 import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
 
 @IocBean
-@Filters
+@Filters({ @By(type = ShiroActionFilter.class) })
 public class SystemModule {
 
 	@Inject
@@ -55,8 +62,10 @@ public class SystemModule {
 
 	@At
 	@RequiresGuest
-	public void logon(@Param("num") String number, @Param("pwd") String password) {
-		AuthenticationToken token = new UsernamePasswordToken(number, password);
+	public void logon(@Param("num") String number, @Param("pwd") String password,
+			@Param("rememberMe") boolean rememberMe, HttpServletRequest request) {
+		String host = request.getRemoteHost();
+		AuthenticationToken token = new UsernamePasswordToken(number, password, rememberMe, host);
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			subject.login(token);
@@ -67,7 +76,7 @@ public class SystemModule {
 			session.setAttribute("CurrentPermission", permissionIdArr);
 
 			// 将该session相应的登录信息放入在线用户表中
-			clientService.insert(session);
+			clientService.insert(session, request);
 		} catch (UnknownAccountException e) {
 			throw new RuntimeException("用户不存在");
 		} catch (AuthenticationException e) {
@@ -88,12 +97,14 @@ public class SystemModule {
 		}
 	}
 
+	@RequiresAuthentication
 	@At
-	@Ok("redirect:/index.html")
-	public void logout() {
-		// 清除该用户的session
-		Subject currentUser = SecurityUtils.getSubject();
-		currentUser.logout();
+	public void logout(HttpServletResponse response) throws IOException {
+		SecurityUtils.getSubject().logout();
+		// TODO
+		// 用nutz重定向视图总是报异常org.apache.shiro.session.UnknownSessionException: There is no session with id...
+		// 所以暂时用这种方式重定向
+		response.sendRedirect("index.html");
 	}
 
 	@At

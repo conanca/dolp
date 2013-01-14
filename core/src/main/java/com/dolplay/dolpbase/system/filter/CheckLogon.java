@@ -21,7 +21,6 @@ public class CheckLogon implements ActionFilter {
 	@Override
 	public View match(ActionContext context) {
 		Subject subject = SecurityUtils.getSubject();
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + subject.getPrincipal());
 		if (!subject.isAuthenticated()) {
 			UTF8JsonView jsonView = new UTF8JsonView(null);
 			jsonView.setData(AjaxResData.getInstanceErrorNotice("用户未登录或已退出系统!\n请先登录系统!"));

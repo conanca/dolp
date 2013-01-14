@@ -1,8 +1,9 @@
 package com.dolplay.dolpbase.system.service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -17,6 +18,7 @@ import com.dolplay.dolpbase.common.domain.AjaxResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.AdvancedJqgridResData;
 import com.dolplay.dolpbase.common.domain.jqgrid.JqgridReqData;
 import com.dolplay.dolpbase.common.service.DolpBaseService;
+import com.dolplay.dolpbase.common.util.MVCHandler;
 import com.dolplay.dolpbase.common.util.StringUtils;
 import com.dolplay.dolpbase.system.domain.Client;
 import com.dolplay.dolpbase.system.domain.User;
@@ -29,14 +31,14 @@ public class ClientService extends DolpBaseService<Client> {
 	}
 
 	@Aop(value = "log")
-	public void insert(Session session) {
+	public void insert(Session session, HttpServletRequest request) {
 		Client client = new Client();
 		User cUser = (User) session.getAttribute("CurrentUser");
 		client.setUserId(cUser.getId());
 		client.setSessionId(session.getId().toString());
-		client.setLogonTime(new Timestamp((new Date()).getTime()));
-		client.setIpAddr(session.getHost());
-		//client.setUserAgent(MVCHandler.getUserAgent(request));
+		client.setLogonTime(new Timestamp(session.getStartTimestamp().getTime()));
+		client.setIpAddr(MVCHandler.getIpAddr(request));
+		client.setUserAgent(MVCHandler.getUserAgent(request));
 		dao().insert(client);
 	}
 

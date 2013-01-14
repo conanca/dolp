@@ -12,6 +12,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.nutz.ioc.Ioc;
+import org.nutz.mvc.Mvcs;
 
 import com.dolplay.dolpbase.system.domain.Role;
 import com.dolplay.dolpbase.system.domain.User;
@@ -23,12 +25,29 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	private UserService userService;
 	private RoleService roleService;
 
+	private UserService getUserService() {
+		if (userService == null) {
+			Ioc ioc = Mvcs.getIoc();
+			userService = ioc.get(UserService.class);
+		}
+		return userService;
+	}
+
+	private RoleService getRoleService() {
+		if (roleService == null) {
+			Ioc ioc = Mvcs.getIoc();
+			roleService = ioc.get(RoleService.class);
+		}
+		return roleService;
+	}
+
 	/**
 	 * 认证回调函数,登录时调用.
 	 */
+	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		User user = userService.fetchByNumber(token.getUsername());
+		User user = getUserService().fetchByNumber(token.getUsername());
 		if (user != null) {
 			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getNumber(), user.getPassword(),
 					getName());
@@ -43,14 +62,15 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	/**
 	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用.
 	 */
+	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String loginName = (String) principals.fromRealm(getName()).iterator().next();
-		User user = userService.fetchByNumber(loginName);
+		User user = getUserService().fetchByNumber(loginName);
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.addRoles(userService.getRoleNameList(user));
+			info.addRoles(getUserService().getRoleNameList(user));
 			for (Role role : user.getRoles()) {
-				info.addStringPermissions(roleService.getPermissionNameList(role));
+				info.addStringPermissions(getRoleService().getPermissionNameList(role));
 			}
 			return info;
 		} else {

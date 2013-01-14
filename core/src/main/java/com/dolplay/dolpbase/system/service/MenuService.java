@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.SecurityManager;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Dao;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
@@ -29,8 +27,6 @@ import com.dolplay.dolpbase.system.domain.MenuTreeGridRow;
 public class MenuService extends DolpBaseService<Menu> {
 
 	public static final String SYSTEM_MAXRIGHTVALUE = "SYSTEM_MAXRIGHTVALUE";
-	@Inject
-	private SecurityManager securityManager;
 
 	public MenuService(Dao dao) {
 		super(dao);

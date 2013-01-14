@@ -1,7 +1,5 @@
 package com.dolplay.dolpbase;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.SecurityManager;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
@@ -32,8 +30,6 @@ public class MvcSetup implements Setup {
 		 * 
 		 */
 
-		// 进行必要的检查操作
-		//MvcSetupDefaultHandler.defaultCheck();
 		// 增加两个dolp的调度任务
 		try {
 			DolpSchedulerAdder.add();
@@ -41,14 +37,10 @@ public class MvcSetup implements Setup {
 			logger.error("增加默认调度任务时发生异常", e);
 		}
 		// 启动调度任务
-		// TODO 关闭调度
+		// TODO 暂时关闭调度
 		//MvcSetupDefaultHandler.startScheduler();
 		// 清空在线用户表
 		DaoProvider.getDao().clear("SYSTEM_CLIENT");
-
-		// 设置 Shiro 的 securityManager
-		SecurityManager securityManager = IocProvider.getIoc().get(SecurityManager.class);
-		SecurityUtils.setSecurityManager(securityManager);
 
 	}
 
