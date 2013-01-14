@@ -59,11 +59,11 @@ $.extend($.jgrid.defaults, {
 // TODO 暂时将jqgrid的请求都设为post方式，以解决查询中文乱码问题
 $.jgrid.ajaxOptions.type = 'post';
 
-// 用户关闭浏览器或重定向到其他页面时，自动登出
-$(window).unload(function(){
-	$.dolpGet("logout");
-	window.location = "index.html";
-});
+//// 用户关闭浏览器或重定向到其他页面时，自动登出
+//$(window).unload(function(){
+//	$.dolpGet("logout");
+//	window.location = "index.html";
+//});
 
 // 定义用到的全局变量
 var genders;
