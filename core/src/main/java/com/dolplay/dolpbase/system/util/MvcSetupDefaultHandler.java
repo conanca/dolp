@@ -3,8 +3,10 @@ package com.dolplay.dolpbase.system.util;
 import java.util.List;
 
 import org.nutz.dao.Dao;
+import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.impl.FileSqlManager;
 import org.nutz.dao.sql.Sql;
+import org.nutz.resource.Scans;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -13,17 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.dolplay.dolpbase.common.util.DaoProvider;
 import com.dolplay.dolpbase.common.util.PropProvider;
-import com.dolplay.dolpbase.system.domain.Client;
-import com.dolplay.dolpbase.system.domain.Menu;
-import com.dolplay.dolpbase.system.domain.Message;
-import com.dolplay.dolpbase.system.domain.Organization;
-import com.dolplay.dolpbase.system.domain.Permission;
-import com.dolplay.dolpbase.system.domain.PoolFile;
-import com.dolplay.dolpbase.system.domain.Role;
-import com.dolplay.dolpbase.system.domain.SysEnum;
-import com.dolplay.dolpbase.system.domain.SysEnumItem;
-import com.dolplay.dolpbase.system.domain.SysPara;
-import com.dolplay.dolpbase.system.domain.User;
 
 public class MvcSetupDefaultHandler {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetupDefaultHandler.class);
@@ -38,18 +29,12 @@ public class MvcSetupDefaultHandler {
 		Boolean initDolpTables = PropProvider.getProp().getBoolean("SYSTEM_INITDOLPTABLES_ONSTART");
 		if (null != initDolpTables && initDolpTables) {
 			logger.info("初始化Dolp数据表");
-			// 建实体类的表
-			dao.create(Client.class, true);
-			dao.create(Menu.class, true);
-			dao.create(Message.class, true);
-			dao.create(Organization.class, true);
-			dao.create(Permission.class, true);
-			dao.create(Role.class, true);
-			dao.create(SysEnum.class, true);
-			dao.create(SysEnumItem.class, true);
-			dao.create(SysPara.class, true);
-			dao.create(User.class, true);
-			dao.create(PoolFile.class, true);
+			// 批量建表
+			for (Class<?> klass : Scans.me().scanPackage("com.dolplay.dolpbase.system.domain")) {
+				if (klass.getAnnotation(Table.class) != null) {
+					dao.create(klass, true);
+				}
+			}
 			// 添加默认记录
 			FileSqlManager fm = new FileSqlManager("init_system_h2.sql");
 			List<Sql> sqlList = fm.createCombo(fm.keys());
