@@ -4,7 +4,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
 import org.nutz.dao.Cnd;
 
-import com.dolplay.dolpbase.common.util.DaoProvider;
+import com.dolplay.dolpbase.common.util.DolpWebs;
 
 public class DolpShiroSessionListener implements SessionListener {
 
@@ -21,7 +21,7 @@ public class DolpShiroSessionListener implements SessionListener {
 
 	@Override
 	public void onStop(Session session) {
-		DaoProvider.getDao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
+		DolpWebs.dao().clear("SYSTEM_CLIENT", Cnd.where("SESSIONID", "=", session.getId()));
 	}
 
 	@Override

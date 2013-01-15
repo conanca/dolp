@@ -12,7 +12,7 @@ import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.View;
 
 import com.dolplay.dolpbase.common.domain.AjaxResData;
-import com.dolplay.dolpbase.common.util.PropProvider;
+import com.dolplay.dolpbase.common.util.DolpWebs;
 
 /**
  * @author Administrator
@@ -22,7 +22,7 @@ public class DolpJsonView implements View {
 
 	public static final String SYSTEM_ENVIRONMENT = "SYSTEM_ENVIRONMENT";
 
-	private JsonFormat format;
+	private final JsonFormat format;
 
 	private Object data;
 
@@ -34,13 +34,14 @@ public class DolpJsonView implements View {
 		this.format = format;
 	}
 
+	@Override
 	public void render(HttpServletRequest req, HttpServletResponse resp, Object obj) throws IOException {
 		Object jsonWritedStr = obj;
 		// 如果异常产生，将异常消息封装进AjaxResData并返回给前台
 		if (Throwable.class.isAssignableFrom(obj.getClass())) {
 			String exceptionMessage;
 			// 获取环境类型
-			String env = PropProvider.getProp().getString(SYSTEM_ENVIRONMENT);
+			String env = DolpWebs.config().get(SYSTEM_ENVIRONMENT);
 			// 获取配置文件参数SYSTEM_ENVIRONMENT,判断是否为空
 			if (Strings.isEmpty(env)) {
 				exceptionMessage = "配置文件中SYSTEM_ENVIRONMENT未配置或为空,无法显示异常信息!";

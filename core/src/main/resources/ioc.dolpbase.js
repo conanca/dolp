@@ -1,21 +1,11 @@
 var ioc = {
 
 	// 系统参数
-	prop : {
-		type : "com.dolplay.dolpbase.common.domain.DolpProperties",
-		args : [
-			{
-				"TestProp":"123",
-				"SYSTEM_SYSTEMNAME":"Dolp基盘",
-				"SYSTEM_ENVIRONMENT":"dev",
-				// 启动时初始化Dolp数据表(系统初次部署启动时可设置为true,第二次启动前应设为false)
-				"SYSTEM_INITDOLPTABLES_ONSTART":true,
-				// 是否启动调度任务
-				"SYSTEM_SCHEDULER_RUN":true,
-				// 是否检查入口方法存在于权限表中
-				"SYSTEM_ISCHECK_METHOD":true
-			}
-		]
+	config : {
+		type : "org.nutz.ioc.impl.PropertiesProxy",
+		fields : {
+			paths : [ "system.properties" ]
+		}
 	},
 
 	// 消息附件文件的文件池
@@ -28,7 +18,9 @@ var ioc = {
 	uploadAttachmentContext : {
 		type : 'org.nutz.mvc.upload.UploadingContext',
 		singleton : false,
-		args : [ { refer : 'attachmentPool' } ],
+		args : [ {
+			refer : 'attachmentPool'
+		} ],
 		fields : {
 			// 忽略空文件,(入口函数File参数将得到null)
 			ignoreNull : true,
@@ -42,9 +34,11 @@ var ioc = {
 	attachmentUpload : {
 		type : 'org.nutz.mvc.upload.UploadAdaptor',
 		singleton : false,
-		args : [ { refer : 'uploadAttachmentContext' } ]
+		args : [ {
+			refer : 'uploadAttachmentContext'
+		} ]
 	},
-	
+
 	// 临时文件的文件池
 	tempFilePool : {
 		type : 'org.nutz.filepool.NutFilePool',
@@ -55,7 +49,9 @@ var ioc = {
 	tempFileContext : {
 		type : 'org.nutz.mvc.upload.UploadingContext',
 		singleton : false,
-		args : [ { refer : 'tempFilePool' } ],
+		args : [ {
+			refer : 'tempFilePool'
+		} ],
 		fields : {
 			// 忽略空文件,(入口函数File参数将得到null)
 			ignoreNull : true,
@@ -69,6 +65,8 @@ var ioc = {
 	tempFileUpload : {
 		type : 'org.nutz.mvc.upload.UploadAdaptor',
 		singleton : false,
-		args : [ { refer : 'tempFileContext' } ]
+		args : [ {
+			refer : 'tempFileContext'
+		} ]
 	}
 };

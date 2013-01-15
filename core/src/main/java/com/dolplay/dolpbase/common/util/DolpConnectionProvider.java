@@ -13,7 +13,7 @@ public class DolpConnectionProvider implements ConnectionProvider {
 	@Override
 	public Connection getConnection() throws SQLException {
 		logger.debug("Get connection");
-		return DaoProvider.getDataSource().getConnection();
+		return DolpWebs.dataSource().getConnection();
 	}
 
 	@Override

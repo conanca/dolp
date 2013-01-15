@@ -10,8 +10,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.IocProvider;
+import com.dolplay.dolpbase.common.util.DolpWebs;
 import com.dolplay.dolpbase.system.domain.PoolFile;
 
 /**
@@ -23,8 +22,8 @@ public class RemoveInvalidAttachmentJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		Dao dao = DaoProvider.getDao();
-		FilePool attachmentPool = IocProvider.getIoc().get(FilePool.class, "attachmentPool");
+		Dao dao = DolpWebs.dao();
+		FilePool attachmentPool = DolpWebs.ioc().get(FilePool.class, "attachmentPool");
 
 		Sql sql = Sqls
 				.create("SELECT * FROM SYSTEM_POOLFILE WHERE POOLIOCNAME = @poolIocName AND IDINPOOL NOT IN (SELECT POOLFILEID FROM SYSTEM_MESSAGE_POOLFILE)");

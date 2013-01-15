@@ -1,13 +1,11 @@
 package com.dolplay.dolpbase;
 
-import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.IocProvider;
+import com.dolplay.dolpbase.common.util.DolpWebs;
 import com.dolplay.dolpbase.system.secheduler.DolpSchedulerAdder;
 import com.dolplay.dolpbase.system.util.MvcSetupDefaultHandler;
 
@@ -19,8 +17,6 @@ public class MvcSetup implements Setup {
 	 */
 	@Override
 	public void init(NutConfig config) {
-		// 初始化IocProvider
-		IocProvider.init(Mvcs.getIoc());
 		// 初始化dolp的数据表
 		MvcSetupDefaultHandler.dolpTableInit();
 
@@ -38,9 +34,9 @@ public class MvcSetup implements Setup {
 		}
 		// 启动调度任务
 		// TODO 暂时关闭调度
-		//MvcSetupDefaultHandler.startScheduler();
+		MvcSetupDefaultHandler.startScheduler();
 		// 清空在线用户表
-		DaoProvider.getDao().clear("SYSTEM_CLIENT");
+		DolpWebs.dao().clear("SYSTEM_CLIENT");
 
 	}
 

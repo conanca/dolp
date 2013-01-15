@@ -13,8 +13,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dolplay.dolpbase.common.util.DaoProvider;
-import com.dolplay.dolpbase.common.util.PropProvider;
+import com.dolplay.dolpbase.common.util.DolpWebs;
 
 public class MvcSetupDefaultHandler {
 	private static Logger logger = LoggerFactory.getLogger(MvcSetupDefaultHandler.class);
@@ -24,10 +23,10 @@ public class MvcSetupDefaultHandler {
 	 * @param config
 	 */
 	public static void dolpTableInit() {
-		Dao dao = DaoProvider.getDao();
+		Dao dao = DolpWebs.dao();
 		// 初始化系统基本的数据表
-		Boolean initDolpTables = PropProvider.getProp().getBoolean("SYSTEM_INITDOLPTABLES_ONSTART");
-		if (null != initDolpTables && initDolpTables) {
+		String initDolpTables = DolpWebs.config().get("SYSTEM_INITDOLPTABLES_ONSTART");
+		if (null != initDolpTables && initDolpTables.toUpperCase().equals("TRUE")) {
 			logger.info("初始化Dolp数据表");
 			// 批量建表
 			for (Class<?> klass : Scans.me().scanPackage("com.dolplay.dolpbase.system.domain")) {
@@ -48,8 +47,8 @@ public class MvcSetupDefaultHandler {
 
 	public static void startScheduler() {
 		// 启动调度任务
-		Boolean dolpschedulerRun = PropProvider.getProp().getBoolean("SYSTEM_SCHEDULER_RUN");
-		if (null != dolpschedulerRun && dolpschedulerRun) {
+		String dolpschedulerRun = DolpWebs.config().get("SYSTEM_SCHEDULER_RUN");
+		if (null != dolpschedulerRun && dolpschedulerRun.toUpperCase().equals("TRUE")) {
 			logger.info("启动调度任务");
 			try {
 				SchedulerFactory sf = new StdSchedulerFactory();
