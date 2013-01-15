@@ -19,21 +19,17 @@ import org.apache.shiro.subject.Subject;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Fail;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
 import com.dolplay.dolpbase.common.domain.ResponseData;
 import com.dolplay.dolpbase.system.domain.User;
-import com.dolplay.dolpbase.system.filter.ShiroActionFilter;
 import com.dolplay.dolpbase.system.service.ClientService;
 import com.dolplay.dolpbase.system.service.SystemService;
 import com.dolplay.dolpbase.system.service.UserService;
 
 @IocBean
-@Filters({ @By(type = ShiroActionFilter.class) })
 public class SystemModule {
 
 	@Inject
@@ -44,11 +40,13 @@ public class SystemModule {
 	private ClientService clientService;
 
 	@At
+	@RequiresAuthentication
 	public ResponseData getSystemName() {
 		return systemService.getSystemName();
 	}
 
 	@At("/getSysEnumItemMap/*")
+	@RequiresAuthentication
 	public ResponseData getSysEnumItemMap(String sysEnumName) {
 		return systemService.getSysEnumItemMap(sysEnumName);
 	}
@@ -97,8 +95,8 @@ public class SystemModule {
 		}
 	}
 
-	@RequiresAuthentication
 	@At
+	@RequiresAuthentication
 	public void logout(HttpServletResponse response) throws IOException {
 		SecurityUtils.getSubject().logout();
 		// TODO
@@ -108,6 +106,7 @@ public class SystemModule {
 	}
 
 	@At
+	@RequiresAuthentication
 	public ResponseData getCurrentUserName() {
 		User cUser = (User) SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
 		return systemService.getCurrentUserName(cUser);
