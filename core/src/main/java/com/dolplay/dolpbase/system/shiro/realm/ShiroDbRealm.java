@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.common.shiro;
+package com.dolplay.dolpbase.system.shiro.realm;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

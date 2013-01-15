@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.common.filter;
+package com.dolplay.dolpbase.system.filter;
 
 import org.apache.shiro.aop.MethodInvocation;
 import org.apache.shiro.authz.AuthorizationException;

@@ -1,4 +1,4 @@
-package com.dolplay.dolpbase.system.listener;
+package com.dolplay.dolpbase.system.shiro.listener;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
