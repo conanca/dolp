@@ -1,1 +1,0 @@
-dao.create(${Domain}.class, true);
