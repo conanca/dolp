@@ -73,7 +73,7 @@ public class RoleService extends DolpBaseService<Role> {
 					for (Role role : roles) {
 						dao().clearLinks(role, "users");
 						dao().clearLinks(role, "menus");
-						dao().clearLinks(role, "privileges");
+						dao().clearLinks(role, "permissions");
 					}
 					clear(cnd);
 				}

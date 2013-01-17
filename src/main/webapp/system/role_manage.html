@@ -22,13 +22,13 @@ $(function(){
 	});
 	$("#roleList").setJqGridCUD('#rolePager',{edit:true,add:true,del:true,search:false});
 	//角色权限按钮点击事件
-	$("#rolePrivilegeBtn").click(function() {
+	$("#rolePermissionBtn").click(function() {
 		var id = $("#roleList").getGridParam('selrow');
 		if (id) {
 			roleId = id;
-			privilegeTree.setting.async.url = "system/permission/permissionTreeNodes/"+roleId;
-			privilegeTree.reAsyncChildNodes(null, "refresh");
-			$("#privilegeInfo").dialog( "open" );
+			permissionTree.setting.async.url = "system/permission/permissionTreeNodes/"+roleId;
+			permissionTree.reAsyncChildNodes(null, "refresh");
+			$("#permissionInfo").dialog( "open" );
 		} else {
 			$.showNotice("请选择角色");
 		}
@@ -39,9 +39,9 @@ $(function(){
 	$("#roleList").addSearchToolbar('#rolePager');
 
 	//初始化权限信息界面
-	$("#privilegeInfo").dialog({ width: 250 });
+	$("#permissionInfo").dialog({ width: 250 });
 	//定义权限树
-	var privilegeTreeSetting = {
+	var permissionTreeSetting = {
 		check: {
 			enable: true,
 			chkboxType: { Y : "s", N : "s" }	// 父子关联关系：被勾选时—关联父，关联子;取消勾选时—不关联父，关联子
@@ -53,11 +53,11 @@ $(function(){
 			autoParam: ["id"]
 		}
 	};
-	$.fn.zTree.init($("#privilegeTreeUl"), privilegeTreeSetting);
-	var privilegeTree = $.fn.zTree.getZTreeObj("privilegeTreeUl");
+	$.fn.zTree.init($("#permissionTreeUl"), permissionTreeSetting);
+	var permissionTree = $.fn.zTree.getZTreeObj("permissionTreeUl");
 	//分配权限
 	$("#permissionAssignBtn").click(function() {
-		var checkedTreeNodes = privilegeTree.getCheckedNodes();
+		var checkedTreeNodes = permissionTree.getCheckedNodes();
 		var checkedPermissions = [];
 		var i = 0;
 		$.each(checkedTreeNodes,function(index,value){
@@ -65,7 +65,7 @@ $(function(){
 			i++;
 		});
 
-		var unCheckedTreeNodes = privilegeTree.getCheckedNodes(false);
+		var unCheckedTreeNodes = permissionTree.getCheckedNodes(false);
 		var unCheckedPermissions = [];
 		i = 0;
 		$.each(unCheckedTreeNodes,function(index,value){
@@ -80,25 +80,25 @@ $(function(){
 	});
 	// 取消按钮点击事件
 	$("#permissionInfoCancelbtn").click(function() {
-		$('#privilegeInfo').dialog( "close" );
+		$('#permissionInfo').dialog( "close" );
 	});
 });
 </script>
 
-<input type="button" value="角色权限" id="rolePrivilegeBtn"/>
+<input type="button" value="角色权限" id="rolePermissionBtn"/>
 <br/>
 <br/>
 
 <table id="roleList"></table>
 <div id="rolePager"></div>
 
-<div id="privilegeInfo" title="权限信息">
+<div id="permissionInfo" title="权限信息">
 	<p align="center">
 		<input type="button" value="分配" id="permissionAssignBtn"/>
 		&nbsp;&nbsp;&nbsp;
 		<input type="button" value="取消" id='permissionInfoCancelbtn'/>
 	</p>
 	<div>
-		<ul id="privilegeTreeUl" class="ztree"></ul>
+		<ul id="permissionTreeUl" class="ztree"></ul>
 	</div>
 </div>
