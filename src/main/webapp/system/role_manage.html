@@ -21,8 +21,13 @@ $(function(){
 		multiselect: true
 	});
 	$("#roleList").setJqGridCUD('#rolePager',{edit:true,add:true,del:true,search:false});
-	//角色权限按钮点击事件
-	$("#rolePermissionBtn").click(function() {
+	//添加自定义按钮——导出Excel
+	$("#roleList").addExport2ExcelBtn('#rolePager');
+	// 开启查询功能
+	$("#roleList").addSearchToolbar('#rolePager');
+	
+	//管理操作权限按钮点击事件
+	$("#managePermissionBtn").click(function() {
 		var id = $("#roleList").getGridParam('selrow');
 		if (id) {
 			roleId = id;
@@ -33,18 +38,13 @@ $(function(){
 			$.showNotice("请选择角色");
 		}
 	});
-	//添加自定义按钮——导出Excel
-	$("#roleList").addExport2ExcelBtn('#rolePager');
-	// 开启查询功能
-	$("#roleList").addSearchToolbar('#rolePager');
-
-	//初始化权限信息界面
+	//初始化操作权限信息界面
 	$("#permissionInfo").dialog({ width: 250 });
-	//定义权限树
+	//定义操作权限树
 	var permissionTreeSetting = {
 		check: {
 			enable: true,
-			chkboxType: { Y : "s", N : "s" }	// 父子关联关系：被勾选时—关联父，关联子;取消勾选时—不关联父，关联子
+			chkboxType: { Y : "s", N : "p" }	// 父子关联关系：被勾选时—不关联父，关联子;取消勾选时—关联父，不关联子
 		},
 		async: {
 			enable: true,
@@ -82,17 +82,77 @@ $(function(){
 	$("#permissionInfoCancelbtn").click(function() {
 		$('#permissionInfo').dialog( "close" );
 	});
+	
+	//管理操作权限按钮点击事件
+	$("#manageMenuPermissionBtn").click(function() {
+		var id = $("#roleList").getGridParam('selrow');
+		if (id) {
+			roleId = id;
+			menuPermissionTree.setting.async.url = "system/permission/menuPermissionTreeNodes/"+roleId;
+			menuPermissionTree.reAsyncChildNodes(null, "refresh");
+			$("#menuPermissionInfo").dialog( "open" );
+		} else {
+			$.showNotice("请选择角色");
+		}
+	});
+	//初始化操作权限信息界面
+	$("#menuPermissionInfo").dialog({ width: 250 });
+	//定义操作权限树
+	var menuPermissionTreeSetting = {
+		check: {
+			enable: true,
+			chkboxType: { Y : "p", N : "p" }	// 父子关联关系：被勾选时—关联父，不关联子;取消勾选时—关联父，不关联子
+		},
+		async: {
+			enable: true,
+			url: "system/permission/menuPermissionTreeNodes/0",
+			dataFilter: ajaxDataFilter,
+			autoParam: ["id"]
+		}
+	};
+	$.fn.zTree.init($("#menuPermissionTreeUl"), menuPermissionTreeSetting);
+	var menuPermissionTree = $.fn.zTree.getZTreeObj("menuPermissionTreeUl");
+	//分配权限
+	$("#menuPermissionAssignBtn").click(function() {
+		var checkedTreeNodes = menuPermissionTree.getCheckedNodes();
+		var checkedPermissions = [];
+		var i = 0;
+		$.each(checkedTreeNodes,function(index,value){
+			checkedPermissions[i] = value.id;
+			i++;
+		});
+
+		var unCheckedTreeNodes = menuPermissionTree.getCheckedNodes(false);
+		var unCheckedPermissions = [];
+		i = 0;
+		$.each(unCheckedTreeNodes,function(index,value){
+			unCheckedPermissions[i] = value.id;
+			i++;
+		});
+
+		var url = "system/role/assignPermission";
+		$.dolpPost(url,{roleId:roleId,checkedPermissions:checkedPermissions,unCheckedPermissions:unCheckedPermissions},function(returnData){
+			$("#menuPermissionInfoCancelbtn").click();
+		});
+	});
+	// 取消按钮点击事件
+	$("#menuPermissionInfoCancelbtn").click(function() {
+		$('#menuPermissionInfo').dialog( "close" );
+	});
 });
+
+
 </script>
 
-<input type="button" value="角色权限" id="rolePermissionBtn"/>
+<input type="button" value="管理操作权限" id="managePermissionBtn"/>
+<input type="button" value="管理菜单权限" id="manageMenuPermissionBtn"/>
 <br/>
 <br/>
 
 <table id="roleList"></table>
 <div id="rolePager"></div>
 
-<div id="permissionInfo" title="权限信息">
+<div id="permissionInfo" title="管理操作权限">
 	<p align="center">
 		<input type="button" value="分配" id="permissionAssignBtn"/>
 		&nbsp;&nbsp;&nbsp;
@@ -101,4 +161,15 @@ $(function(){
 	<div>
 		<ul id="permissionTreeUl" class="ztree"></ul>
 	</div>
+</div>
+
+<div id="menuPermissionInfo" title="管理菜单权限">
+  <p align="center">
+    <input type="button" value="分配" id="menuPermissionAssignBtn"/>
+    &nbsp;&nbsp;&nbsp;
+    <input type="button" value="取消" id='menuPermissionInfoCancelbtn'/>
+  </p>
+  <div>
+    <ul id="menuPermissionTreeUl" class="ztree"></ul>
+  </div>
 </div>

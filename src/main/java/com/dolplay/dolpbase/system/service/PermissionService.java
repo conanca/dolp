@@ -69,21 +69,29 @@ public class PermissionService extends DolpBaseService<Permission> {
 		return respData;
 	}
 
-	/**
-	* 角色管理页面中的权限分配菜单树显示
-	* @param roleId
-	* @param nodeId
-	* @param nLeft
-	* @param nRight
-	* @param nLevel
-	* @return
-	*/
 	@Aop(value = "log")
 	public AjaxResData getPermissionTreeNodesByRoleId(Long roleId, Long nodeId) {
 		AjaxResData respData = new AjaxResData();
 		nodeId = nodeId == null ? 0 : nodeId;
 		Sql sql = Sqls
-				.create("SELECT P.ID,P.NAME,P.DESCRIPTION AS TITLE,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID = @nodeId");
+				.create("SELECT P.ID,P.NAME,P.DESCRIPTION AS TITLE,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID = @nodeId AND P.NAME NOT LIKE 'html:%'");
+		sql.params().set("roleId", roleId);
+		sql.params().set("nodeId", nodeId);
+
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao().getEntity(SimpleZTreeNode.class));
+		dao().execute(sql);
+		List<SimpleZTreeNode> permissionZTreeNodes = sql.getList(SimpleZTreeNode.class);
+		respData.setLogic(permissionZTreeNodes);
+		return respData;
+	}
+	
+	@Aop(value = "log")
+	public AjaxResData getMenuPermissionTreeNodesByRoleId(Long roleId, Long nodeId) {
+		AjaxResData respData = new AjaxResData();
+		nodeId = nodeId == null ? 0 : nodeId;
+		Sql sql = Sqls
+				.create("SELECT P.ID,P.NAME,P.DESCRIPTION AS TITLE,P.ID IN(SELECT PERMISSIONID FROM SYSTEM_ROLE_PERMISSION WHERE SYSTEM_ROLE_PERMISSION.ROLEID = @roleId) AS CHECKED,FALSE AS OPEN,(SELECT COUNT(0) > 0 FROM SYSTEM_PERMISSION P1 WHERE P1.PARENTPERMISSIONID = P.ID) AS ISPARENT FROM SYSTEM_PERMISSION P WHERE P.PARENTPERMISSIONID = @nodeId AND P.NAME LIKE 'html:%'");
 		sql.params().set("roleId", roleId);
 		sql.params().set("nodeId", nodeId);
 

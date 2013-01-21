@@ -35,6 +35,11 @@ public class PermissionModule {
 	public ResponseData getPermissionTreeNodesByRoleId(Long roleId, @Param("id") Long id) {
 		return permissionService.getPermissionTreeNodesByRoleId(roleId, id);
 	}
+	
+	@At("/menuPermissionTreeNodes/*")
+	public ResponseData getMenuPermissionTreeNodesByRoleId(Long roleId, @Param("id") Long id) {
+		return permissionService.getMenuPermissionTreeNodesByRoleId(roleId, id);
+	}
 
 	@At
 	public ResponseData getNodes(@Param("id") Long id) {
