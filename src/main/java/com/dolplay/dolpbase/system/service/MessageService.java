@@ -310,10 +310,10 @@ public class MessageService extends DolpBaseService<Message> {
 		AjaxResData respData = new AjaxResData();
 		PoolFile uploadTempFile = saveUploadFileInfo(tf, ioc, owner);
 		dao().insert(uploadTempFile);
-		if (uploadTempFile != null) {
-			//respData.setInfo("上传完成!", null, null);
-		} else {
+		if (uploadTempFile == null) {
 			respData.setNotice("请勿上传空文件!");
+		} else {
+			respData.setInfo("上传完成!");
 		}
 		respData.setLogic(uploadTempFile);
 		return respData;
