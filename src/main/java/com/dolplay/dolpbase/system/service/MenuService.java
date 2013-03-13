@@ -81,15 +81,16 @@ public class MenuService extends DolpBaseService<Menu> {
 	@Aop(value = "log")
 	public AdvancedJqgridResData<MenuTreeGridRow> getGridData(Long nodeId, Long nLeft, Long nRight, Integer nLevel) {
 		long[] permissionIdArr = (long[]) SecurityUtils.getSubject().getSession().getAttribute("CurrentPermission");
-		String permissionIds = "0";
+		StringBuilder permissionIdsSb = new StringBuilder("0");
 
 		if (permissionIdArr != null) {
 			for (Long permissionId : permissionIdArr) {
 				if (!Lang.isEmpty(permissionId)) {
-					permissionIds += permissionId + ",";
+					permissionIdsSb.append(permissionId).append(",");
 				}
 			}
 		}
+		String permissionIds = permissionIdsSb.toString();
 		permissionIds = permissionIds.substring(0, permissionIds.length() - 1);
 		AdvancedJqgridResData<MenuTreeGridRow> jq = new AdvancedJqgridResData<MenuTreeGridRow>();
 		jq.setPage(1);
