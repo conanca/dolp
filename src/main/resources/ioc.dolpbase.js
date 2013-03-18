@@ -13,7 +13,7 @@ var ioc = {
 	attachmentPool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,个数无限
-		args : [ "~/dolpbase/file/attachment", 0 ]
+		args : [ "~/apps/dolpbase/file/attachment", 0 ]
 	},
 	// 上传消息附件的Context
 	uploadAttachmentContext : {
@@ -44,7 +44,7 @@ var ioc = {
 	tempFilePool : {
 		type : 'org.nutz.filepool.NutFilePool',
 		// 文件保存在服务器的路径,最大个数1000
-		args : [ "~/dolpbase/file/temp", 1000 ]
+		args : [ "~/apps/dolpbase/file/temp", 1000 ]
 	},
 	// 上传临时文件的Context
 	tempFileContext : {
